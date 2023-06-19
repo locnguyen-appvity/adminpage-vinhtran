@@ -1,0 +1,48 @@
+<mat-form-field appearance="outline" fxFlex="100" class="full-width">
+    <mat-label>{{placeholder}}</mat-label>
+    <mat-chip-list [required]="isRequired" [formControl]="ctrlChip" class="chip-list-control" fxLayout="row wrap"
+        fxFlex="100" #chipList aria-label="User selection">
+        <mat-chip *ngFor="let chip of chips; trackBy: trackByFn" color="primary" [selectable]="disabled ? false:true"
+            [removable]="disabled ? false:true" (removed)="removeChip(chip.id)">
+
+            <ng-template [ngIf]="hasShowAvatar">
+                <ng-container *ngIf="(chip.hasAvatar && chip.pictureUrl); else defaultAvatar">
+                    <img alt="Photo" [src]="chip?.pictureUrl" matChipAvatar class="se-avatar" />
+                </ng-container>
+                <ng-template #defaultAvatar>
+                    <span matChipAvatar class="se-avatar avatar-name avatar-name--24">{{chip.name |
+                        initialsName}}</span>
+                </ng-template>
+            </ng-template>
+
+            <span>{{ chip.name }}</span>
+            <mat-icon matChipRemove svgIcon="ic_close_48px"></mat-icon>
+        </mat-chip>
+        <div class="input-chip">
+            <input #inputSearch [placeholder]="placeholder_input" [formControl]="ctrlSearch" [matAutocomplete]="auto"
+                [matChipInputFor]="chipList" [readonly]="readonly || disabled"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" autocapitalize="off" autocorrect="off"
+                autocomplete="off" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="addNewItem($event); inputSearch.value = ''">
+        </div>
+        <span fxFlex></span>
+        <mat-spinner [diameter]="24" *ngIf="spinnerProcess"></mat-spinner>
+    </mat-chip-list>
+    <mat-autocomplete class="kmi-multi-select mx-w99" #auto="matAutocomplete"
+        (optionSelected)="selectedOption($event);inputSearch.value = ''">
+        <mat-option *ngFor="let item of items$ | async; trackBy: trackByFn" [value]="item">
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                <ng-template [ngIf]="hasShowAvatar">
+                    <ng-container *ngIf="(item.hasAvatar && item.pictureUrl); else defaultAvatar">
+                        <img alt="Photo" [src]="item?.pictureUrl" mat-card-avatar class="se-avatar" />
+                    </ng-container>
+                    <ng-template #defaultAvatar>
+                        <span class="se-avatar avatar-name avatar-name--36">{{item.name | initialsName}}</span>
+                    </ng-template>
+                </ng-template>
+                <span>{{item.name}}</span>
+            </div>
+        </mat-option>
+    </mat-autocomplete>
+    <mat-error *ngIf="isRequired">Supervisor is required.</mat-error>
+</mat-form-field>

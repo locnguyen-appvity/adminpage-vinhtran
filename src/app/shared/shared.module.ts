@@ -14,6 +14,8 @@ import { TruncatePipe } from './truncate.pipe';
 import { MatDividerModule } from '@angular/material/divider';
 import { ToastSnackbarAppModule } from '../controls/toast-snackbar/toast-snackbar.module';
 import { SafeHtmlPipe } from './safehtml.pipe';
+import { PureWordsMaskDirective } from './input-validate.directive';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -22,13 +24,15 @@ import { SafeHtmlPipe } from './safehtml.pipe';
 		MatTooltipModule,
 		MatButtonModule,
 		MatDividerModule,
-		ToastSnackbarAppModule
+		ToastSnackbarAppModule,
+		MatSnackBarModule
 	],
 	declarations: [
 		SimpleBaseComponent,
 		InitialsPipe,
 		TruncatePipe,
-		SafeHtmlPipe
+		SafeHtmlPipe,
+		PureWordsMaskDirective
 	],
 	exports: [
 		RouterModule,
@@ -43,7 +47,9 @@ import { SafeHtmlPipe } from './safehtml.pipe';
 		TruncatePipe,
 		MatDividerModule,
 		ToastSnackbarAppModule,
-		SafeHtmlPipe
+		SafeHtmlPipe,
+		PureWordsMaskDirective,
+		MatSnackBarModule
 	],
 	
 })

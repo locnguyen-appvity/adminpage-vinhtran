@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { GlobalSettings } from './global.settings';
 import { HttpService } from './http.service';
@@ -24,10 +24,10 @@ export class SharedService {
 
 	getRootEndPointAPI() {
 		if (environment.production) {
-			return "./api/v1";
+			return "./api/v1/admin";
 			// return `${environment.server}/${environment.apiVersion}/api`;
 		}
-		return GlobalSettings.Settings.Server + '/api/v1';
+		return GlobalSettings.Settings.Server + '/api/v1/admin';
 	}
 
 	isNullOrEmpty(data: any) {
@@ -52,9 +52,9 @@ export class SharedService {
 			// 		}
 			// 	})
 			// }
-			return "./api/auth";
+			return "./api/v1/auth";
 		}
-		return GlobalSettings.Settings.Server + '/api/auth';
+		return GlobalSettings.Settings.Server + '/api/v1/auth';
 	}
 
 	createToken(data: any): Observable<any> {
@@ -62,14 +62,257 @@ export class SharedService {
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createToken', error)));
 	}
 
-	getVerifyAccessToken(token: any): Observable<any> {
-		const baseUrl = this.getRootEndPointAuth() + `/me`;
-		return this.service.verifyAccessToken(baseUrl, token).pipe(catchError(error => this.handleError('getVerifyAccessToken', error)));
+	// getVerifyAccessToken(token: any): Observable<any> {
+	// 	const baseUrl = this.getRootEndPointAuth() + `/me`;
+	// 	return this.service.verifyAccessToken(baseUrl, token).pipe(catchError(error => this.handleError('getVerifyAccessToken', error)));
+	// }
+	getItems(url: string, options: any): Observable<any> {
+		return this.service.getItems(url, options).pipe(
+			map(res => {
+				let dataJSON = res;
+				let arrs = dataJSON['value'] as any[];
+				let total = parseInt(dataJSON['@odata.count'], 10);
+				return {
+					total: total,
+					value: arrs
+				};
+			}),
+			catchError(error => this.handleError('getItems', error))
+		);
 	}
 
+	//Categories
+	getCategories(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/categories';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getCategories', error)));
+	}
+
+	getCategory(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/categories';
+		return this.service.getItem(baseUrl, options).pipe(catchError(error => this.handleError('getCategory', error)));
+	}
+
+	createCategory(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/categories`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createCategory', error)));
+	}
+
+	updateCategory(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/categories`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateCategory', error)));
+	}
+
+	deleteCategory(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/categories`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteCategory', error)));
+	}
+
+	//Tags
+	getTags(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/tags';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('geTags', error)));
+	}
+
+	getTag(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/tags';
+		return this.service.getItem(baseUrl, options).pipe(catchError(error => this.handleError('getTag', error)));
+	}
+
+	createTag(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/tags`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createTag', error)));
+	}
+
+	updateTag(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/tags`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateTag', error)));
+	}
+
+	deleteTag(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/tags`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteTag', error)));
+	}
+
+	//Authors
 	getAuthors(options?: any): Observable<any> {
-		let baseUrl = GlobalSettings.Settings.Server + '/management/authors';
-		return this.service.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAuthors', error)));
+		let baseUrl = this.shared.RootEndPointAPI + '/authors';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('geTags', error)));
+	}
+
+	getAuthor(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/authors';
+		return this.service.getItem(baseUrl, options).pipe(catchError(error => this.handleError('getAuthor', error)));
+	}
+
+	createAuthor(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/authors`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createAuthor', error)));
+	}
+
+	updateAuthor(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/authors`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateAuthor', error)));
+	}
+
+	deleteAuthor(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/authors`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteAuthor', error)));
+	}
+
+	//Users
+	getUsers(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/users';
+		return this.service.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getUsers', error)));
+	}
+
+	getUser(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/users';
+		return this.service.getItem(baseUrl, options).pipe(catchError(error => this.handleError('getUser', error)));
+	}
+
+	createUser(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/users/add`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createUser', error)));
+	}
+
+	updateUser(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/users/modify`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateUser', error)));
+	}
+
+	deleteUser(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/users`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteUser', error)));
+	}
+
+	//Posts
+	getPosts(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/posts';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPosts', error)));
+	}
+
+	getPost(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/posts';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getPost', error)));
+	}
+
+	createPost(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/posts`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createPost', error)));
+	}
+
+	updatePost(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/posts`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updatePost', error)));
+	}
+
+	deletePost(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/posts`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePost', error)));
+	}
+
+	//Parables
+	getParables(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/parables';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getParables', error)));
+	}
+
+	getParable(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/parables';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getParable', error)));
+	}
+
+	createParable(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/parables`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createParable', error)));
+	}
+
+	updateParable(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/parables`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateParable', error)));
+	}
+
+	deleteParable(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/parables`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteParable', error)));
+	}
+
+	//contemplations
+	getContemplations(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/contemplations';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getContemplations', error)));
+	}
+
+	getContemplation(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/contemplations';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getContemplation', error)));
+	}
+
+	createContemplation(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/contemplations`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createContemplation', error)));
+	}
+
+	updateContemplation(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/contemplations`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateContemplation', error)));
+	}
+
+	deleteContemplation(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/contemplations`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteContemplation', error)));
+	}
+
+	//folders
+	getFolders(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/folders';
+		return this.service.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getFolders', error)));
+	}
+
+	getFolder(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/folders';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getFolder', error)));
+	}
+
+	getFolderFiles(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/folderFiles';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getFolder', error)));
+	}
+
+	createFolder(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/folders`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createFolder', error)));
+	}
+
+	updateFolder(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/folders`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateFolder', error)));
+	}
+
+	deleteFolder(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/folders`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteFolder', error)));
+	}
+
+	//files
+	getFiles(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/files';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getFiles', error)));
+	}
+
+	getFile(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/files';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getFile', error)));
+	}
+
+	createFile(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/files`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createFile', error)));
+	}
+
+	deleteFile(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/files`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteFile', error)));
 	}
 
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {

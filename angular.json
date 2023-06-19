@@ -49,12 +49,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "6mb",
-									"maximumError": "8mb"
+                  "maximumError": "8mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "10mb",
-									"maximumError": "15mb"
+                  "maximumError": "15mb"
                 }
               ],
               "fileReplacements": [
@@ -78,6 +78,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "port": 3000
+          },
           "configurations": {
             "production": {
               "browserTarget": "v1_fe_web_gppc:build:production"

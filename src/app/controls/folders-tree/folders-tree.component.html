@@ -1,0 +1,115 @@
+<div class="folder-tree" fxLayout="column" fxLayoutAlign="center start">
+    <!-- <div class="top-menu-toolbar" fxLayout="row" fxLayoutAlign="start center">
+        <div fxFlex="75">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="ic_search material-icons" svgIcon="ic_search_48px"></mat-icon>
+                <input matInput placeholder="Tìm kiếm theo tên" autocomplete="off" [formControl]="txtSearch">
+            </div>
+        </div>
+        <div fxFlex="25">
+            <span fxFlex></span>
+            <button mat-icon-button *ngIf="txtSearch?.value?.length > 0" (click)="clearSearch()" aria-label="Close"
+                matTooltip="Xoá" class="mat-icon-button-search-close">
+                <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
+            </button>
+            <button style="margin: 12px;" mat-stroked-button color="primary" (click)="onAddItem()">
+                <span>Thêm Thư Mục Mới</span>
+            </button>
+        </div>
+    </div> -->
+    <mat-divider class="full-width"></mat-divider>
+    <as-split direction="horizontal">
+        <as-split-area [size]="30" style="position: relative;">
+            <!-- <div class="full-width"> -->
+            <!-- <div style="height: 50px;position: sticky;top: 0px; background-color: #fff;z-index: 99;">
+                <div style="background-color: #fff;z-index: 99;" fxLayout="row" fxLayoutAlign="start center">
+                    <span fxFlex></span>
+                    <button style="margin: 12px;" mat-stroked-button color="primary" (click)="onAddItem()">
+                        <span>Thêm Thư Mục Mới</span>
+                    </button>
+                </div>
+                <mat-divider></mat-divider>
+            </div> -->
+            <div class="full-width" fxLayout="column" fxLayoutAlign="start center">
+                <div *ngIf="spinerLoading" fxLayout="column" fxLayoutAlign="center center" style="margin: 48px 0;">
+                    <mat-spinner diameter="70"></mat-spinner>
+                </div>
+                <div *ngIf="!spinerLoading && noData " fxLayout="column" fxLayoutAlign="center center"
+                    style="margin: 48px 0;">
+                    <h2 *ngIf="noData" class="mat-h2">Chưa có dữ liệu</h2>
+                    <button *ngIf="noData" (click)="onAddItem()" mat-flat-button color="primary" aria-label="Thêm Mới">
+                        Thêm Mới
+                    </button>
+                </div>
+
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="list-folders">
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+                        [ngClass]="{'active': nodeSelected?.id == node.id}" (click)="onSelectedFolder(node)">
+                        <button mat-icon-button disabled></button>
+                        <div class="tree-item" [ngClass]="'level-'+node?.level" fxLayout="row"
+                            fxLayoutAlign="start center">
+                            <h4 mat-line>{{node?.name}}</h4>
+                            <span fxFlex></span>
+                            <button *ngIf="canEdit" mat-icon-button
+                                (click)="$event.stopPropagation();onAddItemForNote(node)" matTooltip="Thêm"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_add_48px"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();onChangeData(node)" matTooltip="Sửa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_edit_note_24dp"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button (click)="$event.stopPropagation();deleteItem(node)"
+                                matTooltip="Xóa" matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                            <!-- <button class="btn-move-action" mat-icon-button (click)="$event.stopPropagation();"
+                                            matTooltip="Di Chuyển" matTooltipPosition="above">
+                                            <mat-icon svgIcon="ic_open_with_48dp"></mat-icon>
+                                        </button> -->
+                            <!-- <p mat-line>Link: {{node?.link }}</p> -->
+                        </div>
+                    </mat-tree-node>
+
+                    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding
+                        [ngClass]="{'active': nodeSelected?.id == node.id}" (click)="onSelectedFolder(node)">
+                        <button mat-icon-button matTreeNodeToggle (click)="expansionModel.toggle(node.id)"
+                            [attr.aria-label]="'toggle ' + node.name">
+                            <mat-icon class="mat-icon-rtl-mirror"
+                                [svgIcon]="treeControl.isExpanded(node) ? 'ic_expand_more_48px' : 'ic_chevron_right_48px'">
+                            </mat-icon>
+                        </button>
+                        <div class="tree-item" [ngClass]="'level-'+node?.level" fxLayout="row"
+                            fxLayoutAlign="start center">
+                            <h4 mat-line>{{node?.name}}</h4>
+                            <span fxFlex></span>
+                            <button *ngIf="canEdit" mat-icon-button
+                                (click)="$event.stopPropagation();onAddItemForNote(node)" matTooltip="Thêm"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_add_48px"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();onChangeData(node)" matTooltip="Sửa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_edit_note_24dp"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button (click)="$event.stopPropagation();deleteItem(node)"
+                                matTooltip="Xóa" matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                            <!-- <button class="btn-move-action" mat-icon-button (click)="$event.stopPropagation();"
+                                            matTooltip="Di Chuyển" matTooltipPosition="above">
+                                            <mat-icon svgIcon="ic_open_with_48dp"></mat-icon>
+                                        </button> -->
+                        </div>
+                    </mat-tree-node>
+                </mat-tree>
+            </div>
+            <!-- </div> -->
+        </as-split-area>
+        <as-split-area [size]="70">
+            <se-itinerary-imgs [id]="nodeSelected?.id"></se-itinerary-imgs>
+        </as-split-area>
+    </as-split>
+</div>

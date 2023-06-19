@@ -12,6 +12,8 @@ import { LinqService } from './linq.service';
 import { Store } from '@ngrx/store';
 import { IAppState } from './redux/state';
 import { SharedService } from './shared.service';
+import { ToastSnackbarAppComponent } from '../controls/toast-snackbar/toast-snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 declare let window: any;
 
 @Component({
@@ -63,7 +65,9 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		public override sharedService: SharedPropertyService,
 		public linq: LinqService,
 		public store: Store<IAppState>,
-		public service: SharedService) {
+		public service: SharedService,
+		public snackbar: MatSnackBar,
+		) {
 		super(sharedService);
 		this.sort = [];
 		this.menuViewColumns = [];
@@ -87,11 +91,19 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
             this.dataProcessing = true;
 			// this.getDataSettings().pipe(takeUntil(this.unsubscribe)).subscribe({
 			// 	next: () => {
-			// 		this.getDataGridAndCounterApplications();
+					// this.getDataGridAndCounterApplications();
 			// 	}
 			// });
         }
     }
+
+	showInfoSnackbar(dataInfo: any) {
+		this.snackbar.openFromComponent(ToastSnackbarAppComponent, {
+			duration: 5000,
+			data: dataInfo,
+			horizontalPosition: 'start'
+		});
+	}
 
 	resetPage() {
 		this.currentPageIndex = 0;

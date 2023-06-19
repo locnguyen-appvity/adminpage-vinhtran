@@ -14,11 +14,14 @@ import { ToastSnackbarAppComponent } from '../toast-snackbar/toast-snackbar.comp
 export class ListItemBaseComponent extends SimpleBaseComponent {
 
 	public noData: boolean = true;
-	public noDataSearch: boolean = false;
+	// public noDataSearch: boolean = false;
 	public txtSearch: FormControl;
 	public arrData: any[] = [];
 	public searchValue: string = '';
 	public spinerLoading: boolean = false;
+	public searchKey = 'name'
+
+
 	constructor(public override sharedService: SharedPropertyService,
 		public snackbar: MatSnackBar) {
 		super(sharedService);
@@ -49,7 +52,7 @@ export class ListItemBaseComponent extends SimpleBaseComponent {
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(name, '${quick}')`;
+			let quickSearch = `contains(tolower(${this.searchKey}), tolower('${quick}'))`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}

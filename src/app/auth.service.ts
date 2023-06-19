@@ -16,7 +16,7 @@ export class AuthenIntercept implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		let url = req.url;
 		//Skip authen
-		if (url.includes("/api/auth")) {
+		if (url.includes("/api/v1/auth")) {
 			return next.handle(req.clone());
 		}
 		else if (url.includes("/v1/api/public")) {
@@ -36,11 +36,11 @@ export class AuthenIntercept implements HttpInterceptor {
 		if (accessToken == null || accessToken == undefined) {
 			// console.log('url...', url)
 			// console.log("Access Token is empty");
-			return EMPTY;
+			return EMPTY;``
 		}
 		const authReq = req.clone({
 			headers: req.headers
-				.set("Authorization", accessToken)
+				.set("Authorization", `Bearer ${accessToken}`)
 				.set('Access-Control-Allow-Origin', 'http://localhost:4200')
 		});
 		return this.newRequest(next, authReq);

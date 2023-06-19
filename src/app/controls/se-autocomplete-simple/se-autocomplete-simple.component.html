@@ -1,0 +1,49 @@
+<div class="autocomplete-simple">
+    <!-- Autocomplete Template -->
+    <ng-container *ngIf="(items && (items.length >= switchAt || autocomplete)); else nonAutoComplete">
+        <input type="text" #trigger [readonly]="readonly" [placeholder]="placeHolder" matInput
+            [formControl]="inputControl" spellcheck="false" [matAutocomplete]="optgroup?autoOptgroup:auto"
+            autocomplete="off">
+        <a mat-button *ngIf="inputControl.value && !this.disabled" [disabled]="readonly" matSuffix mat-icon-button
+            aria-label="Xoá" matTooltip="Xoá" (click)="clearValue()">
+            <mat-icon svgIcon="ic_close_48px"></mat-icon>
+        </a>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onValueChange($event.option.value)"
+            [displayWith]="displayFn">
+            <ng-container *ngFor="let item of filteredItems | async; trackBy: trackByFn">
+                <mat-option [value]="item[keyValue]">
+                    {{item[keyTitle]}}
+                </mat-option>
+            </ng-container>
+        </mat-autocomplete>
+        <mat-autocomplete #autoOptgroup="matAutocomplete" (optionSelected)="onValueChange($event.option.value)"
+            [displayWith]="displayFn">
+            <mat-optgroup *ngFor="let group of filteredItems | async; trackBy: trackByFn" [label]="group.groupName">
+                <mat-option *ngFor="let item of group.controls" [value]="item[keyValue]">
+                    {{item[keyTitle]}}
+                </mat-option>
+            </mat-optgroup>
+        </mat-autocomplete>
+    </ng-container>
+    <!-- Select Template -->
+    <ng-template #nonAutoComplete>
+        <ng-container *ngIf="optgroup === true; else nonOptgroup">
+            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)" [formControl]="inputControl">
+                <mat-optgroup *ngFor="let group of groupItems| async; trackBy: trackByFn" [label]="group.groupName">
+                    <mat-option *ngFor="let item of group.controls" [value]="item[keyValue]">
+                        {{item[keyTitle]}}
+                    </mat-option>
+                </mat-optgroup>
+            </mat-select>
+        </ng-container>
+        <ng-template #nonOptgroup>
+            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)" [formControl]="inputControl">
+                <ng-container *ngFor="let item of items; trackBy: trackByFn">
+                    <mat-option [value]="item[keyValue]">
+                        {{item[keyTitle]}}
+                    </mat-option>
+                </ng-container>
+            </mat-select>
+        </ng-template>
+    </ng-template>
+</div>

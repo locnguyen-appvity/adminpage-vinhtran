@@ -1,0 +1,21 @@
+<mat-form-field appearance="outline" fxFlex="100" class="full-width">
+    <mat-label>{{placeholder}}</mat-label>
+    <mat-chip-list [required]="isRequired" [formControl]="ctrlChip" class="chip-list-control" fxLayout="row wrap"
+        fxFlex="100" #chipList aria-label="User selection">
+        <mat-chip *ngFor="let chip of chips; trackBy: trackByFn" color="primary" [selectable]="disabled ? false:true"
+            [removable]="disabled ? false:true" (removed)="removeChip(chip)">
+            <span>{{ chip }}</span>
+            <mat-icon matChipRemove svgIcon="ic_close_48px"></mat-icon>
+        </mat-chip>
+        <div class="input-chip">
+            <input #inputSearch [placeholder]="placeholder_input" [formControl]="ctrlSearch"
+                [matChipInputFor]="chipList" [readonly]="readonly || disabled" (keyup.enter)="selectedOption()"
+                autocapitalize="off" autocorrect="off"
+                autocomplete="off" [matChipInputAddOnBlur]="addOnBlur">
+        </div>
+        <span fxFlex></span>
+        <mat-spinner [diameter]="24" *ngIf="spinnerProcess"></mat-spinner>
+    </mat-chip-list>
+    <mat-error *ngIf="isRequired">Supervisor is required.</mat-error>
+    <mat-hint *ngIf="ctrlChip.valid">Enter để thêm {{placeholder}}</mat-hint>
+</mat-form-field>

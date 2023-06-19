@@ -6,6 +6,7 @@
 @import "styles/global/material.themes";
 @import "styles/global/variables";
 @import "styles/global/mixins";
+@import "styles/global/global";
 
 // Common
 @import "styles/common/colors";
@@ -30,3 +31,10 @@
 // Pages
 @import "styles/pages/home";
 @import "styles/pages/news";
+
+//Admin
+@import "styles/admin/admin-navbar.module";
+@import "styles/admin/admin.module";
+@import "styles/admin/folder.module";
+@import "styles/admin/post-info.module";
+@import "styles/admin/settings-my-account.module";

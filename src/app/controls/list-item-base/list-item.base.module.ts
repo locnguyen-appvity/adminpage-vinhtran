@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListItemBaseComponent } from './list-item.base.component';
 
@@ -9,8 +8,7 @@ import { ListItemBaseComponent } from './list-item.base.component';
     ListItemBaseComponent
   ],
   imports: [
-    SharedModule,
-    MatSnackBarModule
+    SharedModule
   ],
   exports: [ListItemBaseComponent]
 })

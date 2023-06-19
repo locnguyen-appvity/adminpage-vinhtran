@@ -38,6 +38,7 @@ export class SimpleBaseComponent implements OnDestroy {
     public unsubscribe = new Subject<void>();
     public basePermissions: any;
     public ready: boolean = false;
+    public offset: number = 7;
 
     constructor(public sharedService: SharedPropertyService) { }
 

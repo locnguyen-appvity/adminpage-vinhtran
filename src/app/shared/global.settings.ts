@@ -1,6 +1,6 @@
 export class GlobalSettings {
     static Settings = {
-        Server: 'https://api.tuhoinusongthanhthe.org',
+        Server: 'http://giaophanphucuong.tuhoinusongthanhthe.org',
         Grid: {
             pageSize: 10,
             listPageSize: 20,

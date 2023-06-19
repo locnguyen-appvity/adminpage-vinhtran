@@ -1,5 +1,5 @@
 <div class="post-content">
-    
+
     <header>
         <h1 class="post-title">{{title}}</h1>
     </header>
@@ -9,5 +9,5 @@
             {{description}}
         </p>
     </div>
-    <quill-view-html [content]="content" format="text" theme="bubble"></quill-view-html>
+    <jodit-editor [config]="{toolbar: false}"></jodit-editor>
 </div>

@@ -1,0 +1,92 @@
+.admin-container {
+    .se-admin-toolbar {
+        width: 100%;
+        @include brand-bg;
+        height: 56px;
+        padding: 24px;
+        color: white;
+        .logo-container{
+            mat-icon{
+                transform: scaleX(-1);
+            }
+        }
+        &.open-sidenav {
+            padding-left: 400px !important;
+            .logo-container{
+                mat-icon{
+                    transform: scaleX(1);
+                }
+            }
+        }
+        // .logo-container {
+        //     height: 56px;
+        //     // margin-left: 16px;
+        //     .logo {
+        //         height: 90%;
+        //         width: auto;
+        //         margin-left: 24px;
+        //     }
+        //     .title-container {
+        //         margin-left: 12px;
+        //         .title {
+        //             // margin-bottom: 6px !important;
+        //             font-size: 16px;
+        //             font-weight: 600;
+        //         }
+        //         .sub-title {
+        //             margin: 0px !important;
+        //             font-size: 12px !important;
+        //         }
+        //     }
+        // }
+        .toolbar-avatar {
+            color: #ffffff;
+            img {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    }
+    .btn-navbar-container {
+        position: fixed !important;
+        height: 36px !important;
+        bottom: 10px;
+        left: 0px;
+        @include brand-bg;
+        border-top-right-radius: 25%;
+        border-bottom-right-radius: 25%;
+        z-index: 9999;
+        .btn-setting {
+            // padding: 3px;
+            width: 20px !important;
+            height: 32px !important;
+            color: #ffffff;
+            mat-icon {
+                transform: rotate(180deg);
+                margin-left: -6px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+        &.open {
+            margin-left: 350px;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-top-left-radius: 25%;
+            border-bottom-left-radius: 35%;
+            .btn-setting {
+                mat-icon {
+                    margin-left: 3px;
+                    transform: rotate(0deg);
+                }
+            }
+        }
+    }
+
+    .sidenav-container {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        height: 100%;
+    }
+}

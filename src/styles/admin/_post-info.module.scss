@@ -1,0 +1,19 @@
+.post-info {
+    position: relative;
+    height: calc(100vh - 59px);
+    .post-container {
+        padding: 24px;
+    }
+    .sticky-toolbar {
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        padding: 12px;
+        background-color: #fff;
+        .accept {
+            @include amber-bg;
+            color: #ffffff;
+        }
+    }
+}

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take, takeUntil } from 'rxjs';
 import { BasePermissions } from '../shared/base.permissions';
-import { UPDATE_BASEPERMISSIONS, UPDATE_USER } from '../shared/redux/actions-define';
 import { IAppState } from '../shared/redux/state';
 import { SharedPropertyService } from '../shared/shared-property.service';
 import { SharedService } from '../shared/shared.service';
@@ -30,7 +29,7 @@ export class LoginPageComponent extends SimpleBaseComponent {
 		private fb: FormBuilder) {
 		super(sharedService);
 		this.formGroup = this.fb.group({
-			userName: ["", Validators.required],
+			username: ["", Validators.required],
 			password: ["", Validators.required]
 		});
 		this.formGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
@@ -52,50 +51,46 @@ export class LoginPageComponent extends SimpleBaseComponent {
 
 	onLogin() {
 		let dataJSON = {
-			"username": this.formGroup.value.userName,
+			"username": this.formGroup.value.username,
 			"password": this.formGroup.value.password
 		}
-		// this.service.createToken(dataJSON).pipe(take(1)).subscribe(
-		// 	{
-		// 		next: (res: any) => {
-		// 			if (res && res.data && res.data.accessToken && Object.keys(res.data.accessToken).length > 0) {
-		localStorage.setItem('accessToken', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI5MmQyNDZlNy1lOTZmLTRmYTYtYmYxNS1lMzdmODljNDE5NDIiLCJpYXQiOiI0LzI3LzIwMjMgNjozNzoyNSBBTSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWVpZGVudGlmaWVyIjoiNDc0NzQyYWItYmY2Yy00N2I3LWIxOWItZTdhOWY3MTU2ODE1IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6ImFkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiMSIsImV4cCI6MTY4MjU3ODA0NSwiaXNzIjoiTGFtIE5ndXllbiIsImF1ZCI6Im5ndXllbnR1bmdsYW12bm1AZ21haWwuY29tIn0.7UjleepWG_0wTNan1OvLTDkUELFktoUrG6AEmvibbJk`);
-		// 				// this.service.getVerifyAccessToken(res.data.accessToken).pipe(take(1)).subscribe({
-		// 				// 	next: (res: any) => {
-		// 						if (res && res.data && res.data.refreshTokenExpiryTime) {
-		// 							this.invalidLogin = false;
-		// 							// this.store.dispatch({ type: UPDATE_USER, payload: res.data.user });
-		// 							// this.sharedService.sharedData({ action: 'update-user-login', data: res.value.user });
-		// 							// let basePermissions = this.permission.getBasePermissionForRole(res.value.user.role);
-		// 							// this.store.dispatch({ type: UPDATE_BASEPERMISSIONS, payload: basePermissions });
-		// 							this.router.navigate(['/web-gppc/episodes-list']);
-		// 						}
-		// 						else {
-		// 							this.invalidLogin = true;
-		// 							this.router.navigate(['/login']);
-		// 						}
+		this.service.createToken(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe(
+			{
+				next: (res: any) => {
+					if (res && res.status && res.data && res.data.accessToken) {
+						localStorage.setItem('accessToken', res.data.accessToken);
+						localStorage.setItem('refreshToken', res.data.refreshToken);
+						localStorage.setItem('refreshTokenExpiryTime', res.data.refreshTokenExpiryTime);
+						// this.service.getVerifyAccessToken(res.data.accessToken).pipe(take(1)).subscribe({
+						// 	next: (res: any) => {
+								// if (res && res.data && res.data.refreshTokenExpiryTime) {
+									this.invalidLogin = false;
+								// 	// this.store.dispatch({ type: UPDATE_USER, payload: res.data.user });
+								// 	// this.sharedService.sharedData({ action: 'update-user-login', data: res.value.user });
+								// 	// let basePermissions = this.permission.getBasePermissionForRole(res.value.user.role);
+								// 	// this.store.dispatch({ type: UPDATE_BASEPERMISSIONS, payload: basePermissions });
+									this.router.navigate(['/admin']);
+								// }
+								// else {
+								// 	this.invalidLogin = true;
+								// 	this.router.navigate(['/login']);
+								// }
 
-		// 					// }
-		// 				// })
+						// 	}
+						// })
 
-		// 			}
-		// 			else {
-		// 				this.invalidLogin = true;
-		// 			}
-		// 		},
-		// 		error: (error) => {
-		// 			this.invalidLogin = true;
-		// 			console.error(error);
+					}
+					else {
+						this.invalidLogin = true;
+					}
+				},
+				error: (error) => {
+					this.invalidLogin = true;
+					console.error(error);
 
-		// 		}
-		// 	}
-		// )
-		this.service.getAuthors().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				console.log('getAuthors........',res);
-				
+				}
 			}
-		})
+		)
 	}
 
 }

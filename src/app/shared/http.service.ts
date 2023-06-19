@@ -14,46 +14,43 @@ export class HttpService {
 		let headers = new HttpHeaders();
 		let queryStr = "";
 		if (options) {
-			queryStr = `$count=true`;
-			if (options.top) {
+			if (options.isCount !== false) {
+				queryStr += `&$count=true`;
+			}
+			if (options.top !== undefined && options.top > 0) {
 				let top = options.top;
 				top = top < 0 ? 1 : top;
 				queryStr += `&$top=${top}`;
 			}
-			if (options.skip) {
+			if (options.skip !== undefined && options.skip >= 0) {
 				let skip = options.skip;
 				skip = skip < 0 ? 0 : skip;
 				queryStr += `&$skip=${skip}`;
 			}
 			if (options.select) {
-				queryStr += `&$select=${options.select}`;
-			}
-			if (options.sort) {
-				queryStr += `&$orderby=${options.sort}`;
+				if (queryStr.length === 0) {
+					queryStr += `$select=${options.select}`;
+				}
+				else {
+					queryStr += `&$select=${options.select}`;
+				}
 			}
 			if (options.filter) {
 				queryStr += `&$filter=${options.filter}`;
 			}
-			if (options.expand) {
-				queryStr += `&$expand=${options.expand}`;
+			if (options.sort) {
+				queryStr += `&$orderby=${options.sort}`;
 			}
-			if (options.xTextSearch) {
-				headers = headers.set("xTextSearch", options.xTextSearch);
+
+			if (options.page) {
+				let page = options.page;
+				page = page < 0 ? 1 : page;
+				queryStr += `&page=${page}`;
 			}
-			if (options.xTop) {
-				headers = headers.set("xTop", options.xTop);
-			}
-			if (options.xSkip) {
-				headers = headers.set("xSkip", options.xSkip);
-			}
-			if (options.fromDate) {
-				headers = headers.set("FromDate", options.fromDate);
-			}
-			if (options.toDate) {
-				headers = headers.set("ToDate", options.toDate);
-			}
-			if (options.dateOfBirth) {
-				headers = headers.set("DateOfBirth", options.dateOfBirth);
+			if (options.pageSize) {
+				let pageSize = options.pageSize;
+				pageSize = pageSize < 0 ? 0 : pageSize;
+				queryStr += `&pageSize=${pageSize}`;
 			}
 		}
 		let baseUrl = `${url}`;
@@ -70,28 +67,15 @@ export class HttpService {
 		}
 		let queryStr = "";
 		if (options) {
-			queryStr = `$count=true`;
-			if (options.top) {
-				let top = options.top;
-				top = top < 0 ? 1 : top;
-				queryStr += `&$top=${top}`;
+			if (options.page) {
+				let page = options.page;
+				page = page < 0 ? 1 : page;
+				queryStr += `&page=${page}`;
 			}
-			if (options.skip) {
-				let skip = options.skip;
-				skip = skip < 0 ? 0 : skip;
-				queryStr += `&$skip=${skip}`;
-			}
-			if (options.select) {
-				queryStr += `&$select=${options.select}`;
-			}
-			if (options.sort) {
-				queryStr += `&$orderby=${options.sort}`;
-			}
-			if (options.filter) {
-				queryStr += `&$filter=${options.filter}`;
-			}
-			if (options.expand) {
-				queryStr += `&$expand=${options.expand}`;
+			if (options.pageSize) {
+				let pageSize = options.pageSize;
+				pageSize = pageSize < 0 ? 0 : pageSize;
+				queryStr += `&pageSize=${pageSize}`;
 			}
 		}
 		let baseUrl = `${url}`;
@@ -105,14 +89,7 @@ export class HttpService {
 		return this.http.get<T>(url);
 	}
 
-	verifyAccessToken<T>(url: string, token: any): Observable<T> {
-		let headers = new HttpHeaders();
-		headers = headers.set("Authorization", token);
-		headers = headers.set('Domain', 'nos');
-		return this.http.get<T>(url, { headers: headers });
-	}
-
-	updateItem<T>(url: string, item: T, id: string): Observable<any> {
+	updateItem<T>(url: string, id: string, item: T): Observable<any> {
 		let headers = new HttpHeaders();
 		let baseUrl = `${url}`;
 		if (id !== null && id !== undefined) {
@@ -141,7 +118,7 @@ export class HttpService {
 	postRequestBaseUrl(url: string, headers: HttpHeaders, params?: any): Observable<any> {
 		if (headers === null) {
 			headers = new HttpHeaders();
-			headers = headers.set('Content-Type',  'application/json');
+			headers = headers.set('Content-Type', 'application/json');
 		}
 		if (params !== null && params !== undefined) {
 			return this.http.post(url, params, { headers: headers });
