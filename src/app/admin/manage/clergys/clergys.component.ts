@@ -22,7 +22,7 @@ export class ClergysComponent extends ListItemBaseComponent {
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
-		this.getAllData();
+		this.getDataItems();
 	}
 
 	getAllData() {
@@ -78,49 +78,35 @@ export class ClergysComponent extends ListItemBaseComponent {
 		let options = {
 			filter: this.getFilter()
 		}
-		// this.service.getClergys(options).pipe(take(1)).subscribe((res: any) => {
-		// 	this.spinerLoading = false;
-		// 	this.arrData = [];
-		// 	if (res && res.value && res.value.length > 0) {
-		// 		let items = res.value;
-		// 		for (let item of items) {
-		// 			item.id = item._id;
-		// 			switch (item.deActive) {
-		// 				case -1:
-		// 					item.status = 'Draft';
-		// 					item.statusIcon = 'ic_post_add';
-		// 					item.class = 'draft';
-		// 					break;
-		// 				case 0:
-		// 					item.status = 'Active';
-		// 					item.statusIcon = 'ic_toggle_on';
-		// 					item.class = 'active-status';
-		// 					break;
-		// 				case 1:
-		// 					item.status = 'Inactive';
-		// 					item.statusIcon = 'ic_toggle_off';
-		// 					item.class = 'inactive-status';
-		// 					break;
-		// 			}
-		// 			item = this.handleClergyType(item);
-		// 			item = this.handleClergyPossision(item);
-		// 		}
-		// 		this.arrData = items;
-		// 		this.noData = false;
-		// 		this.noDataSearch = false;
-		// 	}
-		// 	else {
-		// 		if (this.txtSearch.value.length > 0) {
-		// 			this.noData = false;
-		// 			this.noDataSearch = true;
-		// 		}
-		// 		else {
-		// 			this.noData = true;
-		// 			this.noDataSearch = false;
-		// 		}
-		// 	}
+		this.service.getClergies(options).pipe(take(1)).subscribe((res: any) => {
+			this.spinerLoading = false;
+			this.arrData = [];
+			if (res && res.value && res.value.length > 0) {
+				let items = res.value;
+				for (let item of items) {
+					switch (item.status) {
+						case 'active':
+							item.statusTooltip = 'Hiện';
+							item.statusIcon = 'ic_toggle_on';
+							item.class = 'active-status';
+							break;
+						case 'inactive':
+							item.statusTooltip = 'Ẩn';
+							item.statusIcon = 'ic_toggle_off';
+							item.class = 'inactive-status';
+							break;
+					}
+					item = this.handleClergyType(item);
+					item = this.handleClergyPossision(item);
+				}
+				this.arrData = items;
+				this.noData = false;
+			}
+			else {
+				this.noData = true;
+			}
 
-		// })
+		})
 	}
 
 	onAddItem() {

@@ -59,8 +59,8 @@
                             <mat-list-item *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
                                 (click)="onChangeData(data)">
                                 <mat-icon mat-list-icon
-                                    [ngClass]="{'active': data.status === 'Active', 'inactive': data.status === 'Inactive'}"
-                                    [matTooltip]="data.status" [svgIcon]="data.statusIcon"></mat-icon>
+                                    [ngClass]="{'active': data.status === 'active', 'inactive': data.status === 'inactive'}"
+                                    [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
                                 <h4 mat-line>{{data.typeName}} {{data.stName}} {{data.name}}</h4>
                                 <p mat-line>{{data.possisionName}}</p>
                                 <span fxFlex></span>

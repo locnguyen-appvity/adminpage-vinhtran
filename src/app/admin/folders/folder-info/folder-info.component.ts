@@ -68,19 +68,20 @@ export class FolderInfoComponent extends SimpleBaseComponent {
         let name = '';
         let parent = '';
         let parentName = '';
-        let status = true;
+        // let status = true;
         let level = 0;
         let disabledParent = false;
         if (this.localItem) {
             name = this.localItem.name;
             parent = this.localItem.parent;
             parentName = this.localItem.parentName;
-            status = this.localItem.deActive == 0 ? true : false;
+            // status = this.localItem.deActive == 0 ? true : false;
         }
         else if (this.parentItem && this.parentItem.id != 'mydisk') {
             disabledParent = true;
             parent = this.parentItem.id;
             parentName = this.parentItem.name;
+            level = this.parentItem.level + 1;
         }
         return this.fb.group({
             name: [name, [Validators.required]],
@@ -88,7 +89,7 @@ export class FolderInfoComponent extends SimpleBaseComponent {
             // link: link ? link : this.sharedService.getLinkOfName(name),
             level: { value: level, disabled: disabledParent },
             parent: { value: parent, disabled: disabledParent },
-            status: status,
+            // status: status,
         })
     }
 
@@ -99,10 +100,10 @@ export class FolderInfoComponent extends SimpleBaseComponent {
         if (this.sharedService.isChangedValue(valueForm.parent, this.dialogData.item.parent)) {
             return true;
         }
-        let status = this.dialogData.item.deActive == 0 ? true : false;
-        if (this.sharedService.isChangedValue(valueForm.status, status)) {
-            return true;
-        }
+        // let status = this.dialogData.item.deActive == 0 ? true : false;
+        // if (this.sharedService.isChangedValue(valueForm.status, status)) {
+        //     return true;
+        // }
         return false;
     }
 
@@ -120,9 +121,12 @@ export class FolderInfoComponent extends SimpleBaseComponent {
 
     onSaveItem() {
         let valueForm = this.dataItemGroup.value;
+        let level = this.dataItemGroup.get('level').value;
         let dataJSON = {
+            // status: valueForm.status ? 'active' : 'inactive',
             name: valueForm.name,
-            parent: this.dataItemGroup.get('parent').value ? this.dataItemGroup.get('parent').value : null
+            level: level,
+            parent: level != 0 ? (this.dataItemGroup.get('parent').value ? this.dataItemGroup.get('parent').value : null) : null
         }
         if (this.target == 'edit') {
             this.dataProcessing = true;
