@@ -1,0 +1,132 @@
+<div class="admin-navbar" fxLayout="column" fxLayoutAlign="start center">
+    <!-- <div class="top-menu" fxLayout="row" fxLayoutAlign="start center"> -->
+    <!-- <span fxFlex></span> -->
+    <!-- <button mat-icon-button matTooltip="Activity" [matMenuTriggerFor]="alertAccount">
+            <mat-icon [matBadge]="iNotificationMyAccount" matBadgeColor="primary" matBadgePosition="before"
+                [matBadgeHidden]="iNotificationMyAccount == 0" svgIcon="ic_notifications_24px"
+                matBadgeSize="small"></mat-icon>
+        </button>
+        <mat-menu #alertAccount="matMenu">
+            <app-notifications></app-notifications>
+        </mat-menu> -->
+    <!-- Account Dropdown -->
+    <!-- <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button [matMenuTriggerFor]="account" matTooltip="Cài Đặt">
+                <mat-icon svgIcon="ic_settings_24px"></mat-icon>
+            </button>
+        </div> -->
+    <!-- <div fxHide.gt-sm fxLayout="row" fxLayoutAlign="center center" (click)="onColseMainMenu()">
+            <button mat-icon-button matTooltip="Đóng">
+                <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+            </button>
+        </div> -->
+
+    <!-- Account Dropdown Menu-->
+    <!-- <mat-menu #account="matMenu">
+            <mat-nav-list>
+                <mat-list-item [routerLink]="['/my-account/my-account-home']">
+                    <h6 mat-line>
+                        <b>{{currentUser?.name}}</b>
+                    </h6>
+                    <p class="mat-text-muted" mat-line>{{currentUser?.username}}</p>
+                    <img [src]="currentUser?.pictureUrl" alt="Avatar" mat-list-avatar />
+                </mat-list-item>
+            </mat-nav-list>
+            <button mat-menu-item [disabled]="isNullOrEmpty(currentUser?._id)">
+                <mat-icon class="material-icons" svgIcon="ic_edit_note_24dp"></mat-icon>
+                <span>Chỉnh Sửa Thông Tin</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon class="material-icons" svgIcon="ic_exit_to_app_48px"></mat-icon>
+                Đăng Xuất
+            </button>
+        </mat-menu> -->
+    <!-- </div> -->
+    <div class="member-container" fxLayout="column" fxLayoutAlign="start center">
+        <div class="full-width mrt-24" fxLayout="row" fxLayoutAlign="center start">
+            <img [src]="currentUser?.pictureUrl">
+        </div>
+        <div class="contact" fxLayout="column" fxLayoutAlign="center center">
+            <div class="name"> GIÁO PHẬN PHÚ CƯỜNG </div>
+            <div class="email"> TRUYỀN THÔNG TRONG ĐỨC KITÔ</div>
+        </div>
+    </div>
+
+    <mat-nav-list>
+        <mat-list-item [routerLink]="['/admin/categories-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
+            Danh Mục
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/tags/tags-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon>
+            Tags
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon>
+            Tác Giả
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/posts/post-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+            Bài Viết
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/parables/parables-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+            Lời Chúa
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/contemplations/contemplations-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+            Suy Niệm
+        </mat-list-item>
+        <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Thông Tin</h3>
+        <mat-list-item [routerLink]="['/admin/manage/dioceses-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
+            Giáo Phận
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/manage/churchs-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_church_24dp"></mat-icon>
+            Giáo Xứ
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/manage/clergys-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_priest"></mat-icon>
+            Tu Sĩ
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+            Các Thánh
+        </mat-list-item>
+        <h3 mat-subheader style="color: #908f8f;">Quản Lý Hệ Thống</h3>
+        <mat-list-item [routerLink]="['/admin/folders']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+           Thư Mục
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/users-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+            Người Dùng
+        </mat-list-item>
+    </mat-nav-list>
+    <span fxFlex></span>
+    <!-- <div class="btn-navbar-closed" [ngClass]="{'open': opened}" fxLayout="row" fxLayoutAlign="end end">
+        <div class="btn-setting">
+            <button (click)="onColseMainMenu()" mat-icon-button>
+                <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+            </button>
+        </div>
+    </div> -->
+    <!-- <div class="btn-navbar-end" fxLayout="row" fxLayoutAlign="end end">
+        <button mat-icon-button color="default" (click)="onColseMainMenu" matTooltip="Đóng Menu">
+            <mat-icon svgIcon="ic_menu_open_24px"></mat-icon>
+        </button>
+    </div> -->
+</div>

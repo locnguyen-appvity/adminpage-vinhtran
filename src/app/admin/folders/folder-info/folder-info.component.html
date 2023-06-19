@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>{{title}} Danh Mục</h2>
+<mat-dialog-content>
+    <div class="content-dialog content-dialog--minHeight">
+        <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+            <div fxLayout="column">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tên</mat-label>
+                    <input matInput required formControlName="name" autocomplete="off" se-pure-words>
+                    <!-- <mat-hint>{{dataItemGroup?.value?.link}}</mat-hint> -->
+                </mat-form-field>
+                <!-- <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
+                    <div fxFlex="80" fxLayout="row" fxLayoutAlign="start start">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Link</mat-label>
+                            <input matInput formControlName="link" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="20" fxLayout="row" fxLayoutAlign="start start">
+                        <button style="margin-top: -17px;" mat-icon-button color="primary" [disabled]="dataProcessing" aria-label="Delete">
+                            <mat-icon svgIcon="ic_autorenew_48dp"></mat-icon>
+                            <span fxHide.xs > Kiểm Tra </span>
+                        </button>
+                    </div>
+                </div> -->
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Level</mat-label>
+                    <mat-select formControlName="level" required>
+                        <mat-option [value]="0">Cao Nhất</mat-option>
+                        <mat-option [value]="1">Cấp 1</mat-option>
+                        <mat-option [value]="2">Cấp 2</mat-option>
+                        <mat-option [value]="3">Cấp 3</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="dataItemGroup?.value?.level != 0" appearance="outline" class="full-width">
+                    <mat-label>Thuộc</mat-label>
+                    <input matInput formControlName="parentName" autocomplete="off">
+                </mat-form-field>
+                <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
+            </div>
+        </form>
+    </div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <a mat-button (click)="closeDialog()" color="default">Hủy</a>
+        <div class="btn-save-process">
+            <button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'"
+                aria-label="Delete" (click)="deleteItem()" color="warn">Xóa</button>
+            <mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
+        </div>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary"
+                [disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
+                aria-label="Save" (click)="onSaveItem()">{{textSave}}</button>
+            <mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
+        </div>
+    </div>
+</mat-dialog-content>

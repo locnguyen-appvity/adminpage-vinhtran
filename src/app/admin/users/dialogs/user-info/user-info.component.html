@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+    <div class="content-dialog content-dialog--minHeight">
+        <form class="form-horizontal" style="margin: 12px;" novalidate [formGroup]="infoGroup" autocomplete="off">
+            <div *ngIf="type !=='update-password'" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div fxFlex.gt-xs="30" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                    <!-- Avatar -->
+                    <!-- <se-upload-avatar [entityID]="localItem?._id" [type]="'user'"
+                        (valueChanges)="valueChangesAvatar($event)"></se-upload-avatar> -->
+                </div>
+                <div fxFlex.gt-xs="70" fxFlex="100">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tên Hiển Thị</mat-label>
+                        <input matInput formControlName="fullName" type="text" required autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-form-field *ngIf="type =='new' || type =='update-password'" appearance="outline" class="full-width">
+                <mat-label>Tên Đăng Nhập</mat-label>
+                <input matInput type="text" autocomplete="off" required="" formControlName="username">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Quyền</mat-label>
+                <mat-select formControlName="priority" required>
+                    <mat-option [value]="1">Admin</mat-option>
+                    <mat-option [value]="2">Editor</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="type =='new' || type =='update-password'" appearance="outline" class="full-width">
+                <mat-label>Mật Khẩu</mat-label>
+                <input formControlName="password" tabindex="2" matInput [type]="hide ? 'password' : 'text'" required>
+                <button tabindex="3" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon [svgIcon]="hide ? 'ic_visibility_off_48dp' : 'ic_visibility_48dp'"></mat-icon>
+                </button>
+            </mat-form-field>
+            <!-- <mat-form-field *ngIf="type =='new' || type =='update-password'" appearance="outline" class="full-width">
+                <mat-label>Quyền</mat-label>
+                <se-autocomplete-simple [required]="true" [formControlName]="'role'" [switchAt]="10" [optgroup]="false"
+                    [placeHolder]="'Nhập Quyền...'" [keyTitle]="'name'" [keyValueEmit]="'code'" [keyValue]="'code'"
+                    [autocomplete]="false" [items$]="roleList$">
+                </se-autocomplete-simple>
+            </mat-form-field> -->
+            <!-- <mat-form-field *ngIf="type !=='update-password'" appearance="outline" class="full-width">
+                <mat-label>Số Điện Thoại</mat-label>
+                <input matInput type="text" autocomplete="off" formControlName="phoneNumber">
+            </mat-form-field> -->
+        </form>
+    </div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <a mat-button (click)="closeDialog()" color="default">Hủy</a>
+        <!-- <div class="btn-save-process">
+      <button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'" aria-label="Delete"
+        (click)="deleteItem()" color="warn">Xóa</button>
+      <mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
+    </div> -->
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary"
+                [disabled]="(!hasChangedGroup && !hasChangedAvatar) || !infoGroup.valid || dataProcessing"
+                aria-label="Save" (click)="onSaveItem()">Lưu</button>
+            <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+        </div>
+    </div>
+</mat-dialog-content>

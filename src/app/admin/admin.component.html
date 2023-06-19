@@ -1,20 +1,17 @@
-<mat-sidenav-container class="wrap-container">
+<mat-sidenav-container class="admin-container">
 	<!-- Primary Toolbar -->
-	<mat-toolbar class="se-primary-toolbar">
-		<div fxLayout="row" fxLayoutAlign="center center">
-			<!-- <button mat-icon-button [routerLink]="['/wellcome']" color="default" aria-label="Home"
-				matTooltip="Trang Chính">
-				<img class="mat-app-icon" [src]="pictureUrl" />
-			</button> -->
-
-			<ng-template [ngIf]="router.url != '/wellcome' && router.url != '/login'">
-				<!-- <button mat-icon-button color="default" [matMenuTriggerFor]="appMenu" aria-label="Apps"
-					[matTooltip]="title">
-					<mat-icon svgIcon="ic_apps"></mat-icon>
-				</button> -->
-				<img class="mat-app-icon" [src]="pictureUrl" />
-				<!-- <mat-icon class="app-icon" svgIcon="ic_graphic_eq_48dp"></mat-icon> -->
-				<h4 class="app-title mrl-24">{{title}}</h4>
+	<mat-toolbar class="se-admin-toolbar" [ngClass]="{'open-sidenav':sidenav.opened}">
+		<div class="logo-container" fxLayout="row" fxLayoutAlign="center center">
+			<ng-template [ngIf]="router.url != '/login'">
+				<button mat-icon-button color="default" aria-label="Activity" (click)="sidenav.toggle()"
+					matTooltip="Đóng Menu">
+					<mat-icon svgIcon="ic_menu_open_24px"></mat-icon>
+				</button>
+				<!-- <img class="logo" [src]="pictureUrl" /> -->
+				<div class="title-container" fxLayout="column" fxLayoutAlign="center start">
+					<span class="title">{{title}}</span>
+					<!-- <span class="sub-title">{{description}}</span> -->
+				</div>
 			</ng-template>
 		</div>
 		<span fxFlex></span>
@@ -42,31 +39,33 @@
 			</button>
 		</mat-menu> -->
 
-		<button mat-icon-button *ngIf="router.url != '/wellcome' && router.url != '/login'" color="default" aria-label="Activity" (click)="alertsPanelMyAccount.toggle()"
-			matTooltip="Activity">
-			<mat-icon [matBadge]="iNotificationMyAccount" matBadgeColor="warn"
-				[matBadgeHidden]="iNotificationMyAccount == 0" svgIcon="ic_notifications_24px"
-				matBadgeSize="medium"></mat-icon>
-		</button>
 
 		<!-- Account Dropdown -->
 		<div fxLayout="row" fxLayoutAlign="center center">
 			<button *ngIf="router.url != '/wellcome' && router.url != '/login'" mat-icon-button
 				[matMenuTriggerFor]="account" matTooltip="Tài Khoản">
 				<!-- <img [src]="userInfo?.pictureUrl" class="mat-icon-24" /> -->
-				<!-- <mat-icon class="mat-icon-32" svgIcon="ic_account_circle_black_24px">
-			</mat-icon> -->
+				<mat-icon class="mat-icon-32" svgIcon="ic_person_48dp">
+				</mat-icon>
 				<!-- <mat-icon class="mat-icon-32" svgIcon="ic_account_circle_white_24px"
 				*ngIf="dark">
 			</mat-icon> -->
-				<div class="toolbar-avatar">
+				<!-- <div class="toolbar-avatar">
 					<img [src]="currentUser?.pictureUrl" alt="Avatar" mat-list-avatar>
-				</div>
+				</div> -->
 			</button>
 			<!-- <mat-icon class="mat-icon-32"
 				style="position: relative;z-index: 2;margin-top: 18px;margin-left: 8px;color: rgb(0, 17, 252);"
 				svgIcon="ic_arrow_drop_down_48dp"></mat-icon> -->
 		</div>
+
+		<button mat-icon-button *ngIf="router.url != '/wellcome' && router.url != '/login'" color="default"
+			aria-label="Activity" (click)="alertsPanelMyAccount.toggle()" matTooltip="Activity">
+			<mat-icon [matBadge]="iNotificationMyAccount" matBadgeColor="warn"
+				[matBadgeHidden]="iNotificationMyAccount == 0" svgIcon="ic_notifications_24px"
+				matBadgeSize="medium"></mat-icon>
+		</button>
+
 
 		<!-- Account Dropdown Menu-->
 		<mat-menu #account="matMenu">
@@ -75,7 +74,7 @@
 					<h6 mat-line>
 						<b>{{currentUser?.name}}</b>
 					</h6>
-					<p class="mat-text-muted" mat-line>{{currentUser?.userName}}</p>
+					<p class="mat-text-muted" mat-line>{{currentUser?.username}}</p>
 					<img [src]="currentUser?.pictureUrl" alt="Avatar" mat-list-avatar />
 				</mat-list-item>
 			</mat-nav-list>
@@ -96,50 +95,25 @@
 	</mat-toolbar>
 	<!--end edit with login form-->
 	<mat-sidenav-container>
-		<mat-sidenav *ngIf="router.url != '/wellcome' && router.url != '/login'" class="sidenav" #sidenav mode="side" [ngStyle.lt-md]="{'width': '100%'}" [opened]="true">
-			<div class="sidenav-container">
-				<div *ngIf="!isSettings" class="sidenav-container">
-					<div class="secondary-sidenav">
-						<router-outlet name="sidebar"></router-outlet>
-					</div>
-					<div class="btn-sidenav-settings">
-						<mat-divider></mat-divider>
-						<mat-nav-list>
-							<mat-list-item matTooltip="Cài Đặt" matTooltipPosition="right" (click)="toggleSetting()">
-								<mat-icon mat-list-icon svgIcon="ic_settings_48px"></mat-icon>
-								Cài Đặt
-							</mat-list-item>
-						</mat-nav-list>
-					</div>
-				</div>
-				<div *ngIf="isSettings" class="sidenav-container">
-					<div class="secondary-sidenav">
-					<span>Cài Đặt ở đây</span>
-					</div>
-					<div class="btn-sidenav-settings">
-						<mat-divider></mat-divider>
-						<div fxLayout="row" fxLayoutAlign="end center">
-							<button mat-icon-button [disabled]="dataProcessing" (click)="toggleSetting()"
-								color="warn">
-								<mat-icon svgIcon="ic_close_48px"></mat-icon>
-							</button>
-							<button mat-icon-button [disabled]="dataProcessing" color="primary">
-								<mat-icon svgIcon="ic_done_48dp"></mat-icon>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
+		<mat-sidenav #sidenav [style.transform]="sidenav.opened !== true ? 'translate3d(100%, 0, 0)' : 'none'"
+			[ngStyle.lt-md]="{'width': '100%'}" [ngStyle.gt-sm]="{'width': '372px'}" [fixedInViewport]="true"
+			[mode]="'side'" [position]="'start'" [opened]="true">
+			<app-admin-navbar [opened]="sidenav.opened"></app-admin-navbar>
 		</mat-sidenav>
 		<!-- Notifications Sidenav -->
-		<mat-sidenav id="se-notifications-center-travel-request"
-			class="end-side-panel se-notifications-center-travel-request notification-center top-navbar"
-			#alertsPanelMyAccount
+		<mat-sidenav #alertsPanelMyAccount
 			[style.transform]="alertsPanelMyAccount.opened !== true ? 'translate3d(100%, 0, 0)' : 'none'"
 			[ngStyle.lt-md]="{'width': '100%'}" [ngStyle.gt-sm]="{'width': '372px'}" [fixedInViewport]="true"
-			[fixedTopGap]="56" [mode]="'side'" [position]="'end'" [opened]="toggleMyAccountPanel">
+			[fixedTopGap]="80" [mode]="'side'" [position]="'end'" [opened]="toggleMyAccountPanel">
 			<app-notifications></app-notifications>
 		</mat-sidenav>
+		<div class="btn-navbar-container" [ngClass]="{'open':sidenav.opened}" fxLayout="row"
+			fxLayoutAlign="start center">
+			<button (click)="sidenav.toggle()" class="btn-setting" fxLayout="row" fxLayoutAlign="start center"
+				mat-icon-button>
+				<mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+			</button>
+		</div>
 		<router-outlet></router-outlet>
 	</mat-sidenav-container>
 </mat-sidenav-container>

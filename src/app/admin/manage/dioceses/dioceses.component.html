@@ -1,0 +1,76 @@
+<div class="se-settings-container wrapper">
+
+    <!-- Header -->
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="100">
+            <div fxLayout="row" fxLayoutAlign="center center" class="account-header" fxHide.lt-md>
+                <!-- <mat-icon class="account-header-icon" svgIcon="ic_groups_department"></mat-icon> -->
+                <h2 class="account-title">Giáo Phận</h2>
+            </div>
+            <p class="account-subtitle">Quản lý danh sách giáo phận</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex.gt-md="840px" fxFlex="100">
+
+            <!-- Data -->
+            <mat-card class="outline-list-card">
+                <mat-toolbar class="search-toolbar" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="75">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
+                            <input placeholder="Tìm giáo phận theo tên" [readonly]="spinerLoading"
+                                [formControl]="txtSearch">
+                        </div>
+                    </div>
+                    <div fxFlex="25">
+                        <span fxFlex></span>
+                        <button mat-icon-button *ngIf="txtSearch?.value?.length > 0" (click)="clearSearch()"
+                            aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
+                            <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
+                        </button>
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary"
+                            aria-label="Thêm Giáo Phận" (click)="onAddItem()">
+                            Thêm Giáo Phận
+                        </button>
+                        <!-- [disabled]="noData" -->
+                    </div>
+                </mat-toolbar>
+                <mat-divider></mat-divider>
+                <mat-card-content>
+                    <div *ngIf="spinerLoading" fxLayout="column" fxLayoutAlign="center center" style="margin: 48px 0;">
+                        <mat-spinner diameter="70"></mat-spinner>
+                    </div>
+                    <div *ngIf="!spinerLoading && noData" fxLayout="column" fxLayoutAlign="center center"
+                        style="margin: 48px 0;">
+                        <ng-container *ngIf="searchValue?.length >0;else noDataView" class="se-message-text">Không có dữ
+                            liệu</ng-container>
+                        <ng-template #noDataView>
+                            <h2 *ngIf="noData" class="mat-h2">Chưa có dữ liệu</h2>
+                            <button *ngIf="noData" (click)="onAddItem()" mat-flat-button color="primary"
+                                aria-label="Thêm Mới">
+                                Thêm Mới
+                            </button>
+                        </ng-template>
+                    </div>
+                    <mat-nav-list *ngIf="!noData">
+                        <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="0" maxBufferPx="0" class="list-viewport"
+                            [ngClass]="{'list-viewport-no-data': noData ? true : false}">
+                            <mat-list-item *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
+                                (click)="onChangeData(data)">
+                                <mat-icon mat-list-icon
+                                    [ngClass]="{'active': data.status === 'Active', 'inactive': data.status === 'Inactive'}"
+                                    [matTooltip]="data.status" [svgIcon]="data.statusIcon"></mat-icon>
+                                <h4 mat-line>{{data.name}}</h4>
+                                <span fxFlex></span>
+                                <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon>
+                            </mat-list-item>
+                        </cdk-virtual-scroll-viewport>
+                    </mat-nav-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

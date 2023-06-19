@@ -1,0 +1,93 @@
+<div class="se-settings-container wrapper">
+
+    <!-- Header -->
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="100">
+            <div fxLayout="row" fxLayoutAlign="center center" class="account-header" fxHide.lt-md>
+                <!-- <mat-icon class="account-header-icon" svgIcon="ic_groups_department"></mat-icon> -->
+                <h2 class="account-title">Tags</h2>
+            </div>
+            <p class="account-subtitle">Quản lý danh Tags</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex.gt-md="840px" fxFlex="100">
+
+            <!-- Data -->
+            <mat-card class="outline-list-card">
+                <mat-toolbar class="search-toolbar" fxLayout.xs="column" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="65">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
+                            <input placeholder="Tìm dữ liệu theo tên" [readonly]="spinerLoading"
+                                [formControl]="txtSearch">
+                        </div>
+                    </div>
+                    <div fxFlex="35">
+                        <span fxFlex></span>
+                        <button mat-icon-button *ngIf="txtSearch?.value?.length > 0" (click)="clearSearch()"
+                            aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
+                            <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
+                        </button>
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm Mới" (click)="onAddItem()">
+                            <span>Thêm Mới</span>
+                        </button>
+                        <!-- [disabled]="noData" -->
+                    </div>
+                </mat-toolbar>
+                <mat-divider></mat-divider>
+                <mat-card-content class="mh-400">
+                    <div *ngIf="spinerLoading" fxLayout="column" fxLayoutAlign="center center" style="margin: 48px 0;">
+                        <mat-spinner diameter="70"></mat-spinner>
+                    </div>
+                    <div *ngIf="!spinerLoading && noData" fxLayout="column" fxLayoutAlign="center center"
+                        style="margin: 48px 0;">
+                        <ng-container *ngIf="searchValue?.length >0;else noDataView" class="se-message-text">Không có dữ
+                            liệu</ng-container>
+                        <ng-template #noDataView>
+                            <h2 *ngIf="noData" class="mat-h2">Chưa có dữ liệu</h2>
+                            <button *ngIf="noData" (click)="onAddItem()" mat-flat-button color="primary"
+                                aria-label="Thêm Mới">
+                                Thêm Mới
+                            </button>
+                        </ng-template>
+                    </div>
+                    <mat-nav-list *ngIf="!spinerLoading && !noData" class="list-categories">
+                        <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
+                            <mat-icon mat-list-icon class="active" matTooltip="Hoạt Động"
+                                svgIcon="ic_toggle_on"></mat-icon>
+                            <h4 mat-line>{{data?.name}}</h4>
+                            <p mat-line>noMark: <span [matTooltipDisabled]="!(data?.noMark?.length > 50)"
+                                    [matTooltip]="data.noMark">{{data?.noMark | truncate: 50}}</span></p>
+                            <span fxFlex></span>
+                            <button mat-icon-button matTooltip="Xem">
+                                <mat-icon class="material-icons" svgIcon="ic_visibility_48dp"></mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="$event.stopPropagation();deleteItem(data)" matTooltip="Xóa"
+                                matTooltipPosition="before">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="$event.stopPropagation()" [matMenuTriggerFor]="actionsMenu" matTooltip="Thao Tác Khác">
+                                <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
+                            </button>
+                            <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false">
+                                <button mat-menu-item [disabled]="dataProcessing">
+                                    <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
+                                    <span>Tạm Ẩn</span>
+                                </button>
+
+                                <button mat-menu-item [disabled]="dataProcessing">
+                                    <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
+                                    <span>Mở Lại</span>
+                                </button>
+
+                            </mat-menu>
+                        </mat-list-item>
+                    </mat-nav-list>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

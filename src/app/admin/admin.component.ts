@@ -33,6 +33,7 @@ export class AdminComponent extends SimpleBaseComponent {
 	public showLoadingProfileInfo: boolean = false;
 	public loadingRouteConfig: boolean = false;
 	public title: string = "GIÁO PHẬN PHÚ CƯỜNG";
+	public description: string = "Truyền Thông Trong Chúa Kitô";
 	public currentUser: any = {
 		id: "",
 		name: "Admin",
@@ -49,7 +50,43 @@ export class AdminComponent extends SimpleBaseComponent {
 		public dialog: MatDialog,
 	) {
 		super(sharedService);
+		this.getVerifyAccessToken();
 		this.actionsAsync();
+		this.router.events.pipe(shareReplay({
+			bufferSize: 1,
+			refCount: true,
+		}), takeUntil(this.unsubscribe)).subscribe((event: any) => {
+			this.getTitle();
+		});
+	}
+
+	getVerifyAccessToken() {
+		let accessToken = localStorage.getItem('accessToken');
+		if (this.isNullOrEmpty(accessToken)) {
+			this.router.navigate(['/login']);
+		}
+
+	}
+
+	getTitle() {
+		if(this.router.url.includes('/admin/categories-list')){
+			this.title = "Danh Mục";
+		}
+		else if(this.router.url.includes('/tags')){
+			this.title = "TAGS";
+		}
+		else if(this.router.url.includes('/admin/posts')){
+			this.title = "BÀI VIẾT";
+		}
+		else if(this.router.url.includes('/admin/users-list')){
+			this.title = "NGƯỜI DÙNG";
+		}
+		else if(this.router.url.includes('/admin/parables')){
+			this.title = "LỜI CHÚA";
+		}
+		else if(this.router.url.includes('/admin/contemplations')){
+			this.title = "SUY NIỆM";
+		}
 	}
 
 	actionsAsync() {

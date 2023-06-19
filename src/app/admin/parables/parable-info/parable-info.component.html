@@ -1,0 +1,105 @@
+<div class="post-info">
+    <div class="sticky-toolbar">
+        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="routeToBack()">
+                    <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+                </button>
+                <span class="truncate">Trở về {{matTooltipBack}}</span>
+            </div>
+            <div *ngIf="statusLabel?.title !== ''">
+                <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
+                <ng-template [ngIf]="localItem?.status == 'Publish'">
+                    <button (click)="onSave('Publish')" mat-flat-button color="primary">Lưu</button>
+                </ng-template>
+                <ng-template [ngIf]="localItem?.status !== 'Publish'">
+                    <button (click)="onSave('Draft')" mat-flat-button color="primary">Lưu Nháp</button>
+                    <button (click)="onSave('Publish')" mat-flat-button class="accept">
+                        Xuất Bản <mat-icon svgIcon="ic_send_48dp"></mat-icon>
+                    </button>
+                </ng-template>
+            </div>
+        </mat-toolbar>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="post-container">
+        <form [formGroup]="parableFormGroup">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex="80" class="mrr-24">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tiêu Đề</mat-label>
+                        <textarea matInput rows="1" formControlName="title" required></textarea>
+                        <mat-hint>{{parableFormGroup?.value?.link}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mô Tả</mat-label>
+                        <textarea matInput rows="4" formControlName="metaDescription"></textarea>
+                    </mat-form-field>
+                    <!-- <quill-view-html [content]="content" format="text" theme="bubble"></quill-view-html> -->
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nội Dung</mat-label> -->
+                    <jodit-editor #editorJodit [config]="configEditor" formControlName="content"></jodit-editor>
+                    <!-- </mat-form-field> -->
+                </div>
+                <div fxFlex="20" class="mrl-24">
+                    <!-- <div class="full-width" fxLayout="row" class="mrb-24" fxLayoutAlign="space-between center">
+                    <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
+                    <button (click)="onSave(0)" mat-flat-button color="primary">Lưu Nháp</button>
+                    <button (click)="onSave(1)" mat-flat-button class="accept">
+                        <mat-icon svgIcon="ic_send_48dp"></mat-icon> Xuất Bản
+                    </button>
+                </div> -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mã</mat-label>
+                        <input matInput formControlName="quotation" type="text" autocomplete="off">
+                        <mat-hint>Ví dụ: Lc 12,23-30</mat-hint>
+                    </mat-form-field>
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Danh Mục</mat-label>
+                        <mat-select formControlName="categoryIds" multiple>
+                            <mat-option *ngFor="let category of arrCategories" [value]="category.id">
+                                {{category.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Ngày</mat-label>
+                        <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="eventDate"
+                            formControlName="eventDate">
+                        <mat-datepicker-toggle matSuffix [for]="eventDate"></mat-datepicker-toggle>
+                        <mat-datepicker #eventDate></mat-datepicker>
+                        <mat-error *ngIf="parableFormGroup.get('eventDate').hasError('matDatepickerParse')">Enter dates
+                            in
+                            DD/MM/YYYY format</mat-error>
+                    </mat-form-field> -->
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Vị Trí</mat-label>
+                        <input matInput formControlName="address" type="text" autocomplete="off">
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tác Giả</mat-label>
+                        <se-autocomplete-simple [required]="false" [formControlName]="'authorId'" [switchAt]="10"
+                            [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
+                            [autocomplete]="false" [items$]="arrAuthors$">
+                        </se-autocomplete-simple>
+                    </mat-form-field>
+                    <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
+                        [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"
+                        [selectedItems]=""></se-chip-simple>
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Tags</mat-label>
+                    <input matInput formControlName="tags" type="text" required autocomplete="off">
+                </mat-form-field> -->
+                    <!-- <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Hot New</mat-label> -->
+                    <!-- <mat-slide-toggle formControlName="hotNew">Hot New</mat-slide-toggle> -->
+                    <!-- </mat-form-field> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
