@@ -1,0 +1,51 @@
+se-top-header {
+    .control-top-header {
+        height: 50px;
+        background-color: $blue;
+        display: flex;
+        align-items: center;
+        color: $white;
+    }
+}
+
+se-main-header {
+    .control-main-header {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        .logo,
+        .logo-right {
+            height: 60px;
+        }
+        .title-container {
+            margin-left: 12px;
+            .title {
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 1.4;
+                margin: 0;
+            }
+            .sub-title {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0;
+            }
+        }
+        .search-container {
+        }
+    }
+}
+
+se-main-menu {
+    .navbar {
+        .navbar-nav {
+            .nav-item {
+                &.nav-link,
+                .nav-link {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

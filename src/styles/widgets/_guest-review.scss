@@ -1,0 +1,22 @@
+.guest-review-container {
+    padding: 24px 0;
+    background-color: #ccc;
+    .guest-review-wrap {
+        width: 800px;
+        margin: 0 auto;
+        .figure-header {
+            text-align: center;
+        }
+        .figure-caption {
+            position: relative;
+            padding: 0 90px;
+            .icon-quote {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 60px;
+                height: 60px;
+            }
+        }
+    }
+}

@@ -1,0 +1,57 @@
+<div class="notifications">
+    <mat-toolbar class="white-toolbar">
+        <button style="margin-left: -12px;" mat-icon-button matTooltip="Close" aria-label="Close">
+            <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon>
+        </button>
+        <h2>Activity</h2>
+        <span fxFlex></span>
+        <button mat-icon-button [matMenuTriggerFor]="actionsMenu" class="se-collect-actions" matTooltip="Thao tác khác"
+            aria-label="Thao tác khác">
+            <mat-icon svgIcon="ic_more_vert_48px"></mat-icon>
+        </button>
+        <mat-menu #actionsMenu="matMenu" [overlapTrigger]="true">
+            <button mat-menu-item aria-label="Đánh dấu đã đọc tất cả" class="button-mark"
+                [disabled]="iNotification == 0?true: false">
+                <mat-icon svgIcon="ic_mark_email_read_48px"></mat-icon>
+                <span> Đánh dấu đã đọc tất cả </span>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <!-- <div class="nav-list-notification-travel" *ngIf="toggleNotification"> -->
+    <mat-nav-list class="mat-list-notification">
+        <!-- <virtual-scroller #scrollNotifications [items]="notifications" style="height: calc(100vh - 114px);"
+            (vsChange)="loadMoreNotification($event)"> -->
+        <ng-template let-notification let-last="last" ngFor [ngForOf]="notifications">
+            <mat-list-item class="notification-list-item on-touched">
+                <div mat-list-avatar>
+                    <mat-icon svgIcon="ic_person_48dp"></mat-icon>
+                </div>
+                <h4 mat-line class="chat-line-item-title" [class.unread]="!notification.read"
+                    [matTooltip]="notification?.title" [matTooltipDisabled]="notification?.title.length < 24">
+                    {{ notification.title | truncate: 24 }}
+                    <span fxFlex></span>
+                </h4>
+                <div mat-line class="chat-list-item-message mrt-6" [matTooltip]="notification?.message"
+                    [matTooltipDisabled]="notification?.matTooltipDisabled">
+                    {{ notification.message | truncate: 85 }}
+                </div>
+                <span mat-line class="chat-list-item-message-time mrt-6">{{notification.time}}</span>
+                <span fxFlex></span>
+                <button *ngIf="!notification.read" class="btn-hide" mat-icon-button
+                    (click)="$event.stopPropagation(); markAsReadNotification(notification)" matTooltip="Đánh dấu đã đọc"
+                    matTooltipPosition="before">
+                    <mat-icon svgIcon="ic_mark_email_read_48px"></mat-icon>
+                </button>
+                <button *ngIf="notification.read" class="btn-hide" mat-icon-button
+                    (click)="$event.stopPropagation(); markAsUnReadNotification(notification)"
+                    matTooltip="Đánh dấu chưa đọc" matTooltipPosition="before">
+                    <mat-icon svgIcon="ic_mark_email_unread_48px"></mat-icon>
+                </button>
+                <span *ngIf="!notification.read" class="unread-indicator">&#9679;</span>
+                <mat-divider *ngIf="!last"></mat-divider>
+            </mat-list-item>
+        </ng-template>
+        <!-- </virtual-scroller> -->
+    </mat-nav-list>
+</div>

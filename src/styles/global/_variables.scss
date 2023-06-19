@@ -1,0 +1,110 @@
+// General
+$gutter: 1rem !default;
+$mat-font-family: "Roboto", "Helvetica Neue", sans-serif;
+
+// Toolbar
+
+$mat-toolbar-height-desktop: 64px !default;
+$mat-toolbar-height-mobile-portrait: 56px !default;
+$mat-toolbar-height-mobile-landscape: 48px !default;
+
+// Typography
+
+$font-size-base: 0.875rem !default;
+$font-weight-base: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-bold: 700 !default;
+
+$display-xl: 3.5rem !default;
+$font-size-h1: 2.5rem !default;
+$font-size-h2: 2rem !default;
+$font-size-h3: 1.75rem !default;
+$font-size-h4: 1.5rem !default;
+$font-size-h5: 1.25rem !default;
+$font-size-h6: 1rem !default;
+$font-size-p: 0.9375rem !default;
+
+$headings-margin-bottom: calc(1rem / 4) !default;
+$headings-font-family: inherit !default;
+$headings-font-weight: 400 !default;
+$headings-line-height: 1.1 !default;
+$headings-color: inherit !default;
+
+// Radius
+
+$border-radius-base: 2px !default;
+$border-radius-small: 3px !default;
+$border-radius-large: 4px !default;
+
+// Spacing
+
+$spacer: 1rem !default;
+$spacer-x: $spacer !default;
+$spacer-y: $spacer !default;
+$spacers: (
+	0: (
+		x: 0,
+		y: 0,
+	),
+	xs: (
+		x: (
+			calc($spacer-x / 1.5),
+		),
+		y: (
+			calc($spacer-y / 1.5),
+		),
+	),
+	1: (
+		x: $spacer-x,
+		y: $spacer-y,
+	),
+	2: (
+		x: (
+			calc($spacer-x * 1.5),
+		),
+		y: (
+			calc($spacer-y * 1.5),
+		),
+	),
+	3: (
+		x: (
+			$spacer-x * 3,
+		),
+		y: (
+			$spacer-y * 3,
+		),
+	),
+) !default;
+
+//Tab Navigation Bar
+$mat-tab-nav-bar-height-desktop: 50px !default;
+$black-87-opacity: rgba(black, 0.87);
+$white-87-opacity: rgba(white, 0.87);
+
+// Define Colors
+$colors: (
+	// Objects Colors
+	color-primary: #448aff,
+	color-warn: #ff5252,
+	color-caution: #ffc107,
+	color-success: #00c853,
+	color-base: #303030,
+	color-black: #424242,
+	white: #fff,
+	black: #2a2e43,
+	grey: #78849e,
+	purple: #7c4dff,
+	indigo: #5773ff,
+	teal: #3acce1,
+	green: #4cd964,
+	lime: #aeea00,
+	yellow: #ffeb3b,
+	amber: #ffc107,
+	orange: #ff9057,
+	red: #ff5252,
+	pink: #ff4f9a,
+	magenta: #c840e9,
+	darkGray: #454f63,
+	mediumGray: #78849e,
+	lightGray: #e9ecf2
+);

@@ -1,0 +1,45 @@
+<div class="wrapper" class="sign-in-container">
+
+    <!-- Desktop Sign In-->
+    <div fxHide.lt-md fxLayout="row" fxLayoutAlign="center center" class="sign-in">
+        <div fxLayout="column">
+            <mat-card fxLayout="column" class="desktop-sign-in-card">
+
+                <div class="header">
+                    <div fxLayout="row" fxLayoutAlign="center center" class="logo-container">
+                        <img [src]="pictureUrl" alt="" class="logo">
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <h2 class="mat-title">Audio Book</h2>
+                    </div>
+                </div>
+                <form class="form-horizontal" novalidate [formGroup]="formGroup">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tên Đăng Nhập</mat-label>
+                        <input formControlName="userName" tabindex="1" #username matInput type="text" required>
+                    </mat-form-field>
+    
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mật Khẩu</mat-label>
+                        <input formControlName="password" tabindex="2" matInput [type]="hide ? 'password' : 'text'" required>
+                        <button tabindex="3" mat-icon-button matSuffix (click)="hide = !hide"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                            <mat-icon [svgIcon]="hide ? 'ic_visibility_off_48dp' : 'ic_visibility_48dp'" ></mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <mat-hint *ngIf="invalidLogin" style="color: #ff2600; margin-top: -12px;">Sai tên đăng nhập hoặc mật khẩu</mat-hint>
+                </form>
+
+
+                <div fxLayout="row" class="actions-row">
+                    <!-- <button tabindex="6" mat-button color="primary" style="margin-left: -12px"
+                        [routerLink]="['/forgot-password']">Forgot password?</button> -->
+                    <span fxFlex></span>
+                    <button tabindex="4" [disabled]="formGroup.invalid" mat-flat-button color="primary" (click)="onLogin()"
+                        type="submit">Đăng Nhập</button>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</div>

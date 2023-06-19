@@ -1,0 +1,11 @@
+<div class="post-contact" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="author" fxLayout="row" fxLayoutAlign="space-between center">
+        <img [src]="contact?.pictureUrl" alt="Avatar">
+        <span class="name">by<strong>{{contact?.name}}</strong></span>
+    </div>
+    <div class="date-time" fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-icon svgIcon="ic_schedule_48dp"></mat-icon>
+        <span>{{contact?.time}}</span>
+    </div>
+    <span fxFlex></span>
+</div>

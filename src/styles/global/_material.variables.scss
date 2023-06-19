@@ -1,0 +1,18 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+$primary: mat-palette($mat-blue, A200, 100, 50);
+$accent:  mat-palette($mat-blue, A200, 100, 50);
+$warn: mat-palette($mat-red, A200, 100, 50);
+$success: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, background);
+$foreground: map-get($theme, foreground);
+
+//Color of toolbar quicksearch
+$dark-primary: mat-palette($mat-blue, A200, 100, 50);
+$dark-accent:  mat-palette($mat-blue, A200, 100, 50);
+$dark-warn: mat-palette($mat-red, A200, 100, 50); 
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$dark-background: map-get($dark-theme, background);
+$dark-foreground: map-get($dark-theme, foreground);

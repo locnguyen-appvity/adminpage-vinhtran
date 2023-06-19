@@ -1,0 +1,8 @@
+//Common
+export const INVERT_COLOR = 'INVERT_COLOR';
+export const RESET_INVERTCOLOR = 'RESET_INVERTCOLOR';
+//User
+export const UPDATE_USER = 'UPDATE_USER';
+export const RESET_USER = 'RESET_USER';
+
+export const UPDATE_BASEPERMISSIONS = 'UPDATE_BASEPERMISSIONS';

@@ -1,0 +1,18 @@
+.setting-container{
+    min-width: 300px;
+    .btn-sidenav-settings {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    
+        .mat-icon {
+            position: relative;
+            left: -4px;
+        }
+    }
+    .title-control{
+        font-size: 15px;
+        font-weight: 600;
+    }
+}

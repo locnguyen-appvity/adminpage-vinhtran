@@ -1,0 +1,40 @@
+<div class="setting-container" fxLayout="column" fxLayoutAlign="start center">
+    <!-- <input [(colorPicker)]="brandColor" [style.background]="brandColor"/> -->
+    <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+        <se-color-picker-control (valueChange)="valueChangeColor($event,'background')"
+            [value]="brandBGColor"></se-color-picker-control>
+        <span class="title-control">Màu Nền Chủ Đạo</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+        <se-color-picker-control (valueChange)="valueChangeColor($event,'text')"
+            [value]="brandColor"></se-color-picker-control>
+        <span class="title-control">Màu Chữ Chủ Đạo</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+        <se-color-picker-control (valueChange)="valueChangeColor($event,'link')"
+            [value]="brandLinkColor"></se-color-picker-control>
+        <span class="title-control">Màu Chữ Thẻ Link</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+        <se-color-picker-control (valueChange)="valueChangeColor($event,'icon')"
+            [value]="brandICONColor"></se-color-picker-control>
+        <span class="title-control">Màu Icon Chủ Đạo</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="full-width">
+        <se-color-picker-control (valueChange)="valueChangeColor($event,'color-text-main-menu')"
+            [value]="brandMainMenuColor"></se-color-picker-control>
+        <span class="title-control">Màu Chữ Menu</span>
+    </div>
+    <div class="btn-sidenav-settings">
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button class="mrr-24" mat-icon-button [disabled]="dataProcessing" (click)="closedSetting()" color="warn">
+                <mat-icon svgIcon="ic_close_48px"></mat-icon>
+            </button>
+            <button class="mrr-24" mat-icon-button [disabled]="dataProcessing" (click)="onSaveSetting()"
+                color="primary">
+                <mat-icon svgIcon="ic_done_48dp"></mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

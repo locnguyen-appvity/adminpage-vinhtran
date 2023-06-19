@@ -1,0 +1,33 @@
+<div class="container-fluid bg-white sticky-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light p-lg-0">
+            <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav">
+                    <ng-template let-last="last" ngFor let-item [ngForOf]="categories">
+                        <ng-container *ngIf="item.data; else notSubMenu">
+                            <div class="nav-item dropdown">
+                                <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{item.name}}</div>
+                                <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
+                                    <ng-container *ngTemplateOutlet="subMenuTemplate; context: item"></ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #notSubMenu>
+                            <div (click)="selectedItem(item)" class="nav-item nav-link active">{{item.name}}</div>
+                        </ng-template>
+                    </ng-template>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<ng-template #subMenuTemplate let-items="data">
+    <ng-container *ngFor="let item of items; trackBy:trackByFn">
+        <div (click)="selectedItem(item)" class="dropdown-item">{{item.name}}</div>
+    </ng-container>
+</ng-template>

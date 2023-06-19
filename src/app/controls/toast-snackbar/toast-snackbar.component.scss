@@ -1,0 +1,48 @@
+mat-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.success-snackbar {
+    margin-right: 6px;
+    color: #4CD964;
+
+    ::ng-deep {
+        svg {
+            fill: #4CD964;
+        }
+    }
+}
+
+.info-snackbar {
+    margin-right: 6px;
+    color: #448AFF;
+
+    ::ng-deep {
+        svg {
+            fill: #448AFF;
+        }
+    }
+}
+
+.warn-snackbar {
+    margin-right: 6px;
+    color: #FF5252;
+
+    ::ng-deep {
+        svg {
+            fill: #FF5252;
+        }
+    }
+}
+
+.yellow-snackbar {
+    margin-right: 6px;
+    color: #FFC107;
+
+    ::ng-deep {
+        svg {
+            fill: #FFC107;
+        }
+    }
+}

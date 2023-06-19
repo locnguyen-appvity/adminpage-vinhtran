@@ -1,0 +1,51 @@
+<div class="search-list-container container-fluid">
+    <div class="container-xl">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <h2>Linh Mục Giáo Phận</h2>
+            <select class="form-select" aria-label=".form-select-lg example">
+                <option selected>Chọn chức vụ</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <select class="form-select" aria-label=".form-select-sm example">
+                <option selected>Chọn giáo hạt</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+            </select>
+            <input class="form-control" type="text" placeholder="Nhập tên" aria-label="">
+            <button type="button" color="default" mat-flat-button>Tìm kiếm</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-xl" *ngIf="searchResult">
+    <div class="result-list-container">
+        <ng-container *ngFor="let item of dataLists">
+            <div class="item-result">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                    <div class="thumb">
+                        <img [src]="item.thumb" />
+                    </div>
+                    <div class="info">
+                        <h2>{{item.title}}</h2>
+                        <h3>Địa chỉ: {{item.address}}</h3>
+                        <h3>Email: {{item.email}}</h3>
+                    </div>
+                    <div class="contact">
+                        <h3>Điện thoại: {{item.phone}}</h3>
+                        <h3>Dân số: {{item.population}}</h3>
+                        <h3>Số tín hữu: {{item.members}}</h3>
+                    </div>
+                    <div class="times">
+                        <h2 class="title">Giờ lễ</h2>
+                        <h3>Chiều thứ 7: {{item.saturday}}</h3>
+                        <h3>Chủ nhật: {{item.sunday}}</h3>
+                        <h3>Ngày thường: {{item.days}}</h3>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

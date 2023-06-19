@@ -1,0 +1,5 @@
+<input class="full-width" matInput [style.background]="value" [(colorPicker)]="selectedColor"
+    (colorPickerChange)="colorPickerChange($event)" (colorPickerClose)="colorPickerClose($event)"
+    [cpOKButton]="true" [cpCancelButtonText]="'Hủy'"
+    [cpCancelButton]="true" [cpSaveClickOutside]="true" [cpDisableInput]="true" [cpAlphaChannel]="'disabled'"
+    [cpOutputFormat]="'hex'" [cpPresetColors]="presetValues" [cpOKButton]="false" />

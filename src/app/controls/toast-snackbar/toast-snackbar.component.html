@@ -1,0 +1,7 @@
+<div fxLayout="row" fxLayoutAlign="start center">
+	<mat-icon matIcon class="{{ data.class }}" svgIcon="{{ data.icon }}"></mat-icon>
+	{{ data.message }}
+	<span fxFlex></span>
+	<button *ngIf="data?.link" mat-button [routerLink]="[data?.link]" [attr.aria-label]="data.action"
+		(click)="hiddenSnackbar()"> {{ data.action }}</button>
+</div>

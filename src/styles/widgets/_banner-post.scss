@@ -1,0 +1,39 @@
+.posts-banner-container {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 24px 0;
+    position: relative;
+    height: 500px;
+    .logo-banner {
+        position: absolute;
+        left: 40px;
+        display: flex;
+        align-items: center;
+        .logo {
+            width: 90px;
+            height: 100%;
+            margin-right: 16px;
+        }
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.4;
+            color: $blue;
+        }
+    }
+    .item-post-banner {
+        width: 500px;
+        margin: 0 auto;
+    }
+}
+
+.list-banner-container {
+    padding: 40px 0;
+    background-color: $blue;
+    .figure {
+        .figure-img {
+            width: 100%;
+        }
+    }
+}

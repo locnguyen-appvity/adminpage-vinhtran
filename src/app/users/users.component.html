@@ -1,0 +1,13 @@
+<mat-toolbar class="toolbar" fxLayoutAlign="start center">
+    <button class="toolbar-icon" mat-icon-button (click)="sideNavMain()" aria-label="Main Menu">
+        <mat-icon svgIcon="ic_menu_48px"></mat-icon>
+    </button>
+    <h4 class="secondary-toolbar-title">{{title}}</h4>
+</mat-toolbar>
+<mat-divider></mat-divider>
+
+<div class="wrapper">
+    <router-outlet></router-outlet>
+</div>
+
+

@@ -1,0 +1,366 @@
+$dynamic-colour: var(--dynamic-colour);
+$dynamic-link-colour: var(--dynamic-link-colour);
+$dynamic-icon-colour: var(--dynamic-icon-colour);
+$dynamic-background-colour: var(--dynamic-background-colour);
+$font-size-main-menu: var(--font-size-main-menu);
+$color-text-main-menu: var(--color-text-main-menu);
+$font-size-title: var(--font-size-title);
+$font-size-post-title: var(--font-size-post-title);
+$font-size-post-description: var(--font-size-post-description);
+$font-size-category: var(--font-size-category);
+
+:root {
+	--dynamic-colour: 4, 112, 167;
+}
+:root {
+	--dynamic-link-colour: 4, 112, 167;
+}
+:root {
+	--dynamic-icon-colour: 255, 255, 255;
+}
+:root {
+	--dynamic-background-colour: 23, 154, 214;
+}
+:root {
+	--color-text-main-menu: 0, 0, 0;
+}
+:root {
+	--font-size-main-menu: 15px;
+}
+:root {
+	--font-size-title: 15px;
+}
+:root {
+	--font-size-post-title: 32px;
+}
+:root {
+	--font-size-post-description: 19px;
+}
+:root {
+	--font-size-category: 35px;
+}
+
+// Brand Color
+@mixin brand-font-title {
+	font-size: $font-size-title !important;
+}
+
+@mixin brand-font-post-title {
+	font-size: $font-size-post-title !important;
+}
+
+@mixin brand-font-post-description {
+	font-size: $font-size-post-description !important;
+}
+
+@mixin brand-font-main-menu {
+	font-size: $font-size-main-menu !important;
+}
+
+@mixin brand-category-title {
+	font-size: $font-size-category !important;
+	text-transform: uppercase !important;
+	font-weight: 700 !important;
+	color: rgba($color-text-main-menu, 1);
+}
+
+@mixin brand-text-menu {
+	color: rgba($color-text-main-menu, 1);
+}
+
+@mixin brand-bg {
+	background-color: rgba($dynamic-background-colour, 1);
+}
+
+@mixin brand-text {
+	color: rgba($dynamic-colour, 1);
+}
+
+@mixin brand-link-text {
+	color: rgba($dynamic-link-colour, 1);
+}
+
+@mixin brand-icon-color {
+	color: rgba($dynamic-icon-colour, 1);
+}
+
+@mixin brand-text-bg {
+	background-color: rgba($dynamic-background-colour, 1);
+}
+
+@mixin brand-text-border {
+	border-color: rgba($dynamic-background-colour, 1);
+}
+
+@mixin brand-bg-text {
+	color: rgba($dynamic-background-colour, 1);
+}
+
+@mixin brand-border {
+	border-color: rgba($dynamic-colour, 1);
+}
+
+@mixin brand-bg-border {
+	border-color: rgba($dynamic-background-colour, 1);
+}
+
+@mixin color-disabled {
+	opacity: 0.5 !important;
+}
+
+@mixin flex-column {
+	display: flex;
+	flex-direction: column;
+}
+
+// Aligment
+@mixin center-text {
+	text-align: center;
+}
+
+@mixin link {
+	text-decoration: underline;
+	color: map-get($colors, #448aff);
+}
+
+@mixin muted-text {
+	color: rgba(0, 0, 0, 0.54);
+}
+
+//// Colors Icons
+@mixin warn-text {
+	color: map-get($colors, color-warn);
+}
+
+@mixin warn-bg {
+	background-color: map-get($colors, color-warn);
+}
+
+@mixin caution-bg {
+	background-color: map-get($colors, color-caution);
+}
+
+@mixin caution-text {
+	color: map-get($colors, color-caution);
+}
+
+@mixin success-text {
+	color: map-get($colors, color-success);
+}
+
+@mixin success-bg {
+	background-color: map-get($colors, color-success);
+}
+
+@mixin info-text {
+	color: map-get($colors, color-primary);
+}
+
+@mixin info-bg {
+	background-color: map-get($colors, color-primary);
+}
+
+@mixin purple-bg {
+	background-color: map-get($colors, purple);
+}
+
+@mixin purple-text {
+	color: map-get($colors, purple);
+}
+
+@mixin indigo-bg {
+	background-color: map-get($colors, indigo);
+}
+
+@mixin indigo-text {
+	color: map-get($colors, indigo);
+}
+
+@mixin blue-bg {
+	background-color: map-get($colors, color-primary);
+}
+
+@mixin blue-text {
+	color: map-get($colors, color-primary);
+}
+
+@mixin teal-bg {
+	background-color: map-get($colors, teal);
+}
+
+@mixin teal-text {
+	color: map-get($colors, teal);
+}
+
+@mixin green-bg {
+	background-color: map-get($colors, green);
+}
+
+@mixin green-text {
+	color: map-get($colors, green);
+}
+
+@mixin green-transparent-bg {
+	background-color: rgba(76, 217, 100, 0.12);
+}
+
+@mixin lime-bg {
+	background-color: map-get($colors, lime);
+}
+
+@mixin lime-text {
+	color: map-get($colors, lime);
+}
+
+@mixin yellow-bg {
+	background-color: map-get($colors, yellow);
+}
+
+@mixin yellow-text {
+	color: map-get($colors, yellow);
+}
+
+@mixin amber-bg {
+	background-color: map-get($colors, amber);
+}
+
+@mixin amber-text {
+	color: map-get($colors, amber);
+}
+
+@mixin orange-bg {
+	background-color: map-get($colors, orange);
+}
+
+@mixin orange-text {
+	color: map-get($colors, orange);
+}
+
+@mixin red-bg {
+	background-color: map-get($colors, red);
+}
+
+@mixin red-text {
+	color: map-get($colors, red);
+}
+
+@mixin pink-bg {
+	background-color: map-get($colors, pink);
+}
+
+@mixin pink-text {
+	color: map-get($colors, pink);
+}
+
+@mixin magenta-bg {
+	background-color: map-get($colors, magenta);
+}
+
+@mixin magenta-text {
+	color: map-get($colors, magenta);
+}
+
+@mixin black-bg {
+	background-color: map-get($colors, black);
+}
+
+@mixin black-text {
+	color: map-get($colors, black);
+}
+
+@mixin grey-bg {
+	background-color: map-get($colors, grey);
+}
+
+@mixin grey-text {
+	color: map-get($colors, grey);
+}
+
+@mixin white-bg {
+	background-color: map-get($colors, white);
+}
+
+@mixin white-text {
+	color: map-get($colors, white);
+}
+
+//////////////////////
+@mixin pob-success-bg {
+	background-color: map-get($colors, green);
+}
+
+@mixin pob-success-text {
+	color: map-get($colors, green);
+}
+
+@mixin info-transparent-bg {
+	background-color: rgba(68, 138, 255, 0.06);
+}
+
+@mixin warn-border-color {
+	border-color: map-get($colors, red);
+}
+
+@mixin caution-border-color {
+	border-color: map-get($colors, color-caution);
+}
+
+@mixin success-border-color {
+	border-color: map-get($colors, color-success);
+}
+
+@mixin info-border-color {
+	border-color: map-get($colors, color-primary);
+}
+
+@mixin dark-gray-bg {
+	background-color: map-get($colors, darkGray);
+}
+
+@mixin dark-gray-text {
+	color: map-get($colors, darkGray);
+}
+
+@mixin medium-gray-bg {
+	background-color: map-get($colors, mediumGray);
+}
+
+@mixin medium-gray-text {
+	color: map-get($colors, mediumGray);
+}
+
+@mixin medium-gray-thick-border {
+	border: 3px solid #78849e;
+}
+
+@mixin light-gray-bg {
+	background-color: map-get($colors, lightGray);
+}
+
+@mixin light-gray-text {
+	color: map-get($colors, lightGray);
+}
+
+@mixin light-gray-border {
+	border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+@mixin dark-mode-text {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+// Snackbars
+.success-snackbar {
+	margin-right: 6px;
+	color: map-get($colors, color-success);
+}
+
+.info-snackbar {
+	margin-right: 6px;
+	color: map-get($colors, color-primary);
+}
+
+.warn-snackbar {
+	margin-right: 6px;
+	color: map-get($colors, color-warn);
+}
