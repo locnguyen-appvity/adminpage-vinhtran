@@ -1,5 +1,6 @@
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgModule } from '@angular/core';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,26 +8,22 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { ChurchsComponent } from './churchs.component';
-import { ChurchInfoComponent } from './church-info/church-info.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ListItemsBaseModule } from 'src/app/controls/list-item-base/list-item.base.module';
-import { ChurchsRoutingModule } from './churchs-routing.module';
-
+import { OrganizationsComponent } from './organizations.component';
+import { OrganizationsRoutingModule } from './organizations-routing.module';
+import { OrganizationInfoModule } from './organization-info/organization-info.module';
 
 
 @NgModule({
   declarations: [
-    ChurchsComponent,
-    ChurchInfoComponent
+    OrganizationsComponent,
   ],
   imports: [
     SharedModule,
-    ChurchsRoutingModule,
+    OrganizationsRoutingModule,
     MatDividerModule,
     MatCardModule,
     MatButtonModule,
@@ -40,7 +37,7 @@ import { ChurchsRoutingModule } from './churchs-routing.module';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSlideToggleModule
+    OrganizationInfoModule
   ]
 })
-export class ChurchsModule { }
+export class OrganizationsModule { }

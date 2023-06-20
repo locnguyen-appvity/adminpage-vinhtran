@@ -40,25 +40,79 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"strikethrough", "eraser", "|",
 			"ul", "paragraph", "classSpan", "lineHeight",
 			"|", "superscript", "subscript"
-			, "|", "video"
-			, {
+			, "|", "video",
+			{
 				name: 'insertImage',
 				tooltip: 'Insert image',
-				icon: 'image',
-				// exec: (editor) => {
-				// 	editor.s.insertHTML("Thêm Hình Ảnh");
-				// }
+				icon: 'image'
 			},
 			, {
 				name: 'insertFile',
 				tooltip: 'Insert file',
-				icon: 'file',
-				// exec: (editor) => {
-				// 	this.openDialogImg();
-				// }
+				icon: 'file'
 			},
 			"|", "cut", "undo", "redo", "source"
 		],
+		buttonsXS: [
+			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"align", "indent", "indent", "outdent", "|",
+			"link", "table", "|",
+			"strikethrough", "eraser", "|",
+			"ul", "paragraph", "classSpan", "lineHeight",
+			"|", "superscript", "subscript"
+			, "|", "video",
+			{
+				name: 'insertImage',
+				tooltip: 'Insert image',
+				icon: 'image'
+			},
+			, {
+				name: 'insertFile',
+				tooltip: 'Insert file',
+				icon: 'file'
+			},
+			"|", "cut", "undo", "redo", "source"
+		],
+		buttonsSM: [
+			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"align", "indent", "indent", "outdent", "|",
+			"link", "table", "|",
+			"strikethrough", "eraser", "|",
+			"ul", "paragraph", "classSpan", "lineHeight",
+			"|", "superscript", "subscript"
+			, "|", "video",
+			{
+				name: 'insertImage',
+				tooltip: 'Insert image',
+				icon: 'image'
+			},
+			, {
+				name: 'insertFile',
+				tooltip: 'Insert file',
+				icon: 'file'
+			},
+			"|", "cut", "undo", "redo", "source"
+		],
+		buttonsMD: [
+			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"align", "indent", "indent", "outdent", "|",
+			"link", "table", "|",
+			"strikethrough", "eraser", "|",
+			"ul", "paragraph", "classSpan", "lineHeight",
+			"|", "superscript", "subscript"
+			, "|", "video",
+			{
+				name: 'insertImage',
+				tooltip: 'Insert image',
+				icon: 'image'
+			},
+			, {
+				name: 'insertFile',
+				tooltip: 'Insert file',
+				icon: 'file'
+			},
+			"|", "cut", "undo", "redo", "source"
+		]
 		// buttons: ["bold,italic,underline,|,fontsize,font,|,align,indent,outdent,|,link,table,|,strikethrough,eraser,|,ul,ol,paragraph,classSpan,lineHeight,|,superscript,subscript,|,file,image,video,|,cut,undo,redo,source"]
 	}
 

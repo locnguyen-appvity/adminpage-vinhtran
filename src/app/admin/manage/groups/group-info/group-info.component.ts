@@ -1,16 +1,17 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
+import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-	selector: 'se-church-info',
-	templateUrl: './church-info.component.html',
-	styleUrls: ['./church-info.component.scss']
+	selector: 'se-group-info',
+	templateUrl: './group-info.component.html',
+	styleUrls: ['./group-info.component.scss']
 })
-export class ChurchInfoComponent extends SimpleBaseComponent {
+export class GroupInfoComponent extends SimpleBaseComponent {
 
 	public title: string = 'Thêm';
 	public textSave: string = 'Thêm';
@@ -21,18 +22,20 @@ export class ChurchInfoComponent extends SimpleBaseComponent {
 	public saveAction: string = '';
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
-		public dialogRef: MatDialogRef<ChurchInfoComponent>,
+		public dialogRef: MatDialogRef<GroupInfoComponent>,
+		private service: SharedService,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		let name = '';
 		let status = true;
+		this.target = this.dialogData.target;
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
 			this.canDelete = false;
 			name = this.dialogData.item.name;
 			this.ID = this.dialogData.item.id;
-			status = this.dialogData.item.status == 1 ? true : false;
+			status = this.dialogData.item.status == 'active' ? true : false;
 		}
 		this.dataItemGroup = this.fb.group({
 			name: [name, [Validators.required]],
@@ -52,7 +55,8 @@ export class ChurchInfoComponent extends SimpleBaseComponent {
 		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
 			return true;
 		}
-		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
+		let status = this.dialogData.item.status == 'active' ? true : false;
+		if (this.sharedService.isChangedValue(valueForm.status, status)) {
 			return true;
 		}
 		return false;
@@ -63,11 +67,39 @@ export class ChurchInfoComponent extends SimpleBaseComponent {
 	}
 
 	deleteItem() {
-
+		this.dataProcessing = true;
+		this.service.deleteGroup(this.ID).pipe(take(1)).subscribe({
+			next: () => {
+				this.dataProcessing = false;
+				this.dialogRef.close('Deleted');
+			}
+		})
 	}
 
 	onSaveItem() {
-
+		let valueForm = this.dataItemGroup.value;
+		let dataJSON = {
+			name: valueForm.name,
+			status: valueForm.status ? 'active' : 'inactive'
+		}
+		if (this.target == 'edit') {
+			this.dataProcessing = true;
+			this.service.updateGroup(this.ID, dataJSON).pipe(take(1)).subscribe({
+				next: () => {
+					this.dataProcessing = false;
+					this.dialogRef.close('OK');
+				}
+			})
+		}
+		else {
+			this.dataProcessing = true;
+			this.service.createGroup(dataJSON).pipe(take(1)).subscribe({
+				next: () => {
+					this.dataProcessing = false;
+					this.dialogRef.close('OK');
+				}
+			})
+		}
 	}
 
 }

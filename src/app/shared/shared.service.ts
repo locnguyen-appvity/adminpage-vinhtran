@@ -331,6 +331,11 @@ export class SharedService {
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createSaint', error)));
 	}
 
+	updateSaint(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/saints`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateSaint', error)));
+	}
+
 	deleteSaint(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/saints`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteSaint', error)));
@@ -350,6 +355,11 @@ export class SharedService {
 	createClergy(data: any): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/clergies`;
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createClergy', error)));
+	}
+
+	updateClergy(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/clergies`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateClergy', error)));
 	}
 
 	deleteClergy(id: string): Observable<any> {
@@ -373,6 +383,11 @@ export class SharedService {
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createAnniversary', error)));
 	}
 
+	updateAnniversary(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/anniversaries`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateAnniversary', error)));
+	}
+
 	deleteAnniversary(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/anniversaries`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteAnniversary', error)));
@@ -392,6 +407,11 @@ export class SharedService {
 	createOrganization(data: any): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/organizations`;
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createOrganization', error)));
+	}
+
+	updateOrganization(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/organizations`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateOrganization', error)));
 	}
 
 	deleteOrganization(id: string): Observable<any> {
@@ -415,6 +435,11 @@ export class SharedService {
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createGroup', error)));
 	}
 
+	updateGroup(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/groups`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateGroup', error)));
+	}
+
 	deleteGroup(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/groups`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteGroup', error)));
@@ -434,6 +459,11 @@ export class SharedService {
 	createPossision(data: any): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/possisions`;
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createPossision', error)));
+	}
+
+	updatePossision(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/possisions`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updatePossision', error)));
 	}
 
 	deletePossision(id: string): Observable<any> {

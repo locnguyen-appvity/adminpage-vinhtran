@@ -1,34 +1,48 @@
 <h2 mat-dialog-title>{{title}} Thánh</h2>
 <mat-dialog-content>
-  <div class="content-dialog content-dialog--minHeight">
-    <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-      <div fxLayout="column">
-        <mat-form-field appearance="outline">
-          <mat-label>Tên</mat-label>
-          <input matInput required formControlName="name" autocomplete="off">
-          <mat-hint>Code: {{dataItemGroup?.value?.code}}</mat-hint>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Ngày Lễ Bổn Mạng</mat-label>
-          <input matInput placeholder="DD/MM" mask="d0/M0" [dropSpecialCharacters]="false" autocomplete="off" formControlName="anniversarySaint">
-        </mat-form-field>
-        <mat-slide-toggle formControlName="status">Ấn / Hiện Thánh</mat-slide-toggle>
-      </div>
-    </form>
-  </div>
-  <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
-    <span fxFlex></span>
-    <a mat-button (click)="closeDialog()" color="default">Hủy</a>
-    <div class="btn-save-process">
-      <button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'"
-        aria-label="Delete" (click)="deleteItem()" color="warn">Xóa</button>
-      <mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
-    </div>
-    <div class="btn-save-process">
-      <button mat-flat-button color="primary"
-        [disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
-        aria-label="Save" (click)="onSaveItem()">{{textSave}}</button>
-      <mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
-    </div>
-  </div>
+	<div class="content-dialog content-dialog--minHeight">
+		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+			<div fxLayout="column">
+				<div fxLayout="row wrap">
+					<div fxFlex.gt-xs="60" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+						<mat-form-field appearance="outline">
+							<mat-label>Tên</mat-label>
+							<input matInput required formControlName="name" autocomplete="off">
+							<mat-hint>Code: {{dataItemGroup?.value?.code}}</mat-hint>
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-xs="40" fxFlex="100">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Ngày Lễ Bổn Mạng</mat-label>
+							<input matInput placeholder="DD/MM" mask="d0/M0" [dropSpecialCharacters]="false"
+								autocomplete="off" formControlName="anniversary">
+						</mat-form-field>
+					</div>
+				</div>
+				<mat-form-field appearance="outline" class="full-width">
+					<mat-label>Mô Tả</mat-label>
+					<textarea matInput rows="4" formControlName="description"></textarea>
+				</mat-form-field>
+
+				<se-editor-control formControlName="content"></se-editor-control>
+
+				<mat-slide-toggle formControlName="status">Ấn / Hiện Thánh</mat-slide-toggle>
+			</div>
+		</form>
+	</div>
+	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+		<span fxFlex></span>
+		<a mat-button (click)="closeDialog()" color="default">Hủy</a>
+		<div class="btn-save-process">
+			<button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'"
+				aria-label="Delete" (click)="deleteItem()" color="warn">Xóa</button>
+			<mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
+		</div>
+		<div class="btn-save-process">
+			<button mat-flat-button color="primary"
+				[disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
+				aria-label="Save" (click)="onSaveItem()">{{textSave}}</button>
+			<mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
+		</div>
+	</div>
 </mat-dialog-content>

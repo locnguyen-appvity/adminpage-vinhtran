@@ -5,9 +5,9 @@
         <div fxFlex="100">
             <div fxLayout="row" fxLayoutAlign="center center" class="account-header" fxHide.lt-md>
                 <!-- <mat-icon class="account-header-icon" svgIcon="ic_groups_department"></mat-icon> -->
-                <h2 class="account-title">Giáo Xứ</h2>
+                <h2 class="account-title">Giáo Xứ và Dòng Tu</h2>
             </div>
-            <p class="account-subtitle">Quản lý danh sách giáo xứ</p>
+            <p class="account-subtitle">Quản lý danh sách Giáo Xứ và Dòng Tu</p>
         </div>
     </div>
 
@@ -21,7 +21,7 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
-                            <input placeholder="Tìm giáo xứ theo tên" [readonly]="spinerLoading"
+                            <input placeholder="Tìm Giáo Xứ và Dòng Tu theo tên" [readonly]="spinerLoading"
                                 [formControl]="txtSearch">
                         </div>
                     </div>
@@ -31,10 +31,9 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm Giáo Xứ" (click)="onAddItem()">
-                            Thêm Giáo Xứ
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm" (click)="onAddItem()">
+                            Thêm
                         </button>
-                        <!-- [disabled]="noData" -->
                     </div>
                 </mat-toolbar>
                 <mat-divider></mat-divider>
@@ -60,9 +59,10 @@
                             <mat-list-item *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
                                 (click)="onChangeData(data)">
                                 <mat-icon mat-list-icon
-                                    [ngClass]="{'active': data.status === 'Active', 'inactive': data.status === 'Inactive'}"
-                                    [matTooltip]="data.status" [svgIcon]="data.statusIcon"></mat-icon>
-                                <h4 mat-line>{{data.name}}</h4>
+                                    [ngClass]="{'active': data.status === 'active', 'inactive': data.status === 'inactive'}"
+                                    [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
+                                <h4 mat-line>{{data.typeName}} {{data.stName}} {{data.name}}</h4>
+                                <p mat-line>{{data.possisionName}}</p>
                                 <span fxFlex></span>
                                 <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon>
                             </mat-list-item>

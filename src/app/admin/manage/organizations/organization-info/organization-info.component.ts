@@ -7,12 +7,12 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_CLERGY } from '../../data-manage';
+import { TYPE_CLERGY, TYPE_ORG } from '../../data-manage';
 
 @Component({
-	selector: 'app-clergy-info',
-	templateUrl: './clergy-info.component.html',
-	styleUrls: ['./clergy-info.component.scss'],
+	selector: 'app-organization-info',
+	templateUrl: './organization-info.component.html',
+	styleUrls: ['./organization-info.component.scss'],
 	providers: [
 		{
 			provide: DateAdapter,
@@ -24,7 +24,7 @@ import { TYPE_CLERGY } from '../../data-manage';
 		}
 	]
 })
-export class ClergyInfoComponent extends SimpleBaseComponent {
+export class OrganizationInfoComponent extends SimpleBaseComponent {
 
 	public title: string = 'Thêm';
 	public textSave: string = 'Thêm';
@@ -33,17 +33,16 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
-	public organizationList$: Observable<any>;
+	// public organizationList$: Observable<any>;
 	public typeList$: Observable<any>;
-	public saintList$: Observable<any>;
-	public saintList: any[] = [];
+	public groupList$: Observable<any>;
 	public localItem: any;
 	public anniversarys: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		private service: SharedService,
-		public dialogRef: MatDialogRef<ClergyInfoComponent>,
+		public dialogRef: MatDialogRef<OrganizationInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		this.target = this.dialogData.target;
@@ -59,7 +58,10 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		if (this.target != 'edit') {
 			let arrForm = this.dataItemGroup.get('items') as FormArray;
 			arrForm.push(this.initialTripInfoGroup({
-				name:'Ngày Sinh'
+				name: 'Ngày Thành Lập'
+			}));
+			arrForm.push(this.initialTripInfoGroup({
+				name: 'Bổn Mạng'
 			}));
 		}
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -67,7 +69,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			// 	this.hasChangedGroup = this.isChangedForm(valueForm);
 			// }
 			// else {
-				this.hasChangedGroup = true;
+			this.hasChangedGroup = true;
 			// }
 		})
 		this.getAllData();
@@ -80,11 +82,14 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		this.dataItemGroup = this.fb.group({
 			items: this.fb.array([]),
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
-			stName: [this.localItem ? this.localItem.stName : '', [Validators.required]],
-			organizationID: (this.localItem && this.localItem.organizationID) ? this.localItem.organizationID : '-1',
-			type: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
+			abbreviation: this.localItem ? this.localItem.abbreviation : '',
+			groupID: this.localItem ? this.localItem.groupID : '',
+			type: [this.localItem ? this.localItem.type : 'giao_xu', [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
+			address: this.localItem ? this.localItem.address : '',
+			description: this.localItem ? this.localItem.description : '',
+			content: this.localItem ? this.localItem.content : '',
 			status: status,
 			// anniversarySaint: this.localItem ? this.localItem.anniversarySaint : '',
 			// anniversary: anniversary
@@ -110,15 +115,15 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	}
 
 	getAllData() {
-		this.typeList$ = of(TYPE_CLERGY);
-		this.getOrganizations();
+		this.typeList$ = of(TYPE_ORG);
+		// this.getOrganizations();
 		// this.getListClergyType();
-		this.getSaints();
+		this.getGroups();
 	}
 
-	getAnniversarys(clergyID: string) {
+	getAnniversarys(organizationID: string) {
 		let options = {
-			filter: `entityID eq ${clergyID} and entityType eq 'clergy'`
+			filter: `entityID eq ${organizationID} and entityType eq 'organization'`
 		}
 		this.dataProcessing = true;
 		this.service.getAnniversaries(options).pipe(takeUntil(this.unsubscribe)).subscribe({
@@ -142,15 +147,6 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 				console.log(error);
 			}
 		});
-	}
-
-	valueChangeSelect(event: any) {
-		if (!this.isNullOrEmpty(event)) {
-			let saint = this.sharedService.getValueAutocomplete(event, this.saintList);
-			if (saint && saint.anniversarySaint) {
-				this.dataItemGroup.get("anniversarySaint").setValue(saint.anniversarySaint);
-			}
-		}
 	}
 
 	// isChangedForm(valueForm: any) {
@@ -184,48 +180,15 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	// 	return false;
 	// }
 
-	getOrganizations() {
-		this.organizationList$ = of([]);
+	getGroups() {
+		this.groupList$ = of([]);
 		let options = {
-			select:'id,name',
-			filter: "type eq 'dong_tu'"
+			select: 'id,name'
 		}
-		this.service.getOrganizations(options).pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = [{
-					id: '-1',
-					name: 'Giáo Phận Phú Cường'
-				}]
-				if (res && res.value && res.value.length > 0) {
-					items.push(...res.value);
-				}
-				this.organizationList$ = of(items);
-			}
-		})
-	}
-
-	// getListClergyType() {
-	// 	this.typeList$ = of([]);
-	// 	// this.service.getListClergyType().pipe(take(1)).subscribe({
-	// 	// 	next: (res: any) => {
-	// 	// 		if (res && res.value && res.value.length > 0) {
-	// 	// 			this.typeList$ = of(res.value);
-	// 	// 		}
-	// 	// 	}
-	// 	// })
-	// }
-
-	getSaints() {
-		this.saintList$ = of([]);
-		this.saintList = [];
-		let options = {
-			select:'id,name'
-		}
-		this.service.getSaints(options).pipe(take(1)).subscribe({
+		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
-					this.saintList$ = of(res.value);
-					this.saintList = res.value;
+					this.groupList$ = of(res.value);
 				}
 			}
 		})
@@ -236,10 +199,10 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	}
 
 	deleteItem() {
+		this.saveAction = 'delete';
 		this.dataProcessing = true;
-		this.saveAction = 'delete'
-		this.service.deleteClergy(this.ID).pipe(take(1)).subscribe(() => {
-			this.saveAction = ''
+		this.service.deleteOrganization(this.ID).pipe(take(1)).subscribe(() => {
+			this.saveAction = '';
 			this.dataProcessing = false;
 			this.dialogRef.close('Deleted');
 		})
@@ -253,57 +216,62 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
-			organizationID: valueForm.organizationID == '-1' ? "": valueForm.organizationID,
+			address: valueForm.address,
+			groupID: valueForm.groupID,
+			abbreviation: valueForm.abbreviation,
+			content: valueForm.content,
+			description: valueForm.description,
 			type: valueForm.type
 		}
 		this.saveAction = 'save';
 		if (this.target == 'edit') {
 			this.dataProcessing = true;
-			this.service.updateClergy(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
-				this.createAnniversaryToTeamMember(this.ID).pipe(takeUntil(this.unsubscribe)).subscribe({
-					next: () => {
-						this.saveAction = ''
-						this.dataProcessing = false;
-						this.dialogRef.close('OK');
-					},
-					error: error => {
-						this.saveAction = ''
-						this.dataProcessing = false;
-						this.dialogRef.close('OK');
-					}
-				});
+			this.service.updateOrganization(this.ID, dataJSON).pipe(take(1)).subscribe({
+				next: () => {
+					this.createAnniversaryToTeamMember(this.ID).pipe(takeUntil(this.unsubscribe)).subscribe({
+						next: () => {
+							this.saveAction = '';
+							this.dataProcessing = false;
+							this.dialogRef.close('OK');
+						},
+						error: error => {
+							this.saveAction = '';
+							this.dataProcessing = false;
+							this.dialogRef.close('OK');
+						}
+					});
+				}
 			})
 		}
 		else {
 			this.dataProcessing = true;
-			this.service.createClergy(dataJSON).pipe(take(1)).subscribe(
-				{
-					next: (res) => {
-						if (res && res.value && res.value.id) {
-							this.createAnniversaryToTeamMember(res.value.id).pipe(takeUntil(this.unsubscribe)).subscribe({
-								next: () => {
-									this.saveAction = ''
-									this.dataProcessing = false;
-									this.dialogRef.close('OK');
-								},
-								error: error => {
-									this.saveAction = ''
-									this.dataProcessing = false;
-									this.dialogRef.close('OK');
-								}
-							});
-						}
-						else {
-							this.saveAction = ''
-							this.dataProcessing = false;
-							this.dialogRef.close('OK');
-						}
-					}
-				})
+			this.service.createOrganization(dataJSON).pipe(take(1)).subscribe({
+				next: (res) => {
+					// if (res && res.value && res.value.id) {
+					// 	this.createAnniversaryToTeamMember(res.value.id).pipe(takeUntil(this.unsubscribe)).subscribe({
+					// 		next: () => {
+					// 			this.saveAction = '';
+					// 			this.dataProcessing = false;
+					// 			this.dialogRef.close('OK');
+					// 		},
+					// 		error: error => {
+					// 			this.saveAction = '';
+					// 			this.dataProcessing = false;
+					// 			this.dialogRef.close('OK');
+					// 		}
+					// 	});
+					// }
+					// else {
+					this.saveAction = '';
+					this.dataProcessing = false;
+					this.dialogRef.close('OK');
+					// }
+				}
+			})
 		}
 	}
 
-	createAnniversaryToTeamMember(clergyID: string) {
+	createAnniversaryToTeamMember(organizationID: string) {
 		return new Observable(obs => {
 			let requests: Observable<any>[] = [];
 			let arrForm = this.dataItemGroup.get('items') as FormArray;
@@ -315,12 +283,13 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 						date = valueForm.date.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]');
 					}
 					let dataJSON = {
-						"entityID": clergyID,
-						"entityType": "clergy",
+						"entityID": organizationID,
+						"entityType": "organization",
 						"name": valueForm.name,
 						"day": valueForm.day,
 						"date": date ? date : null,
-						"description": valueForm.description
+						"description": valueForm.description,
+						"status": 'active'
 					}
 					requests.push(this.service.createAnniversary(dataJSON));
 				}

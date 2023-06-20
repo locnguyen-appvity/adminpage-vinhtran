@@ -4,32 +4,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { SaintInfoComponent } from './saint-info/saint-info.component';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
+import { OrganizationInfoComponent } from './organization-info/organization-info.component';
 
 @Component({
-	selector: 'se-saints',
-	templateUrl: './saints.component.html',
-	styleUrls: ['./saints.component.scss']
+	selector: 'app-organizations',
+	templateUrl: './organizations.component.html',
+	styleUrls: ['./organizations.component.scss']
 })
-export class SaintsComponent extends ListItemBaseComponent {
+export class OrganizationsComponent extends ListItemBaseComponent {
+
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
-		super(sharedService,snackbar);
+		super(sharedService, snackbar);
 		this.getDataItems();
 	}
 
 	getDataItems() {
 		this.spinerLoading = true;
 		let options = {
-			filter: this.getFilter(),
-			sort:'name asc'
+			filter: this.getFilter()
 		}
-		this.service.getSaints(options).pipe(take(1)).subscribe((res: any) => {
-			this.arrData = [];
+		this.service.getOrganizations(options).pipe(take(1)).subscribe((res: any) => {
 			this.spinerLoading = false;
+			this.arrData = [];
 			if (res && res.value && res.value.length > 0) {
 				let items = res.value;
 				for (let item of items) {
@@ -77,8 +77,9 @@ export class SaintsComponent extends ListItemBaseComponent {
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-xl';
 		config.maxWidth = '80vw';
+		config.height = 'auto';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(SaintInfoComponent, config);
+		let dialogRef = this.dialog.open(OrganizationInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -86,15 +87,14 @@ export class SaintsComponent extends ListItemBaseComponent {
 				};
 				if (res === 'OK') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Thánh Thành Công' : 'Thêm Thánh Thành Công';
+					snackbarData.message = target === 'edit' ? 'Sửa Giáo Xứ và Dòng Tu Thành Công' : 'Thêm Giáo Xứ và Dòng Tu Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					if (target == 'edit') {
-					}
-					else {
-					}
 					this.getDataItems();
 				}
 				else if (res === 'Deleted') {
+					snackbarData.key = 'delete-item';
+					snackbarData.message ='Xóa Giáo Xứ và Dòng Tu Thành Công';
+					this.showInfoSnackbar(snackbarData);
 					this.getDataItems();
 				}
 			}

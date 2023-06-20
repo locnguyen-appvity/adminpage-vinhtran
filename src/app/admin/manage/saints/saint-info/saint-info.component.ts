@@ -20,30 +20,29 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
+	public localItem: any;
+
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		private service: SharedService,
 		public dialogRef: MatDialogRef<SaintInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
-		let name = '';
-		let code = '';
-		let status = true;
 		this.target = this.dialogData.target;
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
 			this.canDelete = false;
-			name = this.dialogData.item.name;
-			code = this.dialogData.item.code;
+			this.localItem = this.dialogData.item;
 			this.ID = this.dialogData.item.id;
-			status = this.dialogData.item.deActive == 0 ? true : false;
 		}
 		this.dataItemGroup = this.fb.group({
-			name: [name, [Validators.required]],
-			status: status,
-			code: code,
-			anniversarySaint: (this.dialogData && this.dialogData.item) ? this.dialogData.item.anniversarySaint : ""
+			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
+			status: (this.localItem && this.localItem.status == 'inactive') ? false : true,
+			code: this.localItem ? this.localItem.code : "",
+			description: this.localItem ? this.localItem.description : "",
+			content: this.localItem ? this.localItem.content : "",
+			anniversary: this.localItem ? this.localItem.anniversary : ""
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
 			if (this.target === 'edit') {
@@ -62,10 +61,16 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
 			return true;
 		}
-		if (this.sharedService.isChangedValue(valueForm.anniversarySaint, this.dialogData.anniversarySaint)) {
+		if (this.sharedService.isChangedValue(valueForm.anniversary, this.dialogData.anniversary)) {
 			return true;
 		}
-		let status = this.dialogData.item.deActive == 0 ? true : false;
+		if (this.sharedService.isChangedValue(valueForm.description, this.dialogData.description)) {
+			return true;
+		}
+		if (this.sharedService.isChangedValue(valueForm.content, this.dialogData.content)) {
+			return true;
+		}
+		let status = this.dialogData.item.status == 'inactive' ? false : true;
 		if (this.sharedService.isChangedValue(valueForm.status, status)) {
 			return true;
 		}
@@ -78,10 +83,10 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 
 	deleteItem() {
 		this.dataProcessing = true;
-		// this.service.deleteSaint(this.ID).pipe(take(1)).subscribe(() => {
-		// 	this.dataProcessing = false;
-		// 	this.dialogRef.close('Deleted');
-		// })
+		this.service.deleteSaint(this.ID).pipe(take(1)).subscribe(() => {
+			this.dataProcessing = false;
+			this.dialogRef.close('Deleted');
+		})
 	}
 
 	onSaveItem() {
@@ -89,23 +94,28 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			name: valueForm.name,
 			code: valueForm.code,
-			anniversarySaint: valueForm.anniversarySaint,
-			deActive: valueForm.status ? 0 : 1
+			anniversary: valueForm.anniversary,
+			description: valueForm.description,
+			content: valueForm.content,
+			status: valueForm.status ? 'active' : 'inactive'
 		}
-		// if (this.target == 'edit') {
-		// 	this.dataProcessing = true;
-		// 	this.service.updateSaint(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
-		// 		this.dataProcessing = false;
-		// 		this.dialogRef.close('OK');
-		// 	})
-		// }
-		// else {
-		// 	this.dataProcessing = true;
-		// 	this.service.createSaint(dataJSON).pipe(take(1)).subscribe(() => {
-		// 		this.dataProcessing = false;
-		// 		this.dialogRef.close('OK');
-		// 	})
-		// }
+		this.saveAction = 'save';
+		if (this.target == 'edit') {
+			this.dataProcessing = true;
+			this.service.updateSaint(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
+				this.dataProcessing = false;
+				this.saveAction = '';
+				this.dialogRef.close('OK');
+			})
+		}
+		else {
+			this.dataProcessing = true;
+			this.service.createSaint(dataJSON).pipe(take(1)).subscribe(() => {
+				this.dataProcessing = false;
+				this.saveAction = '';
+				this.dialogRef.close('OK');
+			})
+		}
 	}
 
 }

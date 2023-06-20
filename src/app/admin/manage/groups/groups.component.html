@@ -5,9 +5,9 @@
         <div fxFlex="100">
             <div fxLayout="row" fxLayoutAlign="center center" class="account-header" fxHide.lt-md>
                 <!-- <mat-icon class="account-header-icon" svgIcon="ic_groups_department"></mat-icon> -->
-                <h2 class="account-title">Tu Sĩ</h2>
+                <h2 class="account-title">Giáo Xứ</h2>
             </div>
-            <p class="account-subtitle">Quản lý danh sách tu sĩ</p>
+            <p class="account-subtitle">Quản lý danh sách giáo xứ</p>
         </div>
     </div>
 
@@ -34,6 +34,7 @@
                         <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm" (click)="onAddItem()">
                             Thêm
                         </button>
+                        <!-- [disabled]="noData" -->
                     </div>
                 </mat-toolbar>
                 <mat-divider></mat-divider>
@@ -61,8 +62,7 @@
                                 <mat-icon mat-list-icon
                                     [ngClass]="{'active': data.status === 'active', 'inactive': data.status === 'inactive'}"
                                     [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
-                                <h4 mat-line>{{data.typeName}} {{data.stName}} {{data.name}}</h4>
-                                <p mat-line>{{data.possisionName}}</p>
+                                <h4 mat-line>{{data.name}}</h4>
                                 <span fxFlex></span>
                                 <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon>
                             </mat-list-item>

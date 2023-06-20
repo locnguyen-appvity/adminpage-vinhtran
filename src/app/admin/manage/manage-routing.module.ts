@@ -11,12 +11,12 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},
 			{
-				path: 'dioceses-list',
-				loadChildren: () => import('./dioceses/dioceses.module').then(m => m.DiocesesModule)
+				path: 'groups-list',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{
-				path: 'churchs-list',
-				loadChildren: () => import('./churchs/churchs.module').then(m => m.ChurchsModule)
+				path: 'organizations-list',
+				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{
 				path: 'clergys-list',

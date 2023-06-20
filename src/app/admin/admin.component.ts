@@ -132,4 +132,112 @@ export class AdminComponent extends SimpleBaseComponent {
 		this.isSettings = !this.isSettings;
 	}
 
+	// "value": [
+	// 	{
+	// 	  "name": "Categories",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Categories"
+	// 	},
+	// 	{
+	// 	  "name": "Layouts",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Layouts"
+	// 	},
+	// 	{
+	// 	  "name": "Tags",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Tags"
+	// 	},
+	// 	{
+	// 	  "name": "Posts",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Posts"
+	// 	},
+	// 	{
+	// 	  "name": "Files",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Files"
+	// 	},
+	// 	{
+	// 	  "name": "Folders",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Folders"
+	// 	},
+	// 	{
+	// 	  "name": "FolderFiles",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "FolderFiles"
+	// 	},
+	// 	{
+	// 	  "name": "Authors",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Authors"
+	// 	},
+	// 	{
+	// 	  "name": "Widgets",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Widgets"
+	// 	},
+	// 	{
+	// 	  "name": "Websites",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Websites"
+	// 	},
+	// 	{
+	// 	  "name": "Slides",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Slides"
+	// 	},
+	// 	{
+	// 	  "name": "Parables",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Parables"
+	// 	},
+	// 	{
+	// 	  "name": "Contemplations",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Contemplations"
+	// 	},
+	// 	{
+	// 	  "name": "Anniversaries",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Anniversaries"
+	// 	},
+	// 	{
+	// 	  "name": "Clergies",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Clergies"
+	// 	},
+	// 	{
+	// 	  "name": "ClergyInOrganizations",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "ClergyInOrganizations"
+	// 	},
+	// 	{
+	// 	  "name": "Groups",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Groups"
+	// 	},
+	// 	{
+	// 	  "name": "Organizations",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Organizations"
+	// 	},
+	// 	{
+	// 	  "name": "Possisions",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Possisions"
+	// 	},
+	// 	{
+	// 	  "name": "Saints",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Saints"
+	// 	},
+	// 	{
+	// 	  "name": "Users",
+	// 	  "kind": "EntitySet",
+	// 	  "url": "Users"
+	// 	}
+	//   ]
+
 }

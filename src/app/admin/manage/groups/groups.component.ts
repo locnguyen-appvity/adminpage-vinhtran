@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { ChurchInfoComponent } from './church-info/church-info.component';
+import { GroupInfoComponent } from './group-info/group-info.component';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
-	selector: 'app-churchs',
-	templateUrl: './churchs.component.html',
-	styleUrls: ['./churchs.component.scss']
+	selector: 'app-groups',
+	templateUrl: './groups.component.html',
+	styleUrls: ['./groups.component.scss']
 })
-export class ChurchsComponent extends ListItemBaseComponent {
+export class GroupsComponent extends ListItemBaseComponent {
 	constructor(public override sharedService: SharedPropertyService,
 		public snackbar: MatSnackBar,
 		private service: SharedService,
 		public dialog: MatDialog) {
-		super(sharedService,snackbar);
+		super(sharedService, snackbar);
+		this.getDataItems();
 	}
 
 	onAddItem() {
@@ -42,7 +43,7 @@ export class ChurchsComponent extends ListItemBaseComponent {
 		config.panelClass = 'dialog-form-sm';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(ChurchInfoComponent, config);
+		let dialogRef = this.dialog.open(GroupInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -50,15 +51,15 @@ export class ChurchsComponent extends ListItemBaseComponent {
 				};
 				if (res === 'OK') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Giáo Phận Thành Công' : 'Thêm Giáo Phận Thành Công';
+					snackbarData.message = target === 'edit' ? 'Sửa Giáo Hạt Thành Công' : 'Thêm Giáo Hạt Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					if (target == 'edit') {
-					}
-					else {
-					}
+					this.getDataItems();
 				}
 				else if (res === 'Deleted') {
-					
+					snackbarData.key = 'delete-item';
+					snackbarData.message ='Xóa Giáo Hạt Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					this.getDataItems();
 				}
 			}
 		});
@@ -68,29 +69,39 @@ export class ChurchsComponent extends ListItemBaseComponent {
 		this.arrData = [];
 		let filter = this.getFilter();
 		let options = {
-			sort: 'name asc, order asc',
+			sort: 'name asc',
 			filter: filter
 		}
 		this.dataProcessing = true;
 		this.spinerLoading = true;
-		// this.service.getCategories(options).pipe(take(1)).subscribe({
-		// 	next: (res: any) => {
-		// 		if (res && res.value && res.value.length > 0) {
-		// 			this.noData = false;
-		// 			this.arrData = res.value;
-		// 			let tempData = this.buildTreeData(res.value);
-		// 			// for (let i = 0; i < 5; i++) {
-		// 			// 	tempData.push(...tempData);
-		// 			// }
-		// 			this.rebuildTreeForData(tempData);
-		// 		}
-		// 		else {
-		// 			this.noData = true;
-		// 		}
-		// 		this.dataProcessing = false;
-		// 		this.spinerLoading = false;
-		// 	}
-		// })
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.noData = false;
+					let items = res.value;
+					for (let item of items) {
+						switch (item.status) {
+							case 'active':
+								item.statusTooltip = 'Hiện';
+								item.statusIcon = 'ic_toggle_on';
+								item.class = 'active-status';
+								break;
+							case 'inactive':
+								item.statusTooltip = 'Ẩn';
+								item.statusIcon = 'ic_toggle_off';
+								item.class = 'inactive-status';
+								break;
+						}
+					}
+					this.arrData = items;
+				}
+				else {
+					this.noData = true;
+				}
+				this.dataProcessing = false;
+				this.spinerLoading = false;
+			}
+		})
 	}
 
 }
