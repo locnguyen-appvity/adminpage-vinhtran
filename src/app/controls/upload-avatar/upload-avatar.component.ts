@@ -5,6 +5,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { DialogSelectedImgsComponent } from '../dialog-selected-imgs/dialog-selected-imgs.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 
 @Component({
 	selector: 'se-upload-avatar',
@@ -45,7 +46,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 		}
 		if (changes['filePath']) {
 			if (!this.isNullOrEmpty(this.filePath)) {
-				this.imageUrl = this.filePath;
+				this.imageUrl = `${GlobalSettings.Settings.Server}/${this.filePath}`;
 			}
 			else {
 				this.imageUrl = "./assets/icons/ic_image_48dp.svg";
@@ -77,10 +78,12 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				if (res && res.action == 'save') {
+					let file;
 					if (res.data && res.data[0]) {
+						file = res.data[0];
 						this.imageUrl = res.data[0].fileUrl;
-						this.valueChanges.emit({ action: 'value-change', data: this.imageUrl });
 					}
+					this.valueChanges.emit({ action: 'value-change', data: file });
 				}
 			}
 		})

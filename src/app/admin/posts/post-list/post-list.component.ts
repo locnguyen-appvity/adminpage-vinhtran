@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -76,6 +77,9 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 						// this.getAvatar(item);
 						this.updateStatus(item);
 						// item.sexView = this.handleSex(item.sex);
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+						}
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
