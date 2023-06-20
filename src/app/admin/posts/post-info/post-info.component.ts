@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { JoditAngularComponent } from 'jodit-angular';
-import { Observable, distinctUntilChanged, of, share, shareReplay, take, takeUntil } from 'rxjs';
+import { Observable, of, take, takeUntil } from 'rxjs';
 // import { DialogSelectedImgsComponent } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -40,7 +40,9 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 	public postFormGroup: FormGroup;
 	public arrCategories: any[] = [];
 	public arrTags: any[] = [];
+	public arrLocations$: Observable<any>;
 	public arrAuthors$: Observable<any>;
+	public fileSelected: any;
 	// public configEditor: any = {
 	// 	toolbarSticky: false,
 	// 	buttons: [
@@ -105,7 +107,8 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			content: "",
 			categoryIds: [],
 			eventDate: "",
-			address: '',
+			locationId: '',
+			locationType: '',
 			authorId: '',
 			tags: [],
 			metaKeyword: [],
@@ -148,6 +151,13 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		// })
 	}
 
+	valueChangesFile(event: any) {
+		if (event && event.action == 'value-change') {
+			this.fileSelected = event.data ? event.data : "";
+		}
+	}
+
+
 	updateLabelTitle(status: string) {
 		let statusLabel = {
 			title: "Tạo Mới",
@@ -174,6 +184,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		this.getCategories();
 		this.getTags();
 		this.getAuthors();
+		this.getOrganizations();
 	}
 
 	valueChangeChip(event: any) {
@@ -192,6 +203,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
+					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
 					this.postFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
@@ -199,10 +211,12 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						content: this.localItem.content,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
-						// eventDate: this.localItem.title,
-						// address: this.localItem.title,
+						eventDate: this.localItem._eventDate,
+						authorId: this.localItem.authorId,
+						locationId: this.localItem.locationId,
+						locationType: "",
 						tags: this.localItem.tags,
-						// hotNew: this.localItem.hotNew
+						photo: this.localItem.photo
 					});
 				}
 			}
@@ -243,17 +257,43 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		})
 	}
 
+	getOrganizations() {
+		this.service.getOrganizations().pipe(take(1)).subscribe((res: any) => {
+			let items = [];
+			if (res && res.value && res.value.length > 0) {
+				items = res.value;
+				for (let item of items) {
+					switch (item.type) {
+						case 'giao_xu':
+							item.title = `Giáo xứ ${item.name}`;
+							break;
+						case 'dong_tu':
+							item.title = `Dòng ${item.name}`;
+							break;
+						default:
+							item.title = item.name;
+							break;
+					}
+				}
+			}
+			this.arrLocations$ = of(items);
+
+		})
+	}
+
 	onCancel() {
 		this.router.navigate(['/admin/posts/post-list']);
 	}
 
 	onSave(status: string) {
 		let valueForm = this.postFormGroup.value;
+		let eventDate = this.sharedService.ISOStartDay(valueForm.eventDate);
 		let dataJSON = {
 			"title": valueForm.title,
-			"photo": "",
+			"photo": this.fileSelected ? this.fileSelected : "",
 			"link": valueForm.link,
 			"authorId": valueForm.authorId,
+			"locationId": valueForm.locationId,
 			"content": valueForm.content,
 			"categoryIds": valueForm.categoryIds,
 			"tags": valueForm.tags,
@@ -262,7 +302,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			"topLevel": null,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
-			"eventDate": null,
+			"eventDate": eventDate ? eventDate : null,
 			"visit": 0,
 			"slideId": null
 		}

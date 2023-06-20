@@ -1,17 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { FolderInfoComponent } from '../../admin/folders/folder-info/folder-info.component';
-import { Observable, take, takeUntil, of as observableOf, debounceTime } from 'rxjs';
+import { Observable, take, takeUntil, of as observableOf } from 'rxjs';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
-import { FormControl } from '@angular/forms';
-import { GlobalSettings } from 'src/app/shared/global.settings';
 
 /**
  * File node data with nested structure.
@@ -47,6 +45,8 @@ export class FileFlatNode {
 })
 export class FoldersTreeComponent extends SimpleBaseComponent {
 	@Input() canEdit: boolean = false;
+	@Input() target: string = 'multi';
+	@Output() valueChanges: any = new EventEmitter();
 	public treeControl: FlatTreeControl<FileFlatNode>;
 	public treeFlattener: MatTreeFlattener<FileNode, FileFlatNode>;
 	public dataSource: MatTreeFlatDataSource<FileNode, FileFlatNode>;
@@ -87,6 +87,9 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 	// 	this.txtSearch.setValue("");
 	// }
 
+	valueChangesFile(event: any) {
+		this.valueChanges.emit(event);
+	}
 
 	onAddItemForNote(item: any) {
 		let config: any = {};

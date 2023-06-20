@@ -17,9 +17,8 @@ export class DialogSelectedImgsComponent extends SimpleBaseComponent {
 
     public title: string = "Chọn Hình Ảnh";
     public saveAction: string = "";
-    public entityID: string = "";
-    public entityType: string = "";
-    public dataItems: any[] = []
+    public target: string = "multi";
+    public filesSelected: any[] = [];
 
     constructor(
         public linq: LinqService,
@@ -32,18 +31,21 @@ export class DialogSelectedImgsComponent extends SimpleBaseComponent {
         public snackbar: MatSnackBar,
     ) {
         super(sharedService);
-        if (this.dialogData.entityID) {
-            this.entityID = this.dialogData.entityID;
+        if (this.dialogData.target) {
+            this.target = this.dialogData.target;
         }
-        if (this.dialogData.entityType) {
-            this.entityType = this.dialogData.entityType;
+    }
+
+    valueChangesFile(event: any) {
+        if (event && event.action == 'value-changes') {
+            this.filesSelected = event.data;
         }
     }
 
     ngAfterViewInit() { }
 
     saveData() {
-        this.dialogRef.close({ action: 'save', data: this.dataItems.filter(it => it.checked) });
+        this.dialogRef.close({ action: 'save', data: this.filesSelected });
     }
 
     closeDialog() {

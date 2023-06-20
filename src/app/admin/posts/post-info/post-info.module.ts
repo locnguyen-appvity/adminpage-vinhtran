@@ -16,6 +16,7 @@ import { SEChipSimpleModule } from 'src/app/controls/se-chip-simple/se-chip-simp
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
+import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { EditorControlModule } from 'src/app/controls/editor-control/editor-cont
     MatChipsModule,
     SEChipSimpleModule,
     AutocompleteSimpleModule,
-    EditorControlModule
+    EditorControlModule,
+    UploadAvatarModule
   ]
 })
 export class PostInfoModule { }

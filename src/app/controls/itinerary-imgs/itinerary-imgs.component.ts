@@ -16,7 +16,7 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 })
 export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnChanges {
 	@Input() id: string = '';
-	@Output() uploadFile: any = new EventEmitter();
+	@Output() valueChanges: any = new EventEmitter();
 	@Output() uploading: any = new EventEmitter();
 	@Input() canEdit: boolean = true;
 	@Input() canUploadFile: boolean = true;
@@ -33,7 +33,7 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	@Input() entityID: string = '';
 	@Input() entityType: string = '';
 	@Input() mode: string = 'upload-runtime';
-	@Input() targetUploadFile: string = 'multi';
+	@Input() target: string = 'multi';
 	public noFilesUploads: boolean = true;
 	public files: File[] = [];
 	public validComboDrag: boolean = false;
@@ -199,7 +199,6 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 				});
 			}
 		} else {
-			this.targetUploadFile = 'upload';
 			this.handleBase64ToFiles(this.files).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: (results: any) => {
 					this.dataSources = results;
@@ -282,22 +281,22 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	}
 
 
-	emitFileSelect(files: any) {
-		let index = 0;
-		let formData = [];
-		if (files.length > 0) {
-			for (let file of files) {
-				formData.push({
-					styles: null,
-					file: file,
-					type: 'entityfiles',
-					fileID: file.fileID
-				});
-				index++;
-			}
-		}
-		this.uploadFile.emit(formData);
-	}
+	// emitFileSelect(files: any) {
+	// 	let index = 0;
+	// 	let formData = [];
+	// 	if (files.length > 0) {
+	// 		for (let file of files) {
+	// 			formData.push({
+	// 				styles: null,
+	// 				file: file,
+	// 				type: 'entityfiles',
+	// 				fileID: file.fileID
+	// 			});
+	// 			index++;
+	// 		}
+	// 	}
+	// 	this.valueChanges.emit(formData);
+	// }
 
 	handleBase64ToFiles(files: any) {
 		return new Observable(obs => {
@@ -456,8 +455,18 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	}
 
 	selectedItem(dataItem: any) {
+		if (!dataItem.checked && this.target == 'single') {
+			this.unCheckAll();
+		}
 		dataItem.checked = !dataItem.checked;
+		this.valueChanges.emit({ action: 'value-changes', data: this.dataSources.filter(it => it.checked) });
 		// this.checkSingleItem(dataItem);
+	}
+
+	unCheckAll() {
+		if (this.dataSources && this.dataSources.length > 0) {
+			this.dataSources.map(it => it.checked = false);
+		}
 	}
 }
 

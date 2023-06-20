@@ -1,0 +1,29 @@
+.account-photo-container {
+	position: relative;
+	height: 200px;
+	width: 100%;
+	margin: 12px 0;
+
+	.account-photo {
+		height: 200px;
+		width: 200px;
+	}
+}
+
+.account-photo-overlay {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	height: 200px;
+	width: 100%;
+	opacity: 0;
+	transition: 0.2s ease-in-out;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-radius: 50%;
+}
+
+.account-photo-container:hover,
+.account-photo-overlay:hover {
+	opacity: 1;
+	cursor: pointer;
+}

@@ -47,6 +47,7 @@
                     <!-- </mat-form-field> -->
                 </div>
                 <div fxFlex="20" class="mrl-24">
+                    <se-upload-avatar (valueChanges)="valueChangesFile($event)" [filePath]="localItem?.photo"></se-upload-avatar>
                     <!-- <div class="full-width" fxLayout="row" class="mrb-24" fxLayoutAlign="space-between center">
                     <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
                     <button (click)="onSave(0)" mat-flat-button color="primary">Lưu Nháp</button>
@@ -74,13 +75,16 @@
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Vị Trí</mat-label>
-                        <input matInput formControlName="address" type="text" autocomplete="off">
+                        <se-autocomplete-simple [required]="false" [formControlName]="'locationId'" [switchAt]="10"
+                            [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'title'"
+                            [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="true" [items$]="arrLocations$">
+                        </se-autocomplete-simple>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tác Giả</mat-label>
                         <se-autocomplete-simple [required]="false" [formControlName]="'authorId'" [switchAt]="10"
                             [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'"
-                            [keyValue]="'id'" [autocomplete]="false" [items$]="arrAuthors$">
+                            [keyValue]="'id'"  [keyValueEmit]="'id'"  [autocomplete]="false" [items$]="arrAuthors$">
                         </se-autocomplete-simple>
                     </mat-form-field>
 

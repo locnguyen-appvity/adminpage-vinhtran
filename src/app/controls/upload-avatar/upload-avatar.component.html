@@ -1,0 +1,7 @@
+<div class="account-photo-container" fxLayout="column" fxLayoutAlign="center center">
+    <img mat-card-avatar *ngIf="imageUrl" class="account-photo toolbar-avatar"
+        [src]="imageUrl" alt="avatar" />
+    <div class="account-photo-overlay" (click)="chooseImage()" fxLayout="column" fxLayoutAlign="center center">
+        <mat-icon class="update-account-photo-icon" svgIcon="ic_photo_camera_48px"></mat-icon>
+    </div>
+</div>
