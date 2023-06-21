@@ -32,14 +32,14 @@
                     <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
                     <span fxFlex></span>
                     <button mat-icon-button [disabled]="dataProcessing"
-                        (click)="onUpdateStatus(selection?.selected[0],'deactive')"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'deactive'"
+                        (click)="onUpdateStatus(selection?.selected[0],'inactive')"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive'"
                         matTooltip="Tạm Ẩn">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                     </button>
                     <button mat-icon-button [disabled]="dataProcessing"
                         (click)="onUpdateStatus(selection?.selected[0],'active')"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'deactive'"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'"
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
@@ -141,33 +141,39 @@
                                 <th mat-header-cell *matHeaderCellDef></th>
                                 <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"
                                     [ngStyle]="lastChildBorderStyles()">
-                                    <button mat-icon-button matTooltip="Sửa" (click)="getRowSelected(element)">
+                                    <button [disabled]="dataProcessing" mat-icon-button matTooltip="Sửa" (click)="getRowSelected(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                     </button>
-                                    <button mat-icon-button matTooltip="Xem">
+                                    <button [disabled]="dataProcessing" mat-icon-button matTooltip="Xem">
                                         <mat-icon class="material-icons" svgIcon="ic_visibility_48dp"></mat-icon>
                                     </button>
-                                    <button mat-icon-button matTooltip="Xoá" (click)="onDelete(element)">
+                                    <button [disabled]="dataProcessing" mat-icon-button matTooltip="Xoá" (click)="onDelete(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                                     </button>
-                                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    <button *ngIf="element.status !== 'inactive'" [disabled]="dataProcessing" mat-icon-button matTooltip="Tạm Ẩn" (click)="onUpdateStatus(element,'inactive')">
+                                        <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
+                                    </button>
+                                    <button *ngIf="element.status == 'inactive'" [disabled]="dataProcessing" mat-icon-button matTooltip="Mở Lại" (click)="onUpdateStatus(element,'publish')">
+                                        <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
+                                    </button>
+                                    <!-- <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
                                         matTooltip="Thao Tác Khác">
                                         <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
-                                    </button>
-                                    <mat-menu #actionsMenu="matMenu" [overlapTrigger]="overlapTrigger">
-                                        <button mat-menu-item *ngIf="element.status !== 'deactive'"
-                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'deactive')">
+                                    </button> -->
+                                    <!-- <mat-menu #actionsMenu="matMenu" [overlapTrigger]="overlapTrigger">
+                                        <button mat-menu-item *ngIf="element.status !== 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                             <span>Tạm Ẩn</span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.status == 'deactive'"
-                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'deactive')">
+                                        <button mat-menu-item *ngIf="element.status == 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                             <span>Mở Lại</span>
                                         </button>
 
-                                    </mat-menu>
+                                    </mat-menu> -->
                                 </td>
                             </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>

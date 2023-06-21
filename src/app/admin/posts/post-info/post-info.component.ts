@@ -164,13 +164,17 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			class: 'draft-label'
 		}
 		switch (status) {
-			case 'Draft':
+			case 'draft':
 				statusLabel.title = "Lưu Nháp";
 				statusLabel.class = "pending-label";
 				break;
-			case 'Publish':
+			case 'publish':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
+				break;
+			case 'inactive':
+				statusLabel.title = "Tạm Ẩn";
+				statusLabel.class = "rejected-label";
 				break;
 		}
 		return statusLabel;

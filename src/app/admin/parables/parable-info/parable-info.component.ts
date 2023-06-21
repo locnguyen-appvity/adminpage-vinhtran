@@ -31,36 +31,6 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 	public parableFormGroup: FormGroup;
 	public arrCategories: any[] = [];
 	public arrTags: any[] = [];
-	public configEditor: any = {
-		toolbarSticky: false,
-		buttons: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
-			"align", "indent", "indent", "outdent", "|",
-			"link", "table", "|",
-			"strikethrough", "eraser", "|",
-			"ul", "paragraph", "classSpan", "lineHeight",
-			"|", "superscript", "subscript"
-			, "|", "video"
-			, {
-				name: 'insertImage',
-				tooltip: 'Insert image',
-				icon: 'image',
-				exec: (editor) => {
-					editor.s.insertHTML("Thêm Hình Ảnh");
-				}
-			},
-			, {
-				name: 'insertFile',
-				tooltip: 'Insert file',
-				icon: 'file',
-				exec: (editor) => {
-					this.openDialogImg(editor);
-				}
-			},
-			"|", "cut", "undo", "redo", "source"
-		],
-		// buttons: ["bold,italic,underline,|,fontsize,font,|,align,indent,outdent,|,link,table,|,strikethrough,eraser,|,ul,ol,paragraph,classSpan,lineHeight,|,superscript,subscript,|,file,image,video,|,cut,undo,redo,source"]
-	}
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Lời Chúa";
 	public statusLabel: any = {
@@ -68,6 +38,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 		class: 'draft-label'
 	}
 	public arrAuthors$: Observable<any>;
+	private fileSelected: any;
 
 	constructor(
 		private service: SharedService,
@@ -152,6 +123,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 						// eventDate: this.localItem.title,
 						// address: this.localItem.title,
 						tags: this.localItem.tags,
+						photo: this.localItem.photo
 						// hotNew: this.localItem.hotNew
 					});
 				}
@@ -165,16 +137,26 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 			class: 'draft-label'
 		}
 		switch (status) {
-			case 'Draft':
+			case 'draft':
 				statusLabel.title = "Lưu Nháp";
 				statusLabel.class = "pending-label";
 				break;
-			case 'Publish':
+			case 'publish':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;
+			case 'inactive':
+				statusLabel.title = "Tạm Ẩn";
+				statusLabel.class = "rejected-label";
+				break;
 		}
 		return statusLabel;
+	}
+
+	valueChangesFile(event: any) {
+		if (event && event.action == 'value-change') {
+			this.fileSelected = event.data ? event.data : "";
+		}
 	}
 
 	getCategories() {
@@ -211,7 +193,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 			"authorId": valueForm.authorId,
 			"status": status,
 			"title": valueForm.title,
-			"photo": "",
+			"photo": this.fileSelected ? this.fileSelected.filePath : "",
 			"link": valueForm.link,
 			"content": valueForm.content,
 			"quotation": valueForm.quotation,

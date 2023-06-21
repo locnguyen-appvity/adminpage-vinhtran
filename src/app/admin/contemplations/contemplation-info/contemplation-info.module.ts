@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ContemplationInfoComponent } from './contemplation-info.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ContemplationInfoRoutingModule } from './contemplation-info-routing.module';
-import { JoditAngularModule } from 'jodit-angular';
+// import { JoditAngularModule } from 'jodit-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +15,8 @@ import { SEChipSimpleModule } from 'src/app/controls/se-chip-simple/se-chip-simp
 import { DialogSelectedImgsModule } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
+import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
+import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,7 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
     SharedModule,
     MatDialogModule,
     ContemplationInfoRoutingModule,
-    JoditAngularModule,
+    // JoditAngularModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
@@ -35,7 +37,9 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
     MatChipsModule,
     SEChipSimpleModule,
     DialogSelectedImgsModule,
-    AutocompleteSimpleModule
+    AutocompleteSimpleModule,
+    EditorControlModule,
+    UploadAvatarModule
   ]
 })
 export class ContemplationInfoModule { }

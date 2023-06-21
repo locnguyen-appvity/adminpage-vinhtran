@@ -8,8 +8,8 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="ic_search material-icons" svgIcon="ic_search_48px"></mat-icon>
-                            <input (click)="onSearchMode()" placeholder="Tìm kiếm theo tên"
-                                autocomplete="off" [formControl]="searchControl">
+                            <input (click)="onSearchMode()" placeholder="Tìm kiếm theo tên" autocomplete="off"
+                                [formControl]="searchControl">
                         </div>
                     </div>
                     <div fxFlex="25">
@@ -18,8 +18,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Thêm" aria-label="Thêm"
-                            [disabled]="dataProcessing" (click)="addItem()">
+                        <button mat-icon-button matTooltip="Thêm" aria-label="Thêm" [disabled]="dataProcessing"
+                            (click)="addItem()">
                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                         </button>
                         <button mat-icon-button matTooltip="Lọc" (click)="filter.toggle()" aria-label="Lọc">
@@ -31,18 +31,20 @@
                 <mat-toolbar *ngIf="selection?.selected?.length > 0" class="search-toolbar">
                     <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
                     <span fxFlex></span>
-                    <button mat-icon-button [disabled]="dataProcessing" (click)="onUpdateStatus(selection?.selected[0],'inactive')"
+                    <button mat-icon-button [disabled]="dataProcessing"
+                        (click)="onUpdateStatus(selection?.selected[0],'inactive')"
                         *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive'"
                         matTooltip="Tạm Ẩn">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing" (click)="onUpdateStatus(selection?.selected[0],'active')"
+                    <button mat-icon-button [disabled]="dataProcessing"
+                        (click)="onUpdateStatus(selection?.selected[0],'active')"
                         *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'"
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing"
-                        *ngIf="selection?.selected?.length == 1" matTooltip="Xóa" (click)="onDelete(selection?.selected[0])">
+                    <button mat-icon-button [disabled]="dataProcessing" *ngIf="selection?.selected?.length == 1"
+                        matTooltip="Xóa" (click)="onDelete(selection?.selected[0])">
                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                     </button>
                 </mat-toolbar>
@@ -58,7 +60,8 @@
                         </div>
                     </mat-sidenav>
                     <div class="table-container table-container--userList">
-                        <table class="full-width" mat-table [dataSource]="dataSources" matSort (matSortChange)="onSortChange($event)">
+                        <table class="full-width" mat-table [dataSource]="dataSources" matSort
+                            (matSortChange)="onSortChange($event)">
 
                             <!-- Checkbox Column -->
                             <ng-container matColumnDef="id" sticky>
@@ -97,8 +100,8 @@
                                 </td>
                             </ng-container>
 
-                             <!-- Status Column -->
-                             <ng-container matColumnDef="status">
+                            <!-- Status Column -->
+                            <ng-container matColumnDef="status">
                                 <th mat-header-cell *matHeaderCellDef cdkDrag> Trạng Thái </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
@@ -162,7 +165,16 @@
                                     <button mat-icon-button matTooltip="Xoá" (click)="onDelete(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                                     </button>
-                                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                    <button *ngIf="element.status !== 'inactive'" [disabled]="dataProcessing"
+                                        mat-icon-button matTooltip="Tạm Ẩn"
+                                        (click)="onUpdateStatus(element,'inactive')">
+                                        <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
+                                    </button>
+                                    <button *ngIf="element.status == 'inactive'" [disabled]="dataProcessing"
+                                        mat-icon-button matTooltip="Mở Lại" (click)="onUpdateStatus(element,'publish')">
+                                        <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
+                                    </button>
+                                    <!-- <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
                                         matTooltip="Thao Tác Khác">
                                         <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
                                     </button>
@@ -179,9 +191,9 @@
                                             <span>Mở Lại</span>
                                         </button>
 
-                                    </mat-menu>
+                                    </mat-menu> -->
                                 </td>
-                            </ng-container> 
+                            </ng-container>
                             <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
                             <tr mat-row class="tsa-data-table-rows" *matRowDef="let row; columns: displayColumns;"
                                 (click)="getRowSelected(row)">

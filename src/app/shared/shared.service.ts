@@ -171,12 +171,12 @@ export class SharedService {
 	}
 
 	createUser(data: any): Observable<any> {
-		const baseUrl = this.shared.RootEndPointAPI + `/users/add`;
+		const baseUrl = this.shared.RootEndPointAPI + `/users`;
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createUser', error)));
 	}
 
 	updateUser(id: string, data: any): Observable<any> {
-		const baseUrl = this.shared.RootEndPointAPI + `/users/modify`;
+		const baseUrl = this.shared.RootEndPointAPI + `/users`;
 		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateUser', error)));
 	}
 

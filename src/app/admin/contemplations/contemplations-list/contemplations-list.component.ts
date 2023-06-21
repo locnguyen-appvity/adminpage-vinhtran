@@ -91,11 +91,11 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 
 	updateStatus(item: any) {
 		switch (item.status) {
-			case 'Publish':
+			case 'publish':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;
-			case 'Deactive':
+			case 'inactive':
 				item.statusView = "Tạm Ẩn"
 				item.statusClass = "rejected-label";
 				break;
@@ -152,7 +152,7 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 
 	onUpdateStatus(item: any, status: string) {
 		let dataJSON = {
-			deactive: status
+			status: status
 		}
 		this.service.updateContemplation(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {

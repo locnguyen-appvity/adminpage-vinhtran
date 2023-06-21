@@ -12,13 +12,13 @@
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
                 <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status == 'Publish'">
-                    <button (click)="onSave('Publish')" mat-flat-button color="primary">Lưu</button>
+                <ng-template [ngIf]="localItem?.status == 'publish'">
+                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
                 </ng-template>
-                <ng-template [ngIf]="localItem?.status !== 'Publish'">
-                    <button (click)="onSave('Draft')" mat-flat-button color="primary">Lưu Nháp</button>
-                    <button (click)="onSave('Publish')" mat-flat-button class="accept">
-                        Xuất Bản <mat-icon svgIcon="ic_send_48dp"></mat-icon>
+                <ng-template [ngIf]="localItem?.status !== 'publish'">
+                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
+                    <button (click)="onSave('publish')" mat-flat-button class="accept">
+                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
                     </button>
                 </ng-template>
             </div>
@@ -41,7 +41,8 @@
                     <!-- <quill-view-html [content]="content" format="text" theme="bubble"></quill-view-html> -->
                     <!-- <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Nội Dung</mat-label> -->
-                    <jodit-editor #editorJodit [config]="configEditor" formControlName="content"></jodit-editor>
+                    <!-- <jodit-editor #editorJodit [config]="configEditor" formControlName="content"></jodit-editor> -->
+                    <se-editor-control formControlName="content"></se-editor-control>
                     <!-- </mat-form-field> -->
                 </div>
                 <div fxFlex="20" class="mrl-24">
@@ -52,6 +53,8 @@
                         <mat-icon svgIcon="ic_send_48dp"></mat-icon> Xuất Bản
                     </button>
                 </div> -->
+                    <se-upload-avatar (valueChanges)="valueChangesFile($event)"
+                        [filePath]="localItem?.photo"></se-upload-avatar>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Danh Mục</mat-label>
                         <mat-select formControlName="categoryIds" multiple>

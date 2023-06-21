@@ -107,8 +107,8 @@ export class UserListComponent extends TemplateGridApplicationComponent {
 		this.service.getUsers().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
-				if (res && res.data && res.data.length > 0) {
-					this.dataItems = res.data;
+				if (res && res.value && res.value.length > 0) {
+					this.dataItems = res.value;
 					// for (let item of this.dataItems) {
 						// this.getAvatar(item);
 						// item.sexView = this.handleSex(item.sex);
@@ -157,9 +157,9 @@ export class UserListComponent extends TemplateGridApplicationComponent {
 		this.openFormDialog(config);
 	}
 
-	onDeactiveUser(item: any, deactive: number) {
+	onDeactiveUser(item: any, status: number) {
 		let dataJSON = {
-			deactive: deactive
+			status: status
 		}
 		// this.service.updateUser(dataJSON, item._id).pipe(take(1)).subscribe({
 		// 	next: () => {

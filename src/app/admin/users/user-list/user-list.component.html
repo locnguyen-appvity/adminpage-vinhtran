@@ -37,12 +37,12 @@
                         <mat-icon class="material-icons" svgIcon="ic_vpn_key_24dp"></mat-icon>
                     </button>
                     <button mat-icon-button [disabled]="dataProcessing" (click)="onDeactiveUser(selection?.selected[0],1)"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.deactive !== 1"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive'"
                         matTooltip="Tạm Ẩn">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                     </button>
                     <button mat-icon-button [disabled]="dataProcessing" (click)="onDeactiveUser(selection?.selected[0],0)"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.deactive == 1"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'"
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
@@ -199,13 +199,13 @@
                                             <span> Chỉnh Sửa Đăng Nhập </span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.deactive !== 1" [disabled]="dataProcessing"
+                                        <button mat-menu-item *ngIf="element.status !== 'inactive'" [disabled]="dataProcessing"
                                             (click)="onDeactiveUser(element,1)">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                             <span>Tạm Ẩn</span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.deactive == 1" [disabled]="dataProcessing"
+                                        <button mat-menu-item *ngIf="element.status == 'inactive'" [disabled]="dataProcessing"
                                             (click)="onDeactiveUser(element,0)">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                             <span>Mở Lại</span>

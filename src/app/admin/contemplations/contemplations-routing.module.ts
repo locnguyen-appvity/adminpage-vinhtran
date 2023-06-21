@@ -22,7 +22,7 @@ const myAccountRoutes: Routes = [
 			// 	path: 'post-list',
 			// 	component: UserListComponent
 			// },
-			{ path: '', redirectTo: 'post-list', pathMatch: 'full' },
+			{ path: '', redirectTo: 'contemplations-list', pathMatch: 'full' },
 		],
 	},
 	// { path: '', component: UserNavbarComponent, outlet: "sidebar" }

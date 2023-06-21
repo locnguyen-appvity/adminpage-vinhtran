@@ -97,11 +97,11 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 
 	updateStatus(item: any) {
 		switch (item.status) {
-			case 'Publish':
+			case 'publish':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;
-			case 'Deactive':
+			case 'inactive':
 				item.statusView = "Tạm Ẩn"
 				item.statusClass = "rejected-label";
 				break;

@@ -13,13 +13,13 @@
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
                 <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
                 <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status == 'Publish'">
-                    <button (click)="onSave('Publish')" mat-flat-button color="primary">Lưu</button>
+                <ng-template [ngIf]="localItem?.status == 'publish'">
+                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
                 </ng-template>
-                <ng-template [ngIf]="localItem?.status !== 'Publish'">
-                    <button (click)="onSave('Draft')" mat-flat-button color="primary">Lưu Nháp</button>
-                    <button (click)="onSave('Publish')" mat-flat-button class="accept">
-                        Xuất Bản <mat-icon svgIcon="ic_send_48dp"></mat-icon>
+                <ng-template [ngIf]="localItem?.status !== 'publish'">
+                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
+                    <button (click)="onSave('publish')" mat-flat-button class="accept">
+                        Xuất Bản <mat-icon style="margin-bottom: 15px;"  svgIcon="ic_send_48dp"></mat-icon>
                     </button>
                 </ng-template>
             </div>

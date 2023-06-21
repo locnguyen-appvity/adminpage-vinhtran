@@ -31,37 +31,8 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 	public contemplationFormGroup: FormGroup;
 	public arrCategories: any[] = [];
 	public arrTags: any[] = [];
-	public configEditor: any = {
-		toolbarSticky: false,
-		buttons: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
-			"align", "indent", "indent", "outdent", "|",
-			"link", "table", "|",
-			"strikethrough", "eraser", "|",
-			"ul", "paragraph", "classSpan", "lineHeight",
-			"|", "superscript", "subscript"
-			, "|", "video"
-			, {
-				name: 'insertImage',
-				tooltip: 'Insert image',
-				icon: 'image',
-				exec: (editor) => {
-					editor.s.insertHTML("Thêm Hình Ảnh");
-				}
-			},
-			, {
-				name: 'insertFile',
-				tooltip: 'Insert file',
-				icon: 'file',
-				exec: (editor) => {
-					this.openDialogImg(editor);
-				}
-			},
-			"|", "cut", "undo", "redo", "source"
-		],
-		// buttons: ["bold,italic,underline,|,fontsize,font,|,align,indent,outdent,|,link,table,|,strikethrough,eraser,|,ul,ol,paragraph,classSpan,lineHeight,|,superscript,subscript,|,file,image,video,|,cut,undo,redo,source"]
-	}
 	private tagsSelect: any = [];
+	private fileSelected: any;
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Suy Niệm";
 	public statusLabel: any = {
@@ -147,16 +118,26 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 			class: 'draft-label'
 		}
 		switch (status) {
-			case 'Draft':
+			case 'draft':
 				statusLabel.title = "Lưu Nháp";
 				statusLabel.class = "pending-label";
 				break;
-			case 'Publish':
+			case 'publish':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;
+			case 'inactive':
+				statusLabel.title = "Tạm Ẩn";
+				statusLabel.class = "rejected-label";
+				break;
 		}
 		return statusLabel;
+	}
+
+	valueChangesFile(event: any) {
+		if (event && event.action == 'value-change') {
+			this.fileSelected = event.data ? event.data : "";
+		}
 	}
 
 	getContemplation() {
@@ -180,6 +161,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 						authorId: this.localItem.authorId,
 						// address: this.localItem.title,
 						tags: this.localItem.tags,
+						photo: this.localItem.photo
 						// hotNew: this.localItem.hotNew
 					});
 				}
@@ -245,7 +227,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		let valueForm = this.contemplationFormGroup.value;
 		let dataJSON = {
 			"title": valueForm.title,
-			"photo": "",
+			"photo": this.fileSelected ? this.fileSelected.filePath : "",
 			"link": valueForm.link,
 			"loiChuaId": valueForm.loiChuaId,
 			"authorId": valueForm.authorId,
