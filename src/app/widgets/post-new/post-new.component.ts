@@ -1,56 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { take } from 'rxjs';
+import { GlobalSettings } from 'src/app/shared/global.settings';
+import { SharedPropertyService } from 'src/app/shared/shared-property.service';
+import { SharedService } from 'src/app/shared/shared.service';
+import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
 	selector: 'se-post-new',
 	templateUrl: './post-new.component.html',
 	styleUrls: ['./post-new.component.scss']
 })
-export class PostNewComponent implements OnInit {
-	public dataItems: any = [
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Episode 05: Ngày 8/3 trong Vườn Địa Đàng | Phần 01: Hôn Nhân – Gia Đình | Trò chuyên với các bạn trẻ công giáo',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Phụng Vụ Chư Thánh | Ngày 02.06 | Thánh Marcellinô Và Phêrô Tử Đạo ( 304)',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Phụng Vụ Chư Thánh | Ngày 02.06 | Thánh Đaminh Trần Duy Ninh  - Giáo dân (1841 - 1862)',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Mỗi Tuần Một Thành Ngữ | Bài 4: Nằm Gai Nếm Mật',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Episode 05: Ngày 8/3 trong Vườn Địa Đàng | Phần 01: Hôn Nhân – Gia Đình | Trò chuyên với các bạn trẻ công giáo',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Episode 05: Ngày 8/3 trong Vườn Địa Đàng | Phần 01: Hôn Nhân – Gia Đình | Trò chuyên với các bạn trẻ công giáo',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Episode 05: Ngày 8/3 trong Vườn Địa Đàng | Phần 01: Hôn Nhân – Gia Đình | Trò chuyên với các bạn trẻ công giáo',
-			countView: 12
-		},
-		{
-			thumb: '../../assets/images/banner.jpg',
-			name: 'Episode 05: Ngày 8/3 trong Vườn Địa Đàng | Phần 01: Hôn Nhân – Gia Đình | Trò chuyên với các bạn trẻ công giáo',
-			countView: 12
-		},
-	]
+export class PostNewComponent extends SimpleBaseComponent {
 	public limit: number = 10;
 	public customOptions: OwlOptions = {
+		margin: 12,
 		loop: true,
 		mouseDrag: false,
 		touchDrag: false,
@@ -74,10 +38,39 @@ export class PostNewComponent implements OnInit {
 		},
 		nav: false
 	}
-
-	constructor() { }
-
-	ngOnInit(): void {
+	public dataItems: any[] = [];
+	constructor(public sharedService: SharedPropertyService,
+		public service: SharedService
+	) {
+		super(sharedService);
+		this.getPosts();
 	}
 
+	getPosts() {
+		let options = {
+			skip: 0,
+			top: 5,
+			sort: 'created desc'
+		};
+		this.dataItems = [];
+		this.dataProcessing = true;
+		this.service.getPosts(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.dataItems = res.value;
+					for (let item of this.dataItems) {
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+						}
+						if (item.created) {
+							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
+							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+						}
+
+					}
+				}
+				this.dataProcessing = false;
+			}
+		})
+	}
 }

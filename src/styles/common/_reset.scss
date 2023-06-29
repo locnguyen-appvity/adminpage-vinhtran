@@ -1,6 +1,30 @@
 .container-fluid {
     padding-left: 0;
     padding-right: 0;
+    .carousel {
+        .carousel-inner{
+            .title{
+                text-align: center;
+                padding: 6px;
+               @include brand-bg;
+                color: #ffffff;
+                font-size: 20px;
+                font-weight: 700;
+            }
+        }
+        .carousel-control-next {
+            .carousel-control-next-icon {
+                width: 5rem !important;
+                height: 5rem !important;
+            }
+        }
+        .carousel-control-prev {
+            .carousel-control-prev-icon {
+                width: 5rem !important;
+                height: 5rem !important;
+            }
+        }
+    }
 }
 
 ul {
@@ -10,5 +34,5 @@ ul {
 }
 
 .mat-list-base {
-    padding-top: 0!important;
+    padding-top: 0 !important;
 }
