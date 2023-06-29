@@ -6,11 +6,11 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-	selector: 'app-search-member',
-	templateUrl: './search-member.component.html',
-	styleUrls: ['./search-member.component.scss']
+	selector: 'app-search-organizations',
+	templateUrl: './search-organizations.component.html',
+	styleUrls: ['./search-organizations.component.scss']
 })
-export class SearchMemberComponent extends SimpleBaseComponent implements OnInit {
+export class SearchOrganizationsComponent extends SimpleBaseComponent implements OnInit {
 	@Input() type: string = 'list';//dialog
 	@Input() target: string = 'giao_xu';
 	@Input() title: string = '';

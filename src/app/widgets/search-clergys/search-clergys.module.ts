@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
-import { SearchMemberComponent } from './search-member.component';
+import { SearchClergysComponent } from './search-clergys.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
 	declarations: [
-		SearchMemberComponent
+		SearchClergysComponent
 	],
 	imports: [
 		SharedModule,
 		MatButtonModule
 	],
-	exports: [SearchMemberComponent]
+	exports: [SearchClergysComponent]
 })
-export class SearchMemberModule { }
+export class SearchClergysModule { }
