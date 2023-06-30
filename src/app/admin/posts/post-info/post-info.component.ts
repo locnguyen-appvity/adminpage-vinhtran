@@ -294,7 +294,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		let eventDate = this.sharedService.ISOStartDay(valueForm.eventDate);
 		let dataJSON = {
 			"title": valueForm.title,
-			"photo": this.fileSelected ? this.fileSelected.filePath : "",
+			"photo": this.fileSelected ? this.fileSelected.filePath :  valueForm.photo,
 			"link": valueForm.link,
 			"authorId": valueForm.authorId,
 			"locationId": valueForm.locationId,

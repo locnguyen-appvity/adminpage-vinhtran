@@ -15,7 +15,7 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{
-				path: 'organizations-list',
+				path: 'organizations',
 				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{

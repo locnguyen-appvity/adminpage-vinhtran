@@ -32,6 +32,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	@Input() keyValueEmit: string = 'name';
 	@Input() keyTitle: string = 'name';
 	@Input() items$: Observable<any>;
+	@Input() items: any;
 	@Input() switchAt: number = 10;
 	@Input() topValue: number = 0;
 	@Input() target: string = '';
@@ -44,7 +45,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 		}
 	}
 	private _unsubscribe$ = new Subject<void>();
-	public items: Array<any>;
+	// public items: Array<any>;
 	public groupItems: Subject<Array<any>>;
 	public filteredItems: Subject<Array<any>>;
 	//Private Property

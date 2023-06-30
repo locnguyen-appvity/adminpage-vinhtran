@@ -485,6 +485,17 @@ mat-dialog-container.mat-dialog-container {
 	background-color: rgb(252, 69, 14);
 }
 
+.draft-status {
+	color: rgb(255, 255, 255);
+	max-width: 110px;
+	min-width: 74px;
+	text-align: center;
+	font-weight: 500;
+	padding: 4px 12px;
+	border-radius: 50px;
+	background-color: rgb(0, 72, 255);
+}
+
 // Status Labels
 .draft-label {
 	font-weight: 600;
