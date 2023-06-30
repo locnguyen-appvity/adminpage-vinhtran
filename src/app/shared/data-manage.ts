@@ -20,6 +20,32 @@ export const TYPE_CLERGY = [
         code: 'khac'
     }
 ]
+export const POSSITION = [
+    {
+        name: 'Chánh xứ',
+        code: 'chanh_xu'
+    },
+    {
+        name: 'Phó Xứ',
+        code: 'pho_xu'
+    },
+    {
+        name: 'Phó Biệt Cư',
+        code: 'pho_biet_cu'
+    },
+    {
+        name: 'Quản xứ',
+        code: 'quan_xu'
+    },
+    {
+        name: 'Giúp xứ',
+        code: 'giúp_xu'
+    },
+    {
+        name: 'Khác',
+        code: 'khac'
+    }
+]
 export const TYPE_ORG = [
     {
         name: 'Giáo Xứ',

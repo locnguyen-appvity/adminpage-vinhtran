@@ -12,7 +12,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_ORG } from '../../data-manage';
+import { TYPE_ORG } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-organization-detail',

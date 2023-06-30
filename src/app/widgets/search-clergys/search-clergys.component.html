@@ -2,17 +2,15 @@
     <div class="container-xl">
         <div fxLayout="row" fxLayoutAlign="start center">
             <h2>{{title}}</h2>
-            <select class="form-select" aria-label=".form-select-lg example">
-                <option selected>Chọn chức vụ</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <select class="form-select">
+                <option selected (click)="onSelectPossition('')">Chọn chức vụ</option>
+                <option *ngFor="let item of arrPossition" [value]="item.code" (click)="onSelectPossition(item.value)">
+                    {{item.name}}</option>
             </select>
-            <select class="form-select" aria-label=".form-select-sm example">
-                <option selected>Chọn giáo hạt</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+            <select class="form-select">
+                <option selected (click)="onSelectGroups(null)">Chọn giáo hạt</option>
+                <option *ngFor="let item of arrGroups" [value]="item.id" (click)="onSelectGroups(item.id)">
+                    {{item.name}}</option>
             </select>
             <input class="form-control" type="text" placeholder="Nhập tên" aria-label="">
             <button type="button" color="default" mat-flat-button>Tìm kiếm</button>

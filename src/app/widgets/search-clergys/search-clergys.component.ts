@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { take } from 'rxjs';
+import { POSSITION } from 'src/app/shared/data-manage';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -15,18 +16,36 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnIni
 	@Input() target: string = 'giao_xu';
 	@Input() title: string = '';
 	public dataLists: any = [];
+	public arrPossition: any[] = POSSITION;
+	public arrGroups: any[] = [];
 
 	constructor(public sharedService: SharedPropertyService,
 		public service: SharedService) {
 		super(sharedService);
-
+		this.getGroups();
 	}
 
 	ngOnInit(): void {
 
 	}
 
-	getOrganizations() {
+	getGroups() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.dataLists = [];
+		this.service.getGroups().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrGroups = items;
+			}
+		})
+	}
+
+	getClergies() {
 		// let options = {
 		// 	filter: "type eq 'giao_xu'"
 		// }
@@ -48,5 +67,13 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnIni
 				this.dataLists = items;
 			}
 		})
+	}
+
+	onSelectPossition(value: string) {
+
+	}
+
+	onSelectGroups(id: number) {
+
 	}
 }

@@ -1,0 +1,79 @@
+<form class="form-horizontal" novalidate [formGroup]="formGroupControl" autocomplete="off">
+    <div fxLayout="row" fxLayoutAlign="start center">
+        <div class="step-header step-title">Thông Tin Tu Sĩ</div>
+        <span fxFlex></span>
+        <mat-icon class="step-header" svgIcon="ic_drag_indicator" matIcon>
+        </mat-icon>
+    </div>
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tên Tu Sĩ</mat-label>
+        <se-autocomplete-simple [required]="false" [formControlName]="'clergyID'" [switchAt]="10" [optgroup]="false"
+            [placeHolder]="'Nhập tên tu sĩ...'" [keyTitle]="'name'" [keyValueEmit]="'_id'" [keyValue]="'_id'"
+            [autocomplete]="true" [items]="clergysList" (valueChange)="valueChangeAutocomplete($event,'clergyID')">
+        </se-autocomplete-simple>
+    </mat-form-field>
+
+    <div fxLayout="row wrap">
+        <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Phân Loại Tu Sĩ</mat-label>
+                <se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10" [optgroup]="false"
+                    [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'" [keyValue]="'code'" [keyValueEmit]="'code'"
+                    [autocomplete]="false" [items]="typeList">
+                </se-autocomplete-simple>
+            </mat-form-field>
+        </div>
+        <div fxFlex.gt-xs="50" fxFlex="100">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Chức Vụ</mat-label>
+                <se-autocomplete-simple [required]="false" [formControlName]="'possision'" [switchAt]="10"
+                    [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'code'"
+                    [keyValueEmit]="'code'" [autocomplete]="false" [items]="possisionList">
+                </se-autocomplete-simple>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap">
+        <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Ngày Bắt Đầu</mat-label>
+                <input matInput [matDatepicker]="startDate" placeholder="DD/MM/YYYY"
+                    autocomplete="off" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="startDate">
+                </mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
+                <!-- <mat-error *ngIf="item.get('startDate').hasError('matDatepickerParse')">
+                    Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
+            </mat-form-field>
+        </div>
+        <div fxFlex.gt-xs="50" fxFlex="100">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Ngày Kết Thúc</mat-label>
+                <input matInput [matDatepicker]="endDate" placeholder="DD/MM/YYYY"
+                    autocomplete="off" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="endDate">
+                </mat-datepicker-toggle>
+                <mat-datepicker #endDate></mat-datepicker>
+                <!-- <mat-error *ngIf="item.get('endDate').hasError('matDatepickerParse')">
+                    Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" class="step-footer">
+        <div class="btn-save-process">
+            <button color="warn" [disabled]="dataProcessing" mat-flat-button (click)="removeStep()">
+                Xoá
+                <!-- <mat-icon svgIcon="ic_remove_circle_outline_24px"></mat-icon> -->
+            </button>
+            <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+        </div>
+        <span fxFlex></span>
+        <a *ngIf="haschangedFormGroup" mat-button color="default" (click)="onCancel()">Hủy</a>
+        <div class="btn-save-process" *ngIf="haschangedFormGroup">
+            <button [disabled]="dataProcessing" mat-flat-button color="primary" aria-label="Lưu Thông Tin" (click)="onSave()">Lưu Thông Tin Tu
+                Sĩ
+            </button>
+            <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+        </div>
+    </div>
+</form>

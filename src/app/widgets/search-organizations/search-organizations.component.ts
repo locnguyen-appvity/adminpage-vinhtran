@@ -15,17 +15,34 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	@Input() target: string = 'giao_xu';
 	@Input() title: string = '';
 	public dataLists: any = [];
+	public arrGroups: any[] = [];
 
 	constructor(public sharedService: SharedPropertyService,
 		public service: SharedService) {
 		super(sharedService);
-
+			this.getGroups();
 	}
 
 	ngOnInit(): void {
 		if (this.type == 'list') {
 			this.getOrganizations();
 		}
+	}
+
+	getGroups() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.dataLists = [];
+		this.service.getGroups().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrGroups = items;
+			}
+		})
 	}
 
 	getOrganizations() {
@@ -50,5 +67,9 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 				this.dataLists = items;
 			}
 		})
+	}
+
+	onSelectGroups(id: number){
+
 	}
 }
