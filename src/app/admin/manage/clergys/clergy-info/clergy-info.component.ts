@@ -161,7 +161,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	// 	if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
 	// 		return true;
 	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.possision, this.dialogData.item.possision)) {
+	// 	if (this.sharedService.isChangedValue(valueForm.position, this.dialogData.item.position)) {
 	// 		return true;
 	// 	}
 	// 	if (this.sharedService.isChangedValue(valueForm.type, this.dialogData.item.type)) {

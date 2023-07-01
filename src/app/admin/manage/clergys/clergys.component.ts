@@ -14,7 +14,7 @@ import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item
 })
 export class ClergysComponent extends ListItemBaseComponent {
 
-	public possisionList: any[] = [];
+	public positionList: any[] = [];
 	public typeList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -26,18 +26,18 @@ export class ClergysComponent extends ListItemBaseComponent {
 	}
 
 	getAllData() {
-		// forkJoin({ clergyPossision: this.getListClergyPossision(), clergyType: this.getListClergyType() }).pipe(take(1)).subscribe({
+		// forkJoin({ clergyPosition: this.getListClergyPosition(), clergyType: this.getListClergyType() }).pipe(take(1)).subscribe({
 		// 	next: () => {
 		// 		this.getDataItems();
 		// 	}
 		// })
 	}
 
-	getListClergyPossision() {
-		this.possisionList = [];
-		// return this.service.getListClergyPossision().pipe(take(1), map((res: any) => {
+	getListClergyPosition() {
+		this.positionList = [];
+		// return this.service.getListClergyPosition().pipe(take(1), map((res: any) => {
 		// 	if (res && res.value && res.value.length > 0) {
-		// 		this.possisionList = res.value;
+		// 		this.positionList = res.value;
 		// 	}
 		// }));
 	}
@@ -53,10 +53,10 @@ export class ClergysComponent extends ListItemBaseComponent {
 		// ))
 	}
 
-	handleClergyPossision(item: any) {
-		for (let possision of this.possisionList) {
-			if (item.possision == possision.code) {
-				item.possisionName = possision.name;
+	handleClergyPosition(item: any) {
+		for (let position of this.positionList) {
+			if (item.position == position.code) {
+				item.positionName = position.name;
 				return item;
 			}
 		}
@@ -97,7 +97,7 @@ export class ClergysComponent extends ListItemBaseComponent {
 							break;
 					}
 					item = this.handleClergyType(item);
-					item = this.handleClergyPossision(item);
+					item = this.handleClergyPosition(item);
 				}
 				this.arrData = items;
 				this.noData = false;

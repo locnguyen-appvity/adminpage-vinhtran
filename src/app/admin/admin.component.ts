@@ -224,9 +224,9 @@ export class AdminComponent extends SimpleBaseComponent {
 	// 	  "url": "Organizations"
 	// 	},
 	// 	{
-	// 	  "name": "Possisions",
+	// 	  "name": "Positions",
 	// 	  "kind": "EntitySet",
-	// 	  "url": "Possisions"
+	// 	  "url": "Positions"
 	// 	},
 	// 	{
 	// 	  "name": "Saints",

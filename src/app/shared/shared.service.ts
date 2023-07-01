@@ -445,30 +445,30 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteGroup', error)));
 	}
 
-	// possisions
-	getPossisions(options?: any): Observable<any> {
-		let baseUrl = this.shared.RootEndPointAPI + '/possisions';
-		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPossisions', error)));
+	// positions
+	getPositions(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/positions';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPositions', error)));
 	}
 
-	getPossision(id: string, options?: any): Observable<any> {
-		let baseUrl = this.shared.RootEndPointAPI + '/possisions';
-		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getPossision', error)));
+	getPosition(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/positions';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getPosition', error)));
 	}
 
-	createPossision(data: any): Observable<any> {
-		const baseUrl = this.shared.RootEndPointAPI + `/possisions`;
-		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createPossision', error)));
+	createPosition(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/positions`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createPosition', error)));
 	}
 
-	updatePossision(id: string, data: any): Observable<any> {
-		const baseUrl = this.shared.RootEndPointAPI + `/possisions`;
-		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updatePossision', error)));
+	updatePosition(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/positions`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updatePosition', error)));
 	}
 
-	deletePossision(id: string): Observable<any> {
-		const baseUrl = this.shared.RootEndPointAPI + `/possisions`;
-		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePossision', error)));
+	deletePosition(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/positions`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePosition', error)));
 	}
 
 	// Masses
@@ -495,6 +495,32 @@ export class SharedService {
 	deleteMasses(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/masses`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteMasses', error)));
+	}
+
+	// ClergyInOrganizations
+	getClergyInOrganizations(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/clergyInOrganizations';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getClergyInOrganizations', error)));
+	}
+
+	getClergyInOrganization(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/clergyInOrganizations';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getClergyInOrganization', error)));
+	}
+
+	createClergyInOrganization(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/clergyInOrganizations`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createClergyInOrganization', error)));
+	}
+
+	updateClergyInOrganization(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/clergyInOrganizations`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateClergyInOrganization', error)));
+	}
+
+	deleteClergyInOrganization(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/clergyInOrganizations`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteClergyInOrganization', error)));
 	}
 
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {

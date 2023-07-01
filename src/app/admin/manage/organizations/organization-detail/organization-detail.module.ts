@@ -20,10 +20,9 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
 import { NgxMaskModule } from 'ngx-mask';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
-import { InfoClergyMyChurchModule } from 'src/app/controls/info-clergy-my-church/info-clergy-my-church.module';
-import { EventInfoModule } from '../../events/event-info/event-info.module';
 import { MassesListModule } from '../../masses/masses-list/masses-list.module';
 import { EventsListModule } from '../../events/events-list/events-list.module';
+import { ClergyInOrganizationsListModule } from '../../clergy-in-organizations/clergy-in-organizations-list/clergy-in-organizations-list.module';
 @NgModule({
   declarations: [
     OrganizationDetailComponent
@@ -51,7 +50,7 @@ import { EventsListModule } from '../../events/events-list/events-list.module';
     MatDividerModule,
     UploadAvatarModule,
     MatExpansionModule,
-    InfoClergyMyChurchModule,
+    ClergyInOrganizationsListModule,
     MassesListModule,
     EventsListModule
   ]

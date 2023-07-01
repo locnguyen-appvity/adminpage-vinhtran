@@ -100,10 +100,6 @@ export class MassesListComponent extends ListItemBaseComponent implements OnChan
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
 					snackbarData.message = target === 'edit' ? 'Sửa Giờ Lễ Thành Công' : 'Thêm Giờ Lễ Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					if (target == 'edit') {
-					}
-					else {
-					}
 					this.getDataItems();
 				}
 			}

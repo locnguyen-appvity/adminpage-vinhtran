@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+    <div class="content-dialog content-dialog--minHeight">
+        <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Tên Tu Sĩ</mat-label>
+                <se-autocomplete-simple [required]="false" [formControlName]="'clergyID'" [switchAt]="10"
+                    [optgroup]="false" [placeHolder]="'Nhập tên tu sĩ...'" [keyTitle]="'name'" [keyValueEmit]="'id'"
+                    [keyValue]="'id'" [autocomplete]="true" [items]="clergysList" (valueChange)="valueChangeAutocomplete($event,'clergyID')">
+                </se-autocomplete-simple>
+            </mat-form-field>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Chức Vụ</mat-label>
+                        <se-autocomplete-simple [required]="false" [formControlName]="'position'" [switchAt]="10"
+                            [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'code'"
+                            [keyValueEmit]="'code'" [autocomplete]="false" [items]="positionList">
+                        </se-autocomplete-simple>
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-xs="50" fxFlex="100">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Trạng Thái</mat-label>
+                        <mat-select formControlName="status" required>
+                            <mat-option value="duong_nhiem">Đương nhiệm</mat-option>
+                            <mat-option value="man_nhiem">Mãn nhiệm</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Ngày Bắt Đầu</mat-label>
+                        <input matInput [matDatepicker]="fromDate" placeholder="DD/MM/YYYY" autocomplete="off"
+                            formControlName="fromDate">
+                        <mat-datepicker-toggle matSuffix [for]="fromDate">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                        <!-- <mat-error *ngIf="item.get('fromDate').hasError('matDatepickerParse')">
+                            Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-xs="50" fxFlex="100">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Ngày Kết Thúc</mat-label>
+                        <input matInput [matDatepicker]="toDate" placeholder="DD/MM/YYYY" autocomplete="off"
+                            formControlName="toDate">
+                        <mat-datepicker-toggle matSuffix [for]="toDate">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                        <!-- <mat-error *ngIf="item.get('toDate').hasError('matDatepickerParse')">
+                            Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <a mat-button (click)="closeDialog()" color="default">Hủy</a>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Save"
+                (click)="onSaveItem()">Lưu</button>
+            <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+        </div>
+    </div>
+</mat-dialog-content>

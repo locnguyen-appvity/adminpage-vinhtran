@@ -5,27 +5,31 @@ import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
-import { EventInfoComponent } from '../event-info/event-info.component';
+import { ClergyInOrganizationsInfoComponent } from '../clergy-in-organizations-info/clergy-in-organizations-info.component';
+import { POSSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
-	selector: 'app-events-list',
-	templateUrl: './events-list.component.html',
-	styleUrls: ['./events-list.component.scss'],
+	selector: 'app-clergy-in-organizations-list',
+	templateUrl: './clergy-in-organizations-list.component.html',
+	styleUrls: ['./clergy-in-organizations-list.component.scss'],
 })
 
-export class EventsListComponent extends ListItemBaseComponent implements OnChanges {
+export class ClergyInOrganizationsListComponent extends ListItemBaseComponent implements OnChanges {
 
 	@Input() entityID: string = "";
-	@Input() entityType: string = ""
+	@Input() entityType: string = "";
+	public positionList: any[] = POSSITION;
+	public typeList: any[] = TYPE_CLERGY;
+	
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges): void {
-		if(changes['entityID'] || changes['entityType']){
+		if (changes['entityID'] || changes['entityType']) {
 			this.getDataItems();
 		}
 	}
@@ -43,7 +47,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	deleteItem(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteAnniversary(item.id).pipe(take(1)).subscribe({
+		this.service.deleteClergyInOrganization(item.id).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -61,7 +65,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 			status: status
 		}
 		this.dataProcessing = true;
-		this.service.updateAnniversary(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.service.updateClergyInOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -90,7 +94,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(EventInfoComponent, config);
+		let dialogRef = this.dialog.open(ClergyInOrganizationsInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -98,7 +102,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 				};
 				if (res === 'OK') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Sự Kiện Thành Công' : 'Thêm Sự Kiện Thành Công';
+					snackbarData.message = target === 'edit' ? 'Sửa Tu Sĩ Thành Công' : 'Thêm Tu Sĩ Thành Công';
 					this.showInfoSnackbar(snackbarData);
 					this.getDataItems();
 				}
@@ -117,11 +121,14 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 		this.arrData = [];
 		this.dataProcessing = true;
 		this.spinerLoading = true;
-		this.service.getAnniversaries(options).pipe(take(1)).subscribe({
+		this.service.getClergyInOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
 					this.arrData = res.value;
+					for (let item of this.arrData) {
+						this.getClergyPosition(item);
+					}
 				}
 				else {
 					this.noData = true;
@@ -130,6 +137,26 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 				this.spinerLoading = false;
 			}
 		})
+	}
+
+	// getClergy(item: any) {
+	// 	if(!this.isNullOrEmpty(item.clergyID)){
+	// 		this.service.getClergy(item.clergyID).pipe(take(1)).subscribe({
+	// 			next: (res: any) => {
+	// 				item.typeClergy = res.type;
+	// 			}
+	// 		})
+	// 	}
+	// }
+
+	getClergyPosition(item: any) {
+		item.positionView = 'Chưa xác định'
+		if (!this.isNullOrEmpty(item.position)) {
+			let position = this.sharedService.getValueAutocomplete(item.position, this.positionList, 'code');
+			if (position && position.name) {
+				item.positionView = position.name;
+			}
+		}
 	}
 
 }

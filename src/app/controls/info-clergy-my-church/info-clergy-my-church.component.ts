@@ -28,7 +28,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 	@Input() item: any;
 	@Output() valueChange: EventEmitter<any> = new EventEmitter();
 	public clergysList: any[] = [];
-	public possisionList: any[] = POSSITION;
+	public positionList: any[] = POSSITION;
 	public typeList: any[] = TYPE_CLERGY;
 	public formGroupControl: FormGroup;
 	public haschangedFormGroup: boolean = false;
@@ -68,7 +68,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 		if (this.sharedService.isChangedValue(valueForm.clergyID, this.item.clergyID)) {
 			return true;
 		}
-		if (this.sharedService.isChangedValue(valueForm.possision, this.item.possision)) {
+		if (this.sharedService.isChangedValue(valueForm.position, this.item.position)) {
 			return true;
 		}
 		if (this.sharedService.isChangedValue(valueForm.type, this.item.type)) {
@@ -93,8 +93,8 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 		if (target == 'clergyID') {
 			if (!this.isNullOrEmpty(event)) {
 				let clergy = this.sharedService.getValueAutocomplete(event, this.clergysList);
-				if (clergy && clergy.possision) {
-					this.formGroupControl.get('possision').setValue(clergy.possision);
+				if (clergy && clergy.position) {
+					this.formGroupControl.get('position').setValue(clergy.position);
 				}
 				if (clergy && clergy.type) {
 					this.formGroupControl.get('type').setValue(clergy.type);
@@ -136,7 +136,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 			id: item ? item._id : '',
 			name: item ? item.name : '',
 			clergyID: item ? item.clergyID : '',
-			possision: item ? item.possision : 'chanh_xu',
+			position: item ? item.position : 'chanh_xu',
 			type: item ? item.type : 'linh_muc',
 			startDate: startDate,
 			endDate: endDate,
@@ -158,7 +158,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 			id: item ? item._id : '',
 			name: item ? item.name : '',
 			clergyID: item ? item.clergyID : '',
-			possision: item ? item.possision : 'chanh_xu',
+			position: item ? item.position : 'chanh_xu',
 			type: item ? item.type : 'linh_muc',
 			startDate: startDate,
 			endDate: endDate,
@@ -201,7 +201,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 				"icon": "",
 				"name": clergy ? clergy.name : '',
 				"clergyID": valueForm.clergyID,
-				"possision": valueForm.possision,
+				"position": valueForm.position,
 				"startDate": startDate,
 				"endDate": endDate,
 				"type": valueForm.type

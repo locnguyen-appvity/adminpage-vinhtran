@@ -62,7 +62,7 @@
                                     [class]="data.class"
                                     [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
                                 <h4 mat-line>{{data.typeName}} {{data.stName}} {{data.name}}</h4>
-                                <p mat-line>{{data.possisionName}}</p>
+                                <p mat-line>{{data.positionName}}</p>
                                 <span fxFlex></span>
                                 <button mat-icon-button matTooltip="Sửa" (click)="onChangeData(data)">
                                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
@@ -78,11 +78,11 @@
                                     <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
                                 </button> -->
                                 <button *ngIf="data.status !== 'inactive'" mat-icon-button
-                                    (click)="$event.stopPropagation();" matTooltip="Tạm Ẩn">
+                                    (click)="$event.stopPropagation();onDeactive(data)" matTooltip="Tạm Ẩn">
                                     <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                 </button>
                                 <button *ngIf="data.status == 'inactive'" mat-icon-button
-                                    (click)="$event.stopPropagation();" matTooltip="Mở Lại">
+                                    (click)="$event.stopPropagation();onActive(data)" matTooltip="Mở Lại">
                                     <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                 </button>
                             </mat-list-item>

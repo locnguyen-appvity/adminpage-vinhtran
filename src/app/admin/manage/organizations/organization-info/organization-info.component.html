@@ -23,7 +23,7 @@
 						<mat-label>Phân Loại</mat-label>
 						<se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10"
 							[optgroup]="false" [placeHolder]="'Nhập Loại'" [keyTitle]="'name'"
-							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items$]="typeList$">
+							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
@@ -82,7 +82,7 @@
 				Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error>
 		</mat-form-field> -->
 
-			<h6 class="mrb-24"> SỰ KIỆN QUAN TRỌNG</h6>
+			<!-- <h6 class="mrb-24"> SỰ KIỆN QUAN TRỌNG</h6>
 			<div formArrayName="items" class="full-width">
 				<ng-template ngFor let-data let-i="index" [ngForOf]="getControls(dataItemGroup, 'items')">
 					<div [formGroupName]="i">
@@ -120,7 +120,7 @@
 				<button (click)="onAddSegment()" mat-icon-button color="primary" class="mrb-24">
 					<mat-icon svgIcon="ic_add_48px"></mat-icon>Thêm Sự Kiện
 				</button>
-			</div>
+			</div> -->
 
 			<mat-slide-toggle color="primary" formControlName="status">Ấn / Hiện</mat-slide-toggle>
 		</form>

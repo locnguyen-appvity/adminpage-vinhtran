@@ -165,7 +165,7 @@ export class SharedPropertyService {
         return result;
     }
 
-    public getValueAutocomplete(value: any, data: any, key: string = '_id') {
+    public getValueAutocomplete(value: any, data: any, key: string = 'id') {
         if (!this.isNullOrEmpty(value)) {
             if (data && data.length > 0) {
                 for (let item of data) {
@@ -191,7 +191,7 @@ export class SharedPropertyService {
         return false;
     }
 
-    public checkItemExistsInArray(value: any, data: any, key: string = '_id') {
+    public checkItemExistsInArray(value: any, data: any, key: string = 'id') {
         if (!this.isNullOrEmpty(value)) {
             if (data && data.length > 0) {
                 for (let item of data) {

@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { Router } from '@angular/router';
+import { OrganizationInfoComponent } from '../organization-info/organization-info.component';
 
 @Component({
 	selector: 'app-organizations-list',
@@ -63,8 +64,62 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 		})
 	}
 
+	onDeactive(item: any) {
+		let dataJSON = {
+			status: 'inactive',
+		}
+		this.service.updateOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
+			next: () => {
+				let snackbarData: any = {
+					key: 'inactivate-item',
+					message: 'Ẩn Thành Công'
+				};
+				this.showInfoSnackbar(snackbarData);
+				this.getDataItems();
+			}
+		})
+	}
+
+	onActive(item: any) {
+		let dataJSON = {
+			status: 'publish',
+		}
+		this.service.updateOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
+			next: () => {
+				let snackbarData: any = {
+					key: 'activate-item',
+					message: 'Hiện Thành Công'
+				};
+				this.showInfoSnackbar(snackbarData);
+				this.getDataItems();
+			}
+		})
+	}
+
 	onAddItem() {
-		this.router.navigate([`/admin/manage/organizations/organization`]);
+		let config: any = {
+			data: {
+				target: 'new'
+			}
+		};
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-l';
+		config.maxWidth = '80vw';
+		config.autoFocus = true;
+		let dialogRef = this.dialog.open(OrganizationInfoComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				let snackbarData: any = {
+					key: ''
+				};
+				if (res === 'OK') {
+					snackbarData.key = 'new-item';
+					snackbarData.message = 'Thêm Giáo Xứ Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					this.getDataItems();
+				}
+			}
+		});
 	}
 
 	onChangeData(item: any) {
@@ -82,6 +137,6 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 			this.showInfoSnackbar(snackbarData);
 		})
 	}
-	
+
 
 }

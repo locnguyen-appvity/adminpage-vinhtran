@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, OnDestroy, Optional, Self, ElementRef, OnChanges, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, HostBinding, OnDestroy, Optional, Self, ElementRef, OnChanges, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { FormControl, NgControl, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { map, startWith, takeUntil, distinctUntilChanged } from 'rxjs/operators';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -165,21 +165,30 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 		}
 	}
 
-	ngOnChanges() {
-		if (this.items$ !== undefined) {
-			this.items$.pipe(takeUntil(this._unsubscribe$), distinctUntilChanged()).subscribe({
-				next: (res: any) => {
-					this.items = res;
-					if (this.optgroup && res && res.length > 0) {
-						let arrItems = this.groupData(res);
-						this.groupItems.next(arrItems);
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['items$']) {
+			if (this.items$ !== undefined) {
+				this.items$.pipe(takeUntil(this._unsubscribe$), distinctUntilChanged()).subscribe({
+					next: (res: any) => {
+						this.items = res;
+						if (this.optgroup && res && res.length > 0) {
+							let arrItems = this.groupData(res);
+							this.groupItems.next(arrItems);
+						}
+						this.updateAutoCompleteControl();
 					}
-					this.updateAutoCompleteControl();
-				}
-			});
+				});
+			}
+		}
+		if (changes['items']) {
+			if (this.optgroup && this.items && this.items.length > 0) {
+				let arrItems = this.groupData(this.items);
+				this.groupItems.next(arrItems);
+			}
+			this.updateAutoCompleteControl();
 		}
 	}
-
+	
 	updateAutoCompleteControl() {
 		if (this.items && ((this.items.length >= this.switchAt) || (this.autocomplete && this.items.length > 0))) {
 			const defaultItem = this.items.find((item: any) => {
