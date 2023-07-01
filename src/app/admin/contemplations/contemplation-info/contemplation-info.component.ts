@@ -29,9 +29,9 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 })
 export class ContemplationInfoComponent extends SimpleBaseComponent {
 	public contemplationFormGroup: FormGroup;
-	public arrCategories: any[] = [];
-	public arrTags: any[] = [];
-	private tagsSelect: any = [];
+	// public arrCategories: any[] = [];
+	// public arrTags: any[] = [];
+	// private tagsSelect: any = [];
 	private fileSelected: any;
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Suy Niệm";
@@ -100,17 +100,17 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 	}
 
 	getAllData() {
-		this.getCategories();
-		this.getTags();
+		// this.getCategories();
+		// this.getTags();
 		this.getAuthors();
 		this.getParables();
 	}
 
-	valueChangeChip(event: any) {
-		if (event.action == 'change-value') {
-			this.tagsSelect = event.data;
-		}
-	}
+	// valueChangeChip(event: any) {
+	// 	if (event.action == 'change-value') {
+	// 		this.tagsSelect = event.data;
+	// 	}
+	// }
 
 	updateLabelTitle(status: string) {
 		let statusLabel = {
@@ -169,27 +169,27 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
-	getCategories() {
-		this.arrCategories = [];
-		this.service.getCategories().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				if (res && res.value) {
-					this.arrCategories = res.value;
-				}
-			}
-		})
-	}
+	// getCategories() {
+	// 	this.arrCategories = [];
+	// 	this.service.getCategories().pipe(take(1)).subscribe({
+	// 		next: (res: any) => {
+	// 			if (res && res.value) {
+	// 				this.arrCategories = res.value;
+	// 			}
+	// 		}
+	// 	})
+	// }
 
-	getTags() {
-		this.arrTags = [];
-		this.service.getTags().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				if (res && res.value.length > 0) {
-					this.arrTags = res.value;
-				}
-			}
-		})
-	}
+	// getTags() {
+	// 	this.arrTags = [];
+	// 	this.service.getTags().pipe(take(1)).subscribe({
+	// 		next: (res: any) => {
+	// 			if (res && res.value.length > 0) {
+	// 				this.arrTags = res.value;
+	// 			}
+	// 		}
+	// 	})
+	// }
 
 	getAuthors() {
 		this.service.getAuthors().pipe(take(1)).subscribe({

@@ -471,6 +471,32 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePossision', error)));
 	}
 
+	// Masses
+	getMasseses(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/masses';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getMasseses', error)));
+	}
+
+	getMasses(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/masses';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getMasses', error)));
+	}
+
+	createMasses(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/masses`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createMasses', error)));
+	}
+
+	updateMasses(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/masses`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateMasses', error)));
+	}
+
+	deleteMasses(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/masses`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteMasses', error)));
+	}
+
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {
 		let errorResponse: any = {
 			status: 0,

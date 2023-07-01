@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+    <div class="content-dialog content-dialog--minHeight">
+        <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Loại</mat-label>
+                <mat-select formControlName="code" required>
+                    <mat-option value="chua_nhat">Chúa Nhật</mat-option>
+                    <mat-option value="ngay_thuong">Ngày Thường</mat-option>
+                    <mat-option value="khac">Khác</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Tên</mat-label>
+                <input matInput required formControlName="name" autocomplete="off">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Buổi</mat-label>
+                <mat-select formControlName="session" required>
+                    <mat-option value="sang">Sáng</mat-option>
+                    <mat-option value="trua">Trưa</mat-option>
+                    <mat-option value="chieu">Chiều</mat-option>
+                    <mat-option value="toi">Tối</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Giờ</mat-label>
+                <input matInput mask="Hh:m0" placeholder="Nhập giờ lễ" [dropSpecialCharacters]="false" autocomplete="off"
+                    formControlName="time">
+            </mat-form-field>
+            <mat-slide-toggle formControlName="status">
+                <span *ngIf="dataItemGroup?.value?.status == false">Ẩn</span>
+                <span *ngIf="dataItemGroup?.value?.status !== false">Hiện</span>
+            </mat-slide-toggle>
+        </form>
+    </div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <a mat-button (click)="closeDialog()" color="default">Hủy</a>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Save"
+                (click)="onSaveItem()">Lưu</button>
+            <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+        </div>
+    </div>
+</mat-dialog-content>

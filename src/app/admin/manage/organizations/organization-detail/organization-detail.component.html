@@ -55,10 +55,24 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Địa Chỉ</mat-label>
-                        <input matInput formControlName="address" autocomplete="off">
-                    </mat-form-field>
+                    <div fxLayout="row wrap" class="full-width">
+                        <div fxFlex.gt-xs="70" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Địa Chỉ</mat-label>
+                                <input matInput formControlName="address" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-xs="30" fxFlex="100">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Giáo Hạt</mat-label>
+                                <se-autocomplete-simple [required]="true" [formControlName]="'groupID'" [switchAt]="10"
+                                    [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'" [keyValueEmit]="'id'"
+                                    [keyValue]="'name'" [autocomplete]="true" [items]="groupsList">
+                                </se-autocomplete-simple>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                  
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Mô Tả</mat-label>
                         <textarea matInput rows="4" formControlName="description"></textarea>
@@ -92,60 +106,33 @@
                         <input matInput formControlName="memberCount" autocomplete="off">
                     </mat-form-field>
 
-                    <mat-accordion>
-                        <mat-expansion-panel>
+                    <mat-accordion multi="true">
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    GIỜ LỄ
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <app-masses-list [entityID]="ID" [entityType]="'organization'"></app-masses-list>
+                            <!-- <ng-template ngFor let-data let-i="index" let-last="last" [ngForOf]="arrMasses">
+                                <strong>{{data.time}}</strong> <span>{{data.time}}</span>
+                                <mat-divider class="mrb-24" *ngIf="!last"></mat-divider>
+                            </ng-template>
+                            <mat-action-row>
+                                <button (click)="openMasses('new',null)" mat-button color="primary">Thêm Giờ Lễ</button>
+                            </mat-action-row> -->
+                        </mat-expansion-panel>
+
+                        <mat-expansion-panel expanded>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     SỰ KIỆN QUAN TRỌNG
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <div formArrayName="items" class="full-width">
-                                <ng-template ngFor let-data let-i="index" let-last="last"
-                                    [ngForOf]="getControls(dataItemGroup, 'items')">
-                                    <div [formGroupName]="i">
-                                        <mat-form-field appearance="outline" class="full-width">
-                                            <mat-label>Tên Sự Kiện</mat-label>
-                                            <input matInput required formControlName="name" autocomplete="off">
-                                        </mat-form-field>
-                                        <div fxLayout="row wrap">
-                                            <div fxFlex.gt-xs="50" fxFlex="100"
-                                                [ngStyle.gt-xs]="{'padding-right': '24px'}">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Ngày</mat-label>
-                                                    <input matInput placeholder="DD/MM" mask="d0/M0"
-                                                        [dropSpecialCharacters]="false" autocomplete="off"
-                                                        formControlName="day">
-                                                </mat-form-field>
-                                            </div>
-                                            <div fxFlex.gt-xs="50" fxFlex="100">
-                                                <mat-form-field appearance="outline" class="full-width">
-                                                    <mat-label>Ngày Tháng Năm</mat-label>
-                                                    <input matInput [matDatepicker]="date" placeholder="DD/MM/YYYY"
-                                                        autocomplete="off" formControlName="date">
-                                                    <mat-datepicker-toggle matSuffix [for]="date">
-                                                    </mat-datepicker-toggle>
-                                                    <mat-datepicker #date></mat-datepicker>
-                                                    <mat-error *ngIf="data.get('date').hasError('matDatepickerParse')">
-                                                        Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <mat-form-field appearance="outline" class="full-width">
-                                            <mat-label>Mô Tả</mat-label>
-                                            <textarea matInput rows="3" formControlName="description"></textarea>
-                                        </mat-form-field>
-                                    </div>
-                                    <mat-divider class="mrb-24" *ngIf="!last"></mat-divider>
-                                </ng-template>
-                            </div>
-                            <mat-action-row>
-                                <button (click)="onAddSegment()" mat-button color="primary">Thêm Sự Kiện</button>
-                            </mat-action-row>
+                            <app-events-list [entityID]="ID" [entityType]="'organization'"></app-events-list>
                         </mat-expansion-panel>
-                    </mat-accordion>
 
-                    <mat-accordion>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel expanded>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     DANH SÁCH LINH MỤC
@@ -154,13 +141,13 @@
                             <div formArrayName="items" class="full-width">
                                 <!-- <ng-template ngFor let-data let-i="index" let-last="last"
                                     [ngForOf]="getControls(dataItemGroup, 'items')"> -->
-                                    <se-info-clergy-my-church>
-                                    </se-info-clergy-my-church>
-                                    <!-- <mat-divider class="mrb-24" *ngIf="!last"></mat-divider> -->
+                                <se-info-clergy-my-church>
+                                </se-info-clergy-my-church>
+                                <!-- <mat-divider class="mrb-24" *ngIf="!last"></mat-divider> -->
                                 <!-- </ng-template> -->
                             </div>
                             <mat-action-row>
-                                <button (click)="onAddSegment()" mat-button color="primary">Thêm Linh Mục</button>
+                                <button (click)="onAddClergy('new',null)" mat-button color="primary">Thêm Linh Mục</button>
                             </mat-action-row>
                         </mat-expansion-panel>
                     </mat-accordion>

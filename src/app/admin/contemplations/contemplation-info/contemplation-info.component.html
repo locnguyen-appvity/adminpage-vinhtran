@@ -55,14 +55,18 @@
                 </div> -->
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
-                    <mat-form-field appearance="outline" class="full-width">
+                    <!-- <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Danh Mục</mat-label>
                         <mat-select formControlName="categoryIds" multiple>
                             <mat-option *ngFor="let category of arrCategories" [value]="category.id">
                                 {{category.name}}
                             </mat-option>
                         </mat-select>
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
+                        [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"
+                        [type]="'categories'"></se-chip-control>
+
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Lời Chúa</mat-label>
                         <se-autocomplete-simple [required]="false" [formControlName]="'loiChuaId'" [switchAt]="10"
@@ -92,10 +96,10 @@
                         [type]="'parables'" (valueChange)="valueChangeChip($event)"></se-chip-control> -->
                     <se-chip-control class="full-width" formControlName="tags" [loadDefaultData]="true"
                         [hasShowAvatar]="false" [placeholder]="'Tags'" [placeholder_input]="'Tìm theo tên'"
-                        [type]="'tags'" (valueChange)="valueChangeChip($event)"></se-chip-control>
+                        [type]="'tags'"></se-chip-control>
                     <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
-                        [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'" [selectedItems]=""
-                        (valueChange)="valueChangeChip($event)"></se-chip-simple>
+                        [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"
+                        [selectedItems]=""></se-chip-simple>
                     <!-- <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Tags</mat-label>
                     <input matInput formControlName="tags" type="text" required autocomplete="off">

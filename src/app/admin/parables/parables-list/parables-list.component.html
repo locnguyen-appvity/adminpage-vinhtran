@@ -117,8 +117,8 @@
 
                             <ng-container matColumnDef="title">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Tiêu Đề </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.title}}
+                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.title" [matTooltipDisabled]="!(dataItem?.title?.length > 85)">
+                                    {{dataItem.title | truncate: 85}}
                                 </td>
                             </ng-container>
 

@@ -312,6 +312,9 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 		else if(this.type == 'parables') {
 			request = this.getParables(filter);
 		}
+		else if(this.type == 'categories') {
+			request = this.getCategories(filter);
+		}
 		return request;
 	}
 
@@ -319,6 +322,23 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 		return new Observable(obs => {
 			this.dataProcessing = true;
 			this.service.getTags().pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						items = res.value;
+					}
+					obs.next(items);
+					obs.complete();
+					this.dataProcessing = false;
+				}
+			})
+		})
+	}
+
+	getCategories(filter: string) {
+		return new Observable(obs => {
+			this.dataProcessing = true;
+			this.service.getCategories().pipe(take(1)).subscribe({
 				next: (res: any) => {
 					let items = [];
 					if (res && res.value && res.value.length > 0) {

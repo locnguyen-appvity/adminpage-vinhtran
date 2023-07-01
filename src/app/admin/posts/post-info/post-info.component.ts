@@ -38,8 +38,8 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 	// }
 
 	public postFormGroup: FormGroup;
-	public arrCategories: any[] = [];
-	public arrTags: any[] = [];
+	// public arrCategories: any[] = [];
+	// public arrTags: any[] = [];
 	public arrLocations$: Observable<any>;
 	public arrAuthors$: Observable<any>;
 	public fileSelected: any;
@@ -73,7 +73,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 	// 	],
 	// 	// buttons: ["bold,italic,underline,|,fontsize,font,|,align,indent,outdent,|,link,table,|,strikethrough,eraser,|,ul,ol,paragraph,classSpan,lineHeight,|,superscript,subscript,|,file,image,video,|,cut,undo,redo,source"]
 	// }
-	private tagsSelect: any = [];
+	// private tagsSelect: any = [];
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Bài Viết";
 	public statusLabel: any = {
@@ -185,17 +185,20 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 	}
 
 	getAllData() {
-		this.getCategories();
-		this.getTags();
+		// this.getCategories();
+		// this.getTags();
 		this.getAuthors();
 		this.getOrganizations();
 	}
 
-	valueChangeChip(event: any) {
-		if (event.action == 'change-value') {
-			this.tagsSelect = event.data;
-		}
-	}
+	// valueChangeChip(event: any, target: string) {
+	// 	if (event.action == 'change-value') {
+	// 		if(target == 'categories'){
+
+	// 		}
+	// 		this.tagsSelect = event.data;
+	// 	}
+	// }
 
 	getPost() {
 		this.service.getPost(this.ID).pipe(take(1)).subscribe({
@@ -220,6 +223,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						locationId: this.localItem.locationId,
 						locationType: "",
 						tags: this.localItem.tags,
+						catalogueId: this.localItem.catalogueId,
 						photo: this.localItem.photo
 					});
 				}
@@ -227,27 +231,27 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		})
 	}
 
-	getCategories() {
-		this.arrCategories = [];
-		this.service.getCategories().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				if (res && res.value) {
-					this.arrCategories = res.value;
-				}
-			}
-		})
-	}
+	// getCategories() {
+	// 	this.arrCategories = [];
+	// 	this.service.getCategories().pipe(take(1)).subscribe({
+	// 		next: (res: any) => {
+	// 			if (res && res.value) {
+	// 				this.arrCategories = res.value;
+	// 			}
+	// 		}
+	// 	})
+	// }
 
-	getTags() {
-		this.arrTags = [];
-		this.service.getTags().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				if (res && res.value && res.value.length > 0) {
-					this.arrTags = res.value;
-				}
-			}
-		})
-	}
+	// getTags() {
+	// 	this.arrTags = [];
+	// 	this.service.getTags().pipe(take(1)).subscribe({
+	// 		next: (res: any) => {
+	// 			if (res && res.value && res.value.length > 0) {
+	// 				this.arrTags = res.value;
+	// 			}
+	// 		}
+	// 	})
+	// }
 
 	getAuthors() {
 		this.service.getAuthors().pipe(take(1)).subscribe({
@@ -294,7 +298,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		let eventDate = this.sharedService.ISOStartDay(valueForm.eventDate);
 		let dataJSON = {
 			"title": valueForm.title,
-			"photo": this.fileSelected ? this.fileSelected.filePath :  valueForm.photo,
+			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
 			"authorId": valueForm.authorId,
 			"locationId": valueForm.locationId,

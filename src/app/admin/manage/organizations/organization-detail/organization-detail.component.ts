@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { JoditAngularComponent } from 'jodit-angular';
-import { Observable, of, take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 // import { DialogSelectedImgsComponent } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -13,6 +13,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { TYPE_ORG } from '../../../../shared/data-manage';
+import { MassesInfoComponent } from '../../masses/masses-info/masses-info.component';
 
 @Component({
 	selector: 'app-organization-detail',
@@ -40,6 +41,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 	public typeList: any[] = [];
 	public saintList: any[] = [];
+	public groupsList: any[] = [];
+	public arrMasses: any[] = [];
 
 	constructor(
 		private service: SharedService,
@@ -60,7 +63,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 
 	ngOnInit(): void {
 		this.dataItemGroup = this.fb.group({
-			items: this.fb.array([]),
+			// items: this.fb.array([]),
 			name: "",
 			type: "giao_xu",
 			abbreviation: "",
@@ -78,27 +81,27 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		this.getAllData();
 	}
 
-	getControls(frmGrp: FormGroup, key: string) {
-		return (<FormArray>frmGrp.controls[key]).controls;
-	}
+	// getControls(frmGrp: FormGroup, key: string) {
+	// 	return (<FormArray>frmGrp.controls[key]).controls;
+	// }
 
-	initialEventGroup(item: any): FormGroup {
-		return this.fb.group({
-			id: item ? item.id : '',
-			name: [item ? item.name : '', Validators.required],
-			day: [item ? item.day : '', Validators.required],
-			date: item ? item._date : '',
-			description: item ? item.description : '',
-		});
-	}
+	// initialEventGroup(item: any): FormGroup {
+	// 	return this.fb.group({
+	// 		id: item ? item.id : '',
+	// 		name: [item ? item.name : '', Validators.required],
+	// 		day: [item ? item.day : '', Validators.required],
+	// 		date: item ? item._date : '',
+	// 		description: item ? item.description : '',
+	// 	});
+	// }
 
-	onAddSegment() {
-		let arrForm = this.dataItemGroup.get('items') as FormArray;
-		arrForm.push(this.initialEventGroup({}));
+	// onAddSegment() {
+	// 	let arrForm = this.dataItemGroup.get('items') as FormArray;
+	// 	arrForm.push(this.initialEventGroup({}));
 
-		// let control = arrForm.controls[index];
-		// this.initialValueChangeHost(control);
-	}
+	// 	// let control = arrForm.controls[index];
+	// 	// this.initialValueChangeHost(control);
+	// }
 
 	// actionsAsync() {
 	// 	this.sharedService.dataItemObs.pipe(distinctUntilChanged(), share(), shareReplay({
@@ -129,6 +132,10 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 
 		// 	}
 		// })
+	}
+
+	onAddClergy(type: string, item?: any) {
+
 	}
 
 	valueChangesFile(event: any) {
@@ -167,6 +174,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	getAllData() {
 		this.typeList = TYPE_ORG;
 		this.getSaints();
+		this.getGroups();
+		// this.getMasses();
 	}
 
 	getSaints() {
@@ -178,6 +187,20 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					this.saintList = res.value;
+				}
+			}
+		})
+	}
+
+	getGroups() {
+		this.groupsList = [];
+		let options = {
+			select: 'id,name'
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.groupsList = res.value;
 				}
 			}
 		})
