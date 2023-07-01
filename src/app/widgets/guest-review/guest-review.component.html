@@ -3,7 +3,7 @@
         <div class="guest-review-wrap">
             <owl-carousel-o [options]="customOptions">
                 <ng-container *ngFor="let item of dataItems">
-                    <ng-template carouselSlide [id]="item .id">
+                    <ng-template carouselSlide [id]="item.id">
                         <figure class="item-review figure">
                             <div class="figure-header">
                                 <h2>TỪ NGỮ KINH THÁNH</h2>
@@ -11,11 +11,9 @@
                             </div>
                             <figcaption class="figure-caption">
                                 <mat-icon class="icon-quote" svgIcon="icon_quote"></mat-icon>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quam odit, ea
-                                    dignissimos
-                                    obcaecati nisi. Sunt vel deserunt quo necessitatibus.</p>
-                                <h4>Chạy - Chúa Nhật Phục Sinh (Ga 20:1-9) | Từ ngữ Kinh Thánh</h4>
-                                <h5>03/03/2022 Admin</h5>
+                                <p>{{item.metaDescription}}</p>
+                                <h4>{{item.quotation}} - {{item.title}}</h4>
+                                <h5>{{item.createdView}} - Admin</h5>
                             </figcaption>
                         </figure>
                     </ng-template>

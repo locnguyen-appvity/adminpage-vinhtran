@@ -122,6 +122,13 @@
                                 </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="type">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Loại </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.typeView}}
+                                </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="created">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Ngày Tạo </th>
                                 <td mat-cell *matCellDef="let dataItem">

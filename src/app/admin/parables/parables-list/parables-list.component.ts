@@ -75,6 +75,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
 						this.updateStatus(item);
+						this.updateType(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
@@ -87,6 +88,17 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 				this.dataProcessing = false;
 			}
 		})
+	}
+
+	updateType(item: any) {
+		switch (item.type) {
+			case 'tu_ngu_kinh_thanh':
+				item.typeView = "Từ Ngữ Kinh Thánh";
+				break;
+			default:
+				item.typeView = "Lời Chúa"
+				break;
+		}
 	}
 
 	updateStatus(item: any) {
@@ -185,7 +197,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'visit', 'mareActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'type', 'created', 'visit', 'mareActions'];
 	}
 
 }

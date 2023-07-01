@@ -55,20 +55,20 @@
                 </div> -->
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
-                        
+
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Phân loại</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option value="loi_chua">Lời Chúa</mat-option>
+                            <mat-option value="tu_ngu_kinh_thanh">Từ Ngữ Kinh Thánh</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Mã</mat-label>
                         <input matInput formControlName="quotation" type="text" autocomplete="off">
                         <mat-hint>Ví dụ: Lc 12,23-30</mat-hint>
                     </mat-form-field>
-                    <!-- <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Danh Mục</mat-label>
-                        <mat-select formControlName="categoryIds" multiple>
-                            <mat-option *ngFor="let category of arrCategories" [value]="category.id">
-                                {{category.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
 
                     <!-- <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Ngày</mat-label>

@@ -29,7 +29,7 @@
     <div class="post-container">
         <form [formGroup]="postFormGroup">
             <div fxLayout="row" fxLayoutAlign="start start">
-                <div fxFlex="80" class="mrr-24">
+                <div fxFlex="70" class="mrr-24">
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tiêu Đề</mat-label>
                         <textarea matInput rows="1" formControlName="title" required></textarea>
@@ -46,7 +46,7 @@
                     <se-editor-control formControlName="content"></se-editor-control>
                     <!-- </mat-form-field> -->
                 </div>
-                <div fxFlex="20" class="mrl-24">
+                <div fxFlex="30" class="mrl-24">
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)" [filePath]="localItem?.photo"></se-upload-avatar>
                     <!-- <div class="full-width" fxLayout="row" class="mrb-24" fxLayoutAlign="space-between center">
                     <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>

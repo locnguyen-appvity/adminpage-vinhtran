@@ -56,6 +56,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 		}
 		this.parableFormGroup = this.fb.group({
 			title: "",
+			type: "loi_chua",
 			link: "",
 			metaDescription: "",
 			quotation: "",
@@ -115,13 +116,14 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.parableFormGroup.patchValue({
 						title: this.localItem.title,
+						type: this.localItem.type,
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
 						content: this.localItem.content,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
-						// eventDate: this.localItem.title,
-						// address: this.localItem.title,
+						authorId: this.localItem.authorId,
+						quotation: this.localItem.quotation,
 						tags: this.localItem.tags,
 						photo: this.localItem.photo
 						// hotNew: this.localItem.hotNew
@@ -192,6 +194,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			"authorId": valueForm.authorId,
 			"status": status,
+			"type": valueForm.type,
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : "",
 			"link": valueForm.link,

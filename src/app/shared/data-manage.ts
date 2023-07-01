@@ -42,6 +42,10 @@ export const POSSITION = [
         code: 'giúp_xu'
     },
     {
+        name: 'Hưu dưỡng',
+        code: 'huu_duong'
+    },
+    {
         name: 'Khác',
         code: 'khac'
     }
