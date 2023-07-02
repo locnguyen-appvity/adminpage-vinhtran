@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
-import { SearchOrganizationsComponent } from './search-organizations.component';
+import { SearchControlComponent } from './search-control.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxMaskModule } from 'ngx-mask';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DialogItemsModule } from '../dialog-items/dialog-items.module';
 
 @NgModule({
 	declarations: [
-		SearchOrganizationsComponent
+		SearchControlComponent
 	],
 	imports: [
 		SharedModule,
@@ -17,8 +18,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 			validation: false,
 		}),
 		MatDialogModule,
-		MatProgressSpinnerModule
+		ReactiveFormsModule,
+		DialogItemsModule
 	],
-	exports: [SearchOrganizationsComponent]
+	exports: [SearchControlComponent]
 })
-export class SearchOrganizationsModule { }
+export class SearchControlModule { }

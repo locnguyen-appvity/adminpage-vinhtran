@@ -1,9 +1,10 @@
-import { AfterViewInit, Component, EventEmitter, Input,OnChanges,Output, SimpleChanges } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { take, takeUntil } from 'rxjs';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
+import { OrganizationsListComponent } from '../dialog-items/dialog-items.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -11,37 +12,57 @@ import { MatDialog } from '@angular/material/dialog';
 	templateUrl: './search-organizations.component.html',
 	styleUrls: ['./search-organizations.component.scss']
 })
-export class SearchOrganizationsComponent extends SimpleBaseComponent implements OnChanges, AfterViewInit {
-
-	@Output() valueChange: EventEmitter<any> = new EventEmitter();
-
-	@Input() data: any;
+export class SearchOrganizationsComponent extends SimpleBaseComponent implements OnInit {
+	@Input() type: string = 'list';//dialog
+	@Input() target: string = 'giao_xu';
 	@Input() title: string = '';
-	@Input() loadDefeault: boolean = false;
 	public dataLists: any = [];
 	public arrGroups: any[] = [];
-	public loading: boolean = false;
 
 	constructor(public sharedService: SharedPropertyService,
 		public dialog: MatDialog,
 		public service: SharedService) {
 		super(sharedService);
-		this.getGroups();
+			this.getGroups();
 	}
 
-	ngAfterViewInit(): void {
-		if(this.loadDefeault){
+	ngOnInit(): void {
+		if (this.type == 'list') {
 			this.getOrganizations();
 		}
 	}
 
-	ngOnChanges(changes: SimpleChanges): void {
-		if(changes['data']){
+	onSearch(){
+		if(this.type == 'dialog'){
 			this.getOrganizations();
 		}
+		else {
+			this.openFormDialog();
+		}
+	}
+
+	
+	openFormDialog() {
+		let config = {
+			disableClose: true,
+			panelClass:'dialog-form-l',
+			maxWidth: '80vw',
+			autoFocus:true,
+			data: {
+				type: 'dialog'
+			}
+		}
+		let dialogRef = this.dialog.open(OrganizationsListComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+			}
+		});
 	}
 
 	getGroups() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
 		this.dataLists = [];
 		this.service.getGroups().pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -54,35 +75,11 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 		})
 	}
 
-	getFilter(){
-		let filter = "type eq 'giao_xu'";
-		if(this.data){
-			if(this.data.groupID && this.data.groupID != 'all'){
-				if(!this.isNullOrEmpty(filter)){
-					filter = `${filter} and groupID eq ${this.data.groupID}`
-				}
-				else {
-					filter = `groupID eq ${this.data.groupID}`
-				}
-			}
-			if(this.data.name){
-				if(!this.isNullOrEmpty(filter)){
-					filter = `${filter} and contains(tolower(name), tolower('${this.data.name}'))`
-				}
-				else {
-					filter = `contains(tolower(name), tolower('${this.data.name}'))`
-				}
-			}
-		}
-		return filter;
-	}
-
 	getOrganizations() {
 		let options = {
-			filter: this.getFilter()
+			filter: "type eq 'giao_xu'"
 		}
 		this.dataLists = [];
-		this.loading = true;
 		this.service.getOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
@@ -98,8 +95,11 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 					}
 				}
 				this.dataLists = items;
-				this.loading = false;
 			}
 		})
+	}
+
+	onSelectGroups(id: number){
+
 	}
 }

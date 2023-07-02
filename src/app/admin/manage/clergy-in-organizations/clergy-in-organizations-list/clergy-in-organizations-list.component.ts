@@ -128,6 +128,15 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 					this.arrData = res.value;
 					for (let item of this.arrData) {
 						this.getClergyPosition(item);
+						this.getClergyStatus(item);
+						if (item && item.fromDate) {
+							item._fromDate = this.sharedService.convertDateStringToMomentUTC_0(item.fromDate);
+							item.fromDateView = item._fromDate.format('DD/MM/YYYY');
+						}
+						if (item && item.toDate) {
+							item._toDate = this.sharedService.convertDateStringToMomentUTC_0(item.toDate);
+							item.toDateView = item._toDate.format('DD/MM/YYYY');
+						}
 					}
 				}
 				else {
@@ -156,6 +165,18 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 			if (position && position.name) {
 				item.positionView = position.name;
 			}
+		}
+	}
+
+	getClergyStatus(item: any) {
+		item.statusView = 'Chưa xác định'
+		switch (item.status) {
+			case 'duong_nhiem':
+				item.statusView = 'Đương nhiệm';
+				break;
+			case 'man_nhiem':
+				item.statusView = 'Mãn nhiệm';
+				break;
 		}
 	}
 

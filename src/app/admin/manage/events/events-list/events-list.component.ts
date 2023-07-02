@@ -122,6 +122,13 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
 					this.arrData = res.value;
+					for(let item of this.arrData){
+						item.dayView = item.day;
+						if (item.date) {
+							item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
+							item.dayView = item._date.format('DD/MM/YYYY');
+						}
+					}
 				}
 				else {
 					this.noData = true;

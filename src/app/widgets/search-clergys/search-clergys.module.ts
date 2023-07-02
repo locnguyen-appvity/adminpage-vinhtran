@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { SearchClergysComponent } from './search-clergys.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
 	declarations: [
@@ -9,7 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 	],
 	imports: [
 		SharedModule,
-		MatButtonModule
+		MatButtonModule,
+		MatProgressSpinnerModule
 	],
 	exports: [SearchClergysComponent]
 })

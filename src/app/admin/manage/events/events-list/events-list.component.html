@@ -1,6 +1,6 @@
 <mat-nav-list>
     <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
-        <h4 mat-line><strong> {{data?.name}}:</strong> {{data?.day}}</h4>
+        <h4 mat-line><strong> {{data?.name}}:</strong> {{data?.dayView}}</h4>
         <span fxFlex></span>
         <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Thao Tác Khác">
             <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>

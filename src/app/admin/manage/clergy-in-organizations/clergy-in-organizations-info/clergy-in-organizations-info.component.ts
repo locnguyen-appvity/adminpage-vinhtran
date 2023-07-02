@@ -130,8 +130,9 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 			clergyID: valueForm.clergyID,
 			entityID: this.entityID,
 			entityType: this.entityType,
-			date: this.sharedService.ISOStartDay(valueForm.fromDate),
-			// position: valueForm.position,
+			fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
+			toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+			position: valueForm.position,
 			// content: null,
 			status: valueForm.status,
 		}

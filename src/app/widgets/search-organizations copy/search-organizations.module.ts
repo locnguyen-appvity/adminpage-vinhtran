@@ -4,7 +4,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxMaskModule } from 'ngx-mask';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { OrganizationsListModule } from '../dialog-items/dialog-items.module';
 
 @NgModule({
 	declarations: [
@@ -17,7 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 			validation: false,
 		}),
 		MatDialogModule,
-		MatProgressSpinnerModule
+		// OrganizationsListModule
 	],
 	exports: [SearchOrganizationsComponent]
 })

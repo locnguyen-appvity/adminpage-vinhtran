@@ -1,6 +1,6 @@
 <app-main-banner></app-main-banner>
 <se-post-new></se-post-new>
-<app-search-clergys [title]="'Linh Mục Giáo Phận'"></app-search-clergys>
+<app-search-control [title]="'Linh Mục Giáo Phận'" [target]="'clergys'"></app-search-control>
 <section class="group-container">
     <div class="container-xl">
         <div class="row">
@@ -30,4 +30,5 @@
 </section>
 <app-posts-list-banner></app-posts-list-banner>
 <app-guest-review></app-guest-review>
-<app-search-organizations [type]="'list'" [title]="'Giáo Phận'"></app-search-organizations>
+<app-search-control [title]="'Giáo Phận'" [target]="'organizations'"></app-search-control>
+<app-search-organizations [loadDefeault]="true"></app-search-organizations>

@@ -54,7 +54,7 @@ export class GuestReviewComponent extends SimpleBaseComponent {
 			skip: 0,
 			top: 5,
 			sort: 'created desc',
-			filter: `type eq 'tu_ngu_kinh_thanh'`
+			// filter: `type eq 'tu_ngu_kinh_thanh'`
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;

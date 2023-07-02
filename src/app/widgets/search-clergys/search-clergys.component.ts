@@ -16,39 +16,22 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnIni
 	@Input() target: string = 'giao_xu';
 	@Input() title: string = '';
 	public dataLists: any = [];
-	public arrPossition: any[] = POSSITION;
-	public arrGroups: any[] = [];
+	public loading: boolean = false;
 
 	constructor(public sharedService: SharedPropertyService,
 		public service: SharedService) {
 		super(sharedService);
-		this.getGroups();
 	}
 
 	ngOnInit(): void {
 
 	}
 
-	getGroups() {
-		// let options = {
-		// 	filter: "type eq 'giao_xu'"
-		// }
-		this.dataLists = [];
-		this.service.getGroups().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = []
-				if (res && res.value && res.value.length > 0) {
-					items = res.value;
-				}
-				this.arrGroups = items;
-			}
-		})
-	}
-
 	getClergies() {
 		// let options = {
 		// 	filter: "type eq 'giao_xu'"
 		// }
+		this.loading = true;
 		this.dataLists = [];
 		this.service.getClergies().pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -65,15 +48,8 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnIni
 					}
 				}
 				this.dataLists = items;
+				this.loading = false;
 			}
 		})
-	}
-
-	onSelectPossition(value: string) {
-
-	}
-
-	onSelectGroups(id: number) {
-
 	}
 }

@@ -1,44 +1,37 @@
-<div class="search-list-container container-fluid">
-    <div class="container-xl">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <h2>{{title}}</h2>
-            <select class="form-select">
-                <option selected (click)="onSelectGroups(null)">Chọn giáo hạt</option>
-                <option *ngFor="let item of arrGroups" [value]="item.id" (click)="onSelectGroups(item.id)">
-                    {{item.name}}</option>
-            </select>
-            <input class="form-control" type="text" mask="Hh:m0" placeholder="Nhập giờ lễ" aria-label="">
-            <button (click)="onSearch()" type="button" color="default" mat-flat-button>Tìm kiếm</button>
-        </div>
-    </div>
-</div>
-
 <div class="container-xl">
     <div class="result-list-container">
-        <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
-            <div class="item-result" [ngClass]="{'last-item': last}">
-                <div fxLayout="row" fxLayoutAlign="start center">
-                    <div class="thumb">
-                        <img [src]="item.pictureUrl" />
-                    </div>
-                    <div class="info" fxFlex="50">
-                        <h2>{{item.name}}</h2>
-                        <h3>Địa chỉ: {{item.address}}</h3>
-                        <h3>Email: {{item.email}}</h3>
-                    </div>
-                    <div class="contact">
-                        <h3>Điện thoại: {{item.phoneNumber}}</h3>
-                        <h3>Dân số: {{item.population}}</h3>
-                        <h3>Số tín hữu: {{item.memberCount}}</h3>
-                    </div>
-                    <div class="times">
-                        <h2 class="title">Giờ lễ</h2>
-                        <h3>Chiều thứ 7: {{item.saturday}}</h3>
-                        <h3>Chủ nhật: {{item.sunday}}</h3>
-                        <h3>Ngày thường: {{item.days}}</h3>
+        <ng-container *ngIf="loading; else temfData">
+            <mat-spinner [diameter]="24"></mat-spinner>
+        </ng-container>
+        <ng-template #temfData>
+            <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
+                <p >Không có dữ liệu.</p>
+            </div>
+            <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
+                <div class="item-result" [ngClass]="{'last-item': last}">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <div class="thumb">
+                            <img [src]="item.pictureUrl" />
+                        </div>
+                        <div class="info" fxFlex="50">
+                            <h2>{{item.name}}</h2>
+                            <h3>Địa chỉ: {{item.address}}</h3>
+                            <h3>Email: {{item.email}}</h3>
+                        </div>
+                        <div class="contact">
+                            <h3>Điện thoại: {{item.phoneNumber}}</h3>
+                            <h3>Dân số: {{item.population}}</h3>
+                            <h3>Số tín hữu: {{item.memberCount}}</h3>
+                        </div>
+                        <div class="times">
+                            <h2 class="title">Giờ lễ</h2>
+                            <h3>Chiều thứ 7: {{item.saturday}}</h3>
+                            <h3>Chủ nhật: {{item.sunday}}</h3>
+                            <h3>Ngày thường: {{item.days}}</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-template>
         </ng-template>
     </div>
 </div>

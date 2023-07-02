@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+	<div class="search-list-container container-fluid mrl-12 mrr-12">
+		<div class="container-xl">
+			<div fxLayout="row" fxLayoutAlign="start center" [formGroup]="ctrlFormGroup">
+				<select class="form-select" formControlName="groupID">
+					<option value="all">Chọn giáo hạt</option>
+					<option *ngFor="let item of arrGroups" [value]="item.id">
+						{{item.name}}</option>
+				</select>
+				<select class="form-select" *ngIf="target == 'clergys'" formControlName="position">
+					<option value="all">Chọn chức vụ</option>
+					<option *ngFor="let item of positionList" [value]="item.code">
+						{{item.name}}</option>
+				</select>
+				<input formControlName="name" class="form-control" type="text" placeholder="Nhập tên">
+				<input *ngIf="target == 'organizations'" formControlName="masses" class="form-control" type="text" mask="Hh:m0" placeholder="Nhập giờ lễ">
+				<button (click)="onSearch()" type="button" color="default" mat-flat-button>Tìm kiếm</button>
+			</div>
+		</div>
+	</div>
+	<app-search-organizations [title]="''" [data]="data" *ngIf="target == 'organizations'"></app-search-organizations>
+	<app-search-clergys [title]="''" [target]="'clergys'" *ngIf="target == 'clergys'"></app-search-clergys>
+	<div class="btn-dialog-actions mrt-12" fxLayout="row" fxLayoutAlign="start center">
+		<span fxFlex></span>
+		<button mat-flat-button (click)="closeDialog()" color="primary">Đóng</button>
+	</div>
+</mat-dialog-content>
