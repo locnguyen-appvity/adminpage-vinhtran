@@ -8,12 +8,12 @@
                     {{item.name}}</option>
             </select>
             <input class="form-control" type="text" mask="Hh:m0" placeholder="Nhập giờ lễ" aria-label="">
-            <button type="button" color="default" mat-flat-button>Tìm kiếm</button>
+            <button (click)="onSearch()" type="button" color="default" mat-flat-button>Tìm kiếm</button>
         </div>
     </div>
 </div>
 
-<div class="container-xl" *ngIf="type == 'list'">
+<div class="container-xl">
     <div class="result-list-container">
         <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
             <div class="item-result" [ngClass]="{'last-item': last}">

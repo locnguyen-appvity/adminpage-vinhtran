@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
+import { OrganizationsListComponent } from '../organizations-list/organizations-list.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-search-organizations',
@@ -18,6 +20,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	public arrGroups: any[] = [];
 
 	constructor(public sharedService: SharedPropertyService,
+		public dialog: MatDialog,
 		public service: SharedService) {
 		super(sharedService);
 			this.getGroups();
@@ -27,6 +30,33 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 		if (this.type == 'list') {
 			this.getOrganizations();
 		}
+	}
+
+	onSearch(){
+		if(this.type == 'dialog'){
+			this.getOrganizations();
+		}
+		else {
+			this.openFormDialog();
+		}
+	}
+
+	
+	openFormDialog() {
+		let config = {
+			disableClose: true,
+			panelClass:'dialog-form-l',
+			maxWidth: '80vw',
+			autoFocus:true,
+			data: {
+				type: 'dialog'
+			}
+		}
+		// let dialogRef = this.dialog.open(OrganizationsListComponent, config);
+		// dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+		// 	next: (res: any) => {
+		// 	}
+		// });
 	}
 
 	getGroups() {
