@@ -135,6 +135,7 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
+			this.getDataItems();
 		})
 	}
 

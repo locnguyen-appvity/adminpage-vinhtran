@@ -5,7 +5,7 @@
         </ng-container>
         <ng-template #temfData>
             <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
-                <p >Không có dữ liệu.</p>
+                <p>Không có dữ liệu.</p>
             </div>
             <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
                 <div class="item-result" [ngClass]="{'last-item': last}">
@@ -23,11 +23,9 @@
                             <h3>Dân số: {{item.population}}</h3>
                             <h3>Số tín hữu: {{item.memberCount}}</h3>
                         </div>
-                        <div class="times">
+                        <div class="times" fxLayout="column" fxLayoutAlign="start start">
                             <h2 class="title">Giờ lễ</h2>
-                            <h3>Chiều thứ 7: {{item.saturday}}</h3>
-                            <h3>Chủ nhật: {{item.sunday}}</h3>
-                            <h3>Ngày thường: {{item.days}}</h3>
+                            <h3 *ngFor="let masses of item.arrMasseses">{{masses.name}}: {{masses.time}}</h3>
                         </div>
                     </div>
                 </div>

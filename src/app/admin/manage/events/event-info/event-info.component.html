@@ -2,10 +2,25 @@
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-            <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Tên Sự Kiện</mat-label>
-                <input matInput required formControlName="name" autocomplete="off">
-            </mat-form-field>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tên Sự Kiện</mat-label>
+                        <input matInput required formControlName="name" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <div fxFlex.gt-xs="50" fxFlex="100">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Loại</mat-label>
+                        <mat-select formControlName="type" required>
+                            <mat-option value="ngay_ky_niem">Ngày Kỷ Niệm</mat-option>
+                            <mat-option value="ngay_sinh">Ngày Sinh</mat-option>
+                            <mat-option value="ngay_thanh_lap">Ngày Thành Lập</mat-option>
+                            <mat-option value="ngay_mat">Ngày Mất</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
             <div fxLayout="row wrap">
                 <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                     <mat-form-field appearance="outline" class="full-width">

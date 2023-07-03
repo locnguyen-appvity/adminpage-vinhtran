@@ -55,7 +55,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	getFilter(){
-		let filter = "type eq 'giao_xu'";
+		let filter = "type eq 'giao_xu' and status eq 'publish'";
 		if(this.data){
 			if(this.data.groupID && this.data.groupID != 'all'){
 				if(!this.isNullOrEmpty(filter)){
@@ -89,16 +89,33 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
 					for (let item of items) {
+						this.updateMassesesToOrg(item);
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
 						else {
-							item.pictureUrl = "../../assets/images/banner.jpg"
+							item.pictureUrl = "../../assets/icons/ic_church_24dp.svg"
 						}
 					}
 				}
 				this.dataLists = items;
 				this.loading = false;
+			}
+		})
+	}
+
+	updateMassesesToOrg(item: any){
+		let options = {
+			filter: `entityId eq ${item.id} and entityType eq 'organization'`
+		}
+		item.arrMasseses = [];
+		this.service.getMasseses(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				item.arrMasseses = items;
 			}
 		})
 	}
