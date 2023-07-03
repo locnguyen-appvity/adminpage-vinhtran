@@ -55,69 +55,7 @@
 					</mat-form-field>
 				</div>
 			</div>
-			<!-- <div fxLayout="row wrap">
-			<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}"> -->
-
-			<!-- </div>
-			<div fxFlex.gt-xs="50" fxFlex="100">
-				<mat-form-field appearance="outline" class="full-width">
-					<mat-label>Trạng Thái</mat-label>
-					<input matInput placeholder="DD/MM" mask="d0/M0" [dropSpecialCharacters]="false" autocomplete="off" formControlName="anniversarySaint">
-				</mat-form-field>
-			</div>
-		</div> -->
-			<!-- <mat-form-field appearance="outline" class="full-width">
-			<mat-label>Ngày Lãnh Nhận Chức Thánh Hoặc Khấn</mat-label>
-			<input matInput [matDatepicker]="anniversary" placeholder="DD/MM/YYYY"
-				 autocomplete="off" formControlName="anniversary">
-			<mat-datepicker-toggle matSuffix [for]="anniversary">
-			</mat-datepicker-toggle>
-			<mat-datepicker #anniversary></mat-datepicker>
-			<mat-error *ngIf="dataItemGroup.get('anniversary').hasError('matDatepickerParse')">
-				Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error>
-		</mat-form-field> -->
-
-			<!-- <h6 class="mrb-24"> SỰ KIỆN QUAN TRỌNG</h6>
-			<div formArrayName="items" class="full-width">
-				<ng-template ngFor let-data let-i="index" [ngForOf]="getControls(dataItemGroup, 'items')">
-					<div [formGroupName]="i">
-						<mat-form-field appearance="outline">
-							<mat-label>Tên Sự Kiện</mat-label>
-							<input matInput required formControlName="name" autocomplete="off">
-						</mat-form-field>
-						<div fxLayout="row wrap">
-							<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>Ngày</mat-label>
-									<input matInput placeholder="DD/MM" mask="d0/M0" [dropSpecialCharacters]="false"
-										autocomplete="off" formControlName="day">
-								</mat-form-field>
-							</div>
-							<div fxFlex.gt-xs="50" fxFlex="100">
-								<mat-form-field appearance="outline" class="full-width">
-									<mat-label>Ngày Tháng Năm</mat-label>
-									<input matInput [matDatepicker]="date" placeholder="DD/MM/YYYY" autocomplete="off"
-										formControlName="date">
-									<mat-datepicker-toggle matSuffix [for]="date">
-									</mat-datepicker-toggle>
-									<mat-datepicker #date></mat-datepicker>
-									<mat-error *ngIf="data.get('date').hasError('matDatepickerParse')">
-										Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error>
-								</mat-form-field>
-							</div>
-						</div>
-						<mat-form-field appearance="outline" class="full-width">
-							<mat-label>Mô Tả</mat-label>
-							<textarea matInput rows="3" formControlName="description"></textarea>
-						</mat-form-field>
-					</div>
-				</ng-template>
-				<button (click)="onAddSegment()" mat-icon-button color="primary" class="mrb-24">
-					<mat-icon svgIcon="ic_add_48px"></mat-icon>Thêm Sự Kiện
-				</button>
-			</div> -->
-
-			<mat-slide-toggle color="primary" formControlName="status">Ấn / Hiện</mat-slide-toggle>
+			<mat-slide-toggle color="primary" formControlName="status">Công Khai</mat-slide-toggle>
 		</form>
 		<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
 			<span fxFlex></span>

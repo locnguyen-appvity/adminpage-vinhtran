@@ -19,7 +19,7 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{
-				path: 'clergys-list',
+				path: 'clergys',
 				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
 			},
 			{ path: '', redirectTo: 'saints-list', pathMatch: 'full' },

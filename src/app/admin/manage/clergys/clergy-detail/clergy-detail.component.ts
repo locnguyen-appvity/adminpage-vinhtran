@@ -15,9 +15,9 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { TYPE_ORG } from '../../../../shared/data-manage';
 
 @Component({
-	selector: 'app-organization-detail',
-	templateUrl: './organization-detail.component.html',
-	styleUrls: ['./organization-detail.component.scss'],
+	selector: 'app-clergy-detail',
+	templateUrl: './clergy-detail.component.html',
+	styleUrls: ['./clergy-detail.component.scss'],
 	providers: [
 		{
 			provide: DateAdapter,
@@ -29,7 +29,7 @@ import { TYPE_ORG } from '../../../../shared/data-manage';
 		}
 	]
 })
-export class OrganizationDetailComponent extends SimpleBaseComponent implements OnInit {
+export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit {
 	public dataItemGroup: FormGroup;
 	public fileSelected: any;
 	public localItem: any;
@@ -55,7 +55,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
-			this.getOrganization();
+			this.getClergy();
 		}
 
 	}
@@ -167,7 +167,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 
 	routeToBack() {
-		this.router.navigate(['/admin/manage/organizations/organizations-list']);
+		this.router.navigate(['/admin/manage/clergys/clergys-list']);
 	}
 
 	getAllData() {
@@ -205,8 +205,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		})
 	}
 
-	getOrganization() {
-		this.service.getOrganization(this.ID).pipe(take(1)).subscribe({
+	getClergy() {
+		this.service.getClergy(this.ID).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
@@ -236,7 +236,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 
 	onCancel() {
-		this.router.navigate(['/admin/manage/organizations/organizations-list']);
+		this.router.navigate(['/admin/manage/clergys/clergys-list']);
 	}
 
 	onSave(status: string) {
@@ -259,10 +259,10 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		}
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
-			request = this.service.updateOrganization(this.ID, dataJSON);
+			request = this.service.updateClergy(this.ID, dataJSON);
 		}
 		else {
-			request = this.service.createOrganization(dataJSON)
+			request = this.service.createClergy(dataJSON)
 		}
 		request.pipe(take(1)).subscribe({
 			next: () => {
@@ -271,7 +271,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 					message: 'Lưu Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.router.navigate(['/admin/manage/organizations/organizations-list']);
+				this.router.navigate(['/admin/manage/clergys/clergys-list']);
 			}
 		})
 	}
