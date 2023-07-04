@@ -36,11 +36,11 @@ export class MassesInfoComponent extends SimpleBaseComponent {
 			this.entityType = this.dialogData.entityType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
-		if (this.dialogData.type == 'new') {
+		// if (this.dialogData.type == 'new') {
 			this.dataItemGroup.get('code').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((code: any) => {
 				this.dataItemGroup.get('name').setValue(this.getNameFromCode(code));
 			})
-		}
+		// }
 	}
 
 	getNameFromCode(key: string) {
@@ -49,6 +49,8 @@ export class MassesInfoComponent extends SimpleBaseComponent {
 				return 'Ngày Thường'
 			case 'chua_nhat':
 				return 'Chúa Nhật'
+			case 'chieu_thu_bay':
+				return 'Chiều Thứ 7'
 			default:
 				return '';
 		}

@@ -7,6 +7,8 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { ClergyInfoComponent } from '../clergy-info/clergy-info.component';
 import { Router } from '@angular/router';
+import { GlobalSettings } from 'src/app/shared/global.settings';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-clergys-list',
@@ -22,6 +24,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public router: Router,
+		private sanitizer: DomSanitizer,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
 		this.getDataItems();
@@ -86,6 +89,10 @@ export class ClergysListComponent extends ListItemBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				let items = res.value;
 				for (let item of items) {
+					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg')
+					if (item.photo) {
+						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+					}
 					switch (item.status) {
 						case 'publish':
 							item.statusTooltip = 'Hiện';
@@ -152,6 +159,51 @@ export class ClergysListComponent extends ListItemBaseComponent {
 				}
 			}
 		});
+	}
+
+	deleteItem(item: any) {
+		this.dataProcessing = true;
+		this.service.deleteClergy(item.id).pipe(take(1)).subscribe(() => {
+			this.dataProcessing = false;
+			let snackbarData: any = {
+				key: 'delete-item',
+				message: 'Xóa Thành Công'
+			};
+			this.showInfoSnackbar(snackbarData);
+			this.getDataItems();
+		})
+	}
+
+	onDeactive(item: any) {
+		let dataJSON = {
+			status: 'inactive',
+		}
+		this.service.updateClergy(item.id, dataJSON).pipe(take(1)).subscribe({
+			next: () => {
+				let snackbarData: any = {
+					key: 'inactivate-item',
+					message: 'Ẩn Thành Công'
+				};
+				this.showInfoSnackbar(snackbarData);
+				this.getDataItems();
+			}
+		})
+	}
+
+	onActive(item: any) {
+		let dataJSON = {
+			status: 'publish',
+		}
+		this.service.updateClergy(item.id, dataJSON).pipe(take(1)).subscribe({
+			next: () => {
+				let snackbarData: any = {
+					key: 'activate-item',
+					message: 'Hiện Thành Công'
+				};
+				this.showInfoSnackbar(snackbarData);
+				this.getDataItems();
+			}
+		})
 	}
 
 }

@@ -6,11 +6,12 @@
                 <mat-label>Loại</mat-label>
                 <mat-select formControlName="code" required>
                     <mat-option value="chua_nhat">Chúa Nhật</mat-option>
+                    <mat-option value="chieu_thu_bay">Chiều Thứ 7</mat-option>
                     <mat-option value="ngay_thuong">Ngày Thường</mat-option>
                     <mat-option value="khac">Khác</mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field *ngIf="dataItemGroup?.value?.code == 'khac'" appearance="outline" class="full-width">
                 <mat-label>Tên</mat-label>
                 <input matInput required formControlName="name" autocomplete="off">
             </mat-form-field>
