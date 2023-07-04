@@ -133,7 +133,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 			endDate = item._endDate;
 		}
 		return this.fb.group({
-			id: item ? item._id : '',
+			id: item ? item.id : '',
 			name: item ? item.name : '',
 			clergyID: item ? item.clergyID : '',
 			position: item ? item.position : 'chanh_xu',
@@ -155,7 +155,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 			endDate = item._endDate;
 		}
 		this.formGroupControl.patchValue({
-			id: item ? item._id : '',
+			id: item ? item.id : '',
 			name: item ? item.name : '',
 			clergyID: item ? item.clergyID : '',
 			position: item ? item.position : 'chanh_xu',
@@ -166,9 +166,9 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 	}
 
 	removeStep() {
-		if (this.item && this.item._id) {
+		if (this.item && this.item.id) {
 			this.dataProcessing = true;
-			// this.service.deleteDataInMyChurch(this.item._id).pipe(take(1)).subscribe({
+			// this.service.deleteDataInMyChurch(this.item.id).pipe(take(1)).subscribe({
 			// 	next: () => {
 			// 		this.dataProcessing = false;
 			// 		this.valueChange.emit({ action: 'delete' });
@@ -186,7 +186,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 	}
 
 	onSave() {
-		if (this.item && this.item._id) {
+		if (this.item && this.item.id) {
 			let valueForm = this.formGroupControl.value;
 			let startDate = '';
 			if (valueForm.startDate) {
@@ -207,7 +207,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 				"type": valueForm.type
 			}
 			this.dataProcessing = true;
-			// this.service.updateDataInMyChurch(this.item._id, dataJSON).pipe(take(1)).subscribe({
+			// this.service.updateDataInMyChurch(this.item.id, dataJSON).pipe(take(1)).subscribe({
 			// 	next: (res: any) => {
 			// 		this.dataProcessing = false;
 			// 		this.haschangedFormGroup = false;

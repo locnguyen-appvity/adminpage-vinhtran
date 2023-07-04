@@ -31,121 +31,79 @@
             <div fxLayout="row" fxLayoutAlign="start start">
                 <div fxFlex="70" class="mrr-24">
                     <div fxLayout="row wrap" class="full-width">
-                        <div fxFlex.gt-xs="60" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                        <div fxFlex.gt-xs="40" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Tên Thánh</mat-label>
+                                <se-autocomplete-simple [required]="true" [formControlName]="'stName'" [switchAt]="10"
+                                    [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
+                                    [keyValue]="'id'" [autocomplete]="true" [items]="saintList">
+                                </se-autocomplete-simple>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-xs="60" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Tên</mat-label>
                                 <input matInput formControlName="name" required />
                                 <mat-hint>{{dataItemGroup?.value?.link}}</mat-hint>
                             </mat-form-field>
                         </div>
-                        <div fxFlex.gt-xs="20" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                             <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Tên Viết Tắt</mat-label>
-                                <input matInput formControlName="abbreviation" autocomplete="off">
+                                <mat-label>Số Điện Thoại</mat-label>
+                                <input matInput formControlName="phoneNumber" autocomplete="off">
                             </mat-form-field>
                         </div>
-                        <div fxFlex.gt-xs="20" fxFlex="100">
+                        <div fxFlex.gt-xs="50" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Phân Loại</mat-label>
-                                <se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10"
-                                    [optgroup]="false" [placeHolder]="'Nhập Loại'" [keyTitle]="'name'"
-                                    [keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false"
-                                    [items]="typeList">
-                                </se-autocomplete-simple>
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" autocomplete="off">
                             </mat-form-field>
                         </div>
                     </div>
-                    <div fxLayout="row wrap" class="full-width">
-                        <div fxFlex.gt-xs="70" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Địa Chỉ</mat-label>
-                                <input matInput formControlName="address" autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                        <div fxFlex.gt-xs="30" fxFlex="100">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Giáo Hạt</mat-label>
-                                <se-autocomplete-simple [required]="true" [formControlName]="'groupID'" [switchAt]="10"
-                                    [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
-                                    [keyValueEmit]="'id'" [keyValue]="'id'" [autocomplete]="true" [items]="groupsList">
-                                </se-autocomplete-simple>
-                            </mat-form-field>
-                        </div>
-                    </div>
-
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Mô Tả</mat-label>
-                        <textarea matInput rows="4" formControlName="description"></textarea>
-                    </mat-form-field>
                     <se-editor-control formControlName="content"></se-editor-control>
                 </div>
                 <div fxFlex="30" class="mrl-24">
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Bổn Mạng</mat-label>
-                        <se-autocomplete-simple [required]="true" [formControlName]="'anniversary'" [switchAt]="10"
-                            [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
-                            [keyValue]="'_id'" [autocomplete]="true" [items]="saintList">
-                        </se-autocomplete-simple>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Số Điện Thoại</mat-label>
-                        <input matInput formControlName="phoneNumber" autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Email</mat-label>
-                        <input matInput formControlName="email" autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Dân Số</mat-label>
-                        <input matInput formControlName="population" autocomplete="off">
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Số Tín Hữu</mat-label>
-                        <input matInput formControlName="memberCount" autocomplete="off">
-                    </mat-form-field>
+                    <div fxLayout="column" fxLayoutAlign="start start" class="mrt-32">
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Phân Loại Tu Sĩ</mat-label>
+                            <se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10"
+                                [optgroup]="false" [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'"
+                                [keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
+                            </se-autocomplete-simple>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Thuộc</mat-label>
+                            <se-autocomplete-simple [required]="false" [formControlName]="'organizationID'"
+                                [switchAt]="10" [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'"
+                                [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="false"
+                                [items]="organizationList">
+                            </se-autocomplete-simple>
+                        </mat-form-field>
+                        <mat-accordion multi="true">
+                            <mat-expansion-panel expanded>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        SỰ KIỆN QUAN TRỌNG
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <app-events-list [entityID]="ID" [entityType]="'clergy'"></app-events-list>
+                            </mat-expansion-panel>
 
-                    <mat-accordion multi="true">
-                        <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    GIỜ LỄ
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-masses-list [entityID]="ID" [entityType]="'organization'"></app-masses-list>
-                            <!-- <ng-template ngFor let-data let-i="index" let-last="last" [ngForOf]="arrMasses">
-                                <strong>{{data.time}}</strong> <span>{{data.time}}</span>
-                                <mat-divider class="mrb-24" *ngIf="!last"></mat-divider>
-                            </ng-template>
-                            <mat-action-row>
-                                <button (click)="openMasses('new',null)" mat-button color="primary">Thêm Giờ Lễ</button>
-                            </mat-action-row> -->
-                        </mat-expansion-panel>
-
-                        <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    SỰ KIỆN QUAN TRỌNG
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-events-list [entityID]="ID" [entityType]="'organization'"></app-events-list>
-                        </mat-expansion-panel>
-
-                        <mat-expansion-panel expanded>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    DANH SÁCH LINH MỤC
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <!-- <ng-template ngFor let-data let-i="index" let-last="last"
-                                    [ngForOf]="getControls(dataItemGroup, 'items')"> -->
-                            <app-clergy-in-organizations-list [entityID]="ID" [entityType]="'organization'">
-                            </app-clergy-in-organizations-list>
-                            <!-- <mat-divider class="mrb-24" *ngIf="!last"></mat-divider> -->
-                            <!-- </ng-template> -->
-                        </mat-expansion-panel>
-                    </mat-accordion>
+                            <mat-expansion-panel expanded>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        DANH SÁCH GIÁO XỨ
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <app-clergy-in-organizations-list [entityID]="ID" [entityType]="'clergy'">
+                                </app-clergy-in-organizations-list>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
                 </div>
             </div>
         </form>

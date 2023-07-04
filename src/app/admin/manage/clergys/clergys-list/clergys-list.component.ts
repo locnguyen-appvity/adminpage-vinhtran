@@ -87,15 +87,21 @@ export class ClergysListComponent extends ListItemBaseComponent {
 				let items = res.value;
 				for (let item of items) {
 					switch (item.status) {
-						case 'active':
+						case 'publish':
 							item.statusTooltip = 'Hiện';
 							item.statusIcon = 'ic_toggle_on';
-							item.class = 'active-status';
+							item.statusClass = 'active';
 							break;
 						case 'inactive':
 							item.statusTooltip = 'Ẩn';
 							item.statusIcon = 'ic_toggle_off';
-							item.class = 'inactive-status';
+							item.statusClass = 'inactive';
+							break;
+						case 'draft':
+						default:
+							item.statusTooltip = 'Nháp';
+							item.statusIcon = 'ic_toggle_off';
+							item.statusClass = 'draft';
 							break;
 					}
 					item = this.handleClergyType(item);

@@ -7,7 +7,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_CLERGY } from '../../../../shared/data-manage';
+import { TYPE_CLERGY, TYPE_ORG } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-info',
@@ -33,8 +33,9 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
-	public organizationList$: Observable<any>;
-	public typeList$: Observable<any>;
+	public organizationList: any[] = [];
+	public typeList: any[] = [];
+	public typeOrgList: any[] = [];
 	public saintList$: Observable<any>;
 	public saintList: any[] = [];
 	public localItem: any;
@@ -67,7 +68,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			// 	this.hasChangedGroup = this.isChangedForm(valueForm);
 			// }
 			// else {
-				this.hasChangedGroup = true;
+			this.hasChangedGroup = true;
 			// }
 		})
 		this.getAllData();
@@ -91,135 +92,54 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
-	// initialTripInfoGroup(item: any): FormGroup {
-	// 	return this.fb.group({
-	// 		id: item ? item.id : '',
-	// 		name: [item ? item.name : '', Validators.required],
-	// 		day: [item ? item.day : '', Validators.required],
-	// 		date: item ? item._date : '',
-	// 		description: item ? item.description : '',
-	// 	});
-	// }
-
-	// onAddSegment() {
-	// 	let arrForm = this.dataItemGroup.get('items') as FormArray;
-	// 	arrForm.push(this.initialTripInfoGroup({}));
-
-	// 	// let control = arrForm.controls[index];
-	// 	// this.initialValueChangeHost(control);
-	// }
-
 	getAllData() {
-		this.typeList$ = of(TYPE_CLERGY);
+		this.typeList = TYPE_CLERGY;
+		this.typeOrgList = TYPE_ORG;
 		this.getOrganizations();
 		// this.getListClergyType();
 		this.getSaints();
 	}
 
-	// getAnniversarys(clergyID: string) {
-	// 	let options = {
-	// 		filter: `entityID eq ${clergyID} and entityType eq 'clergy'`
-	// 	}
-	// 	this.dataProcessing = true;
-	// 	this.service.getAnniversaries(options).pipe(takeUntil(this.unsubscribe)).subscribe({
-	// 		next: (res: any) => {
-	// 			let anniversarys = [];
-	// 			if (res && res.value && res.value.length > 0) {
-	// 				let arrForm = this.dataItemGroup.get('items') as FormArray;
-	// 				anniversarys = res.value;
-	// 				for (let item of anniversarys) {
-	// 					if (item.date) {
-	// 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
-	// 						item.dateView = item._date.format('DD/MM/YYYY');
-	// 					}
-	// 					arrForm.push(this.initialTripInfoGroup(item));
-	// 				}
-	// 			}
-	// 			this.anniversarys = anniversarys;
-	// 			this.dataProcessing = false;
-	// 		},
-	// 		error: error => {
-	// 			console.log(error);
-	// 		}
-	// 	});
-	// }
-
-	// valueChangeSelect(event: any) {
-	// 	if (!this.isNullOrEmpty(event)) {
-	// 		let saint = this.sharedService.getValueAutocomplete(event, this.saintList);
-	// 		if (saint && saint.anniversarySaint) {
-	// 			this.dataItemGroup.get("anniversarySaint").setValue(saint.anniversarySaint);
-	// 		}
-	// 	}
-	// }
-
-	// isChangedForm(valueForm: any) {
-	// 	let deActive = valueForm.status == true ? 0 : 1;
-	// 	if (this.sharedService.isChangedValue(deActive, this.dialogData.item.deActive)) {
-	// 		return true;
-	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-	// 		return true;
-	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.position, this.dialogData.item.position)) {
-	// 		return true;
-	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.type, this.dialogData.item.type)) {
-	// 		return true;
-	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-	// 		return true;
-	// 	}
-	// 	let dateOfBirth = this.sharedService.ISOStartDay(valueForm.dateOfBirth);
-	// 	if (this.sharedService.isChangedValue(dateOfBirth, this.dialogData.item.dateOfBirth)) {
-	// 		return true;
-	// 	}
-	// 	if (this.sharedService.isChangedValue(valueForm.anniversarySaint, this.dialogData.item.anniversarySaint)) {
-	// 		return true;
-	// 	}
-	// 	let anniversary = this.sharedService.ISOStartDay(valueForm.anniversary);
-	// 	if (this.sharedService.isChangedValue(anniversary, this.dialogData.item.anniversary)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
-
 	getOrganizations() {
-		this.organizationList$ = of([]);
+		this.organizationList = [];
 		let options = {
-			select:'id,name',
+			select: 'id,name,type',
 			filter: "type eq 'dong_tu'"
 		}
 		this.service.getOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [{
 					id: '-1',
-					name: 'Giáo Phận Phú Cường'
+					name: 'Giáo Phận Phú Cường',
+					type: 'giao_phan'
 				}]
 				if (res && res.value && res.value.length > 0) {
+					for (let item of res.value) {
+						this.updateNameOfTypeOrg(item);
+					}
 					items.push(...res.value);
 				}
-				this.organizationList$ = of(items);
+				this.organizationList = items;
 			}
 		})
 	}
 
-	// getListClergyType() {
-	// 	this.typeList$ = of([]);
-	// 	// this.service.getListClergyType().pipe(take(1)).subscribe({
-	// 	// 	next: (res: any) => {
-	// 	// 		if (res && res.value && res.value.length > 0) {
-	// 	// 			this.typeList$ = of(res.value);
-	// 	// 		}
-	// 	// 	}
-	// 	// })
-	// }
+	updateNameOfTypeOrg(item: any) {
+		switch (item.type) {
+			case 'dong_tu':
+				item.name = `Dòng ${item.name}`;
+				break;
+			case 'giao_xu':
+				item.name = `Giáo Xứ ${item.name}`;
+				break;
+		}
+	}
 
 	getSaints() {
 		this.saintList$ = of([]);
 		this.saintList = [];
 		let options = {
-			select:'id,name'
+			select: 'id,name'
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -253,99 +173,29 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
-			organizationID: valueForm.organizationID == '-1' ? "": valueForm.organizationID,
+			organizationID: valueForm.organizationID == '-1' ? "" : valueForm.organizationID,
 			type: valueForm.type
 		}
 		this.saveAction = 'save';
 		if (this.target == 'edit') {
 			this.dataProcessing = true;
 			this.service.updateClergy(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
-				// this.createAnniversaryToTeamMember(this.ID).pipe(takeUntil(this.unsubscribe)).subscribe({
-				// 	next: () => {
-						this.saveAction = ''
-						this.dataProcessing = false;
-						this.dialogRef.close('OK');
-				// 	},
-				// 	error: error => {
-				// 		this.saveAction = ''
-				// 		this.dataProcessing = false;
-				// 		this.dialogRef.close('OK');
-				// 	}
-				// });
+				this.saveAction = ''
+				this.dataProcessing = false;
+				this.dialogRef.close('OK');
 			})
 		}
 		else {
 			this.dataProcessing = true;
 			this.service.createClergy(dataJSON).pipe(take(1)).subscribe(
 				{
-					next: (res) => {
-						// if (res && res.value && res.value.id) {
-						// 	this.createAnniversaryToTeamMember(res.value.id).pipe(takeUntil(this.unsubscribe)).subscribe({
-						// 		next: () => {
-						// 			this.saveAction = ''
-						// 			this.dataProcessing = false;
-						// 			this.dialogRef.close('OK');
-						// 		},
-						// 		error: error => {
-						// 			this.saveAction = ''
-						// 			this.dataProcessing = false;
-						// 			this.dialogRef.close('OK');
-						// 		}
-						// 	});
-						// }
-						// else {
-							this.saveAction = ''
-							this.dataProcessing = false;
-							this.dialogRef.close('OK');
-						// }
+					next: () => {
+						this.saveAction = ''
+						this.dataProcessing = false;
+						this.dialogRef.close('OK');
 					}
 				})
 		}
 	}
-
-	// createAnniversaryToTeamMember(clergyID: string) {
-	// 	return new Observable(obs => {
-	// 		let requests: Observable<any>[] = [];
-	// 		let arrForm = this.dataItemGroup.get('items') as FormArray;
-	// 		if (arrForm && arrForm.controls && arrForm.controls.length > 0) {
-	// 			for (let control of arrForm.controls) {
-	// 				let date = '';
-	// 				let valueForm = control.value;
-	// 				if (!this.isNullOrEmpty(valueForm.date)) {
-	// 					date = valueForm.date.startOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]');
-	// 				}
-	// 				let dataJSON = {
-	// 					"entityID": clergyID,
-	// 					"entityType": "clergy",
-	// 					"name": valueForm.name,
-	// 					"day": valueForm.day,
-	// 					"date": date ? date : null,
-	// 					"description": valueForm.description
-	// 				}
-	// 				requests.push(this.service.createAnniversary(dataJSON));
-	// 			}
-	// 		}
-	// 		if (requests.length > 0) {
-	// 			forkJoin(requests).pipe(takeUntil(this.unsubscribe)).subscribe({
-	// 				next: () => {
-	// 					obs.next();
-	// 					obs.complete();
-	// 				},
-	// 				error: error => {
-	// 					obs.next();
-	// 					obs.complete();
-	// 				}
-	// 			});
-	// 		}
-	// 		else {
-	// 			obs.next();
-	// 			obs.complete();
-	// 		}
-	// 	})
-	// }
-
-	// getControls(frmGrp: FormGroup, key: string) {
-	// 	return (<FormArray>frmGrp.controls[key]).controls;
-	// }
 
 }

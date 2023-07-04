@@ -10,7 +10,7 @@
 						<!-- <input matInput formControlName="stName" type="text" autocomplete="off"> -->
 						<se-autocomplete-simple [required]="true" [formControlName]="'stName'" [switchAt]="10"
 							[optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
-							[keyValue]="'_id'" [autocomplete]="true" [items$]="saintList$">
+							[keyValue]="'id'" [autocomplete]="true" [items$]="saintList$">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
@@ -27,7 +27,7 @@
 						<mat-label>Phân Loại Tu Sĩ</mat-label>
 						<se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10"
 							[optgroup]="false" [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'"
-							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items$]="typeList$">
+							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
@@ -36,7 +36,7 @@
 						<mat-label>Thuộc</mat-label>
 						<se-autocomplete-simple [required]="false" [formControlName]="'organizationID'" [switchAt]="10"
 							[optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'"
-							[keyValueEmit]="'id'" [autocomplete]="false" [items$]="organizationList$">
+							[keyValueEmit]="'id'" [autocomplete]="false" [items]="organizationList">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>

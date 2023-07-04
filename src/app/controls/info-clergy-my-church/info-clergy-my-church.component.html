@@ -8,7 +8,7 @@
     <mat-form-field appearance="outline" class="full-width">
         <mat-label>Tên Tu Sĩ</mat-label>
         <se-autocomplete-simple [required]="false" [formControlName]="'clergyID'" [switchAt]="10" [optgroup]="false"
-            [placeHolder]="'Nhập tên tu sĩ...'" [keyTitle]="'name'" [keyValueEmit]="'_id'" [keyValue]="'_id'"
+            [placeHolder]="'Nhập tên tu sĩ...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'id'"
             [autocomplete]="true" [items]="clergysList" (valueChange)="valueChangeAutocomplete($event,'clergyID')">
         </se-autocomplete-simple>
     </mat-form-field>

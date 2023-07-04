@@ -184,7 +184,7 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['selectedItems'] && this.selectedItems) {
 			this.chips = this.selectedItems.concat([]);
-			this.ctrlChip.setValue(this.chips.map(it => it._id).join(','));
+			this.ctrlChip.setValue(this.chips.map(it => it.id).join(','));
 			this.updateAvatarChip();
 		}
 		if (changes['dataItems']) {

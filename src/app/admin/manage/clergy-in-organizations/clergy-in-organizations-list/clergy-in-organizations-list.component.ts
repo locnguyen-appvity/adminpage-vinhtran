@@ -36,10 +36,19 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 
 
 	onAddItem() {
+		let clergyID = '';
+		let entityID = '';
+		if(this.entityType == 'clergy'){
+			clergyID = this.entityID;
+		}
+		else {
+			entityID = this.entityID;
+		}
 		let config: any = {};
 		config.data = {
 			type: 'new',
-			entityID: this.entityID,
+			entityID: entityID,
+			clergyID: clergyID,
 			entityType: this.entityType
 		};
 		this.openFormDialog(config, 'new');
@@ -115,8 +124,16 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 	// }
 
 	getDataItems() {
+		let filter = '';
+		if(this.entityType == 'organization'){
+			filter = `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`;
+		}
+		else if(this.entityType == 'clergy'){
+			filter = `clergyID eq ${this.entityID}`;
+		}
+
 		let options = {
-			filter: `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`
+			filter: filter
 		}
 		this.arrData = [];
 		this.dataProcessing = true;
@@ -127,6 +144,10 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 					this.noData = false;
 					this.arrData = res.value;
 					for (let item of this.arrData) {
+						if(this.entityType == 'clergy'){
+							item.name = item.entityID;
+						}
+				
 						this.getClergyPosition(item);
 						this.getClergyStatus(item);
 						if (item && item.fromDate) {

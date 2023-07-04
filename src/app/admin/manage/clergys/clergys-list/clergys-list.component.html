@@ -21,8 +21,7 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
-                            <input placeholder="Tìm theo tên" [readonly]="spinerLoading"
-                                [formControl]="txtSearch">
+                            <input placeholder="Tìm theo tên" [readonly]="spinerLoading" [formControl]="txtSearch">
                         </div>
                     </div>
                     <div fxFlex="25">
@@ -31,7 +30,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm" (click)="onAddItem()">
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm"
+                            (click)="onAddItem()">
                             Thêm
                         </button>
                     </div>
@@ -58,9 +58,8 @@
                             [ngClass]="{'list-viewport-no-data': noData ? true : false}">
                             <mat-list-item *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
                                 (click)="onChangeData(data)">
-                                <mat-icon mat-list-icon
-                                    [ngClass]="{'active': data.status === 'active', 'inactive': data.status === 'inactive'}"
-                                    [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
+                                <mat-icon mat-list-icon [ngClass]="data.statusClass" [matTooltip]="data.statusTooltip"
+                                    [svgIcon]="data.statusIcon"></mat-icon>
                                 <h4 mat-line>{{data.typeName}} {{data.stName}} {{data.name}}</h4>
                                 <p mat-line>{{data.positionName}}</p>
                                 <span fxFlex></span>

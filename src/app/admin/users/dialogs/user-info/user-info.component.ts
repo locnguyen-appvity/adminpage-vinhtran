@@ -75,7 +75,7 @@ export class UserInfoComponent extends SimpleBaseComponent {
 	}
 
 	//   {
-	//     "_id": "6350dad62ca4cb4c7d13fe91",
+	//     "id": "6350dad62ca4cb4c7d13fe91",
 	//     "fullName": "Vinh",
 	//     "address": "",
 	//     "phoneNumber": "0987380003",
@@ -112,7 +112,7 @@ export class UserInfoComponent extends SimpleBaseComponent {
 			// "phoneNumber": formValue.phoneNumber,
 			"status": 1,
 		}
-		if (this.localItem && !this.isNullOrEmpty(this.localItem._id)) {
+		if (this.localItem && !this.isNullOrEmpty(this.localItem.id)) {
 			if (this.type == "update-password") {
 				let dataJSONPass = {
 					"priority": formValue.priority,

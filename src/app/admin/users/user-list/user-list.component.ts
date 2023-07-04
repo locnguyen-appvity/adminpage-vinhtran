@@ -136,10 +136,10 @@ export class UserListComponent extends TemplateGridApplicationComponent {
 	}
 
 	getAvatar(dataItem: any) {
-		if (this.isNullOrEmpty(dataItem._id)) {
+		if (this.isNullOrEmpty(dataItem.id)) {
 			return;
 		}
-		// this.service.getAvatarListForEntityWithValue(dataItem._id, 'user').pipe(take(1)).subscribe({
+		// this.service.getAvatarListForEntityWithValue(dataItem.id, 'user').pipe(take(1)).subscribe({
 		// 	next: (res: any) => {
 		// 		if (res && res.value) {
 		// 			dataItem.hasAvatar = true;
@@ -161,7 +161,7 @@ export class UserListComponent extends TemplateGridApplicationComponent {
 		let dataJSON = {
 			status: status
 		}
-		// this.service.updateUser(dataJSON, item._id).pipe(take(1)).subscribe({
+		// this.service.updateUser(dataJSON, item.id).pipe(take(1)).subscribe({
 		// 	next: () => {
 		// 		this.selection.clear();
 		// 		this.getDataGridAndCounterApplications();

@@ -32,7 +32,7 @@
                     <img [src]="currentUser?.pictureUrl" alt="Avatar" mat-list-avatar />
                 </mat-list-item>
             </mat-nav-list>
-            <button mat-menu-item [disabled]="isNullOrEmpty(currentUser?._id)">
+            <button mat-menu-item [disabled]="isNullOrEmpty(currentUser?.id)">
                 <mat-icon class="material-icons" svgIcon="ic_edit_note_24dp"></mat-icon>
                 <span>Chỉnh Sửa Thông Tin</span>
             </button>

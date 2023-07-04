@@ -30,9 +30,11 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 	public localItem: any;
 	public title: string = "Tu Sĩ";
 	public entityID: string = "";
+	public clergyID: string = "";
 	public entityType: string = "";
 
 	public clergysList: any[] = [];
+	public organizationList: any[] = [];
 	public positionList: any[] = POSSITION;
 	public typeList: any[] = TYPE_CLERGY;
 
@@ -49,10 +51,14 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 		if (this.dialogData.entityID) {
 			this.entityID = this.dialogData.entityID;
 		}
+		if (this.dialogData.clergyID) {
+			this.clergyID = this.dialogData.clergyID;
+		}
 		if (this.dialogData.entityType) {
 			this.entityType = this.dialogData.entityType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
+		this.getOrganizations();
 		this.getClergies();
 	}
 
@@ -68,9 +74,11 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 			toDate = item._toDate;
 		}
 		return this.fb.group({
-			id: item ? item._id : '',
+			id: item ? item.id : '',
 			name: item ? item.name : '',
-			clergyID: item ? item.clergyID : '',
+			clergyID: item ? item.clergyID : this.clergyID,
+			entityID: item ? item.entityID : this.entityID,
+			entityType: item ? item.entityType : 'organization',
 			position: item ? item.position : 'chanh_xu',
 			status: item ? item.status : 'duong_nhiem',
 			fromDate: fromDate,
@@ -88,6 +96,37 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 			}
 		}
 	}
+
+	getOrganizations() {
+		this.organizationList = [];
+		let options = {
+			select: 'id,name,type'
+		}
+		this.service.getOrganizations(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items.push(...res.value);
+					for (let item of items) {
+						this.updateNameOfTypeOrg(item);
+					}
+				}
+				this.organizationList = items;
+			}
+		})
+	}
+
+	updateNameOfTypeOrg(item: any) {
+		switch (item.type) {
+			case 'dong_tu':
+				item.name = `Dòng ${item.name}`;
+				break;
+			case 'giao_xu':
+				item.name = `Giáo Xứ ${item.name}`;
+				break;
+		}
+	}
+
 
 	getClergies() {
 		// let options = {
@@ -128,8 +167,8 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 		let daaJSON = {
 			name: valueForm.name,
 			clergyID: valueForm.clergyID,
-			entityID: this.entityID,
-			entityType: this.entityType,
+			entityID: valueForm.entityID,
+			entityType: valueForm.entityType,
 			fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
 			toDate: this.sharedService.ISOStartDay(valueForm.toDate),
 			position: valueForm.position,

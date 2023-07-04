@@ -29,7 +29,7 @@ export class DiocesesComponent extends ListItemBaseComponent {
 		// 	if (res && res.value && res.value.length > 0) {
 		// 		let items = res.value;
 		// 		for (let item of items) {
-		// 			item.id = item._id;
+		// 			item.id = item.id;
 		// 			switch (item.deActive) {
 		// 				case -1:
 		// 					item.status = 'Draft';

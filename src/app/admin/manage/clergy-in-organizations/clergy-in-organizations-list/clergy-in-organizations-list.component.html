@@ -2,7 +2,7 @@
     <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
         <h4 mat-line><strong>{{data?.name}}</strong></h4>
         <p mat-line>Chức vụ: {{data?.positionView}} - Trạng thái: {{data?.statusView}}</p>
-        <p mat-line>Thời gian phục vụ: {{data?.fromDateView}} - {{data?.toDateView}}</p>
+        <p mat-line>Thời gian phục vụ: {{data?.fromDateView}} <span *ngIf="data?.toDateView?.length > 0"> - {{data?.toDateView}}</span></p>
         <span fxFlex></span>
         <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
             matTooltip="Thao Tác Khác">
@@ -29,5 +29,8 @@
 <mat-divider class="full-width"></mat-divider>
 <div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
     <span fxFlex></span>
-    <button (click)="onAddItem()" mat-button color="primary">Thêm Tu Sĩ</button>
+    <button (click)="onAddItem()" mat-button color="primary">
+        <span *ngIf="entityType == 'organization'">Thêm Tu Sĩ</span>
+        <span *ngIf="entityType == 'clergy'">Thêm Giáo Xứ</span>
+    </button>
 </div>

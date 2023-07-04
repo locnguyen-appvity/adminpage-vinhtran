@@ -139,10 +139,10 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 	}
 
 	getAvatar(dataItem: any) {
-		if (this.isNullOrEmpty(dataItem._id)) {
+		if (this.isNullOrEmpty(dataItem.id)) {
 			return;
 		}
-		// this.service.getAvatarListForEntityWithValue(dataItem._id, 'user').pipe(take(1)).subscribe({
+		// this.service.getAvatarListForEntityWithValue(dataItem.id, 'user').pipe(take(1)).subscribe({
 		// 	next: (res: any) => {
 		// 		if (res && res.value) {
 		// 			dataItem.hasAvatar = true;

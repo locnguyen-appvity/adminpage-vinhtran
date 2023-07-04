@@ -56,7 +56,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			name: [item ? item.name : '', Validators.required],
 			day: [item ? item.day : '', Validators.required],
 			date: item ? item._date : '',
-			type: [item ? item.type : '', Validators.required],
+			type: [item ? item.type : 'ngay_ky_niem', Validators.required],
 			description: item ? item.description : '',
 		});
 	}

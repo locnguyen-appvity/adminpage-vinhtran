@@ -12,7 +12,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_ORG } from '../../../../shared/data-manage';
+import { TYPE_CLERGY } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-detail',
@@ -40,7 +40,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	}
 	public typeList: any[] = [];
 	public saintList: any[] = [];
-	public groupsList: any[] = [];
+	public organizationList: any[] = [];
 	public arrMasses: any[] = [];
 
 	constructor(
@@ -64,17 +64,12 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		this.dataItemGroup = this.fb.group({
 			// items: this.fb.array([]),
 			name: "",
-			type: "giao_xu",
-			abbreviation: "",
-			description: "",
+			stName: "",
+			type: "linh_muc",
 			content: "",
-			memberCount: 0,
-			population: 0,
-			groupID: '',
+			organizationID: '',
 			phoneNumber: '',
 			email: '',
-			address: '',
-			anniversary: '',
 			photo: ''
 		});
 		this.getAllData();
@@ -171,9 +166,9 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	}
 
 	getAllData() {
-		this.typeList = TYPE_ORG;
+		this.typeList = TYPE_CLERGY;
 		this.getSaints();
-		this.getGroups();
+		this.getOrganizations();
 		// this.getMasses();
 	}
 
@@ -191,18 +186,39 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		})
 	}
 
-	getGroups() {
-		this.groupsList = [];
+	getOrganizations() {
+		this.organizationList = [];
 		let options = {
-			select: 'id,name'
+			select: 'id,name,type',
+			filter: "type eq 'dong_tu'"
 		}
-		this.service.getGroups(options).pipe(take(1)).subscribe({
+		this.service.getOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
+				let items = [{
+					id: '-1',
+					name: 'Giáo Phận Phú Cường',
+					type:'giao_phan'
+				}]
 				if (res && res.value && res.value.length > 0) {
-					this.groupsList = res.value;
+					items.push(...res.value);
+					for (let item of items) {
+						this.updateNameOfTypeOrg(item);
+					}
 				}
+				this.organizationList = items;
 			}
 		})
+	}
+
+	updateNameOfTypeOrg(item: any) {
+		switch (item.type) {
+			case 'dong_tu':
+				item.name = `Dòng ${item.name}`;
+				break;
+			case 'giao_xu':
+				item.name = `Giáo Xứ ${item.name}`;
+				break;
+		}
 	}
 
 	getClergy() {
@@ -217,17 +233,12 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
+						stName: this.localItem.stName,
 						email: this.localItem.email,
 						phoneNumber: this.localItem.phoneNumber,
-						address: this.localItem.address,
-						groupID: this.localItem.groupID,
-						abbreviation: this.localItem.abbreviation,
+						organizationID: this.localItem.organizationID,
 						content: this.localItem.content,
-						description: this.localItem.description,
-						anniversary: this.localItem.anniversary,
 						type: this.localItem.type,
-						memberCount: this.localItem.memberCount,
-						population: this.localItem.population,
 						photo: this.localItem.photo
 					});
 				}
