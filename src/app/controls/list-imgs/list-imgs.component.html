@@ -1,0 +1,31 @@
+<mat-card>
+    <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="start center" class="mrb-24">
+            <span fxFlex></span>
+            <button mat-flat-button color="primary" matTooltip="Thêm Hình" (click)="chooseImage()">Thêm hình
+            </button>
+        </div>
+        <div *ngIf="noFilesUploads" fxLayout="row" fxLayoutAlign="center center"
+            style="padding-top: 50px; padding-bottom: 16px;">
+            <h4>Không có hình ảnh nào.</h4>
+        </div>
+        <ng-template [ngIf]="!noFilesUploads">
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="24">
+                <ng-template ngFor let-file let-i="index" [ngForOf]="dataSources">
+                    <mat-card class="box-img-card">
+                        <div class="remove-photo-overlay" fxLayoutAlign="center center">
+                            <button mat-icon-button color="primary" matTooltip="Xóa Hình" (click)="onRemoveImage(i)">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                        </div>
+                        <img mat-card-image *ngIf="file?.imageUrl?.length > 0" [src]="file?.imageUrl" />
+                        <mat-card-actions>
+                            <textarea [(ngModel)]="file.name" matInput rows="2"
+                                placeholder="Mô tả (không bắt buộc)"></textarea>
+                        </mat-card-actions>
+                    </mat-card>
+                </ng-template>
+            </div>
+        </ng-template>
+    </mat-card-content>
+</mat-card>

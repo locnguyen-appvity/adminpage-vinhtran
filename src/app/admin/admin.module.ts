@@ -66,5 +66,6 @@ export class AdminModule {
     this.mdIconRegistry.addSvgIcon('ic_more_vert_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_more_vert_48px.svg'));
     this.mdIconRegistry.addSvgIcon('ic_keyboard_arrow_right_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_keyboard_arrow_right_48px.svg'));
     this.mdIconRegistry.addSvgIcon('ic_send_48dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_send_48dp.svg'));
+    this.mdIconRegistry.addSvgIcon('ic_create_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_create_48px.svg'));
   }
 }

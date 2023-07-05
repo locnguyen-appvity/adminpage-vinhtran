@@ -6,6 +6,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { DialogSelectedImgsComponent } from '../dialog-selected-imgs/dialog-selected-imgs.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'se-upload-avatar',
@@ -33,6 +34,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 
 	constructor(public sharedService: SharedPropertyService,
 		public dialog: MatDialog,
+		private sanitizer: DomSanitizer,
 		private service: SharedService) {
 		super(sharedService);
 	}
@@ -49,7 +51,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 				this.imageUrl = `${GlobalSettings.Settings.Server}/${this.filePath}`;
 			}
 			else {
-				this.imageUrl = "./assets/icons/ic_image_48dp.svg";
+				this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_image_48dp.svg');
 			}
 		}
 	}
@@ -91,7 +93,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 
 	clearAvatar() {
 		// this.file = null;
-		this.imageUrl = "./assets/images/ic_account_circle_black_24px.svg";
+		this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_image_48dp.svg');
 		this.fileInput.nativeElement.value = '';
 		this.hasBeenAvatar = false;
 		this.disabledRemoveBtn = true;

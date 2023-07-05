@@ -243,7 +243,8 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 
 	getSlides() {
 		let options = {
-			select: 'id,name'
+			select: 'id,name',
+			filter: "status eq 'publish'"
 		}
 		this.arrSlides = [];
 		this.service.getSlides(options).pipe(take(1)).subscribe({

@@ -44,6 +44,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./folders/folders.module').then(m => m.FoldersModule)
 			},
 			{
+			  path: 'slides',
+			  loadChildren: () => import('./slides/slides.module').then(m => m.SlidesModule)
+			},
+			{
 				path: 'manage',
 				loadChildren: () => import('./manage/manage.module').then(m => m.ManageModule)
 			},

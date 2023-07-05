@@ -1,0 +1,50 @@
+<div class="post-info">
+    <div class="sticky-toolbar">
+        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button (click)="routeToBack()">
+                    <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+                </button>
+                <span class="truncate">Trở về {{matTooltipBack}}</span>
+            </div>
+            <div *ngIf="statusLabel?.title !== ''">
+                <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
+                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
+                <ng-template [ngIf]="localItem?.status == 'publish'">
+                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
+                </ng-template>
+                <ng-template [ngIf]="localItem?.status !== 'publish'">
+                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
+                    <button (click)="onSave('publish')" mat-flat-button class="accept">
+                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
+                    </button>
+                </ng-template>
+            </div>
+        </mat-toolbar>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="post-container">
+        <form [formGroup]="postFormGroup">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex="80" class="mrr-24">
+                    <se-list-imgs [data]="localItem?._photos" (valueChanges)="valueChangesFile($event)"></se-list-imgs>
+                </div>
+                <div fxFlex="20" class="mrl-24">
+                    <se-upload-avatar style="max-width: 200px;" (valueChanges)="valueChangesFile($event)"
+                        [filePath]="localItem?.photo"></se-upload-avatar>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tiêu Đề</mat-label>
+                        <textarea matInput rows="1" formControlName="name" required></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mô Tả</mat-label>
+                        <textarea matInput rows="4" formControlName="context"></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

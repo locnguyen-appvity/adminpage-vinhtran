@@ -78,6 +78,11 @@
             <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
             Bài Viết
         </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/slides/slides-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+            Album Hình
+        </mat-list-item>
         <mat-list-item [routerLink]="['/admin/parables/parables-list']" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}">
             <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
