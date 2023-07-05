@@ -107,6 +107,32 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteCategory', error)));
 	}
 
+	//Catalogues
+	getCatalogues(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/catalogues';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getCatalogues', error)));
+	}
+
+	getCatalog(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/catalogues';
+		return this.service.getItem(baseUrl, options).pipe(catchError(error => this.handleError('getCatalog', error)));
+	}
+
+	createCatalog(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/catalogues`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createCatalog', error)));
+	}
+
+	updateCatalog(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/catalogues`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateCatalog', error)));
+	}
+
+	deleteCatalog(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/catalogues`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteCatalog', error)));
+	}
+
 	//Tags
 	getTags(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/tags';
@@ -209,6 +235,32 @@ export class SharedService {
 	deletePost(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/posts`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePost', error)));
+	}
+
+	//Slides
+	getSlides(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/slides';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getSlides', error)));
+	}
+
+	getSlide(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/slides';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getSlide', error)));
+	}
+
+	createSlide(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/slides`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createSlide', error)));
+	}
+
+	updateSlide(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/slides`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateSlide', error)));
+	}
+
+	deleteSlide(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/slides`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteSlide', error)));
 	}
 
 	//Parables

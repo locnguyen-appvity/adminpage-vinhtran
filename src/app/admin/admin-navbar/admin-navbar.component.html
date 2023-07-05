@@ -63,6 +63,11 @@
             <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon>
             Tags
         </mat-list-item>
+        <mat-list-item [routerLink]="['/admin/catalogues-list']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
+            Mục Lục
+        </mat-list-item>
         <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}">
             <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon>
@@ -108,7 +113,7 @@
         <mat-list-item [routerLink]="['/admin/folders']" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}">
             <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
-           Thư Mục
+            Thư Mục
         </mat-list-item>
         <mat-list-item [routerLink]="['/admin/users-list']" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}">

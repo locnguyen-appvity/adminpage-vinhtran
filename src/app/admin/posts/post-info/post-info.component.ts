@@ -39,41 +39,11 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 
 	public postFormGroup: FormGroup;
 	// public arrCategories: any[] = [];
-	// public arrTags: any[] = [];
+	public arrSlides: any[] = [];
 	public arrLocations$: Observable<any>;
 	public arrAuthors$: Observable<any>;
+	public arrCatalogues: any[] = [];
 	public fileSelected: any;
-	// public configEditor: any = {
-	// 	toolbarSticky: false,
-	// 	buttons: [
-	// 		"bold", "italic", "underline", "|", "fontsize", "font", "|",
-	// 		"align", "indent", "indent", "outdent", "|",
-	// 		"link", "table", "|",
-	// 		"strikethrough", "eraser", "|",
-	// 		"ul", "paragraph", "classSpan", "lineHeight",
-	// 		"|", "superscript", "subscript"
-	// 		, "|", "video"
-	// 		, {
-	// 			name: 'insertImage',
-	// 			tooltip: 'Insert image',
-	// 			icon: 'image',
-	// 			exec: (editor) => {
-	// 				editor.s.insertHTML("Thêm Hình Ảnh");
-	// 			}
-	// 		},
-	// 		, {
-	// 			name: 'customButtom1',
-	// 			tooltip: 'Insert file',
-	// 			icon: 'file',
-	// 			exec: (editor) => {
-	// 				this.openDialogImg();
-	// 			}
-	// 		},
-	// 		"|", "cut", "undo", "redo", "source"
-	// 	],
-	// 	// buttons: ["bold,italic,underline,|,fontsize,font,|,align,indent,outdent,|,link,table,|,strikethrough,eraser,|,ul,ol,paragraph,classSpan,lineHeight,|,superscript,subscript,|,file,image,video,|,cut,undo,redo,source"]
-	// }
-	// private tagsSelect: any = [];
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Bài Viết";
 	public statusLabel: any = {
@@ -105,6 +75,8 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			link: "",
 			metaDescription: "",
 			content: "",
+			slideId: "",
+			catalogueId: "",
 			categoryIds: [],
 			eventDate: "",
 			locationId: '',
@@ -112,7 +84,8 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			authorId: '',
 			tags: [],
 			metaKeyword: [],
-			hotNew: false
+			hotNew: false,
+			hasEvent: false
 		});
 		this.postFormGroup.get('title').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
 			this.postFormGroup.get('link').setValue(this.sharedService.getLinkOfName(name));
@@ -188,7 +161,9 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		// this.getCategories();
 		// this.getTags();
 		this.getAuthors();
+		this.getSlides();
 		this.getOrganizations();
+		this.getCatalogues();
 	}
 
 	// valueChangeChip(event: any, target: string) {
@@ -216,6 +191,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
 						content: this.localItem.content,
+						slideId: this.localItem.slideId,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
 						eventDate: this.localItem._eventDate,
@@ -224,7 +200,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						locationType: "",
 						tags: this.localItem.tags,
 						catalogueId: this.localItem.catalogueId,
-						photo: this.localItem.photo
+						photo: this.localItem.photo,
 					});
 				}
 			}
@@ -261,6 +237,38 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 					items = res.value;
 				}
 				this.arrAuthors$ = of(items);
+			}
+		})
+	}
+
+	getSlides() {
+		let options = {
+			select: 'id,name'
+		}
+		this.arrSlides = [];
+		this.service.getSlides(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrSlides = items;
+			}
+		})
+	}
+
+	getCatalogues() {
+		let options = {
+			select: 'id,name'
+		}
+		this.arrCatalogues = [];
+		this.service.getCatalogues(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrCatalogues = items;
 			}
 		})
 	}
@@ -302,7 +310,9 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			"link": valueForm.link,
 			"authorId": valueForm.authorId,
 			"locationId": valueForm.locationId,
+			"catalogueId": valueForm.catalogueId,
 			"content": valueForm.content,
+			"slideId": this.sharedService.checkItemExistsInArray(valueForm.slideId, this.arrSlides) ? valueForm.slideId : null,
 			"categoryIds": valueForm.categoryIds,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
@@ -310,9 +320,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			"topLevel": null,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
-			"eventDate": eventDate ? eventDate : null,
-			"visit": 0,
-			"slideId": null
+			"eventDate": eventDate ? eventDate : null
 		}
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
