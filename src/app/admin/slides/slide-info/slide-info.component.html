@@ -33,7 +33,7 @@
                     <se-list-imgs [data]="localItem?._photos" (valueChanges)="valueChangesFile($event)"></se-list-imgs>
                 </div>
                 <div fxFlex="20" class="mrl-24">
-                    <se-upload-avatar style="max-width: 200px;" (valueChanges)="valueChangesFile($event)"
+                    <se-upload-avatar style="max-width: 200px;" (valueChanges)="valueChangesAvatar($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tiêu Đề</mat-label>

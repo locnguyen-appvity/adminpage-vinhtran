@@ -73,12 +73,12 @@
                                 matTooltip="Xóa">
                                 <mat-icon svgIcon="ic_delete_48px"></mat-icon>
                             </button>
-                            <button *ngIf="data.status !== 'inactive'" mat-icon-button
+                            <button *ngIf="data.status == 'publish'" mat-icon-button
                                 (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')" matTooltip="Tạm Ẩn">
                                 <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                             </button>
-                            <button *ngIf="data.status == 'inactive'" mat-icon-button
-                                (click)="$event.stopPropagation();onUpdateStatus(data,'active')" matTooltip="Mở Lại">
+                            <button *ngIf="data.status !== 'publish'" mat-icon-button
+                                (click)="$event.stopPropagation();onUpdateStatus(data,'publish')" matTooltip="Mở Lại">
                                 <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                             </button>
                         </mat-list-item>

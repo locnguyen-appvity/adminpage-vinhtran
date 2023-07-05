@@ -27,6 +27,7 @@ export class SlideInfoComponent extends SimpleBaseComponent implements OnInit {
 		class: 'draft-label'
 	}
 	public fileSelected: any[] = [];
+	public avatarSelected: any;
 
 	constructor(
 		private service: SharedService,
@@ -55,6 +56,12 @@ export class SlideInfoComponent extends SimpleBaseComponent implements OnInit {
 	valueChangesFile(event: any) {
 		if (event && event.action == 'value-change') {
 			this.fileSelected = event.data ? event.data : "";
+		}
+	}
+
+	valueChangesAvatar(event: any) {
+		if (event && event.action == 'value-change') {
+			this.avatarSelected = event.data ? event.data : "";
 		}
 	}
 
@@ -107,7 +114,7 @@ export class SlideInfoComponent extends SimpleBaseComponent implements OnInit {
 					this.postFormGroup.patchValue({
 						name: this.localItem.name,
 						context: this.localItem.context,
-						// photo: this.localItem.photo,
+						avatar: this.localItem.avatar,
 					});
 				}
 			}
@@ -125,6 +132,7 @@ export class SlideInfoComponent extends SimpleBaseComponent implements OnInit {
 			"photos": this.fileSelected ? this.fileSelected.map(it => it.filePath) : [],
 			"texts": this.fileSelected ? this.fileSelected.map(it => it.name) : [],
 			"context": valueForm.context,
+			"avatar": this.avatarSelected ? this.avatarSelected.filePath : valueForm.photo,
 			"status": status
 		}
 		let request: any;
