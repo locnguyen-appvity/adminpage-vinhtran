@@ -12,14 +12,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ListItemsBaseModule } from 'src/app/controls/list-item-base/list-item.base.module';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatTreeModule} from '@angular/material/tree';
-import { FolderInfoModule } from '../../admin/folders/folder-info/folder-info.module';
-import { ToastSnackbarAppModule } from 'src/app/controls/toast-snackbar/toast-snackbar.module';
+import { FolderInfoModule } from '../folder-info/folder-info.module';
 import { AngularSplitModule } from 'angular-split';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { ItineraryIMGsModule } from 'src/app/controls/itinerary-imgs/itinerary-imgs.module';
+import { ToastSnackbarAppModule } from '../toast-snackbar/toast-snackbar.module';
+import { ItineraryIMGsModule } from '../itinerary-imgs/itinerary-imgs.module';
 
 @NgModule({
   declarations: [
@@ -42,7 +41,6 @@ import { ItineraryIMGsModule } from 'src/app/controls/itinerary-imgs/itinerary-i
     MatMenuModule,
     MatToolbarModule,
     MatTreeModule,
-    ListItemsBaseModule,
     FolderInfoModule,
     ToastSnackbarAppModule,
     AngularSplitModule,

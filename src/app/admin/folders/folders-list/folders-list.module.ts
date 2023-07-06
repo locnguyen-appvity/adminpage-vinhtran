@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ListItemsBaseModule } from 'src/app/controls/list-item-base/list-item.base.module';
-import { FolderInfoModule } from '../folder-info/folder-info.module';
+import { FolderInfoModule } from '../../../controls/folder-info/folder-info.module';
 import { FoldersTreeModule } from '../../../controls/folders-tree/folders-tree.module';
 
 @NgModule({

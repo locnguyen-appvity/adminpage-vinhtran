@@ -2,24 +2,27 @@
     height: 500px;
     width: 100%;
     border: solid 1px rgba(0, 0, 0, 0.12);
-    .top-menu-toolbar{
+    &--mediafiles {
+        height: 100%;
+    }
+    .top-menu-toolbar {
         width: 100%;
         padding: 12px;
         .search-icon {
-			margin-right: 12px;
-			color: #78849e;
-		}
+            margin-right: 12px;
+            color: #78849e;
+        }
 
-		input {
-			width: 100%;
-			border: 0;
-			outline: 0;
-			background-color: rgba(0, 0, 0, 0);
-			color: #78849e;
-			font-size: 15px;
-			font-weight: 400;
-			line-height: 1.4;
-		}
+        input {
+            width: 100%;
+            border: 0;
+            outline: 0;
+            background-color: rgba(0, 0, 0, 0);
+            color: #78849e;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 1.4;
+        }
     }
     as-split {
         background-color: #fff;
@@ -35,7 +38,7 @@
                 mat-tree-node {
                     // display: none;
                     cursor: pointer;
-                    &.active{
+                    &.active {
                         background-color: rgba(139, 139, 139, 0.3);
                     }
                 }

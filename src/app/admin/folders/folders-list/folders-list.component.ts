@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { FolderInfoComponent } from '../folder-info/folder-info.component';
+import { FolderInfoComponent } from '../../../controls/folder-info/folder-info.component';
 import { Observable, take, takeUntil, of as observableOf } from 'rxjs';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';

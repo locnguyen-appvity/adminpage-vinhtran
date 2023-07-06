@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedPropertyService } from 'src/app/shared/shared-property.service';
+import { SharedService } from 'src/app/shared/shared.service';
 import { Observable, take, takeUntil, of as observableOf } from 'rxjs';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { ToastSnackbarAppComponent } from '../toast-snackbar/toast-snackbar.component';
-import { FolderInfoComponent } from '../folder-info/folder-info.component';
+import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
+import { FolderInfoComponent } from '../../../controls/folder-info/folder-info.component';
 
 /**
  * File node data with nested structure.
@@ -38,15 +38,13 @@ export class FileFlatNode {
 }
 
 @Component({
-	selector: 'app-folders-tree',
-	templateUrl: './folders-tree.component.html',
-	styleUrls: ['./folders-tree.component.scss'],
+	selector: 'app-media-files-tree',
+	templateUrl: './media-files-tree.component.html',
+	styleUrls: ['./media-files-tree.component.scss'],
 	// providers: [FileDatabase]
 })
-export class FoldersTreeComponent extends SimpleBaseComponent {
-	@Input() canEdit: boolean = false;
-	@Input() target: string = 'multi';
-	@Output() valueChanges: any = new EventEmitter();
+export class MediaFilesTreeComponent extends SimpleBaseComponent {
+	public canEdit: boolean = true;
 	public treeControl: FlatTreeControl<FileFlatNode>;
 	public treeFlattener: MatTreeFlattener<FileNode, FileFlatNode>;
 	public dataSource: MatTreeFlatDataSource<FileNode, FileFlatNode>;
@@ -87,15 +85,12 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 	// 	this.txtSearch.setValue("");
 	// }
 
-	valueChangesFile(event: any) {
-		this.valueChanges.emit(event);
-	}
-
 	onAddItemForNote(item: any) {
 		let config: any = {};
 		config.data = {
 			target: 'add',
-			parentItem: item
+			parentItem: item,
+			type: 'mediafiles'
 		};
 		this.openFormDialog(config, 'add');
 	}
@@ -104,7 +99,7 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 		let config: any = {};
 		config.data = {
 			target: 'add',
-			type: 'web'
+			type: 'mediafiles'
 		};
 		this.openFormDialog(config, 'add');
 	}
@@ -114,7 +109,7 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 		config.data = {
 			target: 'edit',
 			item: item,
-			type: 'web'
+			type: 'mediafiles'
 		};
 		this.openFormDialog(config, 'edit');
 	}
@@ -134,10 +129,6 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
 					snackbarData.message = target === 'edit' ? 'Sửa Danh Mục Thành Công' : 'Thêm Danh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					if (target == 'edit') {
-					}
-					else {
-					}
 					this.getDataItems();
 				}
 				else if (res === 'Deleted') {
@@ -159,29 +150,29 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 		this.dataProcessing = true;
 		this.spinerLoading = true;
 		let options = {
-			filter: "type ne 'mediafiles'"
+			filter: "type eq 'mediafiles'"
 		}
 		this.service.getFolders(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
+				items = [{
+					id: 'mydisk',
+					children: this.buildTree(res.value),
+					name: 'My Disk',
+					type: 'folder',
+					link: '',
+					parent: ''
+				}]
+				this.nodeSelected = {
+					id: 'mydisk',
+					children: this.buildTree(res.value),
+					name: 'My Disk',
+					type: 'folder',
+					link: '',
+					parent: ''
+				}
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
-					items = [{
-						id: 'mydisk',
-						children: this.buildTree(res.value),
-						name: 'My Disk',
-						type: 'folder',
-						link: '',
-						parent: ''
-					}]
-					this.nodeSelected = {
-						id: 'mydisk',
-						children: this.buildTree(res.value),
-						name: 'My Disk',
-						type: 'folder',
-						link: '',
-						parent: ''
-					}
 					this.expansionModel.select('mydisk');
 				}
 				else {

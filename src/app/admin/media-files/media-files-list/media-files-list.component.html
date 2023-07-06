@@ -8,8 +8,8 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="ic_search material-icons" svgIcon="ic_search_48px"></mat-icon>
-                            <input (click)="onSearchMode()" placeholder="Tìm kiếm theo tên thánh hoặc tên"
-                                autocomplete="off" [formControl]="searchControl">
+                            <input (click)="onSearchMode()" placeholder="Tìm kiếm theo tên" autocomplete="off"
+                                [formControl]="searchControl">
                         </div>
                     </div>
                     <div fxFlex="25">
@@ -18,8 +18,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Thêm Người Dùng" aria-label="Thêm Người Dùng"
-                            [disabled]="dataProcessing" (click)="addUser()">
+                        <button mat-icon-button matTooltip="Thêm" aria-label="Thêm" [disabled]="dataProcessing"
+                            (click)="addItem()">
                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                         </button>
                         <button mat-icon-button matTooltip="Lọc" (click)="filter.toggle()" aria-label="Lọc">
@@ -31,23 +31,20 @@
                 <mat-toolbar *ngIf="selection?.selected?.length > 0" class="search-toolbar">
                     <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
                     <span fxFlex></span>
-                    <button mat-icon-button[disabled]="dataProcessing"
-                        (click)="changePassword(selection?.selected[0])" *ngIf="selection?.selected?.length == 1"
-                        matTooltip="Chỉnh Sửa Đăng Nhập">
-                        <mat-icon class="material-icons" svgIcon="ic_vpn_key_24dp"></mat-icon>
-                    </button>
-                    <button mat-icon-button [disabled]="dataProcessing" (click)="onDeactiveUser(selection?.selected[0],1)"
+                    <button mat-icon-button [disabled]="dataProcessing"
+                        (click)="onUpdateStatus(selection?.selected[0],'inactive')"
                         *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive'"
                         matTooltip="Tạm Ẩn">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing" (click)="onDeactiveUser(selection?.selected[0],0)"
+                    <button mat-icon-button [disabled]="dataProcessing"
+                        (click)="onUpdateStatus(selection?.selected[0],'active')"
                         *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'"
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing"
-                        *ngIf="selection?.selected?.length == 1" matTooltip="Xóa Người Dùng">
+                    <button mat-icon-button [disabled]="dataProcessing" *ngIf="selection?.selected?.length == 1"
+                        matTooltip="Xóa">
                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                     </button>
                 </mat-toolbar>
@@ -62,8 +59,9 @@
                             </div>
                         </div>
                     </mat-sidenav>
-                    <div class="table-container">
-                        <table class="full-width" mat-table [dataSource]="dataSources" matSort (matSortChange)="onSortChange($event)">
+                    <div class="table-container table-container--mediafiles">
+                        <table class="full-width" mat-table [dataSource]="dataSources" matSort
+                            (matSortChange)="onSortChange($event)">
 
                             <!-- Checkbox Column -->
                             <ng-container matColumnDef="id" sticky>
@@ -88,13 +86,12 @@
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
-                                            <ng-container
-                                                *ngIf="(element.hasAvatar && element?.pictureUrl); else defaultAvatar">
+                                            <ng-container *ngIf="element?.pictureUrl?.length > 0; else defaultAvatar">
                                                 <img [src]="element?.pictureUrl" mat-card-avatar alt="photo"
                                                     matTooltip="User Select" class="se-avatar" />
                                             </ng-container>
                                             <ng-template #defaultAvatar>
-                                                <span class="avatar-name avatar-name--36">{{element.fullName |
+                                                <span class="avatar-name avatar-name--36">{{element?.title |
                                                     initialsName}}</span>
                                             </ng-template>
                                         </div>
@@ -102,29 +99,60 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="fullName">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Họ và Tên </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.fullName}}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="username">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Tên Đăng Nhập </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.username}}
-                                </td>
-                            </ng-container>
-
-                            <ng-container matColumnDef="priority">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Quyền </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.priority}}
-                                </td>
-                            </ng-container>
-
                             <!-- Status Column -->
                             <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef cdkDrag> Trạng Thái </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    <div style="height: 100%;" fxLayout="row" fxLayoutAlign="center center">
+                                        <div [ngClass]="dataItem.statusClass">
+                                            {{dataItem.statusView}}
+                                        </div>
+                                        <!-- <div *ngIf="dataItem.status == 'Draft'" class="inactive-status">
+                                            Nháp
+                                        </div> -->
+                                    </div>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="title">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Tiêu Đề </th>
+                                <td mat-cell *matCellDef="let element"
+                                    style="min-width: 500px; max-width: 500px; width: 500px"
+                                    [matTooltipDisabled]="!(element?.title?.length > 80)" [matTooltip]="element.title">
+                                    {{element.title | truncate: 80}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="entityType">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Loại </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.entityType}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="duration">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Độ Dài </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.durationView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="created">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Ngày Tạo </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.createdView}}
+                                </td>
+                            </ng-container>
+
+                            <!-- <ng-container matColumnDef="visit">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Lượt Xem </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.visit}}
+                                </td>
+                            </ng-container> -->
+
+                            <!-- Status Column -->
+                            <!-- <ng-container matColumnDef="status">
                                 <th mat-header-cell *matHeaderCellDef cdkDrag> Trạng Thái </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
@@ -136,56 +164,11 @@
                                         </div>
                                     </div>
                                 </td>
-                            </ng-container>
+                            </ng-container> -->
 
                             <!-- Actions Column -->
-                            <ng-container matColumnDef="actions" stickyEnd>
-                                <th mat-header-cell *matHeaderCellDef>
-                                    <mat-menu [overlapTrigger]="true" #showHideColumn="matMenu"
-                                        class="se-pob-menu-columns">
-                                        <div class="mat-menu-item ofVisible">
-                                            <mat-checkbox class="mat-primary" color="primary"
-                                                aria-label="Chọn tất cả cột" [(ngModel)]="menuViewAllColumns"
-                                                (ngModelChange)="onMenuColumnsChanged()"
-                                                [(indeterminate)]="indeterminateViewAllColumns"
-                                                (click)="$event.stopPropagation()">
-                                                All {{ menuViewColumns.length }} selected
-                                            </mat-checkbox>
-                                        </div>
-                                        <mat-divider></mat-divider>
-                                        <div class="mxh-206">
-                                            <div *ngFor="let column of menuViewColumns; trackBy: trackByFn"
-                                                class="mat-menu-item ofVisible">
-                                                <mat-checkbox class="mat-primary" [(ngModel)]="column.curChecked"
-                                                    [attr.aria-label]="column.title" (ngModelChange)="onColumnChanged()"
-                                                    [checked]="column.curChecked" color="primary"
-                                                    [value]="column.column" (click)="$event.stopPropagation()">
-                                                    {{ column.title }}
-                                                </mat-checkbox>
-                                            </div>
-                                        </div>
-                                        <mat-divider></mat-divider>
-                                        <div class="mat-menu-item ofVisible" style="padding: 6px;">
-                                            <button mat-button color="default" (click)="undoChangedColumns()"
-                                                aria-label="Hủy">
-                                                Hủy
-                                            </button>
-                                            <span fxFlex></span>
-                                            <div class="btn-save-process">
-                                                <button mat-flat-button color="primary" aria-label="Chọn"
-                                                    [disabled]="(!indeterminateViewAllColumns && !menuViewAllColumns) || dataProcessing"
-                                                    (click)="applyToggleColumns()">
-                                                    Chọn
-                                                </button>
-                                                <mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
-                                            </div>
-                                        </div>
-                                    </mat-menu>
-                                    <button mat-icon-button [matMenuTriggerFor]="showHideColumn"
-                                        aria-label="Ẩn/Hiện cột" matTooltip="Ẩn/Hiện cột" matTooltipPosition="before">
-                                        <mat-icon svgIcon="ic_view_column_48px"></mat-icon>
-                                    </button>
-                                </th>
+                            <ng-container matColumnDef="mareActions" stickyEnd>
+                                <th mat-header-cell *matHeaderCellDef></th>
                                 <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"
                                     [ngStyle]="lastChildBorderStyles()">
                                     <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
@@ -193,27 +176,25 @@
                                         <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
                                     </button>
                                     <mat-menu #actionsMenu="matMenu" [overlapTrigger]="overlapTrigger">
-                                        <button mat-menu-item [disabled]="dataProcessing"
-                                            (click)="changePassword(element)">
-                                            <mat-icon class="material-icons" svgIcon="ic_vpn_key_24dp"></mat-icon>
-                                            <span> Chỉnh Sửa Đăng Nhập </span>
+                                        <button mat-menu-item [disabled]="dataProcessing" (click)="getRowSelected(element)">
+                                            <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
+                                            <span>Sửa</span>
+                                        </button>
+                                        <button mat-menu-item [disabled]="dataProcessing" (click)="onDelete(element)">
+                                            <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
+                                            <span>Xoá</span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.status !== 'inactive'" [disabled]="dataProcessing"
-                                            (click)="onDeactiveUser(element,1)">
+                                        <button mat-menu-item *ngIf="element.status !== 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                             <span>Tạm Ẩn</span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.status == 'inactive'" [disabled]="dataProcessing"
-                                            (click)="onDeactiveUser(element,0)">
+                                        <button mat-menu-item *ngIf="element.status == 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'active')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                             <span>Mở Lại</span>
-                                        </button>
-
-                                        <button mat-menu-item [disabled]="dataProcessing">
-                                            <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
-                                            <span>Xóa Người Dùng</span>
                                         </button>
 
                                     </mat-menu>

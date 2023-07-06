@@ -93,6 +93,12 @@
             <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
             Suy Niệm
         </mat-list-item>
+        <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Media</h3>
+        <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']" [routerLinkActive]="['active']"
+            [routerLinkActiveOptions]="{exact: true}">
+            <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
+           Media Files
+        </mat-list-item>
         <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Thông Tin</h3>
         <mat-list-item [routerLink]="['/admin/manage/groups-list']" [routerLinkActive]="['active']"
             [routerLinkActiveOptions]="{exact: true}">

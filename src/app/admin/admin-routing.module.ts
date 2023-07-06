@@ -36,6 +36,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./tags/tags.module').then(m => m.TagsModule)
 			},
 			{
+			  path: 'media-files',
+			  loadChildren: () => import('./media-files/media-files.module').then(m => m.MediaFilesModule)
+			},
+			{
 			  path: 'authors',
 			  loadChildren: () => import('./authors/authors.module').then(m => m.AuthorsModule)
 			},

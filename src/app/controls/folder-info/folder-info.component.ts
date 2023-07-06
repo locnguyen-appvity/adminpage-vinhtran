@@ -24,6 +24,7 @@ export class FolderInfoComponent extends SimpleBaseComponent {
     // public arrCategoriesFilter: any[] = [];
     public parentItem: any;
     public localItem: any;
+    public type: string = 'web';
 
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
@@ -31,8 +32,12 @@ export class FolderInfoComponent extends SimpleBaseComponent {
         public dialogRef: MatDialogRef<FolderInfoComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
         super(sharedService);
-
-        this.target = this.dialogData.target;
+        if (this.dialogData.target) {
+            this.target = this.dialogData.target;
+        }
+        if (this.dialogData.type) {
+            this.type = this.dialogData.type;
+        }
         if (this.target === 'edit') {
             this.title = "Sửa";
             this.textSave = 'Lưu';
@@ -126,6 +131,7 @@ export class FolderInfoComponent extends SimpleBaseComponent {
             // status: valueForm.status ? 'active' : 'inactive',
             name: valueForm.name,
             level: level,
+            type: this.type,
             parent: level != 0 ? (this.dataItemGroup.get('parent').value ? this.dataItemGroup.get('parent').value : null) : null
         }
         if (this.target == 'edit') {

@@ -8,7 +8,7 @@ const routes: Routes = [
     children: [
 			{
 				path: 'tags-list',
-				loadChildren: () => import('./tags-list/tags-list.module').then(m => m.CategoriesListModule)
+				loadChildren: () => import('./tags-list/tags-list.module').then(m => m.TagsListModule)
 			},
 			{ path: '', redirectTo: 'tags-list', pathMatch: 'full' },
 		],

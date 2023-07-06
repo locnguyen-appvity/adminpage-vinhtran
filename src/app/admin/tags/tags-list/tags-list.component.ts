@@ -7,32 +7,6 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
 import { TagInfoComponent } from '../tag-info/tag-info.component';
 
-/**
- * File node data with nested structure.
- * Each node has a filename, and a type or a list of children.
- */
-export class FileNode {
-	id: string;
-	children: FileNode[];
-	name: string;
-	type: any;
-	link: string;
-	parentId: string;
-}
-
-/** Flat node with expandable and level information */
-export class FileFlatNode {
-	constructor(
-		public expandable: boolean,
-		public name: string,
-		public level: number,
-		public type: any,
-		public id: string,
-		public link: string,
-		public parentId: string
-	) { }
-}
-
 @Component({
 	selector: 'app-tags-list',
 	templateUrl: './tags-list.component.html',

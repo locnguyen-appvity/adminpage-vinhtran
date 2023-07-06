@@ -367,6 +367,32 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteFile', error)));
 	}
 
+	//mediafiles
+	getMediaFiles(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/mediafiles';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getFiles', error)));
+	}
+
+	getMediaFile(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/mediafiles';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getMediaFile', error)));
+	}
+
+	createMediaFile(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/mediafiles`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createMediaFile', error)));
+	}
+
+	updateMediaFile(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/mediafiles`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateMediaFile', error)));
+	}
+
+	deleteMediaFile(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/mediafiles`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteMediaFile', error)));
+	}
+
 	// saints
 	getSaints(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/saints';
