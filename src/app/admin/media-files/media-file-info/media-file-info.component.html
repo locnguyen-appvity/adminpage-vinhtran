@@ -5,14 +5,15 @@
             <div fxLayout="column">
 
                 <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
-                    <div fxFlex="33.33">
+                    <div fxFlex="40">
+                        <se-upload-avatar (valueChanges)="valueChangesFile($event)"
+                            [filePath]="localItem?.logo"></se-upload-avatar>
+                    </div>
+                    <div fxFlex="60">
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Tên</mat-label>
                             <input matInput required formControlName="title" autocomplete="off">
-                            <!-- <mat-hint>{{dataItemGroup?.value?.link}}</mat-hint> -->
                         </mat-form-field>
-                    </div>
-                    <div fxFlex="33.33">
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Loại</mat-label>
                             <mat-select formControlName="entityType" required>
@@ -22,57 +23,42 @@
                                 <mat-option value="unknowns">Không Xác Định</mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div>
-                    <div fxFlex="33.33">
                         <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>ID</mat-label>
-                            <input matInput formControlName="entityId" autocomplete="off">
+                            <mat-label>Thư Mục</mat-label>
+                            <mat-select formControlName="folderId">
+                                <mat-option *ngFor="let item of arrFolders" [value]="item.id">{{item.name}}</mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-
-                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
-                    <div fxFlex="50">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>mediaUrl</mat-label>
-                            <input matInput formControlName="mediaUrl" autocomplete="off">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="50">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>playerUrl</mat-label>
-                            <input matInput formControlName="playerUrl" autocomplete="off">
-                        </mat-form-field>
-                    </div>
-                </div>
-
-                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
-                    <div fxFlex="50">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>permalinkUrl</mat-label>
-                            <input matInput formControlName="permalinkUrl" autocomplete="off">
-                        </mat-form-field>
-                    </div>
-                    <div fxFlex="50">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Độ dài</mat-label>
-                            <input matInput type="number" formControlName="duration" autocomplete="off">
-                        </mat-form-field>
-                    </div>
-                </div>
-                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
-                    <div fxFlex="40">
-                        <se-upload-avatar (valueChanges)="valueChangesFile($event)"
-                            [filePath]="localItem?.logo"></se-upload-avatar>
-                    </div>
-                    <div fxFlex="60">
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Mô Tả</mat-label>
-                            <textarea matInput rows="10" formControlName="content"></textarea>
-                        </mat-form-field>
-                    </div>
-
-                </div>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>ID</mat-label>
+                    <input matInput formControlName="entityId" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>mediaUrl</mat-label>
+                    <input matInput formControlName="mediaUrl" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>playerUrl</mat-label>
+                    <input matInput formControlName="playerUrl" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>permalinkUrl</mat-label>
+                    <input matInput formControlName="permalinkUrl" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Độ dài</mat-label>
+                    <input matInput type="number" formControlName="duration" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mã Nhúng</mat-label>
+                    <textarea matInput rows="5" formControlName="embed"></textarea>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mô Tả</mat-label>
+                    <textarea matInput rows="7" formControlName="content"></textarea>
+                </mat-form-field>
                 <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
             </div>
         </form>

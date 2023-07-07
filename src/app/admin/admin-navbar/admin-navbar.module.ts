@@ -8,7 +8,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotificationsModule } from 'src/app/notifications/notifications.module';
 import { DomSanitizer } from '@angular/platform-browser';
-
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
@@ -22,7 +22,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     MatBadgeModule,
     MatMenuModule,
     MatListModule,
-    NotificationsModule
+    NotificationsModule,
+    MatExpansionModule
   ],
   exports: [AdminNavbarComponent]
 })

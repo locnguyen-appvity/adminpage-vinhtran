@@ -22,6 +22,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
     public saveAction: string = '';
     public localItem: any;
     public fileSelected: any;
+    public arrFolders: any[] = [];
 
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
@@ -46,30 +47,38 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
                 this.hasChangedGroup = true;
             }
         })
+        this.getFolders();
     }
 
-    // "entityType": null,
-    // "entityId": null,
-    // "title": null,
-    // "content": null,
-    // "logo": null,
-    // "mediaUrl": null,
-    // "playerUrl": null,
-    // "permalinkUrl": null,
-    // "duration": null,
-    // "status": null,
+    getFolders() {
+        let options = {
+            filter: "type eq 'mediafiles'"
+        }
+        this.service.getFolders(options).pipe(take(1)).subscribe({
+            next: (res: any) => {
+                let items = [];
+                if (res && res.value && res.value.length > 0) {
+                    items = res.value;
+                }
+                this.arrFolders = items;
+            }
+        })
+    }
 
     buildFormGroup() {
         return this.fb.group({
             title: [this.localItem ? this.localItem.title : "", [Validators.required]],
             content: this.localItem ? this.localItem.content : "",
-            entityType: this.localItem ? this.localItem.entityType : "",
+            entityType: [this.localItem ? this.localItem.entityType : "", [Validators.required]],
             entityId: this.localItem ? this.localItem.entityId : "",
             mediaUrl: this.localItem ? this.localItem.mediaUrl : "",
             playerUrl: this.localItem ? this.localItem.playerUrl : "",
             duration: this.localItem ? this.localItem.duration : "",
             logo: this.localItem ? this.localItem.logo : "",
-            status: this.localItem.status == 'active' ? true : false,
+            folderId: this.localItem ? this.localItem.folderId : "",
+            embed: this.localItem ? this.localItem.embed : "",
+            isAuto: this.localItem ? this.localItem.isAuto : false,
+            status: (this.localItem && this.localItem.status == 'active') ? true : false,
         })
     }
 
@@ -130,6 +139,9 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             "playerUrl": valueForm.playerUrl,
             "permalinkUrl": valueForm.permalinkUrl,
             "duration": valueForm.duration,
+            "folderId": valueForm.folderId,
+            "embed": valueForm.embed,
+            "isAuto": valueForm.isAuto,
             "status": valueForm.status ? 'active' : 'inactive',
         }
         if (this.target == 'edit') {

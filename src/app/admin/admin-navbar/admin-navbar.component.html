@@ -51,98 +51,215 @@
             <div class="email"> TRUYỀN THÔNG TRONG ĐỨC KITÔ</div>
         </div>
     </div>
+    <mat-accordion multi>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_article_48dp"></mat-icon> Quản Lý Website
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/posts/post-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Bài Viết
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/parables/parables-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Lời Chúa
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/contemplations/contemplations-list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        Suy Niệm
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/slides/slides-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
+                        Album Hình
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/folders']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
+                        Hình Ảnh
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_subscriptions_48dp"></mat-icon>  Quản Lý Meida
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
+                        Media Files
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="maps_home_work_48dp"></mat-icon>   Quản Lý Dữ Liệu
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/categories-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon> -->
+                        Danh Mục
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/tags/tags-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon> -->
+                        Tags
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/catalogues-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon> -->
+                        Mục Lục
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon> -->
+                        Tác Giả
+                    </mat-list-item>
 
-    <mat-nav-list>
-        <mat-list-item [routerLink]="['/admin/categories-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
-            Danh Mục
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/tags/tags-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon>
-            Tags
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/catalogues-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
-            Mục Lục
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon>
-            Tác Giả
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/posts/post-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
-            Bài Viết
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/slides/slides-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
-            Album Hình
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/parables/parables-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
-            Lời Chúa
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/contemplations/contemplations-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
-            Suy Niệm
-        </mat-list-item>
-        <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Media</h3>
-        <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
-           Media Files
-        </mat-list-item>
-        <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Thông Tin</h3>
-        <mat-list-item [routerLink]="['/admin/manage/groups-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
-            Giáo Hạt
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/manage/organizations/organizations-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_church_24dp"></mat-icon>
-            Giáo Xứ
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/manage/clergys/clergys-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_priest"></mat-icon>
-            Tu Sĩ
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
-            Các Thánh
-        </mat-list-item>
-        <h3 mat-subheader style="color: #908f8f;">Quản Lý Hệ Thống</h3>
-        <mat-list-item [routerLink]="['/admin/folders']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
-            Thư Mục
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/admin/users-list']" [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{exact: true}">
-            <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
-            Người Dùng
-        </mat-list-item>
-    </mat-nav-list>
-    <span fxFlex></span>
-    <!-- <div class="btn-navbar-closed" [ngClass]="{'open': opened}" fxLayout="row" fxLayoutAlign="end end">
-        <div class="btn-setting">
-            <button (click)="onColseMainMenu()" mat-icon-button>
-                <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
-            </button>
-        </div>
-    </div> -->
-    <!-- <div class="btn-navbar-end" fxLayout="row" fxLayoutAlign="end end">
-        <button mat-icon-button color="default" (click)="onColseMainMenu" matTooltip="Đóng Menu">
-            <mat-icon svgIcon="ic_menu_open_24px"></mat-icon>
-        </button>
-    </div> -->
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_person_48dp"></mat-icon>  Quản Lý Thông Tin
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/manage/groups-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
+                        Giáo Hạt
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/manage/organizations/organizations-list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_church_24dp"></mat-icon> -->
+                        Giáo Xứ
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/manage/clergys/clergys-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_priest"></mat-icon> -->
+                        Tu Sĩ
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
+                        Các Thánh
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_manage_accounts_48dp"></mat-icon>  Quản Lý Hệ Thống
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/users-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
+                        Người Dùng
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+    </mat-accordion>
 </div>
+
+<!-- <mat-nav-list>
+    <mat-list-item [routerLink]="['/admin/categories-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
+        Danh Mục
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/tags/tags-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon>
+        Tags
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/catalogues-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon>
+        Mục Lục
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon>
+        Tác Giả
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/posts/post-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+        Bài Viết
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/slides/slides-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+        Album Hình
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/parables/parables-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+        Lời Chúa
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/contemplations/contemplations-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_article_48dp"></mat-icon>
+        Suy Niệm
+    </mat-list-item>
+    <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Media</h3>
+    <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
+       Media Files
+    </mat-list-item>
+    <h3 mat-subheader style="color: #9c9a9a;">Quản Lý Thông Tin</h3>
+    <mat-list-item [routerLink]="['/admin/manage/groups-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon>
+        Giáo Hạt
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/manage/organizations/organizations-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_church_24dp"></mat-icon>
+        Giáo Xứ
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/manage/clergys/clergys-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_priest"></mat-icon>
+        Tu Sĩ
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+        Các Thánh
+    </mat-list-item>
+    <h3 mat-subheader style="color: #908f8f;">Quản Lý Hệ Thống</h3>
+    <mat-list-item [routerLink]="['/admin/folders']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+        Thư Mục
+    </mat-list-item>
+    <mat-list-item [routerLink]="['/admin/users-list']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon>
+        Người Dùng
+    </mat-list-item>
+</mat-nav-list> -->
