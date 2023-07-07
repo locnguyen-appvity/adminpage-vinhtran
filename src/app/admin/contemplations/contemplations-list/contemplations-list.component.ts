@@ -179,7 +179,7 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'visit', 'mareActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'visit', 'moreActions'];
 	}
 
 }

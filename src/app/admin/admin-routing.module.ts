@@ -44,6 +44,14 @@ const routes: Routes = [
 			  loadChildren: () => import('./chapters/chapters.module').then(m => m.ChaptersModule)
 			},
 			{
+			  path: 'books',
+			  loadChildren: () => import('./books/books.module').then(m => m.BooksModule)
+			},
+			{
+			  path: 'episodes',
+			  loadChildren: () => import('./episodes/episodes.module').then(m => m.EpisodesModule)
+			},
+			{
 			  path: 'authors',
 			  loadChildren: () => import('./authors/authors.module').then(m => m.AuthorsModule)
 			},

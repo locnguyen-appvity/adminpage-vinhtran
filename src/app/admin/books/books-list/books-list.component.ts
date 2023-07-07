@@ -1,23 +1,23 @@
-import { Component, } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
-import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 
 @Component({
-	selector: 'app-post-list',
-	templateUrl: './post-list.component.html',
-	styleUrls: ['./post-list.component.scss']
+	selector: 'app-books-list',
+	templateUrl: './books-list.component.html',
+	styleUrls: ['./books-list.component.scss']
 })
-export class PostListComponent extends TemplateGridApplicationComponent {
+export class BooksListComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
 	constructor(
@@ -26,8 +26,8 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		public router: Router,
 		public service: SharedService,
 		public dialog: MatDialog,
-		public store: Store<IAppState>,
 		public snackbar: MatSnackBar,
+		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
@@ -40,7 +40,7 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(tolower(title), tolower('${quick}'))`;
+			let quickSearch = `contains(name, '${quick}') or contains(username, '${quick}')`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
@@ -68,23 +68,25 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getPosts(options).pipe(take(1)).subscribe({
+		this.service.getBooks(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
-				if (res && res.value && res.value.length > 0) {
+				if (res && res.value) {
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
-						this.updateStatus(item);
-						// item.sexView = this.handleSex(item.sex);
+						item.durationView = "Chưa xác định";
+						if (item.duration) {
+							item.durationView = item.duration;
+						}
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
+						this.updateStatus(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 						}
-
 					}
 				}
 				this.gridDataChanges.data = this.dataItems;
@@ -112,61 +114,27 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		}
 	}
 
-	// {
-	// 	"title": "Testing",
-	// 	"photo": "abc",
-	// 	"link": "abc",
-	// 	"content": "acv",
-	// 	"categoryIds": [],
-	// 	"tags": [],
-	// 	"metaDescription": "fddfd",
-	// 	"metaTitle": "fd",
-	// 	"topLevel": null,
-	// 	"metaKeyword": "dfdfd",
-	// 	"eventDate": null,
-	// 	"visit": 0,
-	// 	"slideId": null,
-	// 	"created": "2023-06-03T00:00:00",
-	// 	"modified": "2023-06-03T00:00:00",
-	// 	"createdBy": null,
-	// 	"modifiedBy": null,
-	// 	"id": "92ed7836-3d0f-4d7b-999f-cae6fefd46e3"
-	//thiếu status
-	// }
-
 	getRowSelected(item: any) {
-		this.router.navigate([`/admin/posts/post-info/${item.id}`]);
-	}
-
-	getAvatar(dataItem: any) {
-		if (this.isNullOrEmpty(dataItem.id)) {
-			return;
-		}
-		// this.service.getAvatarListForEntityWithValue(dataItem.id, 'user').pipe(take(1)).subscribe({
-		// 	next: (res: any) => {
-		// 		if (res && res.value) {
-		// 			dataItem.hasAvatar = true;
-		// 			dataItem.pictureUrl = `data:image/jpeg;base64,${res.value.urlPatch}`;
-		// 		}
-		// 	}
-		// })
+		this.router.navigate([`/admin/chapters/chapter-info/${item.id}`]);
 	}
 
 	addItem() {
-		this.router.navigate(['/admin/posts/post-info']);
+		this.router.navigate(['/admin/chapters/chapter-info']);
 	}
 
 	onUpdateStatus(item: any, status: string) {
 		let dataJSON = {
 			status: status
 		}
-		this.service.updatePost(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.dataProcessing = true;
+		this.service.updateBook(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				let snackbarData: any = {
 					key: 'saved-item',
 					message: 'Lưu Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
+				this.dataProcessing = false;
 				this.selection.clear();
 				this.getDataGridAndCounterApplications();
 			}
@@ -174,8 +142,10 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 	}
 
 	onDelete(item: any) {
-		this.service.deletePost(item.id).pipe(take(1)).subscribe({
+		this.dataProcessing = true;
+		this.service.deleteBook(item.id).pipe(take(1)).subscribe({
 			next: () => {
+				this.dataProcessing = false;
 				let snackbarData: any = {
 					key: 'delete-item',
 					message: 'Xóa Thành Công'
@@ -188,7 +158,7 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'visit', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'moreActions'];
 	}
 
 }

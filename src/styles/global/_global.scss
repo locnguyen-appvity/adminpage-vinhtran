@@ -633,7 +633,7 @@ table {
 			text-overflow: ellipsis;
 			color: #454f63;
 			border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-			text-align: center !important;
+			// text-align: center !important;
 			&:first-child {
 				border-right: 1px solid rgba(0, 0, 0, 0.12);
 				padding: 0 18px;
@@ -669,7 +669,7 @@ table {
 				padding: 0 !important;
 				text-align: center;
 			}
-			&.mat-column-mareActions,
+			&.mat-column-moreActions,
 			&.mat-column-indicators {
 				width: 100px;
 				min-width: 100px;

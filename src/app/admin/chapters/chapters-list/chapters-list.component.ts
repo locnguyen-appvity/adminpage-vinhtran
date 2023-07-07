@@ -79,8 +79,8 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 						if (item.duration) {
 							item.durationView = item.duration;
 						}
-						if (item.logo) {
-							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.logo}`;
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
 						this.updateStatus(item);
 						if (item.created) {
@@ -115,9 +115,11 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 	}
 
 	getRowSelected(item: any) {
+		this.router.navigate([`/admin/chapters/chapter-info/${item.id}`]);
 	}
 
 	addItem() {
+		this.router.navigate(['/admin/chapters/chapter-info']);
 	}
 
 	onUpdateStatus(item: any, status: string) {
@@ -156,7 +158,7 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'entityType', 'duration', 'created', 'mareActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'moreActions'];
 	}
 
 }

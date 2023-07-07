@@ -203,7 +203,7 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'entityType', 'duration', 'created', 'mareActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'entityType', 'duration', 'created', 'moreActions'];
 	}
 
 }

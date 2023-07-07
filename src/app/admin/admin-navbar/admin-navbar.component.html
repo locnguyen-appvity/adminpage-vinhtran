@@ -52,7 +52,7 @@
         </div>
     </div>
     <mat-accordion multi>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="openedPanel == 'website'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon class="app-icon mrr-24" svgIcon="ic_article_48dp"></mat-icon> Quản Lý Website
@@ -85,7 +85,7 @@
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="openedPanel == 'media'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon class="app-icon mrr-24" svgIcon="ic_subscriptions_48dp"></mat-icon>  Quản Lý Meida
@@ -93,10 +93,20 @@
             </mat-expansion-panel-header>
             <mat-panel-description>
                 <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/episodes/episodes-list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
+                        Episode
+                    </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/chapters/chapters-list']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
-                       Danh Sách Chương
+                       Chương
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/books/books-list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
+                       Sách
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
@@ -106,7 +116,7 @@
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="openedPanel == 'data'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon class="app-icon mrr-24" svgIcon="maps_home_work_48dp"></mat-icon>   Quản Lý Dữ Liệu
@@ -138,7 +148,8 @@
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="openedPanel == 'manage'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon class="app-icon mrr-24" svgIcon="ic_person_48dp"></mat-icon>  Quản Lý Thông Tin
@@ -169,7 +180,8 @@
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
-        <mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="openedPanel == 'system'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon class="app-icon mrr-24" svgIcon="ic_manage_accounts_48dp"></mat-icon>  Quản Lý Hệ Thống

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs';
 import { IAppState } from 'src/app/shared/redux/state';
@@ -19,15 +20,52 @@ export class AdminNavbarComponent extends SimpleBaseComponent {
 		pictureUrl: './assets/images/logo-for-web.png' //'./assets/icons/ic_person_48dp.svg'
 	};
 	@Input() opened: boolean = true;
+	public openedPanel: string = 'website';
 
 	constructor(public override sharedService: SharedPropertyService,
+		public router: Router,
 		private store: Store<IAppState>) {
 		super(sharedService);
 		this.getValuesFromRedux();
+		this.updateExpand();
+	}
+
+	updateExpand() {
+		if (
+			this.router.url.startsWith('/admin/posts') ||
+			this.router.url.startsWith('/admin/parables') ||
+			this.router.url.startsWith('/admin/contemplations') ||
+			this.router.url.startsWith('/admin/slides') ||
+			this.router.url.startsWith('/admin/folders')
+		) {
+			this.openedPanel = "website";
+		}
+		if (
+			this.router.url.startsWith('/admin/episodes') ||
+			this.router.url.startsWith('/admin/chapters') ||
+			this.router.url.startsWith('/admin/books') ||
+			this.router.url.startsWith('/admin/media-files')
+		) {
+			this.openedPanel = "media";
+		}
+		if (
+			this.router.url.startsWith('/admin/categories-list') ||
+			this.router.url.startsWith('/admin/tags') ||
+			this.router.url.startsWith('/admin/catalogues-list') ||
+			this.router.url.startsWith('/admin/authors') 
+		) {
+			this.openedPanel = "data";
+		}
+		if (this.router.url.startsWith('/admin/manage')) {
+			this.openedPanel = "manage";
+		}
+		if (this.router.url.startsWith('/admin/users-list')) {
+			this.openedPanel = "system";
+		}
 	}
 
 	onColseMainMenu() {
-		this.sharedService.sharedData({action:'side-nav-close'});
+		this.sharedService.sharedData({ action: 'side-nav-close' });
 		this.opened = false;
 	}
 
