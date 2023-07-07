@@ -237,6 +237,84 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deletePost', error)));
 	}
 
+	//Episodes
+	getEpisodes(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/episodes';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getEpisodes', error)));
+	}
+
+	getEpisode(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/episodes';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getEpisode', error)));
+	}
+
+	createEpisode(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/episodes`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createEpisode', error)));
+	}
+
+	updateEpisode(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/episodes`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateEpisode', error)));
+	}
+
+	deleteEpisode(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/episodes`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteEpisode', error)));
+	}
+
+	//Chapters
+	getChapters(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/chapters';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getChapters', error)));
+	}
+
+	getChapter(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/chapters';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getChapter', error)));
+	}
+
+	createChapter(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/chapters`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createChapter', error)));
+	}
+
+	updateChapter(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/chapters`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateChapter', error)));
+	}
+
+	deleteChapter(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/chapters`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteChapter', error)));
+	}
+
+	//Books
+	getBooks(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/books';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getBooks', error)));
+	}
+
+	getBook(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/books';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getBook', error)));
+	}
+
+	createBook(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/books`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createBook', error)));
+	}
+
+	updateBook(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/books`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateBook', error)));
+	}
+
+	deleteBook(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/books`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteBook', error)));
+	}
+
 	//Slides
 	getSlides(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/slides';

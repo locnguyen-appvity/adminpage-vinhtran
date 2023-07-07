@@ -40,6 +40,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./media-files/media-files.module').then(m => m.MediaFilesModule)
 			},
 			{
+			  path: 'chapters',
+			  loadChildren: () => import('./chapters/chapters.module').then(m => m.ChaptersModule)
+			},
+			{
 			  path: 'authors',
 			  loadChildren: () => import('./authors/authors.module').then(m => m.AuthorsModule)
 			},

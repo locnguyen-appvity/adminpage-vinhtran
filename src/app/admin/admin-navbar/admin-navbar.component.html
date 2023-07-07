@@ -93,6 +93,11 @@
             </mat-expansion-panel-header>
             <mat-panel-description>
                 <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/chapters/chapters-list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
+                       Danh Sách Chương
+                    </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
