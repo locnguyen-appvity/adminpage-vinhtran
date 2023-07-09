@@ -47,7 +47,7 @@
                     <mat-form-field appearance="outline" class="full-width mrt-24">
                         <mat-label>Sách</mat-label>
                         <se-autocomplete-simple [required]="false" [formControlName]="'entityId'" [switchAt]="10"
-                            [optgroup]="false" [placeHolder]="'Chọn sách...'" [keyTitle]="'name'" [keyValue]="'id'"
+                            [optgroup]="false" [placeHolder]="'Chọn sách...'" [keyTitle]="'title'" [keyValue]="'id'"
                             [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrBooks">
                         </se-autocomplete-simple>
                     </mat-form-field>
@@ -61,9 +61,6 @@
                         [type]="'tags'"></se-chip-control>
                     <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
                         [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
-
-                    <mat-slide-toggle formControlName="hotNew">Hot New</mat-slide-toggle>
-                    <mat-slide-toggle class="mrl-24" formControlName="hasEvent">Sự kiện trực tiếp</mat-slide-toggle>
                 </div>
             </div>
         </form>

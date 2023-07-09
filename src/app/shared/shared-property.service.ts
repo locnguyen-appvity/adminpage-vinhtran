@@ -137,6 +137,13 @@ export class SharedPropertyService {
         return null;
     }
 
+    public ISODay(data: any): string {
+        if (!this.isNullOrEmpty(data)) {
+            return data.format('YYYY-MM-DDTHH:mm:ss[Z]');
+        };
+        return null;
+    }
+
     public ISOEndDay(data: any): string {
         if (!this.isNullOrEmpty(data)) {
             return data.endOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]');

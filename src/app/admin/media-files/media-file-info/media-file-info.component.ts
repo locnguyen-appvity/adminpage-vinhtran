@@ -77,7 +77,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             logo: this.localItem ? this.localItem.logo : "",
             folderId: this.localItem ? this.localItem.folderId : "",
             embed: this.localItem ? this.localItem.embed : "",
-            isAuto: this.localItem ? this.localItem.isAuto : false,
+            isAuto: this.localItem ? this.localItem.isAuto == 'true' : false,
             status: (this.localItem && this.localItem.status == 'active') ? true : false,
         })
     }
@@ -101,7 +101,16 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
         if (this.sharedService.isChangedValue(valueForm.duration, this.dialogData.item.duration)) {
             return true;
         }
-        let status = this.dialogData.item.status == 1 ? true : false;
+        if (this.sharedService.isChangedValue(valueForm.folderId, this.dialogData.item.folderId)) {
+            return true;
+        }
+        if (this.sharedService.isChangedValue(valueForm.embed, this.dialogData.item.embed)) {
+            return true;
+        }
+        if (this.sharedService.isChangedValue(valueForm.isAuto, this.dialogData.item.isAuto)) {
+            return true;
+        }
+        let status = this.dialogData.item.status == 'active' ? true : false;
         if (this.sharedService.isChangedValue(valueForm.status, status)) {
             return true;
         }
@@ -141,7 +150,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             "duration": valueForm.duration,
             "folderId": valueForm.folderId,
             "embed": valueForm.embed,
-            "isAuto": valueForm.isAuto,
+            "isAuto": valueForm.isAuto ? "true" : "false",
             "status": valueForm.status ? 'active' : 'inactive',
         }
         if (this.target == 'edit') {

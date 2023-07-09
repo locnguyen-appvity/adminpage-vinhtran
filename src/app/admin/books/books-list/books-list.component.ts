@@ -115,11 +115,11 @@ export class BooksListComponent extends TemplateGridApplicationComponent {
 	}
 
 	getRowSelected(item: any) {
-		this.router.navigate([`/admin/chapters/chapter-info/${item.id}`]);
+		this.router.navigate([`/admin/books/book-info/${item.id}`]);
 	}
 
 	addItem() {
-		this.router.navigate(['/admin/chapters/chapter-info']);
+		this.router.navigate(['/admin/books/book-info']);
 	}
 
 	onUpdateStatus(item: any, status: string) {

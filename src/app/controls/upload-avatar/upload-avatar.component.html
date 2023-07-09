@@ -1,7 +1,14 @@
 <div class="account-photo-container" fxLayout="column" fxLayoutAlign="center center">
-    <img mat-card-avatar *ngIf="imageUrl" class="account-photo toolbar-avatar"
-        [src]="imageUrl" alt="avatar" />
-    <div class="account-photo-overlay" (click)="chooseImage()" fxLayout="column" fxLayoutAlign="center center">
-        <mat-icon class="update-account-photo-icon" svgIcon="ic_photo_camera_48px"></mat-icon>
+    <img mat-card-avatar *ngIf="imageUrl" class="account-photo toolbar-avatar" [src]="imageUrl" alt="avatar" />
+    <div class="account-photo-overlay" fxLayout="column" fxLayoutAlign="center center">
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matTooltip="Chọn hình ảnh" (click)="chooseImage()" color="primary">
+                <mat-icon class="update-account-photo-icon" svgIcon="ic_photo_camera_48px"></mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Xóa hình ảnh" color="warn" (click)="clearAvatar()">
+                <mat-icon class="update-account-photo-icon" svgIcon="ic_close_48px"></mat-icon>
+            </button>
+        </div>
+        <span *ngIf="placeHolder?.length > 0">{{placeHolder}}</span>
     </div>
 </div>

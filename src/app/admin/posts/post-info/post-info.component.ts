@@ -44,6 +44,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 	public arrAuthors$: Observable<any>;
 	public arrCatalogues: any[] = [];
 	public fileSelected: any;
+	public fileSelectedHotNew: any;
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Bài Viết";
 	public statusLabel: any = {
@@ -79,9 +80,13 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			catalogueId: "",
 			categoryIds: [],
 			eventDate: "",
+			eventTime: "",
 			locationId: '',
 			locationType: '',
 			authorId: '',
+			hotNewsPhoto: '',
+			photo: '',
+			isEvent: 'len_lich',
 			tags: [],
 			metaKeyword: [],
 			hotNew: false,
@@ -124,9 +129,25 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 		// })
 	}
 
-	valueChangesFile(event: any) {
+	valueChangesFile(event: any, target: string) {
 		if (event && event.action == 'value-change') {
-			this.fileSelected = event.data ? event.data : "";
+			if (target == 'post') {
+				this.fileSelected = event.data ? event.data : "";
+			}
+			else if (target == 'hotNew') {
+				this.fileSelectedHotNew = event.data ? event.data : "";
+			}
+		}
+		else if (event && event.action == 'clear') {
+			if (target == 'post') {
+				this.postFormGroup.get('photo').setValue("");
+				this.fileSelected = "";
+			}
+			else if (target == 'hotNew') {
+				this.postFormGroup.get('hotNewsPhoto').setValue("");
+				this.fileSelected = "";
+			}
+
 		}
 	}
 
@@ -186,6 +207,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
+					this.localItem.eventTime = this.localItem._eventDate ? this.localItem._eventDate.format("HH:mm"): "00:00";
 					this.postFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
@@ -200,7 +222,11 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						locationType: "",
 						tags: this.localItem.tags,
 						catalogueId: this.localItem.catalogueId,
+						eventTime: this.localItem.eventTime,
+						isEvent: this.localItem.isEvent ? this.localItem.isEvent : 'len_lich',
+						hasEvent: this.localItem.isEvent ? true : false,
 						photo: this.localItem.photo,
+						hotNewsPhoto: this.localItem.hotNewsPhoto,
 					});
 				}
 			}
@@ -304,10 +330,15 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 
 	onSave(status: string) {
 		let valueForm = this.postFormGroup.value;
-		let eventDate = this.sharedService.ISOStartDay(valueForm.eventDate);
+		if(valueForm.eventDate && valueForm.eventTime){
+			let timeValue = valueForm.eventTime.split(':');
+			valueForm.eventDate.set({ 'hour': timeValue[0] ? timeValue[0] : 0, 'minute': timeValue[1] ? timeValue[1] : 0 });
+		}
+		let eventDate = this.sharedService.ISODay(valueForm.eventDate);
 		let dataJSON = {
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
+			"hotNewsPhoto": this.fileSelectedHotNew ? this.fileSelectedHotNew.filePath : valueForm.hotNewsPhoto,
 			"link": valueForm.link,
 			"authorId": valueForm.authorId,
 			"locationId": valueForm.locationId,
@@ -317,6 +348,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			"categoryIds": valueForm.categoryIds,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
+			"isEvent": valueForm.hasEvent ? valueForm.isEvent : "",
 			"metaTitle": valueForm.link,
 			"topLevel": null,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,

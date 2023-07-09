@@ -37,6 +37,7 @@ export class BookInfoComponent extends SimpleBaseComponent implements OnInit {
 		class: 'draft-label'
 	}
 	public arrBooks: any[] = [];
+	public arrCatalogues: any[] = [];
 
 	constructor(
 		private service: SharedService,
@@ -63,6 +64,7 @@ export class BookInfoComponent extends SimpleBaseComponent implements OnInit {
 			entityId: "",
 			entityType: "",
 			photo: "",
+			catalogueId: "",
 			categoryIds: [],
 			tags: [],
 			metaKeyword: [],
@@ -108,9 +110,26 @@ export class BookInfoComponent extends SimpleBaseComponent implements OnInit {
 
 	getAllData() {
 		this.getBooks();
+		this.getCatalogues();
 	}
 
-	getBooks(){
+	getCatalogues() {
+		let options = {
+			select: 'id,name'
+		}
+		this.arrCatalogues = [];
+		this.service.getCatalogues(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrCatalogues = items;
+			}
+		})
+	}
+
+	getBooks() {
 		this.service.getBooks().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
@@ -140,6 +159,7 @@ export class BookInfoComponent extends SimpleBaseComponent implements OnInit {
 						entityId: this.localItem.entityId,
 						entityType: this.localItem.entityType,
 						categoryIds: this.localItem.categoryIds,
+						catalogueId: this.localItem.catalogueId,
 						metaKeyword: this.localItem._metaKeyword,
 						tags: this.localItem.tags,
 						photo: this.localItem.photo,
@@ -184,12 +204,39 @@ export class BookInfoComponent extends SimpleBaseComponent implements OnInit {
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
 			"categoryIds": valueForm.categoryIds,
+			"catalogueId": valueForm.catalogueId,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
 			"metaTitle": valueForm.link,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
 		}
+
+		// {
+		//     "title": "fdadfa",
+		//     "photo": "dfsfas",
+		//     "link": null,
+		//     "categoryIds": [],
+		//     "entityId": "3dd1d0e8-b18f-4375-8e60-cea079168217",
+		//     "entityType": null,
+		//     "catalogueId": null,
+		//     "tags": [],
+		//     "metaDescription": null,
+		//     "metaTitle": null,
+		//     "metaKeyword": null,
+		//     "visit": null,
+		//     "authorIds": [],
+		//     "translatorIds": [],
+		//     "originalCreators": [],
+		//     "publisher": "s",
+		//     "publishYear": null,
+		//     "status": null,
+		//     "created": null,
+		//     "modified": null,
+		//     "createdBy": null,
+		//     "modifiedBy": null,
+		//     "id": "3dd1d0e8-b18f-4375-8e60-cea079168217"
+		// }
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
 			request = this.service.updateBook(this.ID, dataJSON);

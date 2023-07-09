@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogSelectedImgsModule } from '../dialog-selected-imgs/dialog-selected-imgs.module';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 
@@ -15,11 +16,12 @@ import { DomSanitizer } from '@angular/platform-browser';
   imports: [
     SharedModule,
     MatButtonModule,
+    MatTooltipModule,
     DialogSelectedImgsModule
   ],
   exports: [UploadAvatarComponent]
 })
-export class UploadAvatarModule { 
+export class UploadAvatarModule {
   constructor(private mdIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
     this.registerIcons();
@@ -28,5 +30,6 @@ export class UploadAvatarModule {
   registerIcons() {
     this.mdIconRegistry.addSvgIcon('ic_photo_camera_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_photo_camera_48px.svg'));
     this.mdIconRegistry.addSvgIcon('ic_image_48dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_image_48dp.svg'));
+    this.mdIconRegistry.addSvgIcon('ic_close_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_close_48px.svg'));
   }
 }

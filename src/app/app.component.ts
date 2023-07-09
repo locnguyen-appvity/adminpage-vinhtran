@@ -3,6 +3,7 @@ import { SimpleBaseComponent } from './shared/simple.base.component';
 import { SharedPropertyService } from './shared/shared-property.service';
 import { distinctUntilChanged, share, shareReplay, takeUntil } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -18,10 +19,12 @@ export class AppComponent extends SimpleBaseComponent {
 	}
 
     constructor(
-        public override sharedService: SharedPropertyService
+        public override sharedService: SharedPropertyService,
+		private titleService: Title,
     ) {
         super(sharedService);
         this.actionsAsync();
+		this.titleService.setTitle("Giáo Phận Phú Cường");
     }
 
     actionsAsync() {

@@ -12,10 +12,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SEChipControlModule } from 'src/app/controls/se-chip-control/se-chip-control.module';
 import {MatChipsModule} from '@angular/material/chips';
 import { SEChipSimpleModule } from 'src/app/controls/se-chip-simple/se-chip-simple.module';
-// import { DialogSelectedImgsModule } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.module';
+import { DialogSelectedImgsModule } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
-// import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
+import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 
 @NgModule({
@@ -24,7 +24,7 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
   ],
   imports: [
     SharedModule,
-    // DialogSelectedImgsModule,
+    DialogSelectedImgsModule,
     MatDialogModule,
     EpisodeInfoRoutingModule,
     // JoditAngularModule,
@@ -38,7 +38,7 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
     MatChipsModule,
     SEChipSimpleModule,
     AutocompleteSimpleModule,
-    // EditorControlModule,
+    EditorControlModule,
     UploadAvatarModule
   ]
 })

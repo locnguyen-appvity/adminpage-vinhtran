@@ -1,35 +1,7 @@
 <div class="folder-tree folder-tree--mediafiles" fxLayout="column" fxLayoutAlign="center start">
-    <!-- <div class="top-menu-toolbar" fxLayout="row" fxLayoutAlign="start center">
-        <div fxFlex="75">
-            <div fxLayout="row" fxLayoutAlign="start center">
-                <mat-icon class="ic_search material-icons" svgIcon="ic_search_48px"></mat-icon>
-                <input matInput placeholder="Tìm kiếm theo tên" autocomplete="off" [formControl]="txtSearch">
-            </div>
-        </div>
-        <div fxFlex="25">
-            <span fxFlex></span>
-            <button mat-icon-button *ngIf="txtSearch?.value?.length > 0" (click)="clearSearch()" aria-label="Close"
-                matTooltip="Xoá" class="mat-icon-button-search-close">
-                <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
-            </button>
-            <button style="margin: 12px;" mat-stroked-button color="primary" (click)="onAddItem()">
-                <span>Thêm Thư Mục Mới</span>
-            </button>
-        </div>
-    </div> -->
     <mat-divider class="full-width"></mat-divider>
     <as-split direction="horizontal">
         <as-split-area [size]="30" style="position: relative;">
-            <!-- <div class="full-width"> -->
-            <!-- <div style="height: 50px;position: sticky;top: 0px; background-color: #fff;z-index: 99;">
-                <div style="background-color: #fff;z-index: 99;" fxLayout="row" fxLayoutAlign="start center">
-                    <span fxFlex></span>
-                    <button style="margin: 12px;" mat-stroked-button color="primary" (click)="onAddItem()">
-                        <span>Thêm Thư Mục Mới</span>
-                    </button>
-                </div>
-                <mat-divider></mat-divider>
-            </div> -->
             <div class="full-width" fxLayout="column" fxLayoutAlign="start center">
                 <div *ngIf="spinerLoading" fxLayout="column" fxLayoutAlign="center center" style="margin: 48px 0;">
                     <mat-spinner diameter="70"></mat-spinner>

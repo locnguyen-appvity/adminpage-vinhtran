@@ -62,6 +62,7 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 			metaDescription: "",
 			entityId: "",
 			entityType: "",
+			content: "",
 			photo: "",
 			categoryIds: [],
 			tags: [],
@@ -110,7 +111,7 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 		this.getBooks();
 	}
 
-	getBooks(){
+	getBooks() {
 		this.service.getBooks().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
@@ -183,13 +184,38 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
+			"content": valueForm.content,
 			"categoryIds": valueForm.categoryIds,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
 			"metaTitle": valueForm.link,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
+			"mediaFileId": valueForm.mediaFileId,
 		}
+
+		// {
+		//     "title": "dfasdf",
+		//     "photo": "fasdf",
+		//     "link": "fdf",
+		//     "content": "dfdff",
+		//     "categoryIds": [
+		//         "3dd1d0e8-b18f-4375-8e60-cea079168217"
+		//     ],
+		//     "entityType": "dfkj",
+		//     "tags": [],
+		//     "metaDescription": null,
+		//     "metaTitle": null,
+		//     "metaKeyword": "",
+		//     "visit": null,
+		//     "mediaFileId": null,
+		//     "status": null,
+		//     "created": null,
+		//     "modified": null,
+		//     "createdBy": null,
+		//     "modifiedBy": null,
+		//     "id": "3dd1d0e8-b18f-4375-8e60-cea079168217"
+		// }
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
 			request = this.service.updateEpisode(this.ID, dataJSON);
@@ -218,3 +244,4 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 	}
 
 }
+

@@ -19,6 +19,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 	public disabledRemoveBtn: boolean = true;
 	@Input() entityID: string = '';
 	@Input() filePath: string = '';
+	@Input() placeHolder: string = '';
 	@Input() type: string = 'member';
 	@Output() uploadFile: any = new EventEmitter();
 	@Output() valueChanges: any = new EventEmitter();
@@ -97,7 +98,7 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 		this.fileInput.nativeElement.value = '';
 		this.hasBeenAvatar = false;
 		this.disabledRemoveBtn = true;
-		this.valueChanges.emit({ action: 'value-change', data: '' });
+		this.valueChanges.emit({ action: 'clear', data: '' });
 	}
 
 }

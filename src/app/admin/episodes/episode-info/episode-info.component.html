@@ -38,6 +38,7 @@
                         <mat-label>Mô Tả</mat-label>
                         <textarea matInput rows="4" formControlName="metaDescription"></textarea>
                     </mat-form-field>
+                    <se-editor-control formControlName="content"></se-editor-control>
                 </div>
                 <div fxFlex="30" class="mrl-24">
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
@@ -60,9 +61,6 @@
                         [type]="'tags'"></se-chip-control>
                     <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
                         [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
-
-                    <mat-slide-toggle formControlName="hotNew">Hot New</mat-slide-toggle>
-                    <mat-slide-toggle class="mrl-24" formControlName="hasEvent">Sự kiện trực tiếp</mat-slide-toggle>
                 </div>
             </div>
         </form>

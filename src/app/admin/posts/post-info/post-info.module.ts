@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,9 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
     SEChipSimpleModule,
     AutocompleteSimpleModule,
     EditorControlModule,
+    NgxMaskModule.forRoot({
+      validation: false,
+    }),
     UploadAvatarModule
   ]
 })
