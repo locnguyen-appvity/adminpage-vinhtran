@@ -38,19 +38,29 @@
                         <mat-label>Mô Tả</mat-label>
                         <textarea matInput rows="4" formControlName="metaDescription"></textarea>
                     </mat-form-field>
-                    <app-episodes-list-control mode="book"></app-episodes-list-control>
+                    <mat-accordion multi="true" class="full-width mrt-24">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    DANH SÁCH CHƯƠNG
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <app-chapters-list mode="book"></app-chapters-list>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    DANH SÁCH EPISODE
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <app-episodes-list-control mode="book"></app-episodes-list-control>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+					
                 </div>
                 <div fxFlex="30" class="mrl-24">
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
-
-                    <mat-form-field appearance="outline" class="full-width mrt-24">
-                        <mat-label>Sách</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'entityId'" [switchAt]="10"
-                            [optgroup]="false" [placeHolder]="'Chọn sách...'" [keyTitle]="'name'" [keyValue]="'id'"
-                            [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrBooks">
-                        </se-autocomplete-simple>
-                    </mat-form-field>
 
                     <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
                         [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"

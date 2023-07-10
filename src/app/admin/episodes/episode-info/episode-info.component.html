@@ -45,10 +45,10 @@
                         [filePath]="localItem?.photo"></se-upload-avatar>
 
                     <mat-form-field appearance="outline" class="full-width mrt-24">
-                        <mat-label>Sách</mat-label>
+                        <mat-label>Thuộc</mat-label>
                         <se-autocomplete-simple [required]="false" [formControlName]="'entityId'" [switchAt]="10"
-                            [optgroup]="false" [placeHolder]="'Chọn sách...'" [keyTitle]="'name'" [keyValue]="'id'"
-                            [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrBooks">
+                            [optgroup]="false" [placeHolder]="'Chọn sách...'" [keyTitle]="'title'" [keyValue]="'_id'"
+                            [keyValueEmit]="'_id'" [autocomplete]="false" [optgroup]="true" [items]="arrBooks">
                         </se-autocomplete-simple>
                     </mat-form-field>
 

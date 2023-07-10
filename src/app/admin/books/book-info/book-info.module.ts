@@ -18,6 +18,8 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
 // import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 import { EpisodesListControlModule } from 'src/app/controls/episodes-list/episodes-list.module';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { ChaptersListModule } from '../../chapters/chapters-list/chapters-list.module';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { EpisodesListControlModule } from 'src/app/controls/episodes-list/episod
     AutocompleteSimpleModule,
     // EditorControlModule,
     UploadAvatarModule,
-    EpisodesListControlModule
+    MatExpansionModule,
+    EpisodesListControlModule,
+    ChaptersListModule
   ]
 })
 export class BookInfoModule { }

@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take, takeUntil } from 'rxjs';
+import { forkJoin, take, takeUntil } from 'rxjs';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -61,7 +61,6 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 			link: "",
 			metaDescription: "",
 			entityId: "",
-			entityType: "",
 			content: "",
 			photo: "",
 			categoryIds: [],
@@ -112,11 +111,26 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 	}
 
 	getBooks() {
-		this.service.getBooks().pipe(take(1)).subscribe({
+		forkJoin({ getBooks: this.service.getBooks(), getChapters: this.service.getChapters() }).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
-				if (res && res.value && res.value.length > 0) {
-					items = res.value;
+				if (res) {
+					if (res.getBooks.value && res.getBooks.value.length > 0) {
+						for (let item of res.getBooks.value) {
+							item.groupName = 'Sách';
+							item.groupCode = 'book';
+							item._id = `book~${item.id}`;
+						}
+						items.push(...res.getBooks.value);
+					}
+					if (res.getChapters.value && res.getChapters.value.length > 0) {
+						for (let item of res.getChapters.value) {
+							item.groupName = 'Chương';
+							item.groupCode = 'chapter';
+							item._id = `chapter~${item.id}`;
+						}
+						items.push(...res.getChapters.value);
+					}
 				}
 				this.arrBooks = items;
 			}
@@ -134,12 +148,15 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
+					this.localItem._entityId = "";
+					if(!this.isNullOrEmpty(this.localItem.entityId) && !this.isNullOrEmpty(this.localItem.entityType)){
+						this.localItem._entityId = `${this.localItem.entityType}~${this.localItem.entityId}`
+					}
 					this.episodeFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
-						entityId: this.localItem.entityId,
-						entityType: this.localItem.entityType,
+						entityId: this.localItem._entityId,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
 						tags: this.localItem.tags,
@@ -178,9 +195,19 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 
 	onSave(status: string) {
 		let valueForm = this.episodeFormGroup.value;
+		let entityId = "";
+		let entityType = "";
+		if (!this.isNullOrEmpty(valueForm.entityId)) {
+			let entity = valueForm.entityId.split("~");
+			if (entity) {
+				entityType = entity[0];
+				entityId = entity[1];
+			}
+
+		}
 		let dataJSON = {
-			"entityId": valueForm.entityId,
-			"entityType": "book",
+			"entityId": entityId,
+			"entityType": entityType,
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,

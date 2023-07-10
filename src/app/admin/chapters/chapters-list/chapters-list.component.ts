@@ -1,10 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges, } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -19,6 +19,7 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 })
 export class ChaptersListComponent extends TemplateGridApplicationComponent {
 
+	@Input() mode: string = '';
 	public dataItems: any[] = [];
 	constructor(
 		public sharedService: SharedPropertyService,

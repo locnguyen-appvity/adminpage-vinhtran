@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </mat-sidenav> -->
-                    <div class="table-container table-container--mediafiles">
+                    <div class="table-container" [ngClass]="mode == '' ? 'table-container--mediafiles': 'table-container--control'">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort
                             (matSortChange)="onSortChange($event)">
 
