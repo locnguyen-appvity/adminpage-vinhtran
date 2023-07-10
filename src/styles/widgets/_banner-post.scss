@@ -35,5 +35,26 @@
         .figure-img {
             width: 100%;
         }
+        .figure-caption-list{
+            h4 {
+                margin: 0 0 6px;
+                font-size: 12px;
+                font-weight: 400;
+                color: #ccc;
+                line-height: 1.4;
+            }
+            h2 {
+                margin: 0 0 6px;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 1.4;
+            }
+            p {
+                margin: 0;
+                padding: 0;
+                font-size: 8px;
+                line-height: 1.4;
+            }
+        }
     }
 }

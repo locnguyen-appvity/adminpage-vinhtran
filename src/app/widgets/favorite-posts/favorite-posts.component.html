@@ -2,39 +2,26 @@
     <h2>LỜI CHÚA</h2>
     <h3><a href="#">Xem tất cả</a></h3>
     <div class="row">
-        <div class="col-7">
+        <div *ngIf="dataItems?.length > 0" class="col-7">
             <figure class="item-favorite-post figure">
-                <img src="../../../assets/images/figure-img.jpg" class="figure-img" alt="thumb">
+                <img [src]="dataItems[0]?.pictureUrl" class="figure-img" alt="thumb">
                 <figcaption class="figure-caption">
-                    <h4>JUNE 6, 2016 / ADMISSION</h4>
-                    <h2>Lorem ipsum dolor sit amet.</h2>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi assumenda quo provident
-                        tenetur, quos praesentium.</p>
-                </figcaption>
-            </figure>
-        </div>
-        <div class="col-5">
-            <figure class="item-favorite-post item-favorite-post--list figure">
-                <img src="../../../assets/images/figure-img.jpg" class="figure-img" alt="thumb">
-                <figcaption class="figure-caption">
-                    <h4>JUNE 6, 2016 / ADMISSION</h4>
-                    <h2>Lorem ipsum dolor sit amet.</h2>
-                </figcaption>
-            </figure>
-            <figure class="item-favorite-post item-favorite-post--list figure">
-                <img src="../../../assets/images/figure-img.jpg" class="figure-img" alt="thumb">
-                <figcaption class="figure-caption">
-                    <h4>JUNE 6, 2016 / ADMISSION</h4>
-                    <h2>Lorem ipsum dolor sit amet.</h2>
-                </figcaption>
-            </figure>
-            <figure class="item-favorite-post item-favorite-post--list figure">
-                <img src="../../../assets/images/figure-img.jpg" class="figure-img" alt="thumb">
-                <figcaption class="figure-caption">
-                    <h4>JUNE 6, 2016 / ADMISSION</h4>
-                    <h2>Lorem ipsum dolor sit amet.</h2>
-                </figcaption>
-            </figure>
+                    <h4>{{dataItems[0]?.createdView}}</h4>
+                    <h2>{{dataItems[0]?.title}}</h2>
+                    <!-- <p>{{dataItems[0]?.metaDescription}}</p> -->
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="col-5">
+            <ng-template ngFor let-data let-i="index" let-first="first" [ngForOf]="dataItems">
+                <figure *ngIf="!first" class="item-favorite-post item-favorite-post--list figure">
+                    <img [src]="data?.pictureUrl" class="figure-img" alt="thumb">
+                    <figcaption class="figure-caption-list mrl-12">
+                        <h4>{{data?.createdView}}</h4>
+                        <h2>{{data?.title}}</h2>
+                    </figcaption>
+                </figure>
+            </ng-template>
         </div>
     </div>
 </div>

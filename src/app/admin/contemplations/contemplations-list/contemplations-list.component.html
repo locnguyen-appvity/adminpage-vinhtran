@@ -87,7 +87,7 @@
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
                                             <ng-container
-                                                *ngIf="(element.hasAvatar && element?.pictureUrl); else defaultAvatar">
+                                                *ngIf="element?.pictureUrl?.length > 0 else defaultAvatar">
                                                 <img [src]="element?.pictureUrl" mat-card-avatar alt="photo"
                                                     matTooltip="User Select" class="se-avatar" />
                                             </ng-container>
