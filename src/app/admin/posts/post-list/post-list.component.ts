@@ -74,6 +74,7 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 				if (res && res.value && res.value.length > 0) {
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
+						item.disabledItem = false;
 						// this.getAvatar(item);
 						this.updateStatus(item);
 						// item.sexView = this.handleSex(item.sex);

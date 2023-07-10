@@ -11,7 +11,7 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},
 			{
-				path: 'groups-list',
+				path: 'groups',
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{

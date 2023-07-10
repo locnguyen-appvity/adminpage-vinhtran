@@ -4,6 +4,7 @@ import { OrganizationsComponent } from './organizations.component';
 import { OrganizationsRoutingModule } from './organizations-routing.module';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { OrganizationsListModule } from './organization-list/organizations-list.module';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
   ],
   imports: [
     SharedModule,
-    OrganizationsRoutingModule
+    OrganizationsRoutingModule,
+    OrganizationsListModule
   ]
 })
 export class OrganizationsModule {

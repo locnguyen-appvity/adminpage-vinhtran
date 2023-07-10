@@ -19,7 +19,7 @@ export class ListItemBaseComponent extends SimpleBaseComponent {
 	public arrData: any[] = [];
 	public searchValue: string = '';
 	public spinerLoading: boolean = false;
-	public searchKey = 'name'
+	public searchKey = 'name';
 
 
 	constructor(public override sharedService: SharedPropertyService,

@@ -67,7 +67,7 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		public store: Store<IAppState>,
 		public service: SharedService,
 		public snackbar: MatSnackBar,
-		) {
+	) {
 		super(sharedService);
 		this.sort = [];
 		this.menuViewColumns = [];
@@ -85,17 +85,17 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 	}
 
 	public getUserPermissions() {
-        if (this.basePermissions.ready && !this.ready) {
-            this.ready = true;
-            this.initialMenuViewColumns();
-            this.dataProcessing = true;
+		if (this.basePermissions.ready && !this.ready) {
+			this.ready = true;
+			this.initialMenuViewColumns();
+			this.dataProcessing = true;
 			// this.getDataSettings().pipe(takeUntil(this.unsubscribe)).subscribe({
 			// 	next: () => {
-					// this.getDataGridAndCounterApplications();
+			// this.getDataGridAndCounterApplications();
 			// 	}
 			// });
-        }
-    }
+		}
+	}
 
 	showInfoSnackbar(dataInfo: any) {
 		this.snackbar.openFromComponent(ToastSnackbarAppComponent, {
@@ -114,16 +114,16 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		this.selection.clear();
 	}
 
-    // public getValuesFromRedux() {
-    //     this.store
-    //         .select<IAppState>((state: any) => state.state)
-    //         .pipe(takeUntil(this.unsubscribe))
-    //         .subscribe((completeState: IAppState) => {
-    //             this.sharedService.CurrentState = completeState;
-    //             this.basePermissions = this.sharedService.CurrentState.userBasePermissions;
-    //             this.getUserPermissions();
-    //         });
-    // }
+	// public getValuesFromRedux() {
+	//     this.store
+	//         .select<IAppState>((state: any) => state.state)
+	//         .pipe(takeUntil(this.unsubscribe))
+	//         .subscribe((completeState: IAppState) => {
+	//             this.sharedService.CurrentState = completeState;
+	//             this.basePermissions = this.sharedService.CurrentState.userBasePermissions;
+	//             this.getUserPermissions();
+	//         });
+	// }
 
 	ngAfterViewInit() {
 		this.initialMenuViewColumns();
@@ -285,6 +285,25 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		// 			console.error(error);
 		// 		}
 		// 	});
+	}
+
+
+	updateStatus(item: any) {
+		switch (item.status) {
+			case 'publish':
+			case 'active':
+				item.statusView = "Đã Xuất Bản";
+				item.statusClass = "approved-label";
+				break;
+			case 'inactive':
+				item.statusView = "Tạm Ẩn"
+				item.statusClass = "rejected-label";
+				break;
+			default:
+				item.statusClass = "pending-label";
+				item.statusView = "Lưu Nháp"
+				break;
+		}
 	}
 
 	applyToggleColumns() {

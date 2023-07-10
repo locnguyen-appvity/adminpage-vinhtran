@@ -1,0 +1,53 @@
+<div class="post-info">
+	<div class="sticky-toolbar">
+		<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+			<div fxLayout="row" fxLayoutAlign="center center">
+				<button mat-icon-button (click)="routeToBack()">
+					<mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+				</button>
+				<span class="truncate">Trở về {{matTooltipBack}}</span>
+			</div>
+			<div *ngIf="statusLabel?.title !== ''">
+				<span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
+			</div>
+			<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+				<!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
+				<button (click)="routeToBack()" mat-flat-button color="warn">Hủy</button>
+				<button (click)="onSave()" mat-flat-button color="primary">Lưu</button>
+
+			</div>
+		</mat-toolbar>
+	</div>
+	<mat-divider></mat-divider>
+	<div class="post-container">
+		<form [formGroup]="dataItemGroup">
+			<div fxLayout="column" fxLayoutAlign="start start">
+				<!-- <div fxFlex="50" class="mrr-24"> -->
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Tên</mat-label>
+						<input matInput required formControlName="name" autocomplete="off">
+					</mat-form-field>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Mô Tả</mat-label>
+						<textarea matInput rows="3" formControlName="description"></textarea>
+					</mat-form-field>
+					<se-editor-control class="full-width" formControlName="content"></se-editor-control>
+				<!-- </div>
+				<div fxFlex="50"> -->
+					<mat-divider class="full-width mrt-24"></mat-divider>
+					<mat-accordion multi="true" class="full-width mrt-24">
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    DANH SÁCH GIÁO XỨ VÀ DÒNG TU THUỘC GIÁO HẠT
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+							<app-organizations-list [groupID]="ID" class="full-width"></app-organizations-list>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+					
+				<!-- </div> -->
+			</div>
+		</form>
+	</div>
+</div>

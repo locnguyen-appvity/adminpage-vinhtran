@@ -1,64 +1,103 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { Router } from '@angular/router';
 import { OrganizationInfoComponent } from '../organization-info/organization-info.component';
+import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
+import { LinqService } from 'src/app/shared/linq.service';
+import { IAppState } from 'src/app/shared/redux/state';
+import { Store } from '@ngrx/store';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 
 @Component({
 	selector: 'app-organizations-list',
 	templateUrl: './organizations-list.component.html',
 	styleUrls: ['./organizations-list.component.scss']
 })
-export class OrganizationsListComponent extends ListItemBaseComponent {
+export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
-	constructor(public override sharedService: SharedPropertyService,
-		private service: SharedService,
-		public snackbar: MatSnackBar,
+	@Input() groupID: string;
+	constructor(
+		public sharedService: SharedPropertyService,
+		public linq: LinqService,
 		public router: Router,
-		public dialog: MatDialog) {
-		super(sharedService, snackbar);
-		this.getDataItems();
+		public service: SharedService,
+		public dialog: MatDialog,
+		public snackbar: MatSnackBar,
+		public store: Store<IAppState>
+	) {
+		super(sharedService, linq, store, service, snackbar);
+		this.defaultSort = 'created desc';
+		this.dataSettingsKey = 'user-list';
+		this.getDataGridAndCounterApplications();
+	}
+	
+	ngOnChanges(changes: SimpleChanges): void {
+		if(changes['groupID']){
+			this.getDataGridAndCounterApplications();
+		}
 	}
 
-	getDataItems() {
-		this.spinerLoading = true;
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.groupID)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `groupID eq ${this.groupID}`;
+			}
+			else {
+				filter = `(${filter}) and (groupID eq ${this.groupID})`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(name), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
+
+	getDataGridAndCounterApplications() {
+		this.getDataGridApplications();
+	}
+
+	getDataGridApplications() {
 		let options = {
 			filter: this.getFilter()
 		}
-		this.service.getOrganizations(options).pipe(take(1)).subscribe((res: any) => {
-			this.spinerLoading = false;
-			this.arrData = [];
+		if(this.subscription['getOrganizations']){
+			this.subscription['getOrganizations'].unsubscribe();
+		}
+		this.dataProcessing = true;
+		this.subscription['getOrganizations'] = this.service.getOrganizations(options).pipe(take(1)).subscribe((res: any) => {
+			let dataItems = [];
+			let total = res.total || 0;
 			if (res && res.value && res.value.length > 0) {
-				let items = res.value;
-				for (let item of items) {
-					switch (item.status) {
-						case 'publish':
-							item.statusTooltip = 'Hiện';
-							item.statusIcon = 'ic_toggle_on';
-							item.class = 'active';
-							break;
-						case 'inactive':
-							item.statusTooltip = 'Ẩn';
-							item.statusIcon = 'ic_toggle_off';
-							item.class = 'inactive';
-							break;
-						case 'draft':
-						default:
-							item.statusTooltip = 'Nháp';
-							item.statusIcon = 'ic_toggle_off';
-							item.class = 'draft';
-							break;
+				dataItems = res.value;
+				for (let item of dataItems) {
+					item.disabledItem = false;
+					item.title = item.name;
+					if (item.photo) {
+						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 					}
+					this.updateStatus(item);
 				}
-				this.arrData = items;
-				this.noData = false;
 			}
-			else {
-				this.noData = true;
+			this.gridDataChanges.data = dataItems;
+			this.gridDataChanges.total = total;
+			this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
+			this.dataProcessing = false;
+			if(this.subscription['getOrganizations']){
+				this.subscription['getOrganizations'].unsubscribe();
 			}
 
 		})
@@ -75,14 +114,14 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 					message: 'Ẩn Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.getDataItems();
+				this.getDataGridApplications();
 			}
 		})
 	}
 
-	onActive(item: any) {
+	onUpdateStatus(item: any, status: string) {
 		let dataJSON = {
-			status: 'publish',
+			status: status,
 		}
 		this.service.updateOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
@@ -91,12 +130,12 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 					message: 'Hiện Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.getDataItems();
+				this.getDataGridApplications();
 			}
 		})
 	}
 
-	onAddItem() {
+	addItem() {
 		let config: any = {
 			data: {
 				target: 'new'
@@ -116,17 +155,17 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 					snackbarData.key = 'new-item';
 					snackbarData.message = 'Thêm Giáo Xứ Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					this.getDataItems();
+					this.getDataGridApplications();
 				}
 			}
 		});
 	}
 
-	onChangeData(item: any) {
+	getRowSelected(item: any) {
 		this.router.navigate([`/admin/manage/organizations/organization/${item.id}`]);
 	}
 
-	deleteItem(item: any) {
+	onDelete(item: any) {
 		this.dataProcessing = true;
 		this.service.deleteOrganization(item.id).pipe(take(1)).subscribe(() => {
 			this.dataProcessing = false;
@@ -135,8 +174,12 @@ export class OrganizationsListComponent extends ListItemBaseComponent {
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
-			this.getDataItems();
+			this.getDataGridApplications();
 		})
+	}
+
+	registerGridColumns() {
+		this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created', 'moreActions'];
 	}
 
 

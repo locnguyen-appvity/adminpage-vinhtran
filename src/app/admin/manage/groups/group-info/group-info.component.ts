@@ -20,6 +20,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
+
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		public dialogRef: MatDialogRef<GroupInfoComponent>,
@@ -39,6 +40,8 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		}
 		this.dataItemGroup = this.fb.group({
 			name: [name, [Validators.required]],
+			description: this.dialogData.item ? this.dialogData.item.description : "",
+			content: this.dialogData.item ? this.dialogData.item.content : "",
 			status: status
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -80,6 +83,8 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
 			name: valueForm.name,
+			description: valueForm.description,
+			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive'
 		}
 		if (this.target == 'edit') {
