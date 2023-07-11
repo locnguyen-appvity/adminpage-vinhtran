@@ -16,9 +16,9 @@ export class PostNewComponent extends SimpleBaseComponent {
 	public customOptions: OwlOptions = {
 		margin: 12,
 		loop: true,
-		mouseDrag: false,
-		touchDrag: false,
-		pullDrag: false,
+		mouseDrag: true,
+		touchDrag: true,
+		pullDrag: true,
 		dots: true,
 		navSpeed: 700,
 		navText: ['', ''],

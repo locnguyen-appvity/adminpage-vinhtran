@@ -1,12 +1,13 @@
-<div class="container-xl mrt-24">
+<div class="container-xl">
     <h2 class="title-post-new">
-        <label>TIN MỚI NHẤT</label>
+        TIN MỚI NHẤT
     </h2>
     <owl-carousel-o [options]="customOptions">
         <ng-container *ngFor="let item of dataItems">
             <ng-template carouselSlide [id]="item.id">
-                <figure class="item-post-new figure" style="height: 300px;">
-                    <img [src]="item.pictureUrl" style="height: 150px; object-fit: fill;" class="figure-img img-fluid rounded" alt="thumb">
+                <figure class="item-post-new figure">
+                    <img [src]="item.pictureUrl" style="height: 150px; object-fit: fill;"
+                        class="figure-img img-fluid rounded" alt="thumb">
                     <figcaption class="figure-caption">{{item.title}}</figcaption>
                 </figure>
             </ng-template>

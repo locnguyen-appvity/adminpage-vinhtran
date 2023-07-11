@@ -25,6 +25,28 @@
     .item-post-banner {
         width: 500px;
         margin: 0 auto;
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.4;
+            color: $green;
+            margin: 0 0 16px;
+        }
+        figcaption {
+            p {
+                font-size: 16px;
+                line-height: 1.4;
+                font-weight: 500;
+                margin: 0 0 16px;
+                color: $white;
+            }
+            a {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: $white;
+            }
+        }
     }
 }
 
@@ -34,6 +56,28 @@
     .figure {
         .figure-img {
             width: 100%;
+        }
+        .figure-caption {
+            h3 {
+                font-size: 18px;
+                font-weight: 500;
+                line-height: 1.4;
+                margin: 0 0 12px;
+                color: $green;
+            }
+            p {
+                font-size: 16px;
+                line-height: 1.4;
+                font-weight: 500;
+                margin: 0 0 16px;
+                color: $white;
+            }
+            a {
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 1.4;
+                color: $green;
+            }
         }
     }
 }

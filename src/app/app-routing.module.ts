@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./page/page.module').then(m => m.PageModule)
   },
   { path: 'login', component: LoginPageComponent },
-  { path: '', redirectTo: 'page', pathMatch: 'full' },
+  // { path: '', redirectTo: 'page', pathMatch: 'full' },
   { path: '**', redirectTo: 'page', pathMatch: 'full' }
 ];
 

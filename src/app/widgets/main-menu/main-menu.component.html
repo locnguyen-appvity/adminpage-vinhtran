@@ -12,7 +12,24 @@
                             <div class="nav-item dropdown">
                                 <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{item.name}}</div>
                                 <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
-                                    <ng-container *ngTemplateOutlet="subMenuTemplate; context: item"></ng-container>
+                                    <div fxLayout="row wrap" fxLayoutGap="24px grid">
+                                        <ng-container *ngIf="item.dataPosts; else notPosts">
+                                            <div fxFlex="50">
+                                                <ng-container
+                                                    *ngTemplateOutlet="subMenuTemplate; context: item"></ng-container>
+                                            </div>
+                                            <div fxFlex="50">
+                                                <ng-container
+                                                    *ngTemplateOutlet="postInMenu; context: item"></ng-container>
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #notPosts>
+                                            <div fxFlex="100">
+                                                <ng-container
+                                                    *ngTemplateOutlet="subMenuTemplate; context: item"></ng-container>
+                                            </div>
+                                        </ng-template>
+                                    </div>
                                 </div>
                             </div>
                         </ng-container>
@@ -27,7 +44,27 @@
 </div>
 
 <ng-template #subMenuTemplate let-items="data">
-    <ng-container *ngFor="let item of items; trackBy:trackByFn">
-        <div (click)="selectedItem(item)" class="dropdown-item">{{item.name}}</div>
-    </ng-container>
+    <div fxLayout="row wrap" fxLayoutGap="12px grid">
+        <ng-container *ngFor="let item of items; trackBy:trackByFn">
+            <div fxFlex="33.33">
+                <div (click)="selectedItem(item)" class="dropdown-item">{{item.name}}</div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #postInMenu let-items="dataPosts">
+    <div class="post-menu-wrap">
+        <owl-carousel-o [options]="customOptions">
+            <ng-container *ngFor="let item of items">
+                <ng-template carouselSlide [id]="item.id">
+                    <figure class="item-post-new figure">
+                        <img [src]="item.pictureUrl" class="figure-img img-fluid rounded"
+                            style="height: 150px; object-fit: fill;" alt="thumb">
+                        <figcaption class="figure-caption">{{item.title}}</figcaption>
+                    </figure>
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o>
+    </div>
 </ng-template>
