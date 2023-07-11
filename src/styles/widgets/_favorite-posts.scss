@@ -1,19 +1,20 @@
 .favorite-posts-container {
     .item-favorite-post {
+        align-items: center;
         img {
             width: 100%;
         }
         .figure-caption {
             h4 {
                 margin: 0 0 6px;
-                font-size: 16px;
+                font-size: 14px;
                 font-weight: 400;
                 color: #ccc;
                 line-height: 1.4;
             }
             h2 {
                 margin: 0 0 6px;
-                font-size: 24px;
+                font-size: 18px;
                 font-weight: 600;
                 line-height: 1.4;
             }
@@ -21,6 +22,27 @@
                 margin: 0;
                 padding: 0;
                 font-size: 14px;
+                line-height: 1.4;
+            }
+        }
+        .figure-caption-list {
+            h4 {
+                margin: 0 0 6px;
+                font-size: 10px;
+                font-weight: 400;
+                color: #ccc;
+                line-height: 1.4;
+            }
+            h2 {
+                margin: 0 0 6px;
+                font-size: 12px;
+                font-weight: 600;
+                line-height: 1.4;
+            }
+            p {
+                margin: 0;
+                padding: 0;
+                font-size: 8px;
                 line-height: 1.4;
             }
         }

@@ -1,11 +1,13 @@
 <div class="notifications-list-container">
     <h2>THÔNG BÁO</h2>
     <mat-list>
-        <mat-list-item class="mg-list-item">
-            <span mat-line class="list-item-title">Catholic Prayers</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item class="mg-list-item">
+        <ng-template ngFor let-data let-i="index" let-last="last" [ngForOf]="dataItems">
+            <mat-list-item class="mg-list-item">
+                <span mat-line class="list-item-title" [matTooltip]="data?.title">{{data?.title}}</span>
+            </mat-list-item>
+            <mat-divider *ngIf="!last"></mat-divider>
+        </ng-template>
+        <!-- <mat-list-item class="mg-list-item">
             <span mat-line class="list-item-title">The Rosary</span>
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -24,6 +26,6 @@
         <mat-list-item class="mg-list-item">
             <span mat-line class="list-item-title">TGP Sài Gòn</span>
         </mat-list-item>
-        <mat-divider></mat-divider>
+        <mat-divider></mat-divider> -->
     </mat-list>
 </div>

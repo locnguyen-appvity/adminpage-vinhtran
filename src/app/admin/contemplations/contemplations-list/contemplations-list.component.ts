@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take, takeUntil } from 'rxjs';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -74,6 +75,9 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+						}
 						this.updateStatus(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);

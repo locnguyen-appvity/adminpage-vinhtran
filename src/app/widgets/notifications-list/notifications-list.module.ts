@@ -3,6 +3,7 @@ import { NotificationsListComponent } from './notifications-list.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [
@@ -11,7 +12,8 @@ import { MatDividerModule } from '@angular/material/divider';
 	imports: [
 		SharedModule,
 		MatListModule,
-		MatDividerModule
+		MatDividerModule,
+		MatTooltipModule
 	],
 	exports: [NotificationsListComponent]
 })

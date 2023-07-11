@@ -138,6 +138,11 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		if (event && event.action == 'value-change') {
 			this.fileSelected = event.data ? event.data : "";
 		}
+		else if (event && event.action == 'clear') {
+			this.contemplationFormGroup.get('photo').setValue("");
+			this.fileSelected = "";
+
+		}
 	}
 
 	getContemplation() {
@@ -227,7 +232,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		let valueForm = this.contemplationFormGroup.value;
 		let dataJSON = {
 			"title": valueForm.title,
-			"photo": this.fileSelected ? this.fileSelected.filePath : "",
+			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
 			"loiChuaId": valueForm.loiChuaId,
 			"authorId": valueForm.authorId,

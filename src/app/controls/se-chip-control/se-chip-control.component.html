@@ -10,12 +10,12 @@
                     <img alt="Photo" [src]="chip?.pictureUrl" matChipAvatar class="se-avatar" />
                 </ng-container>
                 <ng-template #defaultAvatar>
-                    <span matChipAvatar class="se-avatar avatar-name avatar-name--24">{{chip.name |
+                    <span matChipAvatar class="se-avatar avatar-name avatar-name--24">{{chip?.name |
                         initialsName}}</span>
                 </ng-template>
             </ng-template>
 
-            <span>{{ chip.name }}</span>
+            <span>{{ chip?.name }}</span>
             <mat-icon matChipRemove svgIcon="ic_close_48px"></mat-icon>
         </mat-chip>
         <div class="input-chip">

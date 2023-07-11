@@ -22,10 +22,10 @@
             <ng-container *ngFor="let item of dataItems">
                 <div class="col-3">
                     <figure class="item-post-banner figure">
-                        <img [src]="item.thumb" class="figure-img" alt="thumb">
-                        <figcaption class="figure-caption">
-                            <h3>{{item.title}}</h3>
-                            <p>{{item.content}}</p>
+                        <img [src]="item?.pictureUrl" class="figure-img" alt="thumb">
+                        <figcaption class="figure-caption-list">
+                            <h2>{{item?.title}}</h2>
+                            <p>{{item?.metaDescription}}</p>
                             <a href="#">Xem thêm</a>
                         </figcaption>
                     </figure>

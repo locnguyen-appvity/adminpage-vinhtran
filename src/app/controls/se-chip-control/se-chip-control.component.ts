@@ -413,8 +413,10 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 		}
 		for (let id of ids) {
 			if (id !== null && !this.isExistItem({ id: id })) {
-				let user = this.getItemInArray(id, this.dataItems);
-				this.chips.push(user);
+				let item = this.getItemInArray(id, this.dataItems);
+				if(item){
+					this.chips.push(item);
+				}
 			}
 			this.valueChange.emit({ action: 'loaded-user', data: this.chips });
 		}
