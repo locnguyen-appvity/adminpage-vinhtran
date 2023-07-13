@@ -796,6 +796,11 @@ table {
 					height: calc(100vh - 211px);
 				}
 
+				&--mediafilesselect{
+					min-height: 300px;
+					height: 100%;
+				}
+
 				&--control{
 					height: calc(100vh - 600px);
 				}

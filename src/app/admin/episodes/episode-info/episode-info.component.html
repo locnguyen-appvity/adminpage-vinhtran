@@ -32,8 +32,23 @@
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tiêu Đề</mat-label>
                         <textarea matInput rows="1" formControlName="title" required></textarea>
-                        <mat-hint>{{episodeFormGroup?.value?.link}}</mat-hint>
+                        <mat-hint>Link: {{episodeFormGroup?.value?.link}}</mat-hint>
                     </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Media File</mat-label>
+                        <input #mediaFile type="text" placeholder="Chọn file" matInput required
+                        formControlName="mediaFile" autocomplete="off">
+                        <button mat-icon-button matSuffix (click)="mediaFile.value='';clearValue('mediaFile')">
+                            <mat-icon svgIcon="ic_close_48px"></mat-icon>
+                        </button>
+                        <button mat-icon-button matSuffix (click)="mediaFile.value='';onSelectMeida()">
+                            <mat-icon svgIcon="ic_cloud_upload_48px"></mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                    <div class="full-width mrb-24" *ngIf="fileMeidaSelected?.embed?.length > 0" [innerHTML]="fileMeidaSelected?.embed | safeHtml">
+                    </div>
+
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Mô Tả</mat-label>
                         <textarea matInput rows="4" formControlName="metaDescription"></textarea>

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, take, takeUntil } from 'rxjs';
+import { forkJoin, take, takeUntil, timer as observableTimer } from 'rxjs';
+import { DialogSelectedMediaComponent } from 'src/app/controls/dialog-selected-media/dialog-selected-media.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -26,10 +27,11 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 		}
 	]
 })
-export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit {
+export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit, AfterViewInit {
 
 	public episodeFormGroup: FormGroup;
 	public fileSelected: any;
+	public fileMeidaSelected: any;
 	public localItem: any;
 	public matTooltipBack: string = "Danh Sách Bài Viết";
 	public statusLabel: any = {
@@ -55,6 +57,27 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 
 	}
 
+	ngAfterViewInit(): void {
+		// if (this.subscription[`scheduleSignalR`]) {
+		// 	this.subscription[`scheduleSignalR`].unsubscribe();
+		// }
+		// this.subscription[`scheduleSignalR`] = observableTimer(0, 5000).pipe(takeUntil(this.unsubscribe)).subscribe({
+		// 	next: (t) => {
+		// 		let htmlElement = document.getElementsByClassName('miniSound__logo');
+		// 		if (htmlElement && htmlElement.length > 0) {
+		// 			// for(let temf of htmlElement){
+						
+		// 			// }
+		// 			// htmlElement.style.display = 'none';
+		// 			if (this.subscription[`scheduleSignalR`]) {
+		// 				this.subscription[`scheduleSignalR`].unsubscribe();
+		// 			}
+		// 		}
+		// 		return t;
+		// 	}
+		// })
+	}
+
 	ngOnInit(): void {
 		this.episodeFormGroup = this.fb.group({
 			title: "",
@@ -63,6 +86,8 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 			entityId: "",
 			content: "",
 			photo: "",
+			mediaFile: "",
+			mediaFileId: "",
 			categoryIds: [],
 			tags: [],
 			metaKeyword: [],
@@ -149,19 +174,34 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
 					this.localItem._entityId = "";
-					if(!this.isNullOrEmpty(this.localItem.entityId) && !this.isNullOrEmpty(this.localItem.entityType)){
+					if (!this.isNullOrEmpty(this.localItem.entityId) && !this.isNullOrEmpty(this.localItem.entityType)) {
 						this.localItem._entityId = `${this.localItem.entityType}~${this.localItem.entityId}`
+					}
+					if (!this.isNullOrEmpty(this.localItem.mediaFileId)) {
+						this.getMediaFileId(this.localItem.mediaFileId);
 					}
 					this.episodeFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
 						entityId: this.localItem._entityId,
+						mediaFileId: this.localItem.mediaFileId,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
 						tags: this.localItem.tags,
 						photo: this.localItem.photo,
 					});
+				}
+			}
+		})
+	}
+
+	getMediaFileId(mediaFileId: string) {
+		this.service.getMediaFile(mediaFileId).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res) {
+					this.episodeFormGroup.get("mediaFile").setValue(res.title);
+					this.fileMeidaSelected = res;
 				}
 			}
 		})
@@ -268,6 +308,32 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit 
 			data: dataInfo,
 			horizontalPosition: 'start'
 		});
+	}
+
+	clearValue(controlName: string) {
+		this.episodeFormGroup.get(controlName).setValue("");
+	}
+
+	onSelectMeida() {
+		let config: any = {
+			data: {
+				target: 'single'
+			}
+		};
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-xxl';
+		config.maxWidth = '90vw';
+		config.autoFocus = true;
+		let dialogRef = this.dialog.open(DialogSelectedMediaComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				if (res && res.action == 'save') {
+					this.fileMeidaSelected = res.data ? res.data[0] : null;
+					this.episodeFormGroup.get("mediaFile").setValue(this.fileMeidaSelected ? this.fileMeidaSelected.title : "");
+					this.episodeFormGroup.get("mediaFileId").setValue(this.fileMeidaSelected ? this.fileMeidaSelected.id : "");
+				}
+			}
+		})
 	}
 
 }

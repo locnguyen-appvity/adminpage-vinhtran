@@ -1,0 +1,89 @@
+<div class="folder-tree folder-tree--mediafiles" fxLayout="column" fxLayoutAlign="center start">
+    <mat-divider class="full-width"></mat-divider>
+    <as-split direction="horizontal">
+        <as-split-area [size]="30" style="position: relative;">
+            <div class="full-width" fxLayout="column" fxLayoutAlign="start center">
+                <div *ngIf="spinerLoading" fxLayout="column" fxLayoutAlign="center center" style="margin: 48px 0;">
+                    <mat-spinner diameter="70"></mat-spinner>
+                </div>
+                <div *ngIf="!spinerLoading && noData " fxLayout="column" fxLayoutAlign="center center"
+                    style="margin: 48px 0;">
+                    <h2 *ngIf="noData" class="mat-h2">Chưa có dữ liệu</h2>
+                    <button *ngIf="noData" (click)="onAddItem()" mat-flat-button color="primary" aria-label="Thêm Mới">
+                        Thêm Mới
+                    </button>
+                </div>
+
+                <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="list-folders">
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding
+                        [ngClass]="{'active': nodeSelected?.id == node.id}" (click)="onSelectedFolder(node)">
+                        <button mat-icon-button disabled></button>
+                        <div class="tree-item" [ngClass]="'level-'+node?.level" fxLayout="row"
+                            fxLayoutAlign="start center">
+                            <h4 mat-line>{{node?.name}}</h4>
+                            <span fxFlex></span>
+                            <button *ngIf="canEdit" mat-icon-button
+                                (click)="$event.stopPropagation();onAddItemForNote(node)" matTooltip="Thêm"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_add_48px"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();onChangeData(node)" matTooltip="Sửa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_edit_note_24dp"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();deleteItem(node)" matTooltip="Xóa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                            <!-- <button class="btn-move-action" mat-icon-button (click)="$event.stopPropagation();"
+                                            matTooltip="Di Chuyển" matTooltipPosition="above">
+                                            <mat-icon svgIcon="ic_open_with_48dp"></mat-icon>
+                                        </button> -->
+                            <!-- <p mat-line>Link: {{node?.link }}</p> -->
+                        </div>
+                    </mat-tree-node>
+
+                    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding
+                        [ngClass]="{'active': nodeSelected?.id == node.id}" (click)="onSelectedFolder(node)">
+                        <button mat-icon-button matTreeNodeToggle (click)="expansionModel.toggle(node.id)"
+                            [attr.aria-label]="'toggle ' + node.name">
+                            <mat-icon class="mat-icon-rtl-mirror"
+                                [svgIcon]="treeControl.isExpanded(node) ? 'ic_expand_more_48px' : 'ic_chevron_right_48px'">
+                            </mat-icon>
+                        </button>
+                        <div class="tree-item" [ngClass]="'level-'+node?.level" fxLayout="row"
+                            fxLayoutAlign="start center">
+                            <h4 mat-line>{{node?.name}}</h4>
+                            <span fxFlex></span>
+                            <button *ngIf="canEdit" mat-icon-button
+                                (click)="$event.stopPropagation();onAddItemForNote(node)" matTooltip="Thêm"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_add_48px"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();onChangeData(node)" matTooltip="Sửa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_edit_note_24dp"></mat-icon>
+                            </button>
+                            <button *ngIf="canEdit && node.id != 'mydisk'" mat-icon-button
+                                (click)="$event.stopPropagation();deleteItem(node)" matTooltip="Xóa"
+                                matTooltipPosition="above">
+                                <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                            </button>
+                            <!-- <button class="btn-move-action" mat-icon-button (click)="$event.stopPropagation();"
+                                            matTooltip="Di Chuyển" matTooltipPosition="above">
+                                            <mat-icon svgIcon="ic_open_with_48dp"></mat-icon>
+                                        </button> -->
+                        </div>
+                    </mat-tree-node>
+                </mat-tree>
+            </div>
+            <!-- </div> -->
+        </as-split-area>
+        <as-split-area [size]="70">
+            <app-media-files-list [folder]="nodeSelected" [mode]="mode" [hasSingleSelect]="hasSingleSelect" (valueChanges)="valueChangesFile($event)"></app-media-files-list>
+        </as-split-area>
+    </as-split>
+</div>

@@ -459,7 +459,7 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 			this.unCheckAll();
 		}
 		dataItem.checked = !dataItem.checked;
-		this.valueChanges.emit({ action: 'value-changes', data: this.dataSources.filter(it => it.checked) });
+		this.valueChanges.emit({ action: 'value-change', data: this.dataSources.filter(it => it.checked) });
 		// this.checkSingleItem(dataItem);
 	}
 

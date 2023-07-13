@@ -521,7 +521,7 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		return numSelected === numRows;
 	}
 
-	private updateItemSelectTemplate() {
+	public updateItemSelectTemplate() {
 		let itemText = 'item';
 		if (this.selection.selected.length > 1) {
 			itemText = "items";

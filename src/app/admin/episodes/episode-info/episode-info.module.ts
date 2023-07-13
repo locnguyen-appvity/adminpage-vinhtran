@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
+import { DialogSelectedMediaModule } from 'src/app/controls/dialog-selected-media/dialog-selected-media.module';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
     SEChipSimpleModule,
     AutocompleteSimpleModule,
     EditorControlModule,
-    UploadAvatarModule
+    UploadAvatarModule,
+    DialogSelectedMediaModule
   ]
 })
 export class EpisodeInfoModule { }

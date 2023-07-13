@@ -9,11 +9,11 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-    selector: 'se-dialog-selected-imgs',
-    templateUrl: './dialog-selected-imgs.component.html',
-    styleUrls: ['./dialog-selected-imgs.component.scss']
+    selector: 'se-dialog-selected-media',
+    templateUrl: './dialog-selected-media.component.html',
+    styleUrls: ['./dialog-selected-media.component.scss']
 })
-export class DialogSelectedImgsComponent extends SimpleBaseComponent {
+export class DialogSelectedMediaComponent extends SimpleBaseComponent {
 
     public title: string = "Chọn Hình Ảnh";
     public saveAction: string = "";
@@ -24,7 +24,7 @@ export class DialogSelectedImgsComponent extends SimpleBaseComponent {
         public linq: LinqService,
         public service: SharedService,
         @Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any,
-        public dialogRef: MatDialogRef<DialogSelectedImgsComponent>,
+        public dialogRef: MatDialogRef<DialogSelectedMediaComponent>,
         public sharedService: SharedPropertyService,
         public store: Store<IAppState>,
         public renderer: Renderer2,
@@ -38,7 +38,13 @@ export class DialogSelectedImgsComponent extends SimpleBaseComponent {
 
     valueChangesFile(event: any) {
         if (event && event.action == 'value-change') {
-            this.filesSelected = event.data;
+            this.filesSelected = [];
+            if (this.target == "multi") {
+                this.filesSelected = event.data;
+            }
+            else if (event.data && event.data[0]) {
+                this.filesSelected.push(event.data[0]);
+            }
         }
     }
 

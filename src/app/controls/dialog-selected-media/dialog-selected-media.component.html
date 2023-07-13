@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
-    <app-folders-tree (valueChanges)="valueChangesFile($event)" [target]="target" [canEdit]="true"></app-folders-tree>
+    <app-media-files-tree-control [mode]="'select'" [hasSingleSelect]="target == 'multi'? false:true"
+        (valueChanges)="valueChangesFile($event)"></app-media-files-tree-control>
     <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
         <span fxFlex></span>
         <button mat-button (click)="closeDialog()" color="default">Hủy</button>

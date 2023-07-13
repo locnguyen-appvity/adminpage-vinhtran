@@ -13,7 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MediaFilesListComponent } from './media-files-list.component';
-import { MediaFileInfoModule } from '../media-file-info/media-file-info.module';
+import { MediaFileInfoModule } from '../../admin/media-files/media-file-info/media-file-info.module';
 
 
 

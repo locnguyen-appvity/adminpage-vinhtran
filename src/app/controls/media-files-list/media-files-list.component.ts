@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges, } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
@@ -10,7 +10,7 @@ import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
-import { MediaFileInfoComponent } from '../media-file-info/media-file-info.component';
+import { MediaFileInfoComponent } from '../../admin/media-files/media-file-info/media-file-info.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 
 @Component({
@@ -22,6 +22,10 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 
 	public dataItems: any[] = [];
 	@Input() folder: any;
+	@Input() mode: string = "list";
+	@Input() hasSingleSelect: boolean = false;
+	@Output() valueChanges: any = new EventEmitter();
+
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -90,6 +94,9 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
+						if (!this.hasSingleSelect) {
+							item.disabledItem = false;
+						}
 						item.durationView = "Chưa xác định";
 						if (item.duration) {
 							item.durationView = item.duration;
@@ -130,12 +137,26 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 	}
 
 	getRowSelected(item: any) {
-		let config: any = {};
-		config.data = {
-			target: 'edit',
-			item: item
-		};
-		this.openFormDialog(config, 'edit');
+		if (this.mode == 'list') {
+			let config: any = {};
+			config.data = {
+				target: 'edit',
+				item: item
+			};
+			this.openFormDialog(config, 'edit');
+		}
+		else {
+			this.checkSingleItem(this.selection.isSelected(item) ? false : true, item);
+		}
+	}
+
+	checkSingleItem($event: any, dataItem: any) {
+		if (this.hasSingleSelect) {
+			this.selection.clear();
+		}
+		$event ? this.selection.select(dataItem) : this.selection.deselect(dataItem);
+		this.updateItemSelectTemplate();
+		this.valueChanges.emit({ action: 'value-change', data: this.selection.selected });
 	}
 
 	addItem() {
