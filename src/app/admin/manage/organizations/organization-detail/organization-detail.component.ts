@@ -154,6 +154,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 				statusLabel.title = "Lưu Nháp";
 				statusLabel.class = "pending-label";
 				break;
+			case 'active':
 			case 'publish':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";

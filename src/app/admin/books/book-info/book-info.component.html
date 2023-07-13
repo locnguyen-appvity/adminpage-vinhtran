@@ -1,87 +1,47 @@
-<div class="post-info">
-    <div class="sticky-toolbar">
-        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="routeToBack()">
-                    <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
-                </button>
-                <span class="truncate">Trở về {{matTooltipBack}}</span>
+<h2 mat-dialog-title>Thêm Sách</h2>
+<mat-dialog-content>
+    <form [formGroup]="bookFormGroup">
+        <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxFlex="70" class="mrr-24">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Tiêu Đề</mat-label>
+                    <textarea matInput rows="1" formControlName="title" required></textarea>
+                    <mat-hint>{{bookFormGroup?.value?.link}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mô Tả</mat-label>
+                    <textarea matInput rows="4" formControlName="metaDescription"></textarea>
+                </mat-form-field>
             </div>
-            <div *ngIf="statusLabel?.title !== ''">
-                <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
+            <div fxFlex="30" class="mrl-24">
+                <se-upload-avatar (valueChanges)="valueChangesFile($event)"
+                    [filePath]="localItem?.photo"></se-upload-avatar>
+
+                <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
+                    [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"
+                    [type]="'categories'"></se-chip-control>
+
+                <se-chip-control class="full-width" formControlName="tags" [loadDefaultData]="true"
+                    [hasShowAvatar]="false" [placeholder]="'Tags'" [placeholder_input]="'Tìm theo tên'"
+                    [type]="'tags'"></se-chip-control>
+                <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
+                    [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Mục lục</mat-label>
+                    <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'" [switchAt]="10"
+                        [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
+                        [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrCatalogues">
+                    </se-autocomplete-simple>
+                </mat-form-field>
             </div>
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
-                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status == 'publish'">
-                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
-                </ng-template>
-                <ng-template [ngIf]="localItem?.status !== 'publish'">
-                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
-                    <button (click)="onSave('publish')" mat-flat-button class="accept">
-                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
-                    </button>
-                </ng-template>
-            </div>
-        </mat-toolbar>
+        </div>
+    </form>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <button mat-button (click)="onCancel()" color="default">Hủy</button>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Chọn"
+                (click)="onSave()">Save</button>
+        </div>
     </div>
-    <mat-divider></mat-divider>
-    <div class="post-container">
-        <form [formGroup]="bookFormGroup">
-            <div fxLayout="row" fxLayoutAlign="start start">
-                <div fxFlex="70" class="mrr-24">
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Tiêu Đề</mat-label>
-                        <textarea matInput rows="1" formControlName="title" required></textarea>
-                        <mat-hint>{{bookFormGroup?.value?.link}}</mat-hint>
-                    </mat-form-field>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Mô Tả</mat-label>
-                        <textarea matInput rows="4" formControlName="metaDescription"></textarea>
-                    </mat-form-field>
-                    <mat-accordion multi="true" class="full-width mrt-24">
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    DANH SÁCH CHƯƠNG
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-chapters-list mode="book"></app-chapters-list>
-                        </mat-expansion-panel>
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    DANH SÁCH EPISODE
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-episodes-list-control mode="book"></app-episodes-list-control>
-                        </mat-expansion-panel>
-                    </mat-accordion>
-					
-                </div>
-                <div fxFlex="30" class="mrl-24">
-                    <se-upload-avatar (valueChanges)="valueChangesFile($event)"
-                        [filePath]="localItem?.photo"></se-upload-avatar>
-
-                    <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
-                        [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"
-                        [type]="'categories'"></se-chip-control>
-
-                    <se-chip-control class="full-width" formControlName="tags" [loadDefaultData]="true"
-                        [hasShowAvatar]="false" [placeholder]="'Tags'" [placeholder_input]="'Tìm theo tên'"
-                        [type]="'tags'"></se-chip-control>
-                    <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
-                        [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
-
-
-                    <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Mục lục</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'" [switchAt]="10"
-                            [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
-                            [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrCatalogues">
-                        </se-autocomplete-simple>
-                    </mat-form-field>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+</mat-dialog-content>

@@ -10,13 +10,13 @@ const routes: Routes = [
 				path: 'books-list',
 				loadChildren: () => import('./books-list/books-list.module').then(m => m.BooksListModule)
 			},
+			// {
+			// 	path: 'book-info',
+			// 	loadChildren: () => import('./book-detail/book-detail.module').then(m => m.BookDetailModule)
+			// },
 			{
-				path: 'book-info',
-				loadChildren: () => import('./book-info/book-info.module').then(m => m.BookInfoModule)
-			},
-			{
-				path: 'book-info/:id',
-				loadChildren: () => import('./book-info/book-info.module').then(m => m.BookInfoModule)
+				path: 'book-detail/:id',
+				loadChildren: () => import('./book-detail/book-detail.module').then(m => m.BookDetailModule)
 			},
 			{ path: '', redirectTo: 'books-list', pathMatch: 'full' },
 		]

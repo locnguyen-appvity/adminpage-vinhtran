@@ -12,19 +12,18 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { BooksListComponent } from './books-list.component';
-import { BooksListRoutingModule } from './books-list-routing.module';
-import { BookInfoModule } from '../book-info/book-info.module';
+import { EpisodesListSelectComponent } from './episodes-list-select.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 @NgModule({
   declarations: [
-    BooksListComponent
+    EpisodesListSelectComponent
   ],
   imports: [
     SharedModule,
-    BooksListRoutingModule,
+    MatDialogModule,
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
@@ -35,12 +34,11 @@ import { BookInfoModule } from '../book-info/book-info.module';
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule,
-    BookInfoModule
+    MatTooltipModule
   ],
-  exports: [BooksListComponent]
+  exports: [EpisodesListSelectComponent]
 })
-export class BooksListModule { 
+export class EpisodesListSelectModule { 
   constructor(private mdIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
     this.registerIcons();

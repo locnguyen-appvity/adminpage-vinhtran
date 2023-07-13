@@ -23,6 +23,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
     public localItem: any;
     public fileSelected: any;
     public arrFolders: any[] = [];
+    public folder: any;
 
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
@@ -32,6 +33,9 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
         super(sharedService);
 
         this.target = this.dialogData.target;
+        if (this.dialogData.folder) {
+            this.folder = this.dialogData.folder;
+        }
         if (this.target === 'edit') {
             this.title = "Sửa Media";
             this.textSave = 'Lưu';
@@ -75,10 +79,10 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             playerUrl: this.localItem ? this.localItem.playerUrl : "",
             duration: this.localItem ? this.localItem.duration : "",
             logo: this.localItem ? this.localItem.logo : "",
-            folderId: this.localItem ? this.localItem.folderId : "",
+            folderId: this.localItem ? this.localItem.folderId : (this.folder ? this.folder.id : ""),
             embed: this.localItem ? this.localItem.embed : "",
             isAuto: this.localItem ? this.localItem.isAuto == 'true' : false,
-            status: (this.localItem && this.localItem.status == 'active') ? true : false,
+            status: (this.localItem && this.localItem.status == 'inactive') ? false : true,
         })
     }
 

@@ -1,43 +1,47 @@
-import { Component, Input, OnChanges, SimpleChanges, } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { AfterViewInit, Component, Inject, Input, OnChanges, Optional, SimpleChanges } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-// import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
-import { BookInfoComponent } from '../book-info/book-info.component';
 
 @Component({
-	selector: 'app-books-list',
-	templateUrl: './books-list.component.html',
-	styleUrls: ['./books-list.component.scss']
+	selector: 'app-episodes-list-select',
+	templateUrl: './episodes-list-select.component.html',
+	styleUrls: ['./episodes-list-select.component.scss']
 })
-export class BooksListComponent extends TemplateGridApplicationComponent {
+export class EpisodesListSelectComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
+	public filter: string = "";
+	public title: string = "Chọn Media File";
 	constructor(
-		public sharedService: SharedPropertyService,
 		public linq: LinqService,
-		public router: Router,
 		public service: SharedService,
-		public dialog: MatDialog,
+		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any,
+		public dialogRef: MatDialogRef<EpisodesListSelectComponent>,
+		public sharedService: SharedPropertyService,
+		public store: Store<IAppState>,
 		public snackbar: MatSnackBar,
-		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
-		this.dataSettingsKey = 'book-list';
+		this.dataSettingsKey = 'user-list';
+		if (this.dialogData.filter) {
+			this.filter = this.dialogData.filter;
+		}
 		this.getDataGridAndCounterApplications();
 	}
 
+
 	getFilter() {
-		let filter = '';
+		let filter = this.filter;
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -46,7 +50,7 @@ export class BooksListComponent extends TemplateGridApplicationComponent {
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `(${filter}) and (${quickSearch})`;
 			}
 		}
 		return filter;
@@ -63,19 +67,17 @@ export class BooksListComponent extends TemplateGridApplicationComponent {
 			skip: this.skip,
 			top: this.pageSize,
 			sort: 'created desc',
-			// page: this.currentPageIndex + 1,
-			// pageSize: this.pageSize,
 			filter: filter
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getBooks(options).pipe(take(1)).subscribe({
+		this.service.getEpisodes(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
 				if (res && res.value) {
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
-						// this.getAvatar(item);
+						item.disabledItem = false;
 						item.durationView = "Chưa xác định";
 						if (item.duration) {
 							item.durationView = item.duration;
@@ -116,73 +118,21 @@ export class BooksListComponent extends TemplateGridApplicationComponent {
 		}
 	}
 
-	getRowSelected(item: any) {
-		this.router.navigate([`/admin/books/book-detail/${item.id}`]);
-	}
-
-	addItem() {
-		let config: any = {
-			data: {
-
-			}
-		};
-		config.disableClose = true;
-		config.panelClass = 'dialog-form-xl';
-		config.maxWidth = '90vw';
-		config.autoFocus = true;
-		let dialogRef = this.dialog.open(BookInfoComponent, config);
-		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
-			next: (res: any) => {
-				if (res && res.action == 'save') {
-					let snackbarData: any = {
-						key: 'saved-item',
-						message: 'Lưu Thành Công'
-					};
-					this.showInfoSnackbar(snackbarData);
-					this.selection.clear();
-					this.getDataGridAndCounterApplications();
-				}
-			}
-		})
-	}
-
-	onUpdateStatus(item: any, status: string) {
-		let dataJSON = {
-			status: status
-		}
-		this.dataProcessing = true;
-		this.service.updateBook(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'saved-item',
-					message: 'Lưu Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.dataProcessing = false;
-				this.selection.clear();
-				this.getDataGridAndCounterApplications();
-			}
-		})
-	}
-
-	onDelete(item: any) {
-		this.dataProcessing = true;
-		this.service.deleteBook(item.id).pipe(take(1)).subscribe({
-			next: () => {
-				this.dataProcessing = false;
-				let snackbarData: any = {
-					key: 'delete-item',
-					message: 'Xóa Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.selection.clear();
-				this.getDataGridAndCounterApplications();
-			}
-		})
+	checkSingleItem($event: any, dataItem: any) {
+		$event ? this.selection.select(dataItem) : this.selection.deselect(dataItem);
+		this.updateItemSelectTemplate();
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'created'];
+	}
+
+	saveData() {
+		this.dialogRef.close({ action: 'save', data: this.selection.selected });
+	}
+
+	closeDialog() {
+		this.dialogRef.close({ action: 'cancel' });
 	}
 
 }

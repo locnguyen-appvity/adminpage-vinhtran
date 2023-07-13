@@ -31,7 +31,7 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 	public chapterFormGroup: FormGroup;
 	public fileSelected: any;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Bài Viết";
+	public matTooltipBack: string = "Danh Sách Chương";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'
@@ -91,6 +91,7 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 				statusLabel.class = "pending-label";
 				break;
 			case 'publish':
+			case 'active':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;
@@ -110,7 +111,7 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 		this.getBooks();
 	}
 
-	getBooks(){
+	getBooks() {
 		this.service.getBooks().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
@@ -178,8 +179,8 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 	onSave(status: string) {
 		let valueForm = this.chapterFormGroup.value;
 		let dataJSON = {
-			"entityId": valueForm.entityId,
-			"entityType": "book",
+			"entityId": valueForm.entityId ? valueForm.entityId : null,
+			"entityType": valueForm.entityId ? "book" : "",
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,

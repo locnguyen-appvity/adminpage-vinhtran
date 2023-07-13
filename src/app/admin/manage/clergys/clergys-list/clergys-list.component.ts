@@ -95,6 +95,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 					}
 					switch (item.status) {
 						case 'publish':
+						case 'active':
 							item.statusTooltip = 'Hiện';
 							item.statusIcon = 'ic_toggle_on';
 							item.statusClass = 'active';

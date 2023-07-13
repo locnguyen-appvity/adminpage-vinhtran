@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, take, takeUntil, timer as observableTimer } from 'rxjs';
+import { forkJoin, take, takeUntil } from 'rxjs';
 import { DialogSelectedMediaComponent } from 'src/app/controls/dialog-selected-media/dialog-selected-media.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -33,7 +33,7 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 	public fileSelected: any;
 	public fileMeidaSelected: any;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Bài Viết";
+	public matTooltipBack: string = "Danh Sách Episode";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'

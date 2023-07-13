@@ -13,6 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { EpisodesListControlComponent } from './episodes-list.component';
+import { EpisodesListSelectModule } from '../episodes-list-select/episodes-list-select.module';
 
 
 
@@ -32,7 +33,8 @@ import { EpisodesListControlComponent } from './episodes-list.component';
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    EpisodesListSelectModule
   ],
   exports: [EpisodesListControlComponent]
 })

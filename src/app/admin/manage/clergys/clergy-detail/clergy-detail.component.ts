@@ -150,6 +150,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 				statusLabel.class = "pending-label";
 				break;
 			case 'publish':
+			case 'active':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;
@@ -197,7 +198,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 				let items = [{
 					id: '-1',
 					name: 'Giáo Phận Phú Cường',
-					type:'giao_phan'
+					type: 'giao_phan'
 				}]
 				if (res && res.value && res.value.length > 0) {
 					items.push(...res.value);

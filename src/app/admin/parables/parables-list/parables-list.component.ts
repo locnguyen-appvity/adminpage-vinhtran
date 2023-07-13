@@ -104,6 +104,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	updateStatus(item: any) {
 		switch (item.status) {
 			case 'publish':
+			case 'active':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;

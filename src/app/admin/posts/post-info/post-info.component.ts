@@ -163,6 +163,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 				statusLabel.class = "pending-label";
 				break;
 			case 'publish':
+			case 'active':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;
@@ -207,7 +208,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
-					this.localItem.eventTime = this.localItem._eventDate ? this.localItem._eventDate.format("HH:mm"): "00:00";
+					this.localItem.eventTime = this.localItem._eventDate ? this.localItem._eventDate.format("HH:mm") : "00:00";
 					this.postFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
@@ -330,7 +331,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 
 	onSave(status: string) {
 		let valueForm = this.postFormGroup.value;
-		if(valueForm.eventDate && valueForm.eventTime){
+		if (valueForm.eventDate && valueForm.eventTime) {
 			let timeValue = valueForm.eventTime.split(':');
 			valueForm.eventDate.set({ 'hour': timeValue[0] ? timeValue[0] : 0, 'minute': timeValue[1] ? timeValue[1] : 0 });
 		}

@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, take, takeUntil } from 'rxjs';
-import { DialogSelectedImgsComponent } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.component';
+import { take, takeUntil } from 'rxjs';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -13,9 +12,9 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-	selector: 'app-contemplation-info',
-	templateUrl: './contemplation-info.component.html',
-	styleUrls: ['./contemplation-info.component.scss'],
+	selector: 'app-book-detail',
+	templateUrl: './book-detail.component.html',
+	styleUrls: ['./book-detail.component.scss'],
 	providers: [
 		{
 			provide: DateAdapter,
@@ -27,20 +26,18 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 		}
 	]
 })
-export class ContemplationInfoComponent extends SimpleBaseComponent {
-	public contemplationFormGroup: FormGroup;
-	// public arrCategories: any[] = [];
-	// public arrTags: any[] = [];
-	// private tagsSelect: any = [];
-	private fileSelected: any;
+export class BookDetailComponent extends SimpleBaseComponent implements OnInit {
+
+	public bookFormGroup: FormGroup;
+	public fileSelected: any;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Suy Niệm";
+	public matTooltipBack: string = "Danh Sách Sách";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'
 	}
-	public arrAuthors$: Observable<any>;
-	public arrParables$: Observable<any>;
+	public arrBooks: any[] = [];
+	public arrCatalogues: any[] = [];
 
 	constructor(
 		private service: SharedService,
@@ -54,63 +51,36 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
-			this.getContemplation();
+			this.getBook();
 		}
-		this.contemplationFormGroup = this.fb.group({
+
+	}
+
+	ngOnInit(): void {
+		this.bookFormGroup = this.fb.group({
 			title: "",
 			link: "",
 			metaDescription: "",
-			content: "",
-			loiChuaId: "",
+			entityId: "",
+			entityType: "",
+			photo: "",
+			catalogueId: "",
 			categoryIds: [],
-			eventDate: "",
-			address: '',
-			authorId: '',
 			tags: [],
 			metaKeyword: [],
-			hotNew: false
 		});
-		this.contemplationFormGroup.get('title').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
-			this.contemplationFormGroup.get('link').setValue(this.sharedService.getLinkOfName(name));
+		this.bookFormGroup.get('title').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
+			this.bookFormGroup.get('link').setValue(this.sharedService.getLinkOfName(name));
 		})
 		this.getAllData();
 	}
 
-	openDialogImg(editor: any) {
-		let config: any = {
-			data: {
-				entityID: "",
-				entityType: "",
-				hasGetData: false
-			}
-		};
-		config.disableClose = true;
-		config.panelClass = 'dialog-form-l';
-		config.maxWidth = '90vw';
-		config.autoFocus = true;
-		let dialogRef = this.dialog.open(DialogSelectedImgsComponent, config);
-		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
-			next: (res: any) => {
-			}
-		})
+	valueChangesFile(event: any) {
+		if (event && event.action == 'value-change') {
+			this.fileSelected = event.data ? event.data : "";
+		}
 	}
 
-	routeToBack() {
-		this.router.navigate(['/admin/contemplations/contemplations-list']);
-	}
-
-	getAllData() {
-		// this.getCategories();
-		// this.getTags();
-		this.getAuthors();
-		this.getParables();
-	}
-
-	// valueChangeChip(event: any) {
-	// 	if (event.action == 'change-value') {
-	// 		this.tagsSelect = event.data;
-	// 	}
-	// }
 
 	updateLabelTitle(status: string) {
 		let statusLabel = {
@@ -135,19 +105,45 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 		return statusLabel;
 	}
 
-	valueChangesFile(event: any) {
-		if (event && event.action == 'value-change') {
-			this.fileSelected = event.data ? event.data : "";
-		}
-		else if (event && event.action == 'clear') {
-			this.contemplationFormGroup.get('photo').setValue("");
-			this.fileSelected = "";
-
-		}
+	routeToBack() {
+		this.router.navigate(['/admin/books/books-list']);
 	}
 
-	getContemplation() {
-		this.service.getContemplation(this.ID).pipe(take(1)).subscribe({
+	getAllData() {
+		this.getBooks();
+		this.getCatalogues();
+	}
+
+	getCatalogues() {
+		let options = {
+			select: 'id,name'
+		}
+		this.arrCatalogues = [];
+		this.service.getCatalogues(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrCatalogues = items;
+			}
+		})
+	}
+
+	getBooks() {
+		this.service.getBooks().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.arrBooks = items;
+			}
+		})
+	}
+
+	getBook() {
+		this.service.getBook(this.ID).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
@@ -156,19 +152,18 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
-					this.contemplationFormGroup.patchValue({
+					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
+					this.bookFormGroup.patchValue({
 						title: this.localItem.title,
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
-						content: this.localItem.content,
+						entityId: this.localItem.entityId,
+						entityType: this.localItem.entityType,
 						categoryIds: this.localItem.categoryIds,
+						catalogueId: this.localItem.catalogueId,
 						metaKeyword: this.localItem._metaKeyword,
-						loiChuaId: this.localItem.loiChuaId,
-						authorId: this.localItem.authorId,
-						// address: this.localItem.title,
 						tags: this.localItem.tags,
-						photo: this.localItem.photo
-						// hotNew: this.localItem.hotNew
+						photo: this.localItem.photo,
 					});
 				}
 			}
@@ -190,71 +185,65 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 	// 	this.arrTags = [];
 	// 	this.service.getTags().pipe(take(1)).subscribe({
 	// 		next: (res: any) => {
-	// 			if (res && res.value.length > 0) {
+	// 			if (res && res.value && res.value.length > 0) {
 	// 				this.arrTags = res.value;
 	// 			}
 	// 		}
 	// 	})
 	// }
 
-	getAuthors() {
-		this.service.getAuthors().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = [];
-				if (res && res.value && res.value.length > 0) {
-					items = res.value;
-				}
-				this.arrAuthors$ = of(items);
-			}
-		})
-	}
-
-	getParables() {
-		this.service.getParables().pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = [];
-				if (res && res.value && res.value.length > 0) {
-					for (let item of res.value) {
-						item.name = item.quotation;
-					}
-					items = res.value;
-				}
-				this.arrParables$ = of(items);
-			}
-		})
-	}
-
-
 	onCancel() {
-		this.router.navigate(['/admin/contemplations/contemplations-list']);
+		this.router.navigate(['/admin/books/books-list']);
 	}
 
 	onSave(status: string) {
-		let valueForm = this.contemplationFormGroup.value;
+		let valueForm = this.bookFormGroup.value;
 		let dataJSON = {
+			"entityId": valueForm.entityId,
+			"entityType": "book",
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
-			"loiChuaId": valueForm.loiChuaId,
-			"authorId": valueForm.authorId,
-			"content": valueForm.content,
 			"categoryIds": valueForm.categoryIds,
+			"catalogueId": valueForm.catalogueId,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
 			"metaTitle": valueForm.link,
-			"topLevel": null,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
-			"eventDate": null,
-			"visit": 0,
-			"slideId": null
 		}
+
+		// {
+		//     "title": "fdadfa",
+		//     "photo": "dfsfas",
+		//     "link": null,
+		//     "categoryIds": [],
+		//     "entityId": "3dd1d0e8-b18f-4375-8e60-cea079168217",
+		//     "entityType": null,
+		//     "catalogueId": null,
+		//     "tags": [],
+		//     "metaDescription": null,
+		//     "metaTitle": null,
+		//     "metaKeyword": null,
+		//     "visit": null,
+		//     "authorIds": [],
+		//     "translatorIds": [],
+		//     "originalCreators": [],
+		//     "publisher": "s",
+		//     "publishYear": null,
+		//     "status": null,
+		//     "created": null,
+		//     "modified": null,
+		//     "createdBy": null,
+		//     "modifiedBy": null,
+		//     "id": "3dd1d0e8-b18f-4375-8e60-cea079168217"
+		// }
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
-			request = this.service.updateContemplation(this.ID, dataJSON);
+			request = this.service.updateBook(this.ID, dataJSON);
 		}
 		else {
-			request = this.service.createContemplation(dataJSON)
+			request = this.service.createBook(dataJSON)
 		}
 		request.pipe(take(1)).subscribe({
 			next: () => {
@@ -262,16 +251,16 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 					key: 'saved-item',
 					message: 'Lưu Thành Công'
 				};
-				this.showInfoSnackbar(snackbarData);
-				this.router.navigate(['/admin/contemplations/contemplations-list']);
+				this.showDetailSnackbar(snackbarData);
+				this.router.navigate(['/admin/books/books-list']);
 			}
 		})
 	}
 
-	showInfoSnackbar(dataInfo: any) {
+	showDetailSnackbar(dataDetail: any) {
 		this.snackbar.openFromComponent(ToastSnackbarAppComponent, {
 			duration: 5000,
-			data: dataInfo,
+			data: dataDetail,
 			horizontalPosition: 'start'
 		});
 	}

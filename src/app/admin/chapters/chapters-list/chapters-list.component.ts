@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
@@ -17,9 +17,11 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 	templateUrl: './chapters-list.component.html',
 	styleUrls: ['./chapters-list.component.scss']
 })
-export class ChaptersListComponent extends TemplateGridApplicationComponent {
+export class ChaptersListComponent extends TemplateGridApplicationComponent implements OnChanges {
 
-	@Input() mode: string = '';
+	@Input() entityID: string = '';
+	@Input() entityType: string = '';
+
 	public dataItems: any[] = [];
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -36,8 +38,25 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 		this.getDataGridAndCounterApplications();
 	}
 
+	
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['entityID'] || changes['entityType']) {
+			if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityType)) {
+				this.getDataGridAndCounterApplications();
+			}
+		}
+	}
+
 	getFilter() {
 		let filter = '';
+		if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityType)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `(entityId eq ${this.entityID} and entityType eq '${this.entityType}')`;
+			}
+			else {
+				filter = `(${filter}) and (entityId eq ${this.entityID} and entityType eq '${this.entityType}')`;
+			}
+		}
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -101,6 +120,7 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 	updateStatus(item: any) {
 		switch (item.status) {
 			case 'publish':
+			case 'active':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;
@@ -120,7 +140,12 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 	}
 
 	addItem() {
-		this.router.navigate(['/admin/chapters/chapter-info']);
+		if (this.entityType == "chapter" || this.entityType == "book") {
+
+		}
+		else {
+			this.router.navigate(['/admin/chapters/chapter-info']);
+		}
 	}
 
 	onUpdateStatus(item: any, status: string) {
@@ -144,7 +169,15 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent {
 
 	onDelete(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteChapter(item.id).pipe(take(1)).subscribe({
+		let request = this.service.deleteChapter(item.id);
+		if (this.entityType == "chapter" || this.entityType == "book") {
+			let dataJSON = {
+				"entityId": null,
+				"entityType": ""
+			}
+			request = this.service.updateChapter(item.id, dataJSON);
+		}
+		request.pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {

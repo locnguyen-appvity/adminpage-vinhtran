@@ -122,6 +122,7 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 	updateStatus(item: any) {
 		switch (item.status) {
 			case 'publish':
+			case 'active':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;
@@ -141,7 +142,8 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 			let config: any = {};
 			config.data = {
 				target: 'edit',
-				item: item
+				item: item,
+				folder: this.folder
 			};
 			this.openFormDialog(config, 'edit');
 		}
@@ -162,7 +164,8 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 	addItem() {
 		let config: any = {};
 		config.data = {
-			target: 'new'
+			target: 'new',
+			folder: this.folder
 		};
 		this.openFormDialog(config, 'new');
 	}

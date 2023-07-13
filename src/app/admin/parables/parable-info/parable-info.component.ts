@@ -67,7 +67,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 			authorId: '',
 			// tags: [],
 			metaKeyword: [],
-			status:"Draft",
+			status: "Draft",
 			// hotNew: false,
 		});
 		this.parableFormGroup.get('title').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
@@ -144,6 +144,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 				statusLabel.class = "pending-label";
 				break;
 			case 'publish':
+			case 'active':
 				statusLabel.title = "Đã Xuất Bản";
 				statusLabel.class = "approved-label";
 				break;

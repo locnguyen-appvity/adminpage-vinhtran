@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take, takeUntil } from 'rxjs';
+import { take } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -100,6 +100,7 @@ export class EpisodesListComponent extends TemplateGridApplicationComponent {
 	updateStatus(item: any) {
 		switch (item.status) {
 			case 'publish':
+			case 'active':
 				item.statusView = "Đã Xuất Bản";
 				item.statusClass = "approved-label";
 				break;
