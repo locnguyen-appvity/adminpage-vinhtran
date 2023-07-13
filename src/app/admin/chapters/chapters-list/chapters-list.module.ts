@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ChaptersListComponent } from './chapters-list.component';
 import { ChaptersListRoutingModule } from './chapters-list-routing.module';
+import { ChapterInfoModule } from '../chapter-info/chapter-info.module';
 
 
 
@@ -34,7 +35,8 @@ import { ChaptersListRoutingModule } from './chapters-list-routing.module';
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ChapterInfoModule
   ],
   exports: [ChaptersListComponent]
 })

@@ -4,13 +4,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { ChapterInfoComponent } from '../chapter-info/chapter-info.component';
 
 @Component({
 	selector: 'app-chapters-list',
@@ -136,7 +137,7 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent impl
 	}
 
 	getRowSelected(item: any) {
-		this.router.navigate([`/admin/chapters/chapter-info/${item.id}`]);
+		this.router.navigate([`/admin/chapters/chapter-detail/${item.id}`]);
 	}
 
 	addItem() {
@@ -144,7 +145,26 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent impl
 
 		}
 		else {
-			this.router.navigate(['/admin/chapters/chapter-info']);
+			let config: any = {
+			};
+			config.disableClose = true;
+			config.panelClass = 'dialog-form-xl';
+			config.maxWidth = '90vw';
+			config.autoFocus = true;
+			let dialogRef = this.dialog.open(ChapterInfoComponent, config);
+			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					if (res && res.action == 'save') {
+						let snackbarData: any = {
+							key: 'saved-item',
+							message: 'Lưu Thành Công'
+						};
+						this.showInfoSnackbar(snackbarData);
+						this.selection.clear();
+						this.getDataGridAndCounterApplications();
+					}
+				}
+			})
 		}
 	}
 

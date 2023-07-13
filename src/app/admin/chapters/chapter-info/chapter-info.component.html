@@ -1,34 +1,9 @@
-<div class="post-info">
-    <div class="sticky-toolbar">
-        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="routeToBack()">
-                    <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
-                </button>
-                <span class="truncate">Trở về {{matTooltipBack}}</span>
-            </div>
-            <div *ngIf="statusLabel?.title !== ''">
-                <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
-                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status == 'publish'">
-                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
-                </ng-template>
-                <ng-template [ngIf]="localItem?.status !== 'publish'">
-                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
-                    <button (click)="onSave('publish')" mat-flat-button class="accept">
-                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
-                    </button>
-                </ng-template>
-            </div>
-        </mat-toolbar>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="post-container">
+<h2 mat-dialog-title>Thêm Sách</h2>
+<mat-dialog-content>
+    <div class="content-dialog content-dialog--minHeight">
         <form [formGroup]="chapterFormGroup">
             <div fxLayout="row" fxLayoutAlign="start start">
-                <div fxFlex="70" class="mrr-24">
+                <div fxFlex="60" class="mrr-24">
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tiêu Đề</mat-label>
                         <textarea matInput rows="1" formControlName="title" required></textarea>
@@ -38,11 +13,10 @@
                         <mat-label>Mô Tả</mat-label>
                         <textarea matInput rows="4" formControlName="metaDescription"></textarea>
                     </mat-form-field>
-                    <app-episodes-list-control *ngIf="ID?.length > 0" mode="chapter" [entityID]="localItem?.id" [entityType]="'chapter'"></app-episodes-list-control>
+
                 </div>
-                <div fxFlex="30" class="mrl-24">
-                    <se-upload-avatar (valueChanges)="valueChangesFile($event)"
-                        [filePath]="localItem?.photo"></se-upload-avatar>
+                <div fxFlex="40" class="mrl-24">
+                    <se-upload-avatar (valueChanges)="valueChangesFile($event)"></se-upload-avatar>
 
                     <mat-form-field appearance="outline" class="full-width mrt-24">
                         <mat-label>Sách</mat-label>
@@ -65,4 +39,12 @@
             </div>
         </form>
     </div>
-</div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <button mat-button (click)="onCancel()" color="default">Hủy</button>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Chọn"
+                (click)="onSave()">Save</button>
+        </div>
+    </div>
+</mat-dialog-content>

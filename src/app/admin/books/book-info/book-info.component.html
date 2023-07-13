@@ -1,47 +1,49 @@
 <h2 mat-dialog-title>Thêm Sách</h2>
 <mat-dialog-content>
-    <form [formGroup]="bookFormGroup">
-        <div fxLayout="row" fxLayoutAlign="start start">
-            <div fxFlex="70" class="mrr-24">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Tiêu Đề</mat-label>
-                    <textarea matInput rows="1" formControlName="title" required></textarea>
-                    <mat-hint>{{bookFormGroup?.value?.link}}</mat-hint>
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Mô Tả</mat-label>
-                    <textarea matInput rows="4" formControlName="metaDescription"></textarea>
-                </mat-form-field>
-            </div>
-            <div fxFlex="30" class="mrl-24">
-                <se-upload-avatar (valueChanges)="valueChangesFile($event)"
-                    [filePath]="localItem?.photo"></se-upload-avatar>
+    <div class="content-dialog content-dialog--minHeight">
+        <form [formGroup]="bookFormGroup">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <div fxFlex="60" class="mrr-24">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Tiêu Đề</mat-label>
+                        <textarea matInput rows="1" formControlName="title" required></textarea>
+                        <mat-hint>{{bookFormGroup?.value?.link}}</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mô Tả</mat-label>
+                        <textarea matInput rows="4" formControlName="metaDescription"></textarea>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="40" class="mrl-24">
+                    <se-upload-avatar (valueChanges)="valueChangesFile($event)"
+                        [filePath]="localItem?.photo"></se-upload-avatar>
 
-                <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
-                    [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"
-                    [type]="'categories'"></se-chip-control>
+                    <se-chip-control class="full-width" formControlName="categoryIds" [loadDefaultData]="true"
+                        [hasShowAvatar]="false" [placeholder]="'Danh Mục'" [placeholder_input]="'Tìm theo tên'"
+                        [type]="'categories'"></se-chip-control>
 
-                <se-chip-control class="full-width" formControlName="tags" [loadDefaultData]="true"
-                    [hasShowAvatar]="false" [placeholder]="'Tags'" [placeholder_input]="'Tìm theo tên'"
-                    [type]="'tags'"></se-chip-control>
-                <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
-                    [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Mục lục</mat-label>
-                    <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'" [switchAt]="10"
-                        [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
-                        [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrCatalogues">
-                    </se-autocomplete-simple>
-                </mat-form-field>
+                    <se-chip-control class="full-width" formControlName="tags" [loadDefaultData]="true"
+                        [hasShowAvatar]="false" [placeholder]="'Tags'" [placeholder_input]="'Tìm theo tên'"
+                        [type]="'tags'"></se-chip-control>
+                    <se-chip-simple class="full-width" formControlName="metaKeyword" [placeholder]="'Keywords'"
+                        [placeholder_input]="'Nhập Keywords'" [type]="'metaKeyword'"></se-chip-simple>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Mục lục</mat-label>
+                        <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'" [switchAt]="10"
+                            [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
+                            [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrCatalogues">
+                        </se-autocomplete-simple>
+                    </mat-form-field>
+                </div>
             </div>
-        </div>
-    </form>
-    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
-        <span fxFlex></span>
-        <button mat-button (click)="onCancel()" color="default">Hủy</button>
-        <div class="btn-save-process">
-            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Chọn"
-                (click)="onSave()">Save</button>
+        </form>
+        <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+            <span fxFlex></span>
+            <button mat-button (click)="onCancel()" color="default">Hủy</button>
+            <div class="btn-save-process">
+                <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Chọn"
+                    (click)="onSave()">Save</button>
+            </div>
         </div>
     </div>
 </mat-dialog-content>
