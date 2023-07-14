@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 // import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -12,6 +12,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { ChapterInfoComponent } from '../chapter-info/chapter-info.component';
+import { ChaptersListSelectComponent } from 'src/app/controls/chapters-list-select/chapters-list-select.component';
 
 @Component({
 	selector: 'app-chapters-list',
@@ -141,16 +142,45 @@ export class ChaptersListComponent extends TemplateGridApplicationComponent impl
 	}
 
 	addItem() {
-		if (this.entityType == "chapter" || this.entityType == "book") {
-
+		let config: any = {
+		};
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-xl';
+		config.maxWidth = '90vw';
+		config.autoFocus = true;
+		if (this.entityType == "book") {
+			config.data = {
+				entityType: this.entityType,
+				entityID: this.entityID
+			}
+			let dialogRef = this.dialog.open(ChaptersListSelectComponent, config);
+			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					if (res && res.action == 'save' && res.data && res.data.length > 0) {
+						let requets: Observable<any>[] = [];
+						for (let item of res.data) {
+							let dataJSON = {
+								"entityId": this.entityID,
+								"entityType": this.entityType
+							}
+							requets.push(this.service.updateChapter(item.id, dataJSON));
+						}
+						forkJoin(requets).pipe(take(1)).subscribe({
+							next: () => {
+								let snackbarData: any = {
+									key: 'saved-item',
+									message: 'Thêm Thành Công'
+								};
+								this.showInfoSnackbar(snackbarData);
+								this.selection.clear();
+								this.getDataGridAndCounterApplications();
+							}
+						})
+					}
+				}
+			})
 		}
 		else {
-			let config: any = {
-			};
-			config.disableClose = true;
-			config.panelClass = 'dialog-form-xl';
-			config.maxWidth = '90vw';
-			config.autoFocus = true;
 			let dialogRef = this.dialog.open(ChapterInfoComponent, config);
 			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: (res: any) => {

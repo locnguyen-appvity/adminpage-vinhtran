@@ -1,6 +1,8 @@
 import { Component, Inject, Optional } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+// import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { LinqService } from 'src/app/shared/linq.service';
@@ -11,36 +13,49 @@ import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.c
 import { GlobalSettings } from 'src/app/shared/global.settings';
 
 @Component({
-	selector: 'app-episodes-list-select',
-	templateUrl: './episodes-list-select.component.html',
-	styleUrls: ['./episodes-list-select.component.scss']
+	selector: 'app-chapters-list-select',
+	templateUrl: './chapters-list-select.component.html',
+	styleUrls: ['./chapters-list-select.component.scss']
 })
-export class EpisodesListSelectComponent extends TemplateGridApplicationComponent {
+export class ChaptersListSelectComponent extends TemplateGridApplicationComponent {
+
+	public entityID: string = '';
+	public entityType: string = '';
 
 	public dataItems: any[] = [];
-	public filter: string = "";
-	public title: string = "Chọn Media File";
 	constructor(
-		public linq: LinqService,
-		public service: SharedService,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any,
-		public dialogRef: MatDialogRef<EpisodesListSelectComponent>,
+		public dialogRef: MatDialogRef<ChaptersListSelectComponent>,
 		public sharedService: SharedPropertyService,
-		public store: Store<IAppState>,
+		public linq: LinqService,
+		public router: Router,
+		public service: SharedService,
+		public dialog: MatDialog,
 		public snackbar: MatSnackBar,
+		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
-		this.dataSettingsKey = 'user-list';
-		if (this.dialogData.filter) {
-			this.filter = this.dialogData.filter;
+		this.dataSettingsKey = 'chapters-list-select';
+		if(this.dialogData.entityID){
+			this.entityID = this.dialogData.entityID;
+		}
+		if(this.dialogData.entityType){
+			this.entityType = this.dialogData.entityType;
 		}
 		this.getDataGridAndCounterApplications();
 	}
 
-
 	getFilter() {
-		let filter = this.filter;
+		let filter = '';
+		if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityType)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `(entityId eq ${this.entityID} and entityType eq '${this.entityType}')`;
+			}
+			else {
+				filter = `(${filter}) and (entityId eq ${this.entityID} and entityType eq '${this.entityType}')`;
+			}
+		}
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -49,7 +64,7 @@ export class EpisodesListSelectComponent extends TemplateGridApplicationComponen
 				filter = quickSearch;
 			}
 			else {
-				filter = `(${filter}) and (${quickSearch})`;
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
 		return filter;
@@ -70,13 +85,13 @@ export class EpisodesListSelectComponent extends TemplateGridApplicationComponen
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getEpisodes(options).pipe(take(1)).subscribe({
+		this.service.getChapters(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
 				if (res && res.value) {
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
-						item.disabledItem = false;
+						// this.getAvatar(item);
 						item.durationView = "Chưa xác định";
 						if (item.duration) {
 							item.durationView = item.duration;
@@ -99,31 +114,9 @@ export class EpisodesListSelectComponent extends TemplateGridApplicationComponen
 		})
 	}
 
-	updateStatus(item: any) {
-		switch (item.status) {
-			case 'publish':
-			case 'active':
-				item.statusView = "Đã Xuất Bản";
-				item.statusClass = "approved-label";
-				break;
-			case 'inactive':
-				item.statusView = "Tạm Ẩn"
-				item.statusClass = "rejected-label";
-				break;
-			default:
-				item.statusClass = "pending-label";
-				item.statusView = "Lưu Nháp"
-				break;
-		}
-	}
-
 	checkSingleItem($event: any, dataItem: any) {
 		$event ? this.selection.select(dataItem) : this.selection.deselect(dataItem);
 		this.updateItemSelectTemplate();
-	}
-
-	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created'];
 	}
 
 	saveData() {
@@ -132,6 +125,10 @@ export class EpisodesListSelectComponent extends TemplateGridApplicationComponen
 
 	closeDialog() {
 		this.dialogRef.close({ action: 'cancel' });
+	}
+
+	override registerGridColumns() {
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'created'];
 	}
 
 }

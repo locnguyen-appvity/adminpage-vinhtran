@@ -12,22 +12,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { ChaptersListComponent } from './chapters-list.component';
-import { ChaptersListRoutingModule } from './chapters-list-routing.module';
-import { ChapterInfoModule } from '../chapter-info/chapter-info.module';
-import { ChaptersListSelectModule } from 'src/app/controls/chapters-list-select/chapters-list-select.module';
+import { ChaptersListSelectComponent } from './chapters-list-select.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 @NgModule({
   declarations: [
-    ChaptersListComponent
+    ChaptersListSelectComponent
   ],
   imports: [
     SharedModule,
-    ChaptersListRoutingModule,
     MatMenuModule,
     MatTableModule,
+    MatDialogModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
@@ -36,13 +34,11 @@ import { ChaptersListSelectModule } from 'src/app/controls/chapters-list-select/
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule,
-    ChapterInfoModule,
-    ChaptersListSelectModule
+    MatTooltipModule
   ],
-  exports: [ChaptersListComponent]
+  exports: [ChaptersListSelectComponent]
 })
-export class ChaptersListModule { 
+export class ChaptersListSelectModule { 
   constructor(private mdIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
     this.registerIcons();
