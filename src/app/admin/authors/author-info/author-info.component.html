@@ -3,27 +3,36 @@
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
             <div fxLayout="column">
-                <mat-form-field appearance="outline">
-                    <mat-label>Tên</mat-label>
-                    <input matInput formControlName="name" autocomplete="off" required="">
-                </mat-form-field>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Ngày Sinh</mat-label>
-                    <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="doB"
-                        formControlName="doB">
-                    <mat-datepicker-toggle matSuffix [for]="doB"></mat-datepicker-toggle>
-                    <mat-datepicker #doB></mat-datepicker>
-                    <mat-error *ngIf="dataItemGroup.get('doB').hasError('matDatepickerParse')">Enter dates in DD/MM/YYYY
-                        format</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" autocomplete="off">
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Phone</mat-label>
-                    <input matInput formControlName="phone" autocomplete="off">
-                </mat-form-field>
+                <div fxLayout="row" fxLayoutAlign="start start">
+                    <div fxFlex="60" class="mrr-24"> <mat-form-field appearance="outline">
+                            <mat-label>Tên</mat-label>
+                            <input matInput formControlName="name" autocomplete="off" required="">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Ngày Sinh</mat-label>
+                            <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="doB"
+                                formControlName="doB">
+                            <mat-datepicker-toggle matSuffix [for]="doB"></mat-datepicker-toggle>
+                            <mat-datepicker #doB></mat-datepicker>
+                            <mat-error *ngIf="dataItemGroup.get('doB').hasError('matDatepickerParse')">Enter dates in
+                                DD/MM/YYYY
+                                format</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" autocomplete="off">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Phone</mat-label>
+                            <input matInput formControlName="phone" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="40">
+                        <se-upload-avatar class="full-width" (valueChanges)="valueChangesFile($event)"
+                            [filePath]="localItem?.photo"
+                            [placeHolder]="'Chọn hình đại diện'"></se-upload-avatar>
+                    </div>
+                </div>
                 <mat-form-field appearance="outline">
                     <mat-label>Bằng Cấp</mat-label>
                     <input matInput formControlName="degree" autocomplete="off">
@@ -33,8 +42,8 @@
                     <textarea matInput rows="3" formControlName="biography"></textarea>
                 </mat-form-field>
                 <mat-slide-toggle formControlName="status">
-                   <span *ngIf="dataItemGroup?.value?.status == false">Ẩn</span>
-                   <span *ngIf="dataItemGroup?.value?.status !== false">Hiện</span>
+                    <span *ngIf="dataItemGroup?.value?.status == false">Ẩn</span>
+                    <span *ngIf="dataItemGroup?.value?.status !== false">Hiện</span>
                 </mat-slide-toggle>
             </div>
         </form>

@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 // import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatSlideToggleModule,
     MatSelectModule,
     MatDatepickerModule,
-    // AutocompleteSimpleModule
+    UploadAvatarModule
   ],
   exports: [AuthorInfoComponent]
 })

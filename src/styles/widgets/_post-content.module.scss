@@ -29,8 +29,12 @@
         }
     }
     .content {
+        // align-items: center;
         .context {
             line-height: 1.5;
+        }
+        img {
+            max-width: 100%;
         }
     }
     jodit-editor {
@@ -74,12 +78,13 @@
             margin-bottom: 3px;
             border: solid 1px rgba(0, 0, 0, 1);
             border-radius: 50%;
+            object-fit: cover;
         }
         .name {
             font-size: 20px;
             span {
                 font-size: 16px;
-                color: rgba(0, 0, 0, 0.5);;
+                color: rgba(0, 0, 0, 0.5);
             }
         }
     }

@@ -39,6 +39,7 @@ export class SimpleBaseComponent implements OnDestroy {
     public basePermissions: any;
     public ready: boolean = false;
     public offset: number = 7;
+    public imageUrl: any = "./assets/icons/ic_image_48dp.svg";
 
     constructor(public sharedService: SharedPropertyService) { }
 

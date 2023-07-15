@@ -165,7 +165,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 						metaKeyword: this.localItem._metaKeyword,
 						loiChuaId: this.localItem.loiChuaId,
 						authorId: this.localItem.authorId,
-						// address: this.localItem.title,
+						eventDate: this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate),
 						tags: this.localItem.tags,
 						photo: this.localItem.photo
 						// hotNew: this.localItem.hotNew
@@ -231,6 +231,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 
 	onSave(status: string) {
 		let valueForm = this.contemplationFormGroup.value;
+		let eventDate = this.sharedService.ISODay(valueForm.eventDate);
 		let dataJSON = {
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
@@ -245,7 +246,7 @@ export class ContemplationInfoComponent extends SimpleBaseComponent {
 			"topLevel": null,
 			"metaKeyword": valueForm.metaKeyword ? valueForm.metaKeyword.join("~") : "",//valueForm.metaKeyword,
 			"status": status,
-			"eventDate": null,
+			"eventDate": eventDate,
 			"visit": 0,
 			"slideId": null
 		}

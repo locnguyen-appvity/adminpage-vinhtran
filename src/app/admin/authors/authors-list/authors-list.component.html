@@ -31,7 +31,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm Mới" (click)="onAddItem()">
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary" aria-label="Thêm Mới"
+                            (click)="onAddItem()">
                             <span>Thêm Mới</span>
                         </button>
                         <!-- [disabled]="noData" -->
@@ -54,10 +55,11 @@
                             </button>
                         </ng-template>
                     </div>
-                    <mat-nav-list *ngIf="!spinerLoading && !noData" class="list-categories">
+                    <mat-nav-list *ngIf="!spinerLoading && !noData" class="list-viewport">
                         <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
-                            <mat-icon mat-list-icon [ngClass]="data.class" [matTooltip]="data.tooltip"
-                                [svgIcon]="data.icon"></mat-icon>
+                            <!-- <mat-icon mat-list-icon [ngClass]="data.class" [matTooltip]="data.tooltip"
+                                [svgIcon]="data.icon"></mat-icon> -->
+                            <img mat-list-icon [src]="data.pictureUrl" />
                             <h4 mat-line>{{data?.name}}</h4>
                             <p mat-line>email: <span [matTooltipDisabled]="!(data?.email?.length > 50)"
                                     [matTooltip]="data.email">{{data?.email | truncate: 50}}</span></p>

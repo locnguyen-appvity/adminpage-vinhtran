@@ -49,14 +49,37 @@ export class PostNewComponent extends SimpleBaseComponent {
 		public service: SharedService
 	) {
 		super(sharedService);
-		this.getPosts();
+		
+	}
+
+	getDataItems(){
+		if(this.type == 'post'){
+			this.getPosts();
+		}
+		else if(this.type == 'contemplation') {
+			this.getContemplations();
+		}
+	}
+
+	getFilter(){
+		let filter = "";
+		if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityType)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `${this.entityType} eq ${this.entityID}`;
+			}
+			else {
+				filter = `(${filter}) and (${this.entityType} eq ${this.entityID})`;
+			}
+		}
+		return filter;
 	}
 
 	getPosts() {
 		let options = {
 			skip: 0,
 			top: 5,
-			sort: 'created desc'
+			sort: 'created desc',
+			filter: this.getFilter()
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
@@ -79,4 +102,33 @@ export class PostNewComponent extends SimpleBaseComponent {
 			}
 		})
 	}
+
+	getContemplations() {
+		let options = {
+			skip: 0,
+			top: 5,
+			sort: 'created desc'
+		};
+		this.dataItems = [];
+		this.dataProcessing = true;
+		this.service.getContemplations(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.dataItems = res.value;
+					for (let item of this.dataItems) {
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+						}
+						if (item.created) {
+							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
+							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+						}
+
+					}
+				}
+				this.dataProcessing = false;
+			}
+		})
+	}
+
 }

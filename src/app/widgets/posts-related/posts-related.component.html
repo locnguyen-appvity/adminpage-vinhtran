@@ -1,0 +1,18 @@
+<div class="posts-related container-xl mrb-24 mrt-24">
+    <ng-container *ngIf="loading; else temfData">
+        <mat-spinner [diameter]="24"></mat-spinner>
+    </ng-container>
+    <ng-template #temfData>
+        <div class="item-result" fxLayout="row" fxLayoutAlign="center center">
+            <div fxLayout="row" fxLayoutAlign="center center" class="full-height">
+                <img [src]="dataPrevious?.pictureUrl" />
+                <span class="title mrl-12">{{dataPrevious?.title | truncate: 50}}</span>
+            </div>
+            <span fxFlex></span>
+            <div fxLayout="row" fxLayoutAlign="center center" class="full-height">
+                <span class="title mrr-12">{{dataNext?.title | truncate: 50}}</span>
+                <img [src]="dataNext?.pictureUrl" />
+            </div>
+        </div>
+    </ng-template>
+</div>

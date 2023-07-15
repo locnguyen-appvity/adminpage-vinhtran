@@ -6,6 +6,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
 import { AuthorInfoComponent } from '../author-info/author-info.component';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 
 /**
  * File node data with nested structure.
@@ -153,15 +154,9 @@ export class AuthorsListComponent extends ListItemBaseComponent {
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
 					for (let item of res.value) {
-						if (item.status != 'inactive') {
-							item.class = 'active';
-							item.icon = 'ic_toggle_on';
-							item.tooltip = 'Hiện';
-						}
-						else {
-							item.class = 'inactive';
-							item.icon = 'ic_toggle_off';
-							item.tooltip = 'Ẩn';
+						item.pictureUrl = './assets/icons/ic_person_48dp.svg'
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
 					}
 					this.arrData = res.value;

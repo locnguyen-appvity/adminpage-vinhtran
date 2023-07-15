@@ -83,6 +83,10 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 						}
+						if (item.eventDate) {
+							item._eventDate = this.sharedService.convertDateStringToMoment(item.eventDate, this.offset);
+							item.eventDateView = item._eventDate.format('DD/MM/YYYY');
+						}
 					}
 					this.gridDataChanges.data = this.dataItems;
 					this.gridDataChanges.total = total;
@@ -184,7 +188,7 @@ export class ContemplationsListComponent extends TemplateGridApplicationComponen
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'visit', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'eventDate', 'created', 'visit', 'moreActions'];
 	}
 
 }

@@ -18,5 +18,6 @@
         </p>
     </div>
     <se-post-author [authorID]="localItem?.authorId"></se-post-author>
+    <app-posts-related [type]="type" [entityData]="localItem?.eventDate"></app-posts-related>
     <!-- <jodit-editor [config]="{toolbar: false}" [defaultValue]="content"></jodit-editor> -->
 </div>

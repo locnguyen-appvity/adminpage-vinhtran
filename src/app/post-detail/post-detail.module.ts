@@ -17,7 +17,7 @@ import { PostNewModule } from '../widgets/post-new/post-new.module';
     PostDetailRoutingModule,
     PostContentModule,
     PostNewModule,
-    PostListModule,
+    PostListModule
   ]
 })
 export class PostDetailModule { }

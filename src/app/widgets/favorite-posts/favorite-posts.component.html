@@ -1,24 +1,29 @@
 <div class="favorite-posts-container">
-    <h2>LỜI CHÚA</h2>
-    <h3><a href="#">Xem tất cả</a></h3>
+    <h2 class="title">{{title}}</h2>
+    <h3 class="link-all"><a routerLink="/page/home">Xem tất cả</a></h3>
     <div class="row">
         <div *ngIf="dataItems?.length > 0" class="col-7">
             <figure class="item-favorite-post figure">
                 <img [src]="dataItems[0]?.pictureUrl" class="figure-img" alt="thumb">
                 <figcaption class="figure-caption">
                     <h4>{{dataItems[0]?.createdView}}</h4>
-                    <h2>{{dataItems[0]?.title}}</h2>
+                    <h2 class="post-title"
+                        [routerLink]="type == 'post'?'/page/bai-viet/'+dataItems[0]?.id :'/page/suy-niem/'+dataItems[0]?.id">
+                        {{dataItems[0]?.title}}</h2>
                     <!-- <p>{{dataItems[0]?.metaDescription}}</p> -->
-                    </figcaption>
-                </figure>
-            </div>
-            <div class="col-5">
+                </figcaption>
+            </figure>
+        </div>
+        <div class="col-5">
             <ng-template ngFor let-data let-i="index" let-first="first" [ngForOf]="dataItems">
                 <figure *ngIf="!first" class="item-favorite-post item-favorite-post--list figure">
                     <img [src]="data?.pictureUrl" class="figure-img" alt="thumb">
                     <figcaption class="figure-caption-list mrl-12">
                         <h4>{{data?.createdView}}</h4>
-                        <h2>{{data?.title}}</h2>
+                        <h2 class="post-title"
+                            [routerLink]="type == 'post'?'/page/bai-viet/'+data?.id :'/page/suy-niem/'+data?.id">
+                            {{data?.title}}
+                        </h2>
                     </figcaption>
                 </figure>
             </ng-template>

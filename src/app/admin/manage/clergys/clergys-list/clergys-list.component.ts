@@ -93,25 +93,6 @@ export class ClergysListComponent extends ListItemBaseComponent {
 					if (item.photo) {
 						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 					}
-					switch (item.status) {
-						case 'publish':
-						case 'active':
-							item.statusTooltip = 'Hiện';
-							item.statusIcon = 'ic_toggle_on';
-							item.statusClass = 'active';
-							break;
-						case 'inactive':
-							item.statusTooltip = 'Ẩn';
-							item.statusIcon = 'ic_toggle_off';
-							item.statusClass = 'inactive';
-							break;
-						case 'draft':
-						default:
-							item.statusTooltip = 'Nháp';
-							item.statusIcon = 'ic_toggle_off';
-							item.statusClass = 'draft';
-							break;
-					}
 					item = this.handleClergyType(item);
 					item = this.handleClergyPosition(item);
 				}

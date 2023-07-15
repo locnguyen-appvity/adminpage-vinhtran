@@ -37,6 +37,7 @@ export class AuthorInfoComponent extends SimpleBaseComponent {
     public localItem: any;
     public arrListName$: Observable<any>;
     public arrListName: any[] = [];
+    public fileSelected: any;
 
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
@@ -61,12 +62,12 @@ export class AuthorInfoComponent extends SimpleBaseComponent {
         }
         this.dataItemGroup = this.buildFormGroup();
         this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-            if (this.target === 'edit') {
-                this.hasChangedGroup = this.isChangedForm(valueForm);
-            }
-            else {
+            // if (this.target === 'edit') {
+            //     this.hasChangedGroup = this.isChangedForm(valueForm);
+            // }
+            // else {
                 this.hasChangedGroup = true;
-            }
+            // }
         })
         this.getAllData()
     }
@@ -88,6 +89,7 @@ export class AuthorInfoComponent extends SimpleBaseComponent {
             biography: this.localItem ? this.localItem.biography : '',
             phone: this.localItem ? this.localItem.phone : '',
             degree: this.localItem ? this.localItem.degree : '',
+            photo: this.localItem ? this.localItem.photo : '',
             doB: doB,
             status: this.localItem ? (this.localItem.status == 'active' ? true : false) : true,
         })
@@ -102,6 +104,18 @@ export class AuthorInfoComponent extends SimpleBaseComponent {
             return true;
         }
         return false;
+    }
+
+    valueChangesFile(event: any) {
+        this.hasChangedGroup = true;
+        if (event && event.action == 'value-change') {
+            this.fileSelected = event.data ? event.data : "";
+        }
+        else if (event && event.action == 'clear') {
+            this.dataItemGroup.get('hotNewsPhoto').setValue("");
+            this.fileSelected = "";
+
+        }
     }
 
     closeDialog() {
@@ -125,6 +139,7 @@ export class AuthorInfoComponent extends SimpleBaseComponent {
             "biography": valueForm.biography,
             "doB": this.sharedService.ISOStartDay(valueForm.doB),
             "degree": valueForm.degree,
+            "photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
             "status": valueForm.status == true ? 'active' : 'inactive',
         }
         // let dataJSON = {
