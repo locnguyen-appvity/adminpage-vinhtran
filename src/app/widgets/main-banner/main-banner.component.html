@@ -2,9 +2,8 @@
     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
             <ng-container *ngFor="let item of dataItems; let i=index">
-                <button type="button" data-bs-target="#carouselExampleDark"
-                    [attr.data-bs-slide-to]="i" [ngClass]="{'active': i==0}"
-                    [attr.aria-current]="i==0"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" [attr.data-bs-slide-to]="i"
+                    [ngClass]="{'active': i==0}" [attr.aria-current]="i==0"></button>
             </ng-container>
             <!-- <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
                 aria-current="true"></button>
@@ -16,7 +15,9 @@
                 <div class="carousel-item" data-bs-interval="8000" [ngClass]="{'active': i==0}">
                     <img [src]="item.pictureUrl" class="d-block w-100" alt="Logo1">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5 class="title">{{item.title}}</h5>
+                        <a routerLink="/page/bai-viet/{{item.id}}">
+                            <h5 class="title">{{item.title}}</h5>
+                        </a>
                         <p>{{item.metaDescription}}</p>
                     </div>
                 </div>
@@ -43,13 +44,11 @@
                 </div>
             </div> -->
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
-            data-bs-slide="prev">
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
-            data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>

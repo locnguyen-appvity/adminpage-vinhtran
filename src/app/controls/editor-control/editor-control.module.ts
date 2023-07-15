@@ -3,7 +3,7 @@ import { EditorControlComponent } from './editor-control.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DialogSelectedImgsModule } from '../dialog-selected-imgs/dialog-selected-imgs.module';
 import { MatDialogModule } from '@angular/material/dialog';
-// import { JoditAngularModule } from 'jodit-angular';
+import { JoditAngularModule } from 'jodit-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     MatDialogModule,
     FormsModule,
-    // JoditAngularModule,
+    JoditAngularModule,
     ReactiveFormsModule,
     DialogSelectedImgsModule
   ],

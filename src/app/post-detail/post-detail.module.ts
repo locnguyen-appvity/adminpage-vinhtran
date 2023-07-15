@@ -4,6 +4,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PostDetailRoutingModule } from './post-detail-routing.module';
 import { PostContentModule } from './post-content/post-content.module';
 import { PostListModule } from '../widgets/post-list/post-list.module';
+import { PostNewModule } from '../widgets/post-new/post-new.module';
 
 
 
@@ -15,6 +16,7 @@ import { PostListModule } from '../widgets/post-list/post-list.module';
     SharedModule,
     PostDetailRoutingModule,
     PostContentModule,
+    PostNewModule,
     PostListModule,
   ]
 })

@@ -14,6 +14,10 @@ const routes: Routes = [
 				path: 'bai-viet',
 				loadChildren: () => import('../post-detail/post-detail.module').then(m => m.PostDetailModule)
 			},
+			{
+				path: 'bai-viet/:id',
+				loadChildren: () => import('../post-detail/post-detail.module').then(m => m.PostDetailModule)
+			},
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
 		]
 	}

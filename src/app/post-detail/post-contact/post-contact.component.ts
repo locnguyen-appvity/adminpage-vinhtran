@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'se-post-contact',
@@ -7,11 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostContactComponent implements OnInit {
 
-  public contact: any = {
-    name: "Admin",
-		pictureUrl: './assets/icons/ic_person_48dp.svg',
-    time: '17/05/2023'
-  }
+  @Input() contact: any;
+  //  = {
+  //   name: "Admin",
+	// 	pictureUrl: './assets/icons/ic_person_48dp.svg',
+  //   time: '17/05/2023'
+  // }
+  public pictureUrl: string = "./assets/icons/ic_person_48dp.svg"
   constructor() { }
 
   ngOnInit(): void {

@@ -1,13 +1,22 @@
-<div class="post-content">
-
+<div class="post-content mrb-24">
     <header>
-        <h1 class="post-title">{{title}}</h1>
+        <h1 class="post-title">{{localItem?.title}}</h1>
     </header>
-    <se-post-contact></se-post-contact>
-    <div class="description">
+    <se-post-contact [contact]="{name: 'Admin', time: localItem?.createdView  }"></se-post-contact>
+    <div class="description mrt-24 mrb-24">
         <p>
-            {{description}}
+            {{localItem?.metaDescription}}
+        </p>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="photo-post mrb-12" fxLayout="row" fxLayoutAlign="center center">
+        <img [src]="localItem?.pictureUrl" alt="Avatar">
+    </div>
+    <div class="content">
+        <p [innerHTML]="localItem?.content">
+            {{localItem?.metaDescription}}
         </p>
     </div>
-    <!-- <jodit-editor [config]="{toolbar: false}"></jodit-editor> -->
+    <se-post-author [authorID]="localItem?.authorId"></se-post-author>
+    <!-- <jodit-editor [config]="{toolbar: false}" [defaultValue]="content"></jodit-editor> -->
 </div>

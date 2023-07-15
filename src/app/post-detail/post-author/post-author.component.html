@@ -1,0 +1,13 @@
+<div class="post-author" fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="author" fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- <span>Tác giả: </span> -->
+        <img [src]="author?.pictureUrl" alt="Avatar">
+        <span class="name mrl-12" fxLayout="column" fxLayoutAlign="center start">
+            <strong>{{author?.name}}</strong>
+            <span>{{author?.email}}</span>
+        </span>
+    </div>
+    <div class="date-time" fxLayout="row" fxLayoutAlign="space-between center">
+    </div>
+    <span fxFlex></span>
+</div>

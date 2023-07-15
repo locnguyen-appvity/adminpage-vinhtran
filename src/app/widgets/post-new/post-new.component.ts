@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { take } from 'rxjs';
 import { GlobalSettings } from 'src/app/shared/global.settings';
@@ -12,6 +12,12 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 	styleUrls: ['./post-new.component.scss']
 })
 export class PostNewComponent extends SimpleBaseComponent {
+
+	@Input() target: string = 'latest';
+	@Input() type: string = 'post';
+	@Input() entityID: string;
+	@Input() entityType: string;
+
 	public limit: number = 10;
 	public customOptions: OwlOptions = {
 		margin: 12,
