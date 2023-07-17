@@ -800,6 +800,10 @@ table {
 					min-height: 300px;
 					height: 100%;
 				}
+				&--tracksfilesselect{
+					min-height: 300px;
+					height: calc(100vh - 380px);
+				}
 
 				&--control{
 					height: calc(100vh - 600px);

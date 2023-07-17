@@ -12,6 +12,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { MediaFileInfoComponent } from '../../admin/media-files/media-file-info/media-file-info.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { DialogSelectedTracksComponent } from '../dialog-selected-tracks/dialog-selected-tracks.component';
 
 @Component({
 	selector: 'app-media-files-list',
@@ -161,13 +162,19 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 		this.valueChanges.emit({ action: 'value-change', data: this.selection.selected });
 	}
 
-	addItem() {
+	addItem(type: string) {
 		let config: any = {};
 		config.data = {
 			target: 'new',
+			type: type,
 			folder: this.folder
 		};
-		this.openFormDialog(config, 'new');
+		if(type == 'soundcloud' || type == 'podbean'){
+			this.selectMedia(config);
+		}
+		else {
+			this.openFormDialog(config, 'new');
+		}
 	}
 
 	openFormDialog(config: any, target: string) {
@@ -184,6 +191,26 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 				if (res === 'OK') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
 					snackbarData.message = target === 'edit' ? 'Sửa Thành Công' : 'Thêm Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					this.getDataGridAndCounterApplications();
+				}
+			}
+		});
+	}
+
+	selectMedia(config: any) {
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-xl';
+		config.maxWidth = '80vw';
+		config.autoFocus = true;
+		let dialogRef = this.dialog.open(DialogSelectedTracksComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				let snackbarData: any = {
+					key: 'saved-item',
+					message: 'Thêm Thành Công'
+				};
+				if (res === 'OK') {
 					this.showInfoSnackbar(snackbarData);
 					this.getDataGridAndCounterApplications();
 				}

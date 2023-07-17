@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+    <app-tracks-files-list [type]="type" [target]="target"></app-tracks-files-list>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <span fxFlex></span>
+        <button mat-button (click)="closeDialog()" color="default">Hủy</button>
+        <div class="btn-save-process">
+            <button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Chọn"
+                (click)="saveData()">Chọn</button>
+            <mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
+        </div>
+    </div>
+</mat-dialog-content>

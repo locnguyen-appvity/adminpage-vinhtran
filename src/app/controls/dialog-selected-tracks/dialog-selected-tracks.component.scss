@@ -1,0 +1,38 @@
+.se-thumbnail {
+    height: 100%;
+}
+
+.mat-gird-header {
+    opacity: 0.2 !important;
+    .file-title {
+        color: black;
+    }
+    &.item-checked {
+        opacity: 1 !important;
+    }
+}
+
+.mat-gird-header-title {
+    .file-title {
+        font-weight: 500;
+        color: rgb(255, 255, 255) !important;
+        &.item-checked {
+            color: rgb(255, 255, 255) !important;
+        }
+    }
+    background: transparent !important;
+    width: 80%;
+}
+
+.mat-grid-tile {
+    &:hover {
+        .mat-gird-header {
+            opacity: 1 !important;
+        }
+        .mat-gird-header-title {
+            .file-title {
+                color: rgb(255, 255, 255);
+            }
+        }
+    }
+}

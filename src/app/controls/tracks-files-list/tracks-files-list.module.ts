@@ -12,15 +12,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { MediaFilesListComponent } from './media-files-list.component';
-import { MediaFileInfoModule } from '../../admin/media-files/media-file-info/media-file-info.module';
-import { DialogSelectedTracksModule } from '../dialog-selected-tracks/dialog-selected-tracks.module';
+import { TracksFilesListComponent } from './tracks-files-list.component';
 
 
 
 @NgModule({
   declarations: [
-    MediaFilesListComponent
+    TracksFilesListComponent
   ],
   imports: [
     SharedModule,
@@ -34,13 +32,11 @@ import { DialogSelectedTracksModule } from '../dialog-selected-tracks/dialog-sel
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule,
-    MediaFileInfoModule,
-    DialogSelectedTracksModule
+    MatTooltipModule
   ],
-  exports: [MediaFilesListComponent]
+  exports: [TracksFilesListComponent]
 })
-export class MediaFilesListModule { 
+export class TracksFilesListModule { 
   constructor(private mdIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
     this.registerIcons();

@@ -70,6 +70,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
     }
 
     buildFormGroup() {
+        let folderId = this.localItem ? this.localItem.folderId : (this.folder ? this.folder.id : "");
         return this.fb.group({
             title: [this.localItem ? this.localItem.title : "", [Validators.required]],
             content: this.localItem ? this.localItem.content : "",
@@ -79,7 +80,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             playerUrl: this.localItem ? this.localItem.playerUrl : "",
             duration: this.localItem ? this.localItem.duration : "",
             logo: this.localItem ? this.localItem.logo : "",
-            folderId: this.localItem ? this.localItem.folderId : (this.folder ? this.folder.id : ""),
+            folderId: folderId !== "mydisk" ? folderId : null,
             embed: this.localItem ? this.localItem.embed : "",
             isAuto: this.localItem ? this.localItem.isAuto == 'true' : false,
             status: (this.localItem && this.localItem.status == 'inactive') ? false : true,
