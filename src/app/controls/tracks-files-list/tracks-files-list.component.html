@@ -62,8 +62,8 @@
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
-                                            <ng-container *ngIf="element?.pictureUrl?.length > 0; else defaultAvatar">
-                                                <img [src]="element?.pictureUrl" mat-card-avatar alt="photo"
+                                            <ng-container *ngIf="element?.logo?.length > 0; else defaultAvatar">
+                                                <img [src]="element?.logo" mat-card-avatar alt="photo"
                                                     matTooltip="User Select" class="se-avatar" />
                                             </ng-container>
                                             <ng-template #defaultAvatar>
@@ -110,6 +110,13 @@
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Độ Dài </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.durationView}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="publishedView">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header cdkDrag> Ngày Công Khai </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.publishedView}}
                                 </td>
                             </ng-container>
 

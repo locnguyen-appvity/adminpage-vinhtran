@@ -43,6 +43,9 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             this.ID = this.dialogData.item.id;
         }
         this.dataItemGroup = this.buildFormGroup();
+        this.dataItemGroup.get("isAuto").disable({
+            onlySelf: true
+        });
         this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
             if (this.target === 'edit') {
                 this.hasChangedGroup = this.isChangedForm(valueForm);
@@ -112,9 +115,9 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
         if (this.sharedService.isChangedValue(valueForm.embed, this.dialogData.item.embed)) {
             return true;
         }
-        if (this.sharedService.isChangedValue(valueForm.isAuto, this.dialogData.item.isAuto)) {
-            return true;
-        }
+        // if (this.sharedService.isChangedValue(valueForm.isAuto, this.dialogData.item.isAuto)) {
+        //     return true;
+        // }
         let status = this.dialogData.item.status == 'active' ? true : false;
         if (this.sharedService.isChangedValue(valueForm.status, status)) {
             return true;
@@ -155,7 +158,7 @@ export class MediaFileInfoComponent extends SimpleBaseComponent {
             "duration": valueForm.duration,
             "folderId": valueForm.folderId,
             "embed": valueForm.embed,
-            "isAuto": valueForm.isAuto ? "true" : "false",
+            "isAuto":this.dataItemGroup.get("isAuto").value ? "true" : "false",
             "status": valueForm.status ? 'active' : 'inactive',
         }
         if (this.target == 'edit') {

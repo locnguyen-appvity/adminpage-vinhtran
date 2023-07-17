@@ -29,6 +29,9 @@
                             <button mat-menu-item [disabled]="dataProcessing" (click)="addItem('soundcloud')">
                                 <span>Thêm Meida soundcloud</span>
                             </button>
+                            <button mat-menu-item [disabled]="dataProcessing" (click)="addItem('none')">
+                                <span>Nguồn Khác</span>
+                            </button>
                         </mat-menu>
                         <!-- <button mat-icon-button matTooltip="Lọc" (click)="filter.toggle()" aria-label="Lọc">
                             <mat-icon class="material-icons" svgIcon="ic_filter_list_48px"></mat-icon>

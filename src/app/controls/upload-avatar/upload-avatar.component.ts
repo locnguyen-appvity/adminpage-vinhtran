@@ -49,7 +49,12 @@ export class UploadAvatarComponent extends SimpleBaseComponent implements OnChan
 		}
 		if (changes['filePath']) {
 			if (!this.isNullOrEmpty(this.filePath)) {
-				this.imageUrl = `${GlobalSettings.Settings.Server}/${this.filePath}`;
+				if(this.filePath.startsWith('http')){
+					this.imageUrl = this.filePath;
+				}
+				else {
+					this.imageUrl = `${GlobalSettings.Settings.Server}/${this.filePath}`;
+				}
 			}
 			else {
 				this.imageUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_image_48dp.svg');

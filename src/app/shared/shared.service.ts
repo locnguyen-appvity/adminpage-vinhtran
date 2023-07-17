@@ -653,6 +653,11 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteMasses', error)));
 	}
 
+	getPodbeanEpisodes(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/podbeanEpisodes';
+		return this.service.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPodbeanEpisodes', error)));
+	}
+
 	// ClergyInOrganizations
 	getClergyInOrganizations(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/clergyInOrganizations';

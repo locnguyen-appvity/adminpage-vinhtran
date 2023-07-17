@@ -59,7 +59,10 @@
                     <mat-label>Mô Tả</mat-label>
                     <textarea matInput rows="7" formControlName="content"></textarea>
                 </mat-form-field>
-                <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
+                <div fxLayout="row" fxLayoutGap="24px" fxLayoutAlign="start center">
+                    <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
+                    <mat-slide-toggle class="mrr-24" formControlName="isAuto">Tạo tự động</mat-slide-toggle>
+                </div>
             </div>
         </form>
     </div>

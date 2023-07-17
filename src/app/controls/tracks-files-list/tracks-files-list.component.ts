@@ -10,6 +10,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { parse } from 'rss-to-json';
+import { take } from 'rxjs';
 
 @Component({
 	selector: 'app-tracks-files-list',
@@ -36,13 +37,18 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
+		this.pageSizeOptions = [25, 50, 150, 250];
 		this.pageSize = 50;
 	}
 
 	ngAfterViewInit() {
 		super.ngAfterViewInit();
 		if (this.type == "soundcloud") {
-			this.getsoundcloud();
+			this.getSoundcloud();
+		}
+		else if (this.type == "podbean") {
+			this.getPodbean();
+
 		}
 	}
 
@@ -61,7 +67,7 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 		this.getDataGridAndCounterApplications();
 	}
 
-	getsoundcloud() {
+	getSoundcloud() {
 		parse('https://feeds.soundcloud.com/users/soundcloud:users:193166148/sounds.rss').then((res: any) => {
 			if (res) {
 				this.valueChanges.emit({
@@ -70,12 +76,77 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 						description: res.description
 					}
 				})
+				let items = [];
 				if (res.items && res.items.length > 0) {
-					this.dataItemsCache = res.items;
+					for (let item of res.items) {
+						let url = "";
+						let length = 0;
+						if (item.enclosures && item.enclosures[0]) {
+							url = item.enclosures[0] ? item.enclosures[0].url : "";
+							length = item.enclosures[0] ? Number(item.enclosures[0].length) : 0;
+						}
+						if (!this.isNullOrEmpty(url)) {
+							if (item.created) {
+								item._created = this.convertDateNumberToMoment(item.created);
+								item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+							}
+							if (item.published) {
+								item._published = this.convertDateNumberToMoment(item.published);
+								item.publishedView = item._published.format('DD/MM/YYYY hh:mm A');
+							}
+
+
+							items.push({
+								entityType: this.type,
+								entityId: item.id,
+								title: item.title,
+								content: item.content,
+								logo: item.itunes_image ? item.itunes_image.href : "",
+								mediaUrl: url,
+								playerUrl: url,
+								permalinkUrl: item.link,
+								duration: length,
+								durationView: length,
+								folderId: "",
+								embed: "",
+								isAuto: "true",
+								status: 'publish',
+								statusView: 'Đã Xuất Bản',
+								statusClass: "approved-label",
+								createdView: item.createdView,
+								publishedView: item.publishedView
+							})
+						}
+					}
+					this.dataItemsCache = items;
 					this.getDataGridApplications();
 				}
 			}
 		});
+	}
+
+	getPodbean() {
+		this.service.getPodbeanEpisodes().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res.value && res.value.length > 0) {
+					for (let item of res.value) {
+						item.isAuto = "true";
+						item.status = "publish";
+						this.updateStatus(item);
+						if (item.created) {
+							item._created = this.sharedService.convertDateStringToMomentUTC_0(item.created);
+							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+						}
+						if (item.publishTime) {
+							item._publishTime = this.convertDateNumberToMoment(item.publishTime);
+							item.publishedView = item._publishTime.format('DD/MM/YYYY hh:mm A');
+						}
+					}
+					this.dataItemsCache = res.value;
+					this.getDataGridApplications();
+				}
+			}
+		})
 	}
 
 	_filter(value: string, dataItems: any, key: string) {
@@ -97,7 +168,6 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 	getDataGridApplications() {
 		this.skip = this.currentPageIndex * this.pageSize;
 		let dataItems = [];
-		let items = [];
 		let total = 0;
 		if (this.dataItemsCache && this.dataItemsCache.length > 0) {
 			dataItems = this._filter(this.searchValue, this.dataItemsCache, 'title');
@@ -109,40 +179,7 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 				}
 			}
 		}
-		if (dataItems && dataItems.length > 0) {
-			for (let item of dataItems) {
-				let url = "";
-				let length = 0;
-				if (item.enclosures && item.enclosures[0]) {
-					url = item.enclosures[0] ? item.enclosures[0].url : "";
-					length = item.enclosures[0] ? Number(item.enclosures[0].length) : 0;
-				}
-				if (!this.isNullOrEmpty(url)) {
-					if (item.created) {
-						item._created = this.convertDateNumberToMoment(item.created);
-						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
-					}
-					items.push({
-						entityType: "soundcloud",
-						entityId: item.id,
-						title: item.title,
-						content: item.content,
-						logo: item.itunes_image ? item.itunes_image.href : "",
-						mediaUrl: url,
-						playerUrl: url,
-						permalinkUrl: url,
-						duration: length,
-						durationView: length,
-						folderId: "",
-						embed: "",
-						isAuto: "true",
-						status: 'active',
-						createdView: item.createdView
-					})
-				}
-			}
-		}
-		this.dataItems = items;
+		this.dataItems = dataItems;
 		this.gridDataChanges.data = this.dataItems;
 		this.gridDataChanges.total = total;
 		this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
@@ -170,7 +207,7 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'entityType', 'duration', 'created'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'entityType', 'duration', 'publishedView', 'created'];
 	}
 
 }

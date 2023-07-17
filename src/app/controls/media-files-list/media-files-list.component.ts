@@ -103,7 +103,12 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 							item.durationView = item.duration;
 						}
 						if (item.logo) {
-							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.logo}`;
+							if(item.isAuto == "true"){
+								item.pictureUrl = item.logo;
+							}
+							else {
+								item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.logo}`;
+							}
 						}
 						this.updateStatus(item);
 						if (item.created) {
@@ -164,15 +169,20 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 
 	addItem(type: string) {
 		let config: any = {};
-		config.data = {
-			target: 'new',
-			type: type,
-			folder: this.folder
-		};
 		if(type == 'soundcloud' || type == 'podbean'){
+			config.data = {
+				target: 'multi',
+				type: type,
+				folder: this.folder
+			};
 			this.selectMedia(config);
 		}
 		else {
+			config.data = {
+				target: 'new',
+				type: type,
+				folder: this.folder
+			};
 			this.openFormDialog(config, 'new');
 		}
 	}
@@ -200,7 +210,7 @@ export class MediaFilesListComponent extends TemplateGridApplicationComponent im
 
 	selectMedia(config: any) {
 		config.disableClose = true;
-		config.panelClass = 'dialog-form-xl';
+		config.panelClass = 'dialog-form-xxl';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
 		let dialogRef = this.dialog.open(DialogSelectedTracksComponent, config);
