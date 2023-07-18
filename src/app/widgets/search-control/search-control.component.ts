@@ -6,7 +6,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { DialogItemsComponent } from '../dialog-items/dialog-items.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { POSSITION } from 'src/app/shared/data-manage';
+import { POSITION } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-search-control',
@@ -19,7 +19,7 @@ export class SearchControlComponent extends SimpleBaseComponent {
 	@Input() data: any;
 	public arrGroups: any[] = [];
 	public ctrlFormGroup: FormGroup;
-	public positionList: any[] = POSSITION;
+	public positionList: any[] = POSITION;
 
 	constructor(public sharedService: SharedPropertyService,
 		public dialog: MatDialog,

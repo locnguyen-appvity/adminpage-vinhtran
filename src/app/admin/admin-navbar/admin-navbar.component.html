@@ -88,25 +88,25 @@
         <mat-expansion-panel [expanded]="openedPanel == 'media'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon class="app-icon mrr-24" svgIcon="ic_subscriptions_48dp"></mat-icon>  Quản Lý Meida
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_subscriptions_48dp"></mat-icon> Quản Lý Meida
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description>
                 <mat-nav-list>
-                    <mat-list-item [routerLink]="['/admin/episodes/episodes-list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <mat-list-item [routerLink]="['/admin/episodes/episodes-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
                         Episode
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/chapters/chapters-list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <mat-list-item [routerLink]="['/admin/chapters/chapters-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
-                       Chương
+                        Chương
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/books/books-list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <mat-list-item [routerLink]="['/admin/books/books-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
-                       Sách
+                        Sách
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/media-files/media-files-tree']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
@@ -119,7 +119,7 @@
         <mat-expansion-panel [expanded]="openedPanel == 'data'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon class="app-icon mrr-24" svgIcon="maps_home_work_48dp"></mat-icon>   Quản Lý Dữ Liệu
+                    <mat-icon class="app-icon mrr-24" svgIcon="maps_home_work_48dp"></mat-icon> Quản Lý Dữ Liệu
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description>
@@ -144,7 +144,11 @@
                         <!-- <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon> -->
                         Tác Giả
                     </mat-list-item>
-
+                    <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
+                        Các Thánh
+                    </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
@@ -152,7 +156,7 @@
         <mat-expansion-panel [expanded]="openedPanel == 'manage'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon class="app-icon mrr-24" svgIcon="ic_person_48dp"></mat-icon>  Quản Lý Thông Tin
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_person_48dp"></mat-icon> Quản Lý Giáo Phận
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description>
@@ -165,17 +169,12 @@
                     <mat-list-item [routerLink]="['/admin/manage/organizations/organizations-list']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="ic_church_24dp"></mat-icon> -->
-                        Giáo Xứ
+                        Giáo Xứ - Dòng Tu
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/manage/clergys/clergys-list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="ic_priest"></mat-icon> -->
                         Tu Sĩ
-                    </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
-                        [routerLinkActiveOptions]="{exact: true}">
-                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
-                        Các Thánh
                     </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>
@@ -184,7 +183,7 @@
         <mat-expansion-panel [expanded]="openedPanel == 'system'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon class="app-icon mrr-24" svgIcon="ic_manage_accounts_48dp"></mat-icon>  Quản Lý Hệ Thống
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_manage_accounts_48dp"></mat-icon> Quản Lý Hệ Thống
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description>

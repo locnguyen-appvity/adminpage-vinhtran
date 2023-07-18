@@ -110,7 +110,7 @@ export class SharedPropertyService {
         return 0;
     }
 
-   public convertDateStringToMoment(data: string, offset: any): any {
+    public convertDateStringToMoment(data: string, offset: any): any {
         if (!this.isNullOrEmpty(data)) {
             if (/Z$/.test(data) === false) {
                 data = data + 'Z';
@@ -209,6 +209,19 @@ export class SharedPropertyService {
             }
         }
         return false;
+    }
+
+    public getItemExistsInArray(value: any, data: any, key: string = 'id'): any {
+        if (!this.isNullOrEmpty(value)) {
+            if (data && data.length > 0) {
+                for (let item of data) {
+                    if (item[key] === value) {
+                        return item;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public convertLocaleLowerCase(str: string) {

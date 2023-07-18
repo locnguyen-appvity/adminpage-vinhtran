@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 
 
 
@@ -27,7 +28,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     MatDialogModule,
     MatDatepickerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    AutocompleteSimpleModule
   ],
   exports: [
     EventInfoComponent

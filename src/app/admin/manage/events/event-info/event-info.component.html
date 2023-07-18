@@ -42,6 +42,13 @@
                     </mat-form-field>
                 </div>
             </div>
+            <mat-form-field *ngIf="entityType != 'organization'" appearance="outline" class="full-width">
+                <mat-label>Vị Trí</mat-label>
+                <se-autocomplete-simple [required]="false" [formControlName]="'locationID'" [switchAt]="10"
+                    [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'title'" [keyValue]="'id'"
+                    [keyValueEmit]="'id'" [autocomplete]="true" [items]="arrLocations">
+                </se-autocomplete-simple>
+            </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Mô Tả</mat-label>
                 <textarea matInput rows="3" formControlName="description"></textarea>

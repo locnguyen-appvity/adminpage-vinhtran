@@ -1,5 +1,9 @@
 export const TYPE_CLERGY = [
     {
+        name: 'Giám Mục',
+        code: 'giam_muc'
+    },
+    {
         name: 'Linh Mục',
         code: 'linh_muc'
     },
@@ -20,7 +24,7 @@ export const TYPE_CLERGY = [
         code: 'khac'
     }
 ]
-export const POSSITION = [
+export const POSITION = [
     {
         name: 'Chánh xứ',
         code: 'chanh_xu'
@@ -38,12 +42,16 @@ export const POSSITION = [
         code: 'quan_xu'
     },
     {
+        name: 'Quản hạt',
+        code: 'quan_hat'
+    },
+    {
         name: 'Giúp xứ',
         code: 'giúp_xu'
     },
     {
-        name: 'Hưu dưỡng',
-        code: 'huu_duong'
+        name: 'Hưu',
+        code: 'huu'
     },
     {
         name: 'Khác',
@@ -56,8 +64,20 @@ export const TYPE_ORG = [
         code: 'giao_xu'
     },
     {
+        name: 'Giáo Điểm',
+        code: 'giao_diem'
+    },
+    {
+        name: 'Cơ Sở Giáo Phận',
+        code: 'co_so_giao_phan'
+    },
+    {
         name: 'Dòng Tu',
         code: 'dong_tu'
+    },
+    {
+        name: 'Cộng Đoàn',
+        code: 'cong_doan'
     },
     {
         name: 'Khác',

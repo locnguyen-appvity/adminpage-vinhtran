@@ -33,17 +33,17 @@
                     <span fxFlex></span>
                     <button mat-icon-button [disabled]="dataProcessing"
                         (click)="onUpdateStatus(selection?.selected[0],'inactive')"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive'"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive' && groupID == ''"
                         matTooltip="Tạm Ẩn">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                     </button>
                     <button mat-icon-button [disabled]="dataProcessing"
                         (click)="onUpdateStatus(selection?.selected[0],'active')"
-                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'"
+                        *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status == 'inactive'  && groupID == ''"
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing" *ngIf="selection?.selected?.length == 1"
+                    <button mat-icon-button [disabled]="dataProcessing" *ngIf="selection?.selected?.length == 1  && groupID == ''"
                         matTooltip="Xóa">
                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                     </button>
@@ -58,7 +58,8 @@
                             </div>
                         </div>
                     </mat-sidenav> -->
-                    <div class="table-container table-container--mediafiles">
+                    <div class="table-container"
+                        [ngClass]=" groupID ? 'table-container--orgingroups':'table-container--mediafiles'">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort
                             (matSortChange)="onSortChange($event)">
 

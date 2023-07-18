@@ -220,7 +220,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						eventDate: this.localItem._eventDate,
 						authorId: this.localItem.authorId,
 						locationId: this.localItem.locationId,
-						locationType: "",
+						locationType: "organization",
 						tags: this.localItem.tags,
 						catalogueId: this.localItem.catalogueId,
 						eventTime: this.localItem.eventTime,

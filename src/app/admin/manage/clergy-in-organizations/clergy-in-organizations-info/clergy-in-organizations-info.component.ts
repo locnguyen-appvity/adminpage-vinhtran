@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take, takeUntil } from 'rxjs';
-import { POSSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -28,14 +28,14 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 
 	public dataItemGroup: FormGroup;
 	public localItem: any;
-	public title: string = "Tu Sĩ";
+	public title: string = "Thêm";
 	public entityID: string = "";
 	public clergyID: string = "";
 	public entityType: string = "";
 
 	public clergysList: any[] = [];
 	public organizationList: any[] = [];
-	public positionList: any[] = POSSITION;
+	public positionList: any[] = POSITION;
 	public typeList: any[] = TYPE_CLERGY;
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -45,7 +45,7 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		if (this.dialogData.item) {
-			this.title = "Sửa Tu Sĩ";
+			this.title = "Sửa";
 			this.localItem = this.dialogData.item;
 		}
 		if (this.dialogData.entityID) {
@@ -75,9 +75,12 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 		}
 		return this.fb.group({
 			id: item ? item.id : '',
-			name: item ? item.name : '',
+			clergyName: item ? item.clergyName : "",
 			clergyID: item ? item.clergyID : this.clergyID,
 			entityID: item ? item.entityID : this.entityID,
+			entityName: item ? item.entityName : "",
+			appointerID: item ? item.appointerID : "",
+			appointerName: item ? item.appointerName : "",
 			entityType: item ? item.entityType : 'organization',
 			position: item ? item.position : 'chanh_xu',
 			status: item ? item.status : 'duong_nhiem',
@@ -87,13 +90,14 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 	}
 
 	valueChangeAutocomplete(event: any, target: string) {
-		if (target == 'clergyID') {
-			if (!this.isNullOrEmpty(event)) {
-				let clergy = this.sharedService.getValueAutocomplete(event, this.clergysList);
-				if (clergy && clergy.name) {
-					this.dataItemGroup.get('name').setValue(clergy.name);
-				}
-			}
+		if (target == 'clergyName') {
+			this.dataItemGroup.get('clergyID').setValue(event);
+		}
+		else if(target == 'entityName'){
+			this.dataItemGroup.get('entityID').setValue(event);
+		}
+		else if(target == 'appointerName'){
+			this.dataItemGroup.get('appointerID').setValue(event);
 		}
 	}
 
@@ -112,6 +116,12 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 					}
 				}
 				this.organizationList = items;
+				if (this.isNullOrEmpty(this.dialogData.item) && this.entityType == "organization") {
+					let org  = this.sharedService.getItemExistsInArray(this.entityID,this.organizationList);
+					if(org){
+						this.dataItemGroup.get('entityName').setValue(org.name);
+					}
+				}
 			}
 		})
 	}
@@ -138,17 +148,23 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
-					for(let item of items){
+					for (let item of items) {
 						item.name = `${this.getClergyType(item)} ${item.stName} ${item.name}`;
 					}
 				}
 				this.clergysList = items;
+				if (this.isNullOrEmpty(this.dialogData.item)) {
+					let clergy  = this.sharedService.getItemExistsInArray(this.clergyID,this.organizationList);
+					if(clergy){
+						this.dataItemGroup.get('clergyName').setValue(clergy.name);
+					}
+				}
 			}
 		})
 	}
 
-	
-	getClergyType(item: any){
+
+	getClergyType(item: any) {
 		if (!this.isNullOrEmpty(item.type)) {
 			let type = this.sharedService.getValueAutocomplete(item.type, this.typeList, 'code');
 			if (type && type.name) {
@@ -165,9 +181,12 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
 		let daaJSON = {
-			name: valueForm.name,
+			clergyName: valueForm.clergyName,
 			clergyID: valueForm.clergyID,
 			entityID: valueForm.entityID,
+			entityName: valueForm.entityName,
+			appointerID: valueForm.appointerID,
+			appointerName: valueForm.appointerName,
 			entityType: valueForm.entityType,
 			fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
 			toDate: this.sharedService.ISOStartDay(valueForm.toDate),

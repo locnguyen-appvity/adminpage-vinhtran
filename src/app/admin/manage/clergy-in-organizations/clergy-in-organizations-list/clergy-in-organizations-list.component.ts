@@ -6,7 +6,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
 import { ClergyInOrganizationsInfoComponent } from '../clergy-in-organizations-info/clergy-in-organizations-info.component';
-import { POSSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-in-organizations-list',
@@ -18,7 +18,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 
 	@Input() entityID: string = "";
 	@Input() entityType: string = "";
-	public positionList: any[] = POSSITION;
+	public positionList: any[] = POSITION;
 	public typeList: any[] = TYPE_CLERGY;
 	
 	constructor(public override sharedService: SharedPropertyService,
@@ -145,9 +145,11 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 					this.arrData = res.value;
 					for (let item of this.arrData) {
 						if(this.entityType == 'clergy'){
-							item.name = item.entityID;
+							item.name = item.clergyName;
 						}
-				
+						else {
+							item.name = item.entityName;
+						}
 						this.getClergyPosition(item);
 						this.getClergyStatus(item);
 						if (item && item.fromDate) {

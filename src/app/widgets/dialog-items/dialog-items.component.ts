@@ -2,7 +2,7 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { POSSITION } from 'src/app/shared/data-manage';
+import { POSITION } from 'src/app/shared/data-manage';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -19,7 +19,7 @@ export class DialogItemsComponent extends SimpleBaseComponent {
 	public data: any;
 	public ctrlFormGroup: FormGroup;
 	public arrGroups: any[] = [];
-	public positionList: any[] = POSSITION;
+	public positionList: any[] = POSITION;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,

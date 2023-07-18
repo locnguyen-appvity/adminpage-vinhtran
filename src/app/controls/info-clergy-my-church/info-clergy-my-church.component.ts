@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { Observable, of, take, takeUntil } from 'rxjs';
-import { POSSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -28,7 +28,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 	@Input() item: any;
 	@Output() valueChange: EventEmitter<any> = new EventEmitter();
 	public clergysList: any[] = [];
-	public positionList: any[] = POSSITION;
+	public positionList: any[] = POSITION;
 	public typeList: any[] = TYPE_CLERGY;
 	public formGroupControl: FormGroup;
 	public haschangedFormGroup: boolean = false;

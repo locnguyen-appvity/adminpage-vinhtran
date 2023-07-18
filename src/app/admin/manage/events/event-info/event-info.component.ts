@@ -2,7 +2,7 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -30,6 +30,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public entityID: string = "";
 	public entityType: string = "";
 	public localItem: any;
+	public arrLocations: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -37,17 +38,18 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		public dialogRef: MatDialogRef<EventInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
-		if(this.dialogData.item){
+		if (this.dialogData.item) {
 			this.title = "Sửa Sự Kiện"
 			this.localItem = this.dialogData.item;
 		}
-		if(this.dialogData.entityID){
+		if (this.dialogData.entityID) {
 			this.entityID = this.dialogData.entityID;
 		}
-		if(this.dialogData.entityType){
+		if (this.dialogData.entityType) {
 			this.entityType = this.dialogData.entityType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
+		this.getOrganizations();
 	}
 
 	initialEventGroup(item: any): FormGroup {
@@ -58,7 +60,32 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			date: item ? item._date : '',
 			type: [item ? item.type : 'ngay_ky_niem', Validators.required],
 			description: item ? item.description : '',
+			locationID: item ? item.locationID : '',
 		});
+	}
+
+	getOrganizations() {
+		this.service.getOrganizations().pipe(take(1)).subscribe((res: any) => {
+			let items = [];
+			if (res && res.value && res.value.length > 0) {
+				items = res.value;
+				for (let item of items) {
+					switch (item.type) {
+						case 'giao_xu':
+							item.title = `Giáo xứ ${item.name}`;
+							break;
+						case 'dong_tu':
+							item.title = `Dòng ${item.name}`;
+							break;
+						default:
+							item.title = item.name;
+							break;
+					}
+				}
+			}
+			this.arrLocations = items;
+
+		})
 	}
 
 
@@ -75,6 +102,8 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			"day": valueForm.day,
 			"date": this.sharedService.ISOStartDay(valueForm.date),
 			"description": valueForm.description,
+			"locationID": this.entityType == 'organization' ? this.entityID : valueForm.locationID,
+			"locationType": "organization",
 			"status": 'active'
 		}
 		if (this.localItem && this.localItem.id) {

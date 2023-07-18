@@ -38,6 +38,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 	public groupList$: Observable<any>;
 	public localItem: any;
 	public anniversarys: any[] = [];
+	public groupID: string = "";
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -52,6 +53,9 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			this.canDelete = false;
 			this.localItem = this.dialogData.item
 			this.ID = this.dialogData.item.id;
+		}
+		if (this.dialogData.groupID) {
+			this.groupID = this.dialogData.groupID;
 		}
 		this.buildFormGroup();
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -73,7 +77,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			items: this.fb.array([]),
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
 			abbreviation: this.localItem ? this.localItem.abbreviation : '',
-			groupID: this.localItem ? this.localItem.groupID : '',
+			groupID: this.localItem ? this.localItem.groupID : this.groupID,
 			type: [this.localItem ? this.localItem.type : 'giao_xu', [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
@@ -84,6 +88,11 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			// anniversarySaint: this.localItem ? this.localItem.anniversarySaint : '',
 			// anniversary: anniversary
 		})
+		if (!this.isNullOrEmpty(this.groupID) && this.target != 'edit') {
+			this.dataItemGroup.get("groupID").disable({
+				onlySelf: true
+			})
+		}
 	}
 
 
@@ -129,7 +138,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
 			address: valueForm.address,
-			groupID: valueForm.groupID,
+			groupID: this.dataItemGroup.get("groupID").value,
 			abbreviation: valueForm.abbreviation,
 			content: valueForm.content,
 			description: valueForm.description,
@@ -142,15 +151,15 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 				next: () => {
 					// this.createAnniversaryToTeamMember(this.ID).pipe(takeUntil(this.unsubscribe)).subscribe({
 					// 	next: () => {
-							this.saveAction = '';
-							this.dataProcessing = false;
-							this.dialogRef.close('OK');
-						// },
-						// error: error => {
-						// 	this.saveAction = '';
-						// 	this.dataProcessing = false;
-						// 	this.dialogRef.close('OK');
-						// }
+					this.saveAction = '';
+					this.dataProcessing = false;
+					this.dialogRef.close('OK');
+					// },
+					// error: error => {
+					// 	this.saveAction = '';
+					// 	this.dataProcessing = false;
+					// 	this.dialogRef.close('OK');
+					// }
 					// });
 				}
 			})

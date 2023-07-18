@@ -19,7 +19,7 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 })
 export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
-	@Input() groupID: string;
+	@Input() groupID: string = '';
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -34,10 +34,11 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		this.dataSettingsKey = 'user-list';
 		this.getDataGridAndCounterApplications();
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges): void {
-		if(changes['groupID']){
+		if (changes['groupID']) {
 			this.getDataGridAndCounterApplications();
+			this.registerGridColumns();
 		}
 	}
 
@@ -74,7 +75,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		let options = {
 			filter: this.getFilter()
 		}
-		if(this.subscription['getOrganizations']){
+		if (this.subscription['getOrganizations']) {
 			this.subscription['getOrganizations'].unsubscribe();
 		}
 		this.dataProcessing = true;
@@ -96,7 +97,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 			this.gridDataChanges.total = total;
 			this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
 			this.dataProcessing = false;
-			if(this.subscription['getOrganizations']){
+			if (this.subscription['getOrganizations']) {
 				this.subscription['getOrganizations'].unsubscribe();
 			}
 
@@ -138,7 +139,8 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	addItem() {
 		let config: any = {
 			data: {
-				target: 'new'
+				target: 'new',
+				groupID: this.groupID
 			}
 		};
 		config.disableClose = true;
@@ -162,7 +164,9 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	getRowSelected(item: any) {
-		this.router.navigate([`/admin/manage/organizations/organization/${item.id}`]);
+		if (this.isNullOrEmpty(this.groupID)) {
+			this.router.navigate([`/admin/manage/organizations/organization/${item.id}`]);
+		}
 	}
 
 	onDelete(item: any) {
@@ -179,7 +183,12 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created', 'moreActions'];
+		if (!this.isNullOrEmpty(this.groupID)) {
+			this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created'];
+		}
+		else {
+			this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created', 'moreActions'];
+		}
 	}
 
 

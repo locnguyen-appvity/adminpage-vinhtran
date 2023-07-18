@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { take } from 'rxjs';
-import { POSSITION } from 'src/app/shared/data-manage';
+import { POSITION } from 'src/app/shared/data-manage';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
