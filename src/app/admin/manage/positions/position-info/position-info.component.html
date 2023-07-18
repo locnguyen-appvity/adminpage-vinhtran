@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>{{title}} Giáo Phận</h2>
+<mat-dialog-content>
+  <div class="content-dialog content-dialog--minHeight">
+    <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+      <div fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Tên</mat-label>
+          <input matInput required formControlName="name" autocomplete="off">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Code</mat-label>
+          <input matInput formControlName="code" autocomplete="off">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Level</mat-label>
+          <mat-select formControlName="level">
+            <mat-option *ngFor="let item of levelPositions" [value]="item.code">{{item.name}}</mat-option>
+        </mat-select>
+        </mat-form-field>
+        <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
+      </div>
+    </form>
+  </div>
+  <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+    <span fxFlex></span>
+    <a mat-button (click)="closeDialog()" color="default">Hủy</a>
+    <div class="btn-save-process">
+      <button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'" aria-label="Delete"
+        (click)="deleteItem()" color="warn">Xóa</button>
+      <mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
+    </div>
+    <div class="btn-save-process">
+      <button mat-flat-button color="primary"
+        [disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
+        aria-label="Save" (click)="onSaveItem()">{{textSave}}</button>
+      <mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
+    </div>
+  </div>
+</mat-dialog-content>

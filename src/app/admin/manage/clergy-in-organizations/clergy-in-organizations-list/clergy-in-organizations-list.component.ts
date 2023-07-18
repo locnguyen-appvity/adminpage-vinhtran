@@ -6,7 +6,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
 import { ClergyInOrganizationsInfoComponent } from '../clergy-in-organizations-info/clergy-in-organizations-info.component';
-import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-in-organizations-list',
@@ -18,7 +18,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 
 	@Input() entityID: string = "";
 	@Input() entityType: string = "";
-	public positionList: any[] = POSITION;
+	public positionList: any[] = [];
 	public typeList: any[] = TYPE_CLERGY;
 	
 	constructor(public override sharedService: SharedPropertyService,
@@ -26,12 +26,29 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
+		this.getPositions();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['entityID'] || changes['entityType']) {
 			this.getDataItems();
 		}
+	}
+
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+			}
+		})
 	}
 
 

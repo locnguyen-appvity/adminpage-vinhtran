@@ -2,8 +2,8 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { take, takeUntil } from 'rxjs';
-import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { take } from 'rxjs';
+import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -35,7 +35,7 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 
 	public clergysList: any[] = [];
 	public organizationList: any[] = [];
-	public positionList: any[] = POSITION;
+	public positionList: any[] = [];
 	public typeList: any[] = TYPE_CLERGY;
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -60,6 +60,7 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
 		this.getOrganizations();
 		this.getClergies();
+		this.getPositions();
 	}
 
 	initialEventGroup(item: any) {
@@ -159,6 +160,22 @@ export class ClergyInOrganizationsInfoComponent extends SimpleBaseComponent {
 						this.dataItemGroup.get('clergyName').setValue(clergy.name);
 					}
 				}
+			}
+		})
+	}
+
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
 			}
 		})
 	}

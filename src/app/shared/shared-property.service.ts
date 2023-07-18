@@ -258,12 +258,12 @@ export class SharedPropertyService {
         return str;
     }
 
-    public getLinkOfName(str: string) {
+    public getLinkOfName(str: string, key: string = '-') {
         if (!this.isNullOrEmpty(str)) {
             str = this.removeVietnameseTones(str);
             const validatePattern = /[\&\*\(\)\{\}\[\]\|\<\>\?\/\\\'\`\!\%\^\:\,\.\;]/g;
             str = this.convertLocaleLowerCase(str.replace(validatePattern, ''));
-            str = str.replace(/ /g, "-");
+            str = str.replace(/ /g, key);
         }
         return str;
     }

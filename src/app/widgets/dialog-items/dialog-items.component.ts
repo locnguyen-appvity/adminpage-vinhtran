@@ -2,7 +2,6 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { POSITION } from 'src/app/shared/data-manage';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -19,7 +18,7 @@ export class DialogItemsComponent extends SimpleBaseComponent {
 	public data: any;
 	public ctrlFormGroup: FormGroup;
 	public arrGroups: any[] = [];
-	public positionList: any[] = POSITION;
+	public positionList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -37,6 +36,7 @@ export class DialogItemsComponent extends SimpleBaseComponent {
 			this.title = this.dialogData.title;
 		}
 		this.getGroups();
+		this.getPositions();
 		this.ctrlFormGroup = this.fb.group({
 			groupID: (this.data && this.data.groupID) ? this.data.groupID : 'all',
 			name: (this.data && this.data.name) ? this.data.name : '',
@@ -44,6 +44,22 @@ export class DialogItemsComponent extends SimpleBaseComponent {
 			position: (this.data && this.data.position) ? this.data.position : 'all',
 		})
 
+	}
+
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+			}
+		})
 	}
 
 

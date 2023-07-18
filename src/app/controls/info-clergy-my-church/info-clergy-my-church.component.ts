@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { Observable, of, take, takeUntil } from 'rxjs';
-import { POSITION, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { take, takeUntil } from 'rxjs';
+import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -28,7 +28,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 	@Input() item: any;
 	@Output() valueChange: EventEmitter<any> = new EventEmitter();
 	public clergysList: any[] = [];
-	public positionList: any[] = POSITION;
+	public positionList: any[] = [];
 	public typeList: any[] = TYPE_CLERGY;
 	public formGroupControl: FormGroup;
 	public haschangedFormGroup: boolean = false;
@@ -41,6 +41,22 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 		this.getAllData();
 		this.formGroupControl = this.buildFormGroupStepClergy(this.item);
 		this.initialFormGroupInfoChange();
+	}
+
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+			}
+		})
 	}
 
 	initialFormGroupInfoChange() {
@@ -105,6 +121,7 @@ export class InfoClergyMyChurchComponent extends SimpleBaseComponent implements 
 
 	getAllData() {
 		this.getClergys();
+		this.getPositions();
 	}
 
 	getClergys() {

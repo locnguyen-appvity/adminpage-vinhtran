@@ -22,6 +22,10 @@ const myRoutes: Routes = [
 				path: 'clergys',
 				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
 			},
+			{
+				path: 'positions',
+				loadChildren: () => import('./positions/positions.module').then(m => m.PositionsModule)
+			},
 			{ path: '', redirectTo: 'saints-list', pathMatch: 'full' },
 		],
 	},
