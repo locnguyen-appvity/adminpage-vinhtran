@@ -44,7 +44,7 @@
             </div>
             <mat-form-field *ngIf="entityType != 'organization'" appearance="outline" class="full-width">
                 <mat-label>Vị Trí</mat-label>
-                <se-autocomplete-simple [required]="false" [formControlName]="'locationID'" [switchAt]="10"
+                <se-autocomplete-simple [required]="false" [formControlName]="'locationID'" 
                     [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'title'" [keyValue]="'id'"
                     [keyValueEmit]="'id'" [autocomplete]="true" [items]="arrLocations">
                 </se-autocomplete-simple>

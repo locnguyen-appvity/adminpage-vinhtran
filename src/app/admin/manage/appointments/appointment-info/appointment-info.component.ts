@@ -2,7 +2,8 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { take } from 'rxjs';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Observable, forkJoin, take } from 'rxjs';
 import { STATUS_CLERGY, TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -30,14 +31,21 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	public localItem: any;
 	public title: string = "Thêm";
 	public entityID: string = "";
+	public entityName: string = "";
 	public clergyID: string = "";
+	public clergyName: string = "";
 	public entityType: string = "";
 
 	public clergysList: any[] = [];
-	public organizationList: any[] = [];
+	public entityList: any[] = [];
+	public appointmentsList: any[] = [];
 	public positionList: any[] = [];
+	public positionListCache: any[] = [];
 	public typeList: any[] = TYPE_CLERGY;
 	public statusClergy: any[] = STATUS_CLERGY;
+	public searchValue: string = '';
+
+	public target: string = 'bo_nhiem';
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -58,10 +66,41 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		if (this.dialogData.entityType) {
 			this.entityType = this.dialogData.entityType;
 		}
+		if (this.dialogData.entityName) {
+			this.entityName = this.dialogData.entityName;
+		}
+		if (this.dialogData.clergyName) {
+			this.clergyName = this.dialogData.clergyName;
+		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
-		this.getOrganizations();
+		// this.getEntityList();
 		this.getClergies();
 		this.getPositions();
+	}
+
+	getAppointments(clergyID: string) {
+		this.appointmentsList = [];
+		if (!this.isNullOrEmpty(clergyID)) {
+			let options = {
+				filter: `clergyID eq ${clergyID}`
+			}
+			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+				let dataItems = [];
+				if (res && res.value && res.value.length > 0) {
+					dataItems = res.value;
+				}
+				this.appointmentsList = dataItems
+			})
+		}
+	}
+
+	selectedTabChange(event: MatTabChangeEvent) {
+		if (event.index == 1) {
+			this.target = 'thuyen_chuyen';
+		}
+		else {
+			this.target = 'bo_nhiem';
+		}
 	}
 
 	initialEventGroup(item: any) {
@@ -82,55 +121,202 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		}
 		return this.fb.group({
 			id: item ? item.id : '',
-			clergyName: item ? item.clergyName : "",
+			clergyName: item ? item.clergyName : this.clergyName,
 			clergyID: item ? item.clergyID : this.clergyID,
 			entityID: item ? item.entityID : this.entityID,
-			entityName: item ? item.entityName : "",
+			entityName: item ? item.entityName : this.entityName,
 			appointerID: item ? item.appointerID : "",
 			appointerName: item ? item.appointerName : "",
-			entityType: item ? item.entityType : 'organization',
+			entityType: item ? item.entityType : this.entityType,
 			position: item ? item.position : 'chanh_xu',
 			status: item ? item.status : 'duong_nhiem',
 			fromDate: fromDate,
 			effectiveDate: effectiveDate,
 			toDate: toDate,
+			fromEntityID: "",
+			fromEntityName: "",
+			fromAppointerID: "",
+			fromAppointerName: "",
+			fromEntityType: "",
+			fromPosition: "",
+			fromStatus: "",
+			fromFromDate: "",
+			fromEffectiveDate: "",
+			fromToDate: "",
+			fromAppointmentID: "",
 		});
 	}
 
 	valueChangeAutocomplete(event: any, target: string) {
 		if (target == 'clergyName') {
 			this.dataItemGroup.get('clergyID').setValue(event);
+			this.getAppointments(event);
 		}
-		else if(target == 'entityName'){
-			this.dataItemGroup.get('entityID').setValue(event);
+		else if (target == 'entityName') {
+			if (event && event.id) {
+				this.dataItemGroup.get('entityID').setValue(event.id);
+				this.dataItemGroup.get('entityType').setValue(event.type);
+				this.handlePositionList(event.type)
+			}
+			else {
+				this.dataItemGroup.get('entityID').setValue("");
+				this.dataItemGroup.get('entityType').setValue("");
+				this.handlePositionList("")
+			}
 		}
-		else if(target == 'appointerName'){
+		else if (target == 'appointerName') {
 			this.dataItemGroup.get('appointerID').setValue(event);
+		}
+		else if (target == 'fromAppointmentID') {
+			if (event) {
+				let fromDate = '';
+				let toDate = '';
+				let effectiveDate = '';
+				if (event && event.fromDate) {
+					event._fromDate = this.sharedService.convertDateStringToMomentUTC_0(event.fromDate);
+					fromDate = event._fromDate;
+				}
+				if (event && event.toDate) {
+					event._toDate = this.sharedService.convertDateStringToMomentUTC_0(event.toDate);
+					toDate = event._toDate;
+				}
+				if (event && event.effectiveDate) {
+					event._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(event.effectiveDate);
+					effectiveDate = event._effectiveDate;
+				}
+				this.dataItemGroup.patchValue({
+					fromEntityID: event.entityID,
+					fromEntityName: event.entityName,
+					fromAppointerID: event.appointerID,
+					fromAppointerName: event.appointerName,
+					fromEntityType: event.entityType,
+					fromPosition: event.position,
+					fromStatus: event.status,
+					fromFromDate: fromDate,
+					fromEffectiveDate: effectiveDate,
+					fromToDate: toDate,
+					fromAppointmentID: event.id,
+				})
+			}
+			else {
+				this.dataItemGroup.patchValue({
+					fromEntityID: "",
+					fromEntityName: "",
+					fromAppointerID: "",
+					fromAppointerName: "",
+					fromEntityType: "",
+					fromPosition: "",
+					fromStatus: "",
+					fromFromDate: "",
+					fromEffectiveDate: "",
+					fromToDate: "",
+					fromAppointmentID: "",
+				})
+			}
 		}
 	}
 
-	getOrganizations() {
-		this.organizationList = [];
-		let options = {
-			select: 'id,name,type'
+	handlePositionList(entityType: string) {
+		switch (entityType) {
+			case 'organization':
+				this.positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'giao_xu' || it.level == 'dong_tu' || it.level == 'khac'));
+				break;
+			case 'group':
+				this.positionList = this.positionListCache.filter(it => it.level == 'giao_hat');
+				break;
+			default:
+				this.positionList = this.positionListCache;
+				break;
 		}
-		this.service.getOrganizations(options).pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = []
-				if (res && res.value && res.value.length > 0) {
-					items.push(...res.value);
-					for (let item of items) {
-						this.updateNameOfTypeOrg(item);
-					}
-				}
-				this.organizationList = items;
-				if (this.isNullOrEmpty(this.dialogData.item) && this.entityType == "organization") {
-					let org  = this.sharedService.getItemExistsInArray(this.entityID,this.organizationList);
-					if(org){
-						this.dataItemGroup.get('entityName').setValue(org.name);
-					}
-				}
+	}
+
+	onValueChanges(event: any, target: string) {
+		if (target == 'entityName') {
+			this.searchValue = event;
+			this.getEntityList();
+		}
+	}
+
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(name), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
 			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
+	getEntityList() {
+		forkJoin({ organization: this.getOrganizations(), group: this.getGroups() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.organization && res.organization.length > 0) {
+					items.push(...res.organization);
+				}
+				if (res && res.group && res.group.length > 0) {
+					items.push(...res.group);
+				}
+				this.entityList = items;
+			}
+		})
+	}
+
+	getOrganizations() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: this.getFilter(),
+				skip: 0,
+				top: 5
+			}
+			this.service.getOrganizations(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = []
+					if (res && res.value && res.value.length > 0) {
+						items.push(...res.value);
+						for (let item of items) {
+							item.type = 'organization';
+							item.groupName = 'Giáo Xứ - Dòng Tu';
+							this.updateNameOfTypeOrg(item);
+						}
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getGroups() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name',
+				filter: this.getFilter(),
+				skip: 0,
+				top: 5
+			}
+			this.service.getGroups(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = []
+					if (res && res.value && res.value.length > 0) {
+						items.push(...res.value);
+						for (let item of items) {
+							item.type = 'group';
+							item.name = `Giáo Hạt ${item.name}`;
+							item.groupName = 'Giáo Hạt';
+						}
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
 		})
 	}
 
@@ -145,11 +331,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		}
 	}
 
-
 	getClergies() {
-		// let options = {
-		// 	filter: "type eq 'giao_xu'"
-		// }
 		this.clergysList = [];
 		this.service.getClergies().pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -162,8 +344,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				}
 				this.clergysList = items;
 				if (this.isNullOrEmpty(this.dialogData.item)) {
-					let clergy  = this.sharedService.getItemExistsInArray(this.clergyID,this.organizationList);
-					if(clergy){
+					let clergy = this.sharedService.getItemExistsInArray(this.clergyID, this.clergysList);
+					if (clergy) {
 						this.dataItemGroup.get('clergyName').setValue(clergy.name);
 					}
 				}
@@ -175,14 +357,17 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		// let options = {
 		// 	filter: "type eq 'giao_xu'"
 		// }
-		this.positionList = [];
+		this.positionListCache = [];
 		this.service.getPositions().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
 				}
-				this.positionList = items;
+				this.positionListCache = items;
+				if (this.localItem && this.localItem.entityType) {
+					this.handlePositionList(this.localItem.entityType);
+				}
 			}
 		})
 	}

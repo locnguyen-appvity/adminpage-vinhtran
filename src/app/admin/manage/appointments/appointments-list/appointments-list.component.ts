@@ -11,16 +11,26 @@ import { IAppState } from 'src/app/shared/redux/state';
 import { Store } from '@ngrx/store';
 import { STATUS_CLERGY } from 'src/app/shared/data-manage';
 import { AppointmentsInfoComponent } from '../appointment-info/appointment-info.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
 	selector: 'app-appointments-list',
 	templateUrl: './appointments-list.component.html',
-	styleUrls: ['./appointments-list.component.scss']
+	styleUrls: ['./appointments-list.component.scss'],
+	animations: [
+		trigger('detailExpand', [
+		  state('collapsed', style({height: '0px', minHeight: '0'})),
+		  state('expanded', style({height: '*'})),
+		  transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+		]),
+	  ],
 })
 export class AppointmentsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
 	@Input() entityID: string = '';
 	public statusClergy: any[] = STATUS_CLERGY;
+	public positionList: any[] = [];
+
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -33,7 +43,24 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
-		this.getDataGridAndCounterApplications();
+		this.getPositions();
+	}
+	
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+				this.getDataGridAndCounterApplications();
+			}
+		})
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -88,6 +115,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				for (let item of dataItems) {
 					item.disabledItem = false;
 					item.statusView = this.updateStatus(item);
+					this.getPosition(item);
 					if (item.created) {
 						item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
@@ -115,6 +143,16 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			}
 
 		})
+	}
+
+	getPosition(item: any) {
+		item.positionView = 'Chưa xác định'
+		if (!this.isNullOrEmpty(item.position)) {
+			let position = this.sharedService.getValueAutocomplete(item.position, this.positionList, 'code');
+			if (position && position.name) {
+				item.positionView = position.name;
+			}
+		}
 	}
 
 	updateStatus(item: any) {
@@ -230,11 +268,15 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 
 	registerGridColumns() {
 		if (!this.isNullOrEmpty(this.entityID)) {
-			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'fromDate', 'toDate', 'created'];
+			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'created'];
 		}
 		else {
-			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'fromDate', 'toDate', 'created', 'moreActions'];
+			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'created', 'moreActions'];
 		}
+	}
+
+	toggleExpandElements(item: any) {
+		item._expand_detail = !item._expand_detail;
 	}
 
 

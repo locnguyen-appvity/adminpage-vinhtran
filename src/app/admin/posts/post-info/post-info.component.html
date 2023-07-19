@@ -103,14 +103,14 @@
 
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Vị Trí</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'locationId'" [switchAt]="10"
+                        <se-autocomplete-simple [required]="false" [formControlName]="'locationId'"
                             [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'title'" [keyValue]="'id'"
                             [keyValueEmit]="'id'" [autocomplete]="true" [items$]="arrLocations$">
                         </se-autocomplete-simple>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tác Giả</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'authorId'" [switchAt]="10"
+                        <se-autocomplete-simple [required]="false" [formControlName]="'authorId'"
                             [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
                             [keyValueEmit]="'id'" [autocomplete]="false" [items$]="arrAuthors$">
                         </se-autocomplete-simple>
@@ -124,7 +124,7 @@
 
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Mục lục</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'" [switchAt]="10"
+                        <se-autocomplete-simple [required]="false" [formControlName]="'catalogueId'"
                             [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
                             [keyValueEmit]="'id'" [autocomplete]="false" [items]="arrCatalogues">
                         </se-autocomplete-simple>
@@ -132,7 +132,7 @@
 
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Album Hình</mat-label>
-                        <se-autocomplete-simple [required]="false" [formControlName]="'slideId'" [switchAt]="10"
+                        <se-autocomplete-simple [required]="false" [formControlName]="'slideId'"
                             [optgroup]="false" [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
                             [keyValueEmit]="'id'" [autocomplete]="true" [items]="arrSlides">
                         </se-autocomplete-simple>

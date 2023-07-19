@@ -11,7 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaskModule } from 'ngx-mask';
 import { AppointmentsInfoComponent } from './appointment-info.component';
 import { MatSelectModule } from '@angular/material/select';
-
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     MatDatepickerModule,
-    AutocompleteSimpleModule
+    AutocompleteSimpleModule,
+    MatTabsModule
   ],
   exports: [
     AppointmentsInfoComponent

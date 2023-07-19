@@ -21,7 +21,7 @@
 				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Phân Loại</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'type'" [switchAt]="10"
+						<se-autocomplete-simple [required]="false" [formControlName]="'type'" 
 							[optgroup]="false" [placeHolder]="'Nhập Loại'" [keyTitle]="'name'"
 							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
 						</se-autocomplete-simple>
@@ -30,7 +30,7 @@
 				<div fxFlex.gt-xs="50" fxFlex="100">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Giáo Hạt</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [switchAt]="10"
+						<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" 
 							[optgroup]="false" [placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'"
 							[keyValueEmit]="'id'" [autocomplete]="false" [items$]="groupList$">
 						</se-autocomplete-simple>

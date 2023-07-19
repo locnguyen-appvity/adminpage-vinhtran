@@ -1,8 +1,11 @@
 <div class="autocomplete-simple">
     <!-- Autocomplete Template -->
-    <ng-container *ngIf="(items && (items.length >= switchAt || autocomplete)); else nonAutoComplete">
-        <input type="text" #trigger [readonly]="readonly" [placeholder]="placeHolder" matInput
-            [formControl]="inputControl" spellcheck="false" [matAutocomplete]="optgroup?autoOptgroup:auto"
+    <ng-container *ngIf="autocomplete; else nonAutoComplete">
+        <input *ngIf="optgroup === true" type="text" #trigger [readonly]="readonly" [placeholder]="placeHolder" matInput
+            [formControl]="inputControl" spellcheck="false" [matAutocomplete]="autoOptgroup"
+            autocomplete="off">
+        <input *ngIf="optgroup === false" type="text" #trigger [readonly]="readonly" [placeholder]="placeHolder" matInput
+            [formControl]="inputControl" spellcheck="false" [matAutocomplete]="auto"
             autocomplete="off">
         <a mat-button *ngIf="inputControl.value && !this.disabled" [disabled]="readonly" matSuffix mat-icon-button
             aria-label="Xoá" matTooltip="Xoá" (click)="clearValue()">

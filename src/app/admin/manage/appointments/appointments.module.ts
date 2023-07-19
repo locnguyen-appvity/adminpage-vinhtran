@@ -25,5 +25,6 @@ export class AppointmentsModule {
 
   registerIcons() {
     this.mdIconRegistry.addSvgIcon('ic_create_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_create_48px.svg'));
+    this.mdIconRegistry.addSvgIcon('ic_arrow_forward', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_arrow_forward.svg'));
   }
  }

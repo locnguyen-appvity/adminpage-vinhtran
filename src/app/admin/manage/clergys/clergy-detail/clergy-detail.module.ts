@@ -21,7 +21,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { EventsListModule } from '../../events/events-list/events-list.module';
-import { AppointmentsListModule } from '../../clergy-in-organizations/clergy-in-organizations-list/clergy-in-organizations-list.module';
+import { AppointmentsListModule } from '../../../../controls/appointments-list-control/appointments-list-control.module';
 @NgModule({
   declarations: [
     ClergyDetailComponent
