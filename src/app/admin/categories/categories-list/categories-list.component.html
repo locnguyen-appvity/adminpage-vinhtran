@@ -84,7 +84,7 @@
                     <ng-template #treeDataView>
                         <!-- cdkDropList (cdkDropListDropped)="drop($event)" -->
                         <mat-tree *ngIf="!spinerLoading && !noData" [dataSource]="dataSource" [treeControl]="treeControl" class="list-categories">
-                            <!-- cdkDrag
+                            <!-- 
                                 [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()"
                                 (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()" -->
                             <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
@@ -113,7 +113,7 @@
                                     <!-- <p mat-line>Link: {{node?.link }}</p> -->
                                 </div>
                             </mat-tree-node>
-                            <!-- cdkDrag
+                            <!-- 
                             [cdkDragData]="node" (mouseenter)="dragHover(node)" (mouseleave)="dragHoverEnd()"
                             (cdkDragStarted)="dragStart()" (cdkDragReleased)="dragEnd()" -->
                             <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>

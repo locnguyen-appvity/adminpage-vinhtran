@@ -3,8 +3,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { OrganizationsListComponent } from './organizations-list.component';
-import { OrganizationInfoModule } from '../organization-info/organization-info.module';
+import { AppointmentsListComponent } from './appointments-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
@@ -12,11 +11,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AppointmentInfoModule } from '../appointment-info/appointment-info.module';
 
 
 @NgModule({
   declarations: [
-    OrganizationsListComponent,
+    AppointmentsListComponent,
   ],
   imports: [
     SharedModule,
@@ -31,8 +31,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     ReactiveFormsModule,
     MatCardModule,
     MatTooltipModule,
-    OrganizationInfoModule
+    AppointmentInfoModule
   ],
-  exports: [OrganizationsListComponent]
+  exports: [AppointmentsListComponent]
 })
-export class OrganizationsListModule { }
+export class AppointmentsListModule { }

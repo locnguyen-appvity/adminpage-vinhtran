@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NgxMaskModule } from 'ngx-mask';
-import { MatSelectModule } from '@angular/material/select';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { AppointmentsInfoComponent } from './clergy-in-organizations-info.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaskModule } from 'ngx-mask';
+import { AppointmentsInfoComponent } from './appointment-info.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -37,4 +36,4 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
     AppointmentsInfoComponent
   ]
 })
-export class AppointmentsInfoModule { }
+export class AppointmentInfoModule { }

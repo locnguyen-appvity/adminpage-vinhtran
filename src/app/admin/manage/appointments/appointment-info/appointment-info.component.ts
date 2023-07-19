@@ -3,16 +3,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take } from 'rxjs';
-import { TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { STATUS_CLERGY, TYPE_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-	selector: 'app-clergy-in-organizations-info',
-	templateUrl: './clergy-in-organizations-info.component.html',
-	styleUrls: ['./clergy-in-organizations-info.component.scss'],
+	selector: 'app-appointment-info',
+	templateUrl: './appointment-info.component.html',
+	styleUrls: ['./appointment-info.component.scss'],
 	providers: [
 		{
 			provide: DateAdapter,
@@ -37,6 +37,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	public organizationList: any[] = [];
 	public positionList: any[] = [];
 	public typeList: any[] = TYPE_CLERGY;
+	public statusClergy: any[] = STATUS_CLERGY;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -66,6 +67,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	initialEventGroup(item: any) {
 		let fromDate = '';
 		let toDate = '';
+		let effectiveDate = '';
 		if (item && item.fromDate) {
 			item._fromDate = this.sharedService.convertDateStringToMomentUTC_0(item.fromDate);
 			fromDate = item._fromDate;
@@ -73,6 +75,10 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		if (item && item.toDate) {
 			item._toDate = this.sharedService.convertDateStringToMomentUTC_0(item.toDate);
 			toDate = item._toDate;
+		}
+		if (item && item.effectiveDate) {
+			item._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(item.effectiveDate);
+			effectiveDate = item._effectiveDate;
 		}
 		return this.fb.group({
 			id: item ? item.id : '',
@@ -86,6 +92,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			position: item ? item.position : 'chanh_xu',
 			status: item ? item.status : 'duong_nhiem',
 			fromDate: fromDate,
+			effectiveDate: effectiveDate,
 			toDate: toDate,
 		});
 	}
@@ -207,6 +214,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			entityType: valueForm.entityType,
 			fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
 			toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+			effectiveDate: this.sharedService.ISOStartDay(valueForm.effectiveDate),
 			position: valueForm.position,
 			// content: null,
 			status: valueForm.status,

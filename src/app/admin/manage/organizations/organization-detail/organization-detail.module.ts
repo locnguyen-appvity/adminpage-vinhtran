@@ -22,7 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { MassesListModule } from '../../masses/masses-list/masses-list.module';
 import { EventsListModule } from '../../events/events-list/events-list.module';
-import { ClergyInOrganizationsListModule } from '../../clergy-in-organizations/clergy-in-organizations-list/clergy-in-organizations-list.module';
+import { AppointmentsListModule } from '../../clergy-in-organizations/clergy-in-organizations-list/clergy-in-organizations-list.module';
 @NgModule({
   declarations: [
     OrganizationDetailComponent
@@ -50,7 +50,7 @@ import { ClergyInOrganizationsListModule } from '../../clergy-in-organizations/c
     MatDividerModule,
     UploadAvatarModule,
     MatExpansionModule,
-    ClergyInOrganizationsListModule,
+    AppointmentsListModule,
     MassesListModule,
     EventsListModule
   ]

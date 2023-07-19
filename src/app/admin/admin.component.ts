@@ -209,9 +209,9 @@ export class AdminComponent extends SimpleBaseComponent {
 	// 	  "url": "Clergies"
 	// 	},
 	// 	{
-	// 	  "name": "ClergyInOrganizations",
+	// 	  "name": "Appointments",
 	// 	  "kind": "EntitySet",
-	// 	  "url": "ClergyInOrganizations"
+	// 	  "url": "Appointments"
 	// 	},
 	// 	{
 	// 	  "name": "Groups",

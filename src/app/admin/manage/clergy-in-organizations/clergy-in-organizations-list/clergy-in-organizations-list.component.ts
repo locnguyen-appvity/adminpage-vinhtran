@@ -5,7 +5,7 @@ import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take, takeUntil } from 'rxjs';
-import { ClergyInOrganizationsInfoComponent } from '../clergy-in-organizations-info/clergy-in-organizations-info.component';
+import { AppointmentsInfoComponent } from '../clergy-in-organizations-info/clergy-in-organizations-info.component';
 import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
@@ -14,7 +14,7 @@ import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 	styleUrls: ['./clergy-in-organizations-list.component.scss'],
 })
 
-export class ClergyInOrganizationsListComponent extends ListItemBaseComponent implements OnChanges {
+export class AppointmentsListComponent extends ListItemBaseComponent implements OnChanges {
 
 	@Input() entityID: string = "";
 	@Input() entityType: string = "";
@@ -73,7 +73,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 
 	deleteItem(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteClergyInOrganization(item.id).pipe(take(1)).subscribe({
+		this.service.deleteAppointment(item.id).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -91,7 +91,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 			status: status
 		}
 		this.dataProcessing = true;
-		this.service.updateClergyInOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.service.updateAppointment(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -120,7 +120,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(ClergyInOrganizationsInfoComponent, config);
+		let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -155,7 +155,7 @@ export class ClergyInOrganizationsListComponent extends ListItemBaseComponent im
 		this.arrData = [];
 		this.dataProcessing = true;
 		this.spinerLoading = true;
-		this.service.getClergyInOrganizations(options).pipe(take(1)).subscribe({
+		this.service.getAppointments(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;

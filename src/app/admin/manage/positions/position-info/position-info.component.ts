@@ -91,6 +91,7 @@ export class PositionInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			name: valueForm.name,
 			code: valueForm.code,
+			level: valueForm.level,
 			status: valueForm.status ? 'active' : 'inactive'
 		}
 		if (this.target == 'edit') {

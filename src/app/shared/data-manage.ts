@@ -25,6 +25,21 @@ export const TYPE_CLERGY = [
     }
 ]
 
+export const STATUS_CLERGY = [
+    {
+        name: 'Đương Nhiệm',
+        code: 'duong_nhiem'
+    },
+    {
+        name: 'Mãn Nhiệm',
+        code: 'man_nhiem'
+    },
+    {
+        name: 'Khác',
+        code: 'khac'
+    }
+]
+
 export const LEVEL_POSITION = [
     {
         name: 'Giáo Phận',
