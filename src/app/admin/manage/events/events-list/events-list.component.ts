@@ -17,7 +17,8 @@ import { ANNIVERSARIES } from 'src/app/shared/data-manage';
 export class EventsListComponent extends ListItemBaseComponent implements OnChanges {
 
 	@Input() entityID: string = "";
-	@Input() entityType: string = ""
+	@Input() entityType: string = "";
+	@Input() entityName: string = "";
 
 	public dataDefault: any[] = ANNIVERSARIES;
 
@@ -181,7 +182,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	getDataItems() {
 		let options = {
-			filter: `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`,
+			filter: `type ne 'birth' and entityId eq ${this.entityID} and entityType eq '${this.entityType}'`,
 			sort:'created asc'
 		}
 		this.arrData = [];

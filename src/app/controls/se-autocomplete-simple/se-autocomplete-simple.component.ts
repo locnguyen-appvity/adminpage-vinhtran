@@ -91,6 +91,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 			this.inputControl.valueChanges.pipe(takeUntil(this._unsubscribe$)).subscribe({
 				next: (value: any) => {
 					if (this.isSelected || this.originalValue == value) {
+						this.isSelected = false;
 						return;
 					}
 					this.onChangeValue.emit(value);

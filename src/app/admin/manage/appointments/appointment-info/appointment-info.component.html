@@ -19,10 +19,10 @@
 			<ng-template [ngIf]="target == 'thuyen_chuyen'">
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Nơi Đi</mat-label>
-					<se-autocomplete-simple [required]="false" [formControlName]="'fromAppointmentID'" 
-						[optgroup]="false" [placeHolder]="'Tìm theo tên...'" [keyTitle]="'entityName'" [keyValueEmit]="'entityName'"
+					<se-autocomplete-simple [required]="false" [formControlName]="'fromEntityName'" 
+						[optgroup]="false" [placeHolder]="'Chọn bổ nhiệm...'" [keyTitle]="'entityName'" [keyValueEmit]="'entityName'"
 						[keyValue]="'id'" [autocomplete]="true" [items]="appointmentsList"
-						(onSelectItem)="valueChangeAutocomplete($event,'fromAppointmentID')">
+						(onSelectItem)="valueChangeAutocomplete($event,'fromEntityName')">
 					</se-autocomplete-simple>
 				</mat-form-field>
 	
@@ -60,7 +60,7 @@
 					<!-- <mat-error *ngIf="item.get('effectiveDate').hasError('matDatepickerParse')">
 						Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
 				</mat-form-field>
-				<mat-form-field *ngIf="dataItemGroup?.value?.status == 'duong_nhiem'" appearance="outline"
+				<mat-form-field *ngIf="dataItemGroup?.value?.fromStatus == 'duong_nhiem'" appearance="outline"
 					class="full-width">
 					<mat-label>Ngày Bắt Đầu</mat-label>
 					<input matInput [matDatepicker]="fromDate" placeholder="DD/MM/YYYY" autocomplete="off"
@@ -69,7 +69,7 @@
 					</mat-datepicker-toggle>
 					<mat-datepicker #fromDate></mat-datepicker>
 				</mat-form-field>
-				<div *ngIf="dataItemGroup?.value?.status !== 'duong_nhiem'" fxLayout="row wrap">
+				<div *ngIf="dataItemGroup?.value?.fromStatus !== 'duong_nhiem'" fxLayout="row wrap">
 					<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 						<mat-form-field appearance="outline" class="full-width">
 							<mat-label>Ngày Bắt Đầu</mat-label>

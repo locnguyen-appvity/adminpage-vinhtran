@@ -119,6 +119,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			item._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(item.effectiveDate);
 			effectiveDate = item._effectiveDate;
 		}
+		this.handlePositionList(item ? item.entityType : '');
 		return this.fb.group({
 			id: item ? item.id : '',
 			clergyName: item ? item.clergyName : this.clergyName,
@@ -143,7 +144,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			fromFromDate: "",
 			fromEffectiveDate: "",
 			fromToDate: "",
-			fromAppointmentID: "",
+			fromAppointmentID: ""
 		});
 	}
 
@@ -156,7 +157,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (event && event.id) {
 				this.dataItemGroup.get('entityID').setValue(event.id);
 				this.dataItemGroup.get('entityType').setValue(event.type);
-				this.handlePositionList(event.type)
+				this.handlePositionList(event.type);
 			}
 			else {
 				this.dataItemGroup.get('entityID').setValue("");
@@ -167,7 +168,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		else if (target == 'appointerName') {
 			this.dataItemGroup.get('appointerID').setValue(event);
 		}
-		else if (target == 'fromAppointmentID') {
+		else if (target == 'fromEntityName') {
 			if (event) {
 				let fromDate = '';
 				let toDate = '';
@@ -191,11 +192,26 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					fromAppointerName: event.appointerName,
 					fromEntityType: event.entityType,
 					fromPosition: event.position,
-					fromStatus: event.status,
+					fromStatus: 'man_nhiem',
 					fromFromDate: fromDate,
 					fromEffectiveDate: effectiveDate,
 					fromToDate: toDate,
-					fromAppointmentID: event.id,
+					fromAppointmentID: event.id
+				})
+				this.dataItemGroup.get('fromPosition').disable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromStatus').disable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromEffectiveDate').disable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromFromDate').disable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromAppointerName').disable({
+					onlySelf: true
 				})
 			}
 			else {
@@ -212,16 +228,37 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					fromToDate: "",
 					fromAppointmentID: "",
 				})
+				this.dataItemGroup.get('fromPosition').enable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromStatus').enable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromEffectiveDate').enable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromFromDate').enable({
+					onlySelf: true
+				})
+				this.dataItemGroup.get('fromAppointerName').enable({
+					onlySelf: true
+				})
 			}
 		}
 	}
 
 	handlePositionList(entityType: string) {
 		switch (entityType) {
-			case 'organization':
+			case 'giao_xu':
+			case 'giao_diem':
 				this.positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'giao_xu' || it.level == 'dong_tu' || it.level == 'khac'));
 				break;
-			case 'group':
+			case 'co_so_giao_phan':
+			case 'ban_muc_vu':
+			case 'ban_chuyen_tranh':
+				this.positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'khac'));
+				break;
+			case 'giao_hat':
 				this.positionList = this.positionListCache.filter(it => it.level == 'giao_hat');
 				break;
 			default:
@@ -233,7 +270,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	onValueChanges(event: any, target: string) {
 		if (target == 'entityName') {
 			this.searchValue = event;
+			this.dataItemGroup.get('entityName').setValue(event);
 			this.getEntityList();
+			this.handlePositionList('');
 		}
 	}
 
@@ -282,9 +321,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item.type = 'organization';
+							// item._type = 'organization';
 							item.groupName = 'Giáo Xứ - Dòng Tu';
-							this.updateNameOfTypeOrg(item);
+							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
 						}
 					}
 					obs.next(items);
@@ -297,7 +336,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	getGroups() {
 		return new Observable(obs => {
 			let options = {
-				select: 'id,name',
+				select: 'id,name,type',
 				filter: this.getFilter(),
 				skip: 0,
 				top: 5
@@ -308,8 +347,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item.type = 'group';
-							item.name = `Giáo Hạt ${item.name}`;
+							// item._type = 'group';
+							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
 							item.groupName = 'Giáo Hạt';
 						}
 					}
@@ -318,20 +357,6 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				}
 			})
 		})
-	}
-
-	updateNameOfTypeOrg(item: any) {
-		switch (item.type) {
-			case 'dong_tu':
-				item.name = `Dòng ${item.name}`;
-				break;
-			case 'giao_xu':
-				item.name = `Giáo Xứ ${item.name}`;
-				break;
-			case 'giao_diem':
-				item.name = `Giáo Điểm ${item.name}`;
-				break;
-		}
 	}
 
 	getClergies() {
@@ -368,6 +393,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					items = res.value;
 				}
 				this.positionListCache = items;
+				this.handlePositionList(this.localItem ? this.localItem.entityType : '');
 				if (this.localItem && this.localItem.entityType) {
 					this.handlePositionList(this.localItem.entityType);
 				}
@@ -377,10 +403,10 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 
 	getClergyType(item: any) {
-		if (!this.isNullOrEmpty(item.type)) {
-			let type = this.sharedService.getValueAutocomplete(item.type, this.levelList, 'code');
-			if (type && type.name) {
-				return type.name;
+		if (!this.isNullOrEmpty(item.level)) {
+			let level = this.sharedService.getValueAutocomplete(item.level, this.levelList, 'code');
+			if (level && level.name) {
+				return level.name;
 			}
 		}
 		return "";
@@ -392,39 +418,93 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
-		let daaJSON = {
-			clergyName: valueForm.clergyName,
-			clergyID: valueForm.clergyID,
-			entityID: valueForm.entityID,
-			entityName: valueForm.entityName,
-			appointerID: valueForm.appointerID,
-			appointerName: valueForm.appointerName,
-			entityType: valueForm.entityType,
-			fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
-			toDate: this.sharedService.ISOStartDay(valueForm.toDate),
-			effectiveDate: this.sharedService.ISOStartDay(valueForm.effectiveDate),
-			position: valueForm.position,
-			// content: null,
-			status: valueForm.status,
-		}
-		if (this.localItem && this.localItem.id) {
-			this.dataProcessing = true;
-			this.service.updateAppointment(this.localItem.id, daaJSON).pipe(take(1)).subscribe({
-				next: () => {
-					this.dialogRef.close("OK");
+		if (this.target == 'thuyen_chuyen') {
+			if (this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
+				let fromAppointmentJSON = {
+					clergyName: valueForm.clergyName,
+					clergyID: valueForm.clergyID,
+					entityID: valueForm.entityID,
+					entityName: valueForm.fromEntityName,
+					appointerID: valueForm.fromAppointerID,
+					appointerName: valueForm.fromAppointerName,
+					entityType: valueForm.fromEntityType,
+					fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
+					toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
+					effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
+					position: valueForm.fromPosition,
+					fromAppointmentID: "",
+					status: valueForm.fromStatus,
 				}
-			})
+				this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
+					next: (res: any) => {
+						console.log('createAppointment........', res);
+						this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
+							next: () => {
+								this.dialogRef.close("OK");
+							}
+						})
+					}
+				})
+			}
+			else {
+				let fromAppointmentJSON = {
+					toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
+					status: this.dataItemGroup.get("fromStatus").value
+				}
+				forkJoin([
+					this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
+					this.service.updateAppointment(this.localItem.id, fromAppointmentJSON)]).pipe(take(1)).subscribe({
+						next: () => {
+							this.dialogRef.close("OK");
+						}
+					})
+			}
 		}
 		else {
-			this.dataProcessing = true;
-			this.service.createAppointment(daaJSON).pipe(take(1)).subscribe({
+			this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
 				next: () => {
 					this.dialogRef.close("OK");
 				}
 			})
 		}
+
 	}
 
-
+	onSaveAppointment(fromAppointmentID: string) {
+		return new Observable(obs => {
+			let valueForm = this.dataItemGroup.value;
+			let appointmentJSON = {
+				clergyName: valueForm.clergyName,
+				clergyID: valueForm.clergyID,
+				entityID: valueForm.entityID,
+				entityName: valueForm.entityName,
+				appointerID: valueForm.appointerID,
+				appointerName: valueForm.appointerName,
+				entityType: valueForm.entityType,
+				fromDate: this.sharedService.ISOStartDay(valueForm.fromDate),
+				toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+				effectiveDate: this.sharedService.ISOStartDay(valueForm.effectiveDate),
+				position: valueForm.position,
+				fromAppointmentID: fromAppointmentID,
+				status: valueForm.status,
+			}
+			if (this.localItem && this.localItem.id) {
+				this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
+					next: () => {
+						obs.next();
+						obs.complete();
+					}
+				})
+			}
+			else {
+				this.service.createAppointment(appointmentJSON).pipe(take(1)).subscribe({
+					next: () => {
+						obs.next();
+						obs.complete();
+					}
+				})
+			}
+		})
+	}
 
 }

@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { JoditAngularComponent } from 'jodit-angular';
-import { take } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 // import { DialogSelectedImgsComponent } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -297,7 +297,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 					if (this.localItem.metaKeyword) {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
 					}
-					if(this.localItem.dateOfBirth){
+					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
@@ -355,21 +355,69 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			orgName: valueForm.orgName,
 			organizationID: valueForm.organizationID
 		}
-		let request: any;
+		let requests: Observable<any>[] = [];
 		if (!this.isNullOrEmpty(this.ID)) {
-			request = this.service.updateClergy(this.ID, dataJSON);
+			requests.push(this.service.updateClergy(this.ID, dataJSON));
 		}
 		else {
-			request = this.service.createClergy(dataJSON)
+			requests.push(this.service.createClergy(dataJSON));
 		}
-		request.pipe(take(1)).subscribe({
+		forkJoin(requests).pipe(take(1)).subscribe({
 			next: () => {
-				let snackbarData: any = {
-					key: 'saved-item',
-					message: 'Lưu Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.router.navigate(['/admin/manage/clergys/clergys-list']);
+				if (!this.isNullOrEmpty(this.ID)) {
+					if (this.sharedService.isChangedValue(this.sharedService.ISOStartDay(valueForm.dateOfBirth), this.localItem.dateOfBirth)
+						|| this.sharedService.isChangedValue(valueForm.placeOfBirth, this.localItem.placeOfBirth)
+						|| this.sharedService.isChangedValue(valueForm.orgName, this.localItem.orgName)
+						|| this.sharedService.isChangedValue(valueForm.organizationID, this.localItem.organizationID)
+					) {
+						let options = {
+							filter: `type eq 'birth' and entityId eq ${this.ID} and entityType eq 'clergy'`,
+							top: 1
+						}
+						this.service.getAnniversaries(options).pipe(take(1)).subscribe({
+							next: (res: any) => {
+								if (res && res.value && res.value[0]) {
+									let dataJSON = {
+										"name": valueForm.orgName,
+										"day": valueForm.dateOfBirth ? valueForm.dateOfBirth.format("DD/MM") : "",
+										"date": this.sharedService.ISOStartDay(valueForm.dateOfBirth),
+										"locationName": valueForm.placeOfBirth,
+										"locationID": valueForm.organizationID,
+										"locationType": "organization"
+									}
+									this.dataProcessing = true;
+									this.service.updateAnniversary(res.value[0].id, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+										next: () => {
+											this.dataProcessing = false;
+											let snackbarData: any = {
+												key: 'saved-item',
+												message: 'Lưu Thành Công'
+											};
+											this.showInfoSnackbar(snackbarData);
+											this.router.navigate(['/admin/manage/clergys/clergys-list']);
+										}
+									})
+								}
+								else {
+									let snackbarData: any = {
+										key: 'saved-item',
+										message: 'Lưu Thành Công'
+									};
+									this.showInfoSnackbar(snackbarData);
+									this.router.navigate(['/admin/manage/clergys/clergys-list']);
+								}
+							}
+						})
+					}
+				}
+				else {
+					let snackbarData: any = {
+						key: 'saved-item',
+						message: 'Lưu Thành Công'
+					};
+					this.showInfoSnackbar(snackbarData);
+					this.router.navigate(['/admin/manage/clergys/clergys-list']);
+				}
 			}
 		})
 	}

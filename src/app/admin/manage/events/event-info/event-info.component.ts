@@ -28,6 +28,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public dataItemGroup: FormGroup;
 	public title: string = "Sự Kiện";
 	public entityID: string = "";
+	public entityName: string = "";
 	public entityType: string = "";
 	public localItem: any;
 	public arrLocations: any[] = [];
@@ -45,6 +46,9 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		if (this.dialogData.entityID) {
 			this.entityID = this.dialogData.entityID;
 		}
+		if (this.dialogData.entityName) {
+			this.entityName = this.dialogData.entityName;
+		}
 		if (this.dialogData.entityType) {
 			this.entityType = this.dialogData.entityType;
 		}
@@ -60,7 +64,9 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			date: item ? item._date : '',
 			type: [item ? item.type : 'ngay_ky_niem', Validators.required],
 			description: item ? item.description : '',
-			locationID: item ? item.locationID : '',
+			locationID: item ? item.locationID : (this.entityType == 'organization' ? this.entityID : ''),
+			locationType: item ? item.locationType : (this.entityType == 'organization' ? 'organization' : ''),
+			locationName: item ? item.locationName : (this.entityType == 'organization' ? this.entityName : ''),
 		});
 	}
 
@@ -70,6 +76,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				items = res.value;
 				for (let item of items) {
+					item._type = 'organization';
 					switch (item.type) {
 						case 'giao_xu':
 							item.title = `Giáo xứ ${item.name}`;
@@ -88,6 +95,20 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
+	onChangeValue(event: any, target: string) {
+		if (target == "locationName") {
+			if (!this.isNullOrEmpty(this.dataItemGroup.get("locationID").value)) {
+				this.dataItemGroup.get("locationID").setValue(null);
+			}
+		}
+	}
+
+	valueChangeSelect(item: any, target: string) {
+		if (target == "locationName") {
+			this.dataItemGroup.get("locationID").setValue(item.id);
+			this.dataItemGroup.get("locationType").setValue(item.type);
+		}
+	}
 
 	closeDialog() {
 		this.dialogRef.close(null)
@@ -102,8 +123,9 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			"day": valueForm.day,
 			"date": this.sharedService.ISOStartDay(valueForm.date),
 			"description": valueForm.description,
-			"locationID": this.entityType == 'organization' ? this.entityID : valueForm.locationID,
-			"locationType": "organization"
+			"locationName": valueForm.locationName,
+			"locationID": valueForm.locationID,
+			"locationType": valueForm.locationType
 		}
 		if (this.localItem && this.localItem.id) {
 			this.dataProcessing = true;

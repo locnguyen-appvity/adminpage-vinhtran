@@ -29,8 +29,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		private service: SharedService) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
-		if (this.router.url.includes("hoi-doan")) {
-			this.target = 'hoi-doan';
+		if (this.router.url.includes("hoi_doan")) {
+			this.target = 'hoi_doan';
 		}
 		else if (this.router.url.includes("co_so_giao_phan")) {
 			this.target = 'co_so_giao_phan';
