@@ -9,6 +9,7 @@ import { ClergyInfoComponent } from '../clergy-info/clergy-info.component';
 import { Router } from '@angular/router';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LEVEL_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-clergys-list',
@@ -18,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ClergysListComponent extends ListItemBaseComponent {
 
 	public positionList: any[] = [];
-	public typeList: any[] = [];
+	public levelList: any[] = LEVEL_CLERGY;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
@@ -47,17 +48,6 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		// }));
 	}
 
-	getListClergyType() {
-		this.typeList = [];
-		// return this.service.getListClergyType().pipe(take(1), map(
-		// 	(res: any) => {
-		// 		if (res && res.value && res.value.length > 0) {
-		// 			this.typeList = res.value;
-		// 		}
-		// 	}
-		// ))
-	}
-
 	handleClergyPosition(item: any) {
 		for (let position of this.positionList) {
 			if (item.position == position.code) {
@@ -68,9 +58,9 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		return item;
 	}
 
-	handleClergyType(item: any) {
-		for (let type of this.typeList) {
-			if (item.type == type.code) {
+	handleClergyLevel(item: any) {
+		for (let type of this.levelList) {
+			if (item.level == type.code) {
 				item.typeName = type.name;
 				return item;
 			}
@@ -93,7 +83,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 					if (item.photo) {
 						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 					}
-					item = this.handleClergyType(item);
+					item = this.handleClergyLevel(item);
 					item = this.handleClergyPosition(item);
 				}
 				this.arrData = items;

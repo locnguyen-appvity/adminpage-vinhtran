@@ -13,15 +13,7 @@
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
                 <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
                 <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status == 'publish'">
-                    <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
-                </ng-template>
-                <ng-template [ngIf]="localItem?.status !== 'publish'">
-                    <button (click)="onSave('draft')" mat-flat-button color="primary">Lưu Nháp</button>
-                    <button (click)="onSave('publish')" mat-flat-button class="accept">
-                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
-                    </button>
-                </ng-template>
+                <button (click)="onSave()" mat-flat-button color="primary">Lưu</button>
             </div>
         </mat-toolbar>
     </div>
@@ -34,7 +26,7 @@
                         <div fxFlex.gt-xs="40" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Tên Thánh</mat-label>
-                                <se-autocomplete-simple [required]="true" [formControlName]="'stName'" 
+                                <se-autocomplete-simple [required]="true" [formControlName]="'stName'"
                                     [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
                                     [keyValue]="'id'" [autocomplete]="true" [items]="saintList">
                                 </se-autocomplete-simple>
@@ -51,43 +43,155 @@
                     <div fxLayout="row wrap">
                         <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                             <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Số Điện Thoại</mat-label>
-                                <input matInput formControlName="phoneNumber" autocomplete="off">
+                                <mat-label>Tên Cha</mat-label>
+                                <input matInput formControlName="fatherName" autocomplete="off">
                             </mat-form-field>
                         </div>
                         <div fxFlex.gt-xs="50" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Email</mat-label>
-                                <input matInput formControlName="email" autocomplete="off">
+                                <mat-label>Tên Mẹ</mat-label>
+                                <input matInput formControlName="motherName" autocomplete="off">
                             </mat-form-field>
                         </div>
                     </div>
-                    <se-editor-control formControlName="content"></se-editor-control>
+                    <mat-accordion multi="true" class="full-width">
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <strong>THÔNG TIN CÁ NHÂN</strong>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div fxLayout="row wrap">
+                                <div fxFlex.gt-xs="33.33" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Ngày Sinh</mat-label>
+                                        <input matInput [matDatepicker]="dateOfBirth" placeholder="DD/MM/YYYY"
+                                            autocomplete="off" formControlName="dateOfBirth">
+                                        <mat-datepicker-toggle matSuffix [for]="dateOfBirth">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #dateOfBirth></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex.gt-xs="33.33" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Nơi Sinh</mat-label>
+                                        <input matInput type="text" formControlName="placeOfBirth" autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex.gt-xs="33.33" fxFlex="100">
+                                    <mat-form-field appearance="outline"
+                                        class="full-width">
+                                        <mat-label>Giáo Xứ</mat-label>
+                                        <se-autocomplete-simple [required]="false" [formControlName]="'orgName'"
+                                            [mode]="'emit-change'" [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'"
+                                            [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'" (onChangeValue)="onChangeValue($event,'orgName')" (valueChangeSelect)="valueChangeSelect($event,'orgName')"
+                                            [autocomplete]="true" [items]="orgsList">
+                                        </se-autocomplete-simple>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap">
+                                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Loại Giấy Tờ</mat-label>
+                                        <mat-select formControlName="identityCardType">
+                                            <mat-option value="chung_minh">Chứng Minh</mat-option>
+                                            <mat-option value="can_cuoc">Căn Cước</mat-option>
+                                            <mat-option value="passport">Passport</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex.gt-xs="50" fxFlex="100">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Số Giấy Tờ</mat-label>
+                                        <input matInput type="number" formControlName="identityCardNumber"
+                                            autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxLayout="row wrap">
+                                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Ngày Cấp</mat-label>
+                                        <input matInput [matDatepicker]="identityCardIssueDate" placeholder="DD/MM/YYYY"
+                                            autocomplete="off" formControlName="identityCardIssueDate">
+                                        <mat-datepicker-toggle matSuffix [for]="identityCardIssueDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #identityCardIssueDate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex.gt-xs="50" fxFlex="100">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Nơi Cấp</mat-label>
+                                        <input matInput type="text" formControlName="identityCardIssuePlace"
+                                            autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <strong>THÔNG TIN LIÊN HỆ</strong>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div fxLayout="row wrap">
+                                <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Số Điện Thoại</mat-label>
+                                        <input matInput formControlName="phoneNumber" autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex.gt-xs="50" fxFlex="100">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput formControlName="email" autocomplete="off">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+                    <div class="full-width mrt-24">
+                        <se-editor-control formControlName="content"></se-editor-control>
+                    </div>
+
                 </div>
                 <div fxFlex="30" class="mrl-24">
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
                     <div fxLayout="column" fxLayoutAlign="start start" class="mrt-32">
                         <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Phân Loại Tu Sĩ</mat-label>
-                            <se-autocomplete-simple [required]="false" [formControlName]="'type'" 
-                                [optgroup]="false" [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'"
-                                [keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
+                            <mat-label>Châm Ngôn</mat-label>
+                            <input matInput formControlName="parable" autocomplete="off">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Cấp Bậc</mat-label>
+                            <se-autocomplete-simple [required]="false" [formControlName]="'level'" [optgroup]="false"
+                                [placeHolder]="'Tìm kiếm theo tên...'" [keyTitle]="'name'" [keyValue]="'code'"
+                                [keyValueEmit]="'code'" [autocomplete]="false" [items]="levelList">
                             </se-autocomplete-simple>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Phân Loại</mat-label>
+                            <mat-select formControlName="type" required>
+                                <mat-option value="tu_trieu">Tu Triều</mat-option>
+                                <mat-option value="tu_dong">Tu Dòng</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="dataItemGroup?.value?.type == 'tu_dong'" appearance="outline"
+                            class="full-width">
                             <mat-label>Thuộc</mat-label>
-                            <se-autocomplete-simple [required]="false" [formControlName]="'organizationID'"
-                                 [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'"
-                                [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="false"
-                                [items]="organizationList">
+                            <se-autocomplete-simple [required]="false" [formControlName]="'belongOrgId'"
+                                [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'"
+                                [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="false" [items]="groupsList">
                             </se-autocomplete-simple>
                         </mat-form-field>
                         <mat-accordion multi="true" class="full-width">
                             <mat-expansion-panel expanded>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        SỰ KIỆN QUAN TRỌNG
+                                        <strong>SỰ KIỆN QUAN TRỌNG</strong>
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <app-events-list [entityID]="ID" [entityType]="'clergy'"></app-events-list>
@@ -96,7 +200,7 @@
                             <mat-expansion-panel expanded>
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
-                                        DANH SÁCH GIÁO XỨ ĐÃ PHỤC VỤ
+                                        <strong>HOẠT ĐỘNG SỨ VỤ</strong>
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <app-appointments-list-control [entityID]="ID" [entityType]="'clergy'">

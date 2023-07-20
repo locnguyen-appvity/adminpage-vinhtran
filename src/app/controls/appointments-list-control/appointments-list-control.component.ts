@@ -5,7 +5,6 @@ import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { take } from 'rxjs';
-import { TYPE_CLERGY } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-appointments-list-control',
@@ -18,7 +17,6 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	@Input() entityID: string = "";
 	@Input() entityType: string = "";
 	public positionList: any[] = [];
-	public typeList: any[] = TYPE_CLERGY;
 	
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
@@ -139,6 +137,7 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	// 	moveItemInArray(this.arrData, event.previousIndex, event.currentIndex);
 	// }
 
+
 	getDataItems() {
 		let filter = '';
 		if(this.entityType == 'organization'){
@@ -164,6 +163,7 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 							item.name = item.clergyName;
 						}
 						else {
+
 							item.name = item.entityName;
 						}
 						this.getClergyPosition(item);

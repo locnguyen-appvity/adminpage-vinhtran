@@ -59,6 +59,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	onTouched = () => { };
 	public stateChanges = new Subject<void>();
 	private isSelected: boolean = false;
+	public originalValue: string = "";
 
 	constructor(public linq: LinqService,
 		public sharedService: SharedPropertyService,
@@ -82,18 +83,31 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 		this.filteredItems = new Subject<[]>();
 		this.inputControl = new FormControl('');
 		this.inputControl.setAsyncValidators([this.validateInputValidator()]);
-		
+
 	}
 
 	ngAfterViewInit(): void {
-		if(this.mode == 'search-runtime'){
+		if (this.mode == 'search-runtime') {
 			this.inputControl.valueChanges.pipe(takeUntil(this._unsubscribe$)).subscribe({
 				next: (value: any) => {
+					if (this.isSelected || this.originalValue == value) {
+						return;
+					}
 					this.onChangeValue.emit(value);
 				}
 			});
 		}
 		else {
+			if (this.mode == 'emit-change') {
+				this.inputControl.valueChanges.pipe(takeUntil(this._unsubscribe$)).subscribe({
+					next: (value: any) => {
+						if (this.isSelected || this.originalValue == value) {
+							return;
+						}
+						this.onChangeValue.emit(value);
+					}
+				});
+			}
 			this.inputControl.valueChanges.pipe(startWith(''), map((value: string) => this._filter(value))).subscribe({
 				next: (res: any) => {
 					let items = res;
@@ -233,6 +247,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 				value = value.replace(/\+/, '');
 			}
 		}
+		this.originalValue = value;
 		if (this.items && ((this.autocomplete && this.items.length > 0))) {
 			if (this.errorState) {
 				this.errorState = false;

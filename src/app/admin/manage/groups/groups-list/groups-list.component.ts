@@ -14,25 +14,44 @@ import { Router } from '@angular/router';
 	styleUrls: ['./groups-list.component.scss']
 })
 export class GroupsListComponent extends ListItemBaseComponent {
+
+	public type: string = "giao_hat";
+
 	constructor(public override sharedService: SharedPropertyService,
 		public snackbar: MatSnackBar,
 		private service: SharedService,
 		public router: Router,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
+		if (this.router.url.includes("hoi_doan")) {
+			this.type = 'hoi_doan';
+		}
+		else if (this.router.url.includes("co_so_giao_phan")) {
+			this.type = 'co_so_giao_phan';
+		}
+		else if (this.router.url.includes("ban_muc_vu")) {
+			this.type = 'ban_muc_vu';
+		}
+		else if (this.router.url.includes("ban_chuyen_tranh")) {
+			this.type = 'ban_chuyen_tranh';
+		}
+		else if (this.router.url.includes("dong_tu")) {
+			this.type = 'dong_tu';
+		}
 		this.getDataItems();
 	}
 
 	onAddItem() {
 		let config: any = {};
 		config.data = {
-			target: 'add'
+			target: 'add',
+			typeGroup: this.type
 		};
 		this.openFormDialog(config, 'add');
 	}
 
 	onChangeData(item: any) {
-		this.router.navigate([`/admin/manage/groups/group/${item.id}`]);
+		this.router.navigate([`/admin/manage/${this.type}/detail/${item.id}`]);
 	}
 
 	openFormDialog(config: any, target: string) {
@@ -61,6 +80,23 @@ export class GroupsListComponent extends ListItemBaseComponent {
 			}
 		});
 	}
+
+	getFilter() {
+		let filter = `type eq '${this.type}'`;
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(${this.searchKey}), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
 
 	getDataItems() {
 		this.arrData = [];
@@ -117,7 +153,7 @@ export class GroupsListComponent extends ListItemBaseComponent {
 
 	updateStatus(item: any, status: string) {
 		let dataJSON = {
-			status:status
+			status: status
 		}
 		this.service.updateGroup(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {

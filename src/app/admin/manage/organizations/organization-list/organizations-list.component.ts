@@ -20,6 +20,7 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
 	@Input() groupID: string = '';
+	public type: string = 'giao_xu';
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -32,6 +33,9 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
+		if (this.router.url.includes("giao_diem")) {
+			this.type = 'giao_diem';
+		}
 		this.getDataGridAndCounterApplications();
 	}
 
@@ -43,7 +47,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	getFilter() {
-		let filter = '';
+		let filter = `type eq '${this.type}'`;
 		if (!this.isNullOrEmpty(this.groupID)) {
 			if (this.isNullOrEmpty(filter)) {
 				filter = `groupID eq ${this.groupID}`;
@@ -91,6 +95,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 					}
 					this.updateStatus(item);
+					item.typeView = this.sharedService.updateTypeOrg(item.type);
 				}
 			}
 			this.gridDataChanges.data = dataItems;
@@ -140,7 +145,8 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		let config: any = {
 			data: {
 				target: 'new',
-				groupID: this.groupID
+				groupID: this.groupID,
+				type: this.type
 			}
 		};
 		config.disableClose = true;
@@ -184,10 +190,10 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 	registerGridColumns() {
 		if (!this.isNullOrEmpty(this.groupID)) {
-			this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created'];
+			this.displayColumns = ['id', 'photo', 'status', 'type', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created'];
 		}
 		else {
-			this.displayColumns = ['id', 'photo', 'status', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created', 'moreActions'];
+			this.displayColumns = ['id', 'photo', 'status', 'type', 'name', 'email', 'phoneNumber', 'memberCount', 'population', 'created', 'moreActions'];
 		}
 	}
 

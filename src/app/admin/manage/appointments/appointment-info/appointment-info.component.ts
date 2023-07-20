@@ -4,7 +4,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Observable, forkJoin, take } from 'rxjs';
-import { STATUS_CLERGY, TYPE_CLERGY } from 'src/app/shared/data-manage';
+import { STATUS_CLERGY, LEVEL_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -41,7 +41,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	public appointmentsList: any[] = [];
 	public positionList: any[] = [];
 	public positionListCache: any[] = [];
-	public typeList: any[] = TYPE_CLERGY;
+	public levelList: any[] = LEVEL_CLERGY;
 	public statusClergy: any[] = STATUS_CLERGY;
 	public searchValue: string = '';
 
@@ -328,6 +328,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			case 'giao_xu':
 				item.name = `Giáo Xứ ${item.name}`;
 				break;
+			case 'giao_diem':
+				item.name = `Giáo Điểm ${item.name}`;
+				break;
 		}
 	}
 
@@ -375,7 +378,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 	getClergyType(item: any) {
 		if (!this.isNullOrEmpty(item.type)) {
-			let type = this.sharedService.getValueAutocomplete(item.type, this.typeList, 'code');
+			let type = this.sharedService.getValueAutocomplete(item.type, this.levelList, 'code');
 			if (type && type.name) {
 				return type.name;
 			}

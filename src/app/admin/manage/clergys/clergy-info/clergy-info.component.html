@@ -8,9 +8,9 @@
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Tên Thánh</mat-label>
 						<!-- <input matInput formControlName="stName" type="text" autocomplete="off"> -->
-						<se-autocomplete-simple [required]="true" [formControlName]="'stName'" 
-							[optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
-							[keyValue]="'id'" [autocomplete]="true" [items$]="saintList$">
+						<se-autocomplete-simple [required]="true" [formControlName]="'stName'" [optgroup]="false"
+							[placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'" [keyValue]="'id'"
+							[autocomplete]="true" [items$]="saintList$">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
@@ -24,23 +24,30 @@
 			<div fxLayout="row wrap">
 				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 					<mat-form-field appearance="outline" class="full-width">
-						<mat-label>Phân Loại Tu Sĩ</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'type'" 
-							[optgroup]="false" [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'"
-							[keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
+						<mat-label>Cấp Bậc</mat-label>
+						<se-autocomplete-simple [required]="false" [formControlName]="'level'" [optgroup]="false"
+							[placeHolder]="'Tìm kiếm theo tên...'" [keyTitle]="'name'" [keyValue]="'code'"
+							[keyValueEmit]="'code'" [autocomplete]="false" [items]="levelList">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
 				<div fxFlex.gt-xs="50" fxFlex="100">
 					<mat-form-field appearance="outline" class="full-width">
-						<mat-label>Thuộc</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'organizationID'" 
-							[optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'"
-							[keyValueEmit]="'id'" [autocomplete]="false" [items]="organizationList">
-						</se-autocomplete-simple>
+						<mat-label>Phân Loại</mat-label>
+						<mat-select formControlName="type" required>
+							<mat-option value="tu_trieu">Tu Triều</mat-option>
+							<mat-option value="tu_dong">Tu Dòng</mat-option>
+						</mat-select>
 					</mat-form-field>
 				</div>
 			</div>
+			<mat-form-field *ngIf="dataItemGroup?.value == 'tu_dong'" appearance="outline" class="full-width">
+				<mat-label>Thuộc</mat-label>
+				<se-autocomplete-simple [required]="false" [formControlName]="'belongOrgId'" [optgroup]="false"
+					[placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
+					[autocomplete]="false" [items]="organizationList">
+				</se-autocomplete-simple>
+			</mat-form-field>
 			<div fxLayout="row wrap">
 				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 					<mat-form-field appearance="outline" class="full-width">

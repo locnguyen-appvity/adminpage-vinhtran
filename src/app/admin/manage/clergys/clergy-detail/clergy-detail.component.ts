@@ -12,7 +12,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_CLERGY } from '../../../../shared/data-manage';
+import { LEVEL_CLERGY } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-detail',
@@ -33,14 +33,15 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public dataItemGroup: FormGroup;
 	public fileSelected: any;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Giáo Xứ";
+	public matTooltipBack: string = "Danh Sách Tu Sĩ";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'
 	}
-	public typeList: any[] = [];
+	public levelList: any[] = LEVEL_CLERGY;
 	public saintList: any[] = [];
-	public organizationList: any[] = [];
+	public groupsList: any[] = [];
+	public orgsList: any[] = [];
 	public arrMasses: any[] = [];
 
 	constructor(
@@ -65,15 +66,75 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			// items: this.fb.array([]),
 			name: "",
 			stName: "",
-			type: "linh_muc",
+			type: "tu_trieu",
+			level: "linh_muc",
 			content: "",
-			organizationID: '',
+			belongOrgId: '',
 			phoneNumber: '',
 			email: '',
-			photo: ''
+			photo: '',
+			motherName: '',
+			fatherName: '',
+			identityCardType: '',
+			identityCardNumber: '',
+			identityCardIssueDate: '',
+			identityCardIssuePlace: '',
+			parable: '',
+			dateOfBirth: '',
+			placeOfBirth: '',
+			orgName: '',
+			organizationID: '',
+
 		});
 		this.getAllData();
 	}
+
+	// {
+	// 	"stName": "Giuse",
+	// 	"name": "Nguyễn Văn Thể",
+	// 	"type": "tu_trieu",
+	// 	"organizationID": "1e8f563e-4543-4370-a091-0f07de220b85",
+	// 	"phoneNumber": "",
+	// 	"email": "",
+	// 	"status": "publish",
+	// 	"photo": "public/storage/images/840fa747-2dca-42f5-a368-69224c6b36af.png",
+	// 	"content": null,
+	// 	"dateOfBirth": null,
+	// 	"placeOfBirth": null,
+	// 	"fatherName": null,
+	// 	"motherName": null,
+	// 	"baptizeDate": null,
+	// 	"confirmationDate": null,
+	// 	"baptizePlace": null,
+	// 	"confirmationPlace": null,
+	// 	"bigSeminary": null,
+	// 	"smallSeminary": null,
+	// 	"bigSeminaryDate": null,
+	// 	"smallSeminaryDate": null,
+	// 	"identityCardNumber": null,
+	// 	"identityCardType": null,
+	// 	"identityCardIssueDate": null,
+	// 	"identityCardIssuePlace": null,
+	// 	"code": null,
+	// 	"manageOrgId": null,
+	// 	"belongOrgId": null,
+	// 	"manageOrgPosition": null,
+	// 	"level": "linh_muc",
+	// 	"vowDate": null,//Ngày Khấn
+	// 	"ripDate": null,
+	// 	"ripOrgId": null,
+	// 	"ripNote": null,
+	// 	"note": null,
+	// 	"parable": null,//Câu Châm ngôn
+	// 	"birthOrgName": null,
+	// 	"ripOrgName": null,
+	// 	"orgName": null,
+	// 	"created": "2023-07-03T00:00:00Z",
+	// 	"modified": "2023-07-20T07:11:48.470276Z",
+	// 	"createdBy": null,
+	// 	"modifiedBy": null,
+	// 	"id": "18f54830-9017-456d-a575-97439d31e697"
+	// }
 
 	// getControls(frmGrp: FormGroup, key: string) {
 	// 	return (<FormArray>frmGrp.controls[key]).controls;
@@ -167,10 +228,9 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	}
 
 	getAllData() {
-		this.typeList = TYPE_CLERGY;
 		this.getSaints();
+		this.getGroups();
 		this.getOrganizations();
-		// this.getMasses();
 	}
 
 	getSaints() {
@@ -187,40 +247,46 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		})
 	}
 
+	getGroups() {
+		this.groupsList = [];
+		let options = {
+			select: 'id,name,type',
+			filter: "type eq 'dong_tu'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items.push(...res.value);
+					for (let item of items) {
+						item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`
+					}
+				}
+				this.groupsList = items;
+			}
+		})
+	}
+
 	getOrganizations() {
-		this.organizationList = [];
+		this.orgsList = [];
 		let options = {
 			select: 'id,name,type',
 			filter: "type eq 'dong_tu'"
 		}
 		this.service.getOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				let items = [{
-					id: '-1',
-					name: 'Giáo Phận Phú Cường',
-					type: 'giao_phan'
-				}]
+				let items = []
 				if (res && res.value && res.value.length > 0) {
 					items.push(...res.value);
 					for (let item of items) {
-						this.updateNameOfTypeOrg(item);
+						item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`
 					}
 				}
-				this.organizationList = items;
+				this.orgsList = items;
 			}
 		})
 	}
 
-	updateNameOfTypeOrg(item: any) {
-		switch (item.type) {
-			case 'dong_tu':
-				item.name = `Dòng ${item.name}`;
-				break;
-			case 'giao_xu':
-				item.name = `Giáo Xứ ${item.name}`;
-				break;
-		}
-	}
 
 	getClergy() {
 		this.service.getClergy(this.ID).pipe(take(1)).subscribe({
@@ -231,16 +297,31 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 					if (this.localItem.metaKeyword) {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
 					}
+					if(this.localItem.dateOfBirth){
+						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
+					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						stName: this.localItem.stName,
 						email: this.localItem.email,
 						phoneNumber: this.localItem.phoneNumber,
-						organizationID: this.localItem.organizationID,
+						belongOrgId: this.localItem.belongOrgId,
 						content: this.localItem.content,
 						type: this.localItem.type,
-						photo: this.localItem.photo
+						level: this.localItem.level,
+						photo: this.localItem.photo,
+						motherName: this.localItem.motherName,
+						fatherName: this.localItem.fatherName,
+						identityCardType: this.localItem.identityCardType,
+						identityCardNumber: this.localItem.identityCardNumber,
+						identityCardIssueDate: this.localItem.identityCardIssueDate,
+						identityCardIssuePlace: this.localItem.identityCardIssuePlace,
+						parable: this.localItem.parable,
+						dateOfBirth: this.localItem._dateOfBirth,
+						placeOfBirth: this.localItem.placeOfBirth,
+						orgName: this.localItem.orgName,
+						organizationID: this.localItem.organizationID
 					});
 				}
 			}
@@ -251,23 +332,28 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		this.router.navigate(['/admin/manage/clergys/clergys-list']);
 	}
 
-	onSave(status: string) {
+	onSave() {
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
+			stName: valueForm.stName,
 			name: valueForm.name,
-			status: status,
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
-			address: valueForm.address,
-			groupID: valueForm.groupID,
-			abbreviation: valueForm.abbreviation,
-			anniversary: valueForm.anniversary,
-			content: valueForm.content,
-			description: valueForm.description,
-			type: valueForm.type,
-			memberCount: valueForm.memberCount,
-			population: valueForm.population,
 			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
+			belongOrgId: valueForm.level == 'tu_dong' ? valueForm.belongOrgId : null,
+			type: valueForm.type,
+			motherName: valueForm.motherName,
+			fatherName: valueForm.fatherName,
+			identityCardType: valueForm.identityCardType,
+			level: valueForm.level,
+			identityCardNumber: valueForm.identityCardNumber,
+			identityCardIssueDate: valueForm.identityCardIssueDate,
+			identityCardIssuePlace: valueForm.identityCardIssuePlace,
+			parable: valueForm.parable,
+			dateOfBirth: this.sharedService.ISOStartDay(valueForm.dateOfBirth),
+			placeOfBirth: valueForm.placeOfBirth,
+			orgName: valueForm.orgName,
+			organizationID: valueForm.organizationID
 		}
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {
@@ -286,6 +372,20 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 				this.router.navigate(['/admin/manage/clergys/clergys-list']);
 			}
 		})
+	}
+
+	onChangeValue(event: any, target: string) {
+		if (target == "orgName") {
+			if (!this.isNullOrEmpty(this.dataItemGroup.get("organizationID").value)) {
+				this.dataItemGroup.get("organizationID").setValue(null);
+			}
+		}
+	}
+
+	valueChangeSelect(event: any, target: string) {
+		if (target == "orgName") {
+			this.dataItemGroup.get("organizationID").setValue(event);
+		}
 	}
 
 	showInfoSnackbar(dataInfo: any) {

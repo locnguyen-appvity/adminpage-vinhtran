@@ -11,11 +11,35 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},
 			{
-				path: 'groups',
+				path: 'giao_hat',
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{
-				path: 'organizations',
+				path: 'hoi_doan',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
+				path: 'ban_muc_vu',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
+				path: 'dong_tu',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
+				path: 'co_so_giao_phan',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
+				path: 'ban_chuyen_tranh',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
+				path: 'giao_xu',
+				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
+			},
+			{
+				path: 'giao_diem',
 				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{

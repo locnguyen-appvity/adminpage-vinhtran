@@ -4,8 +4,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { take, takeUntil } from 'rxjs';
+import { BehaviorSubject, take, takeUntil } from 'rxjs';
 import { EventInfoComponent } from '../event-info/event-info.component';
+import { ANNIVERSARIES } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'app-events-list',
@@ -17,19 +18,87 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	@Input() entityID: string = "";
 	@Input() entityType: string = ""
+
+	public dataDefault: any[] = ANNIVERSARIES;
+
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges): void {
-		if(changes['entityID'] || changes['entityType']){
+		if (changes['entityID'] || changes['entityType']) {
 			this.getDataItems();
 		}
 	}
 
+
+	onCreateAuto() {
+		if (this.dataDefault && this.dataDefault.length > 0) {
+			let dataDefault = this.dataDefault.filter(it => {
+				if (this.entityType == 'clergy') {
+					if(it.typeClergy == 'all'){
+						return true;
+					}
+				}
+				else if (this.entityType == 'organization') {
+					if(it.typeOrg == 'all'){
+						return true;
+					}
+				}
+				return false;
+			})
+			if(dataDefault.length == 0){
+				return;
+			}
+			this.dataProcessing = true;
+			let sub = new BehaviorSubject(0);
+			sub.subscribe({
+				next: (index: number) => {
+					if (index < dataDefault.length) {
+						if (dataDefault[index]) {
+							let valueForm = dataDefault[index];
+							let dataJSON = {
+								"entityID": this.entityID,
+								"entityType": this.entityType,
+								"name": valueForm.name,
+								"day": "",
+								"type": valueForm.type,
+								"date": "",
+								"description": "",
+								"status": 'auto'
+							}
+							this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+								next: () => {
+									index++;
+									sub.next(index);
+								},
+								error: error => {
+									console.log(error);
+									index++;
+									sub.next(index);
+								}
+							});
+
+						}
+						else {
+							index++;
+							sub.next(index);
+						}
+					}
+					else {
+						this.dataProcessing = false;
+						this.getDataItems();
+						sub.complete();
+						sub.unsubscribe();
+					}
+
+				}
+			});
+		}
+	}
 
 	onAddItem() {
 		let config: any = {};
@@ -56,23 +125,23 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 		})
 	}
 
-	onUpdateStatus(item: any, status: string) {
-		let dataJSON = {
-			status: status
-		}
-		this.dataProcessing = true;
-		this.service.updateAnniversary(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				this.dataProcessing = false;
-				let snackbarData: any = {
-					key: 'delete-item',
-					message: 'Xóa Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataItems();
-			}
-		})
-	}
+	// onUpdateStatus(item: any, status: string) {
+	// 	let dataJSON = {
+	// 		status: status
+	// 	}
+	// 	this.dataProcessing = true;
+	// 	this.service.updateAnniversary(item.id, dataJSON).pipe(take(1)).subscribe({
+	// 		next: () => {
+	// 			this.dataProcessing = false;
+	// 			let snackbarData: any = {
+	// 				key: 'delete-item',
+	// 				message: 'Xóa Thành Công'
+	// 			};
+	// 			this.showInfoSnackbar(snackbarData);
+	// 			this.getDataItems();
+	// 		}
+	// 	})
+	// }
 
 	onChangeData(item: any) {
 		let config: any = {};
@@ -112,7 +181,8 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	getDataItems() {
 		let options = {
-			filter: `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`
+			filter: `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`,
+			sort:'created asc'
 		}
 		this.arrData = [];
 		this.dataProcessing = true;
@@ -122,7 +192,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
 					this.arrData = res.value;
-					for(let item of this.arrData){
+					for (let item of this.arrData) {
 						item.dayView = item.day;
 						if (item.date) {
 							item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);

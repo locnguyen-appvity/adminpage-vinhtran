@@ -93,6 +93,23 @@ export class SharedPropertyService {
         return null;
     }
 
+    
+
+	updateTypeOrg(type: string) {
+		switch (type) {
+			case 'giao_hat':
+                return 'Giáo hạt'
+			case 'giao_xu':
+                return 'Giáo xứ'
+			case 'giao_diem':
+                return 'Giáo điểm'
+			case 'dong_tu':
+                return 'Dòng'
+			default:
+				return "";
+		}
+	}
+
     parseOffsetTimezone(offset: any): number {
         if (offset) {
             if (typeof offset === "number") {

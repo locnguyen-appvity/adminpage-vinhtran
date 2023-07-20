@@ -8,18 +8,18 @@ const myRoutes: Routes = [
 		path: '', component: OrganizationsComponent,
 		children: [
 			{
-				path: 'organizations-list',
+				path: 'list',
 				component: OrganizationsListComponent,
 			},
 			{
-				path: 'organization',
+				path: 'detail',
 				loadChildren: () => import('./organization-detail/organization-detail.module').then(m => m.OrganizationDetailModule)
 			},
 			{
-				path: 'organization/:id',
+				path: 'detail/:id',
 				loadChildren: () => import('./organization-detail/organization-detail.module').then(m => m.OrganizationDetailModule)
 			},
-			{ path: '', redirectTo: 'organizations-list', pathMatch: 'full' },
+			{ path: '', redirectTo: 'list', pathMatch: 'full' },
 		],
 	},
 ];

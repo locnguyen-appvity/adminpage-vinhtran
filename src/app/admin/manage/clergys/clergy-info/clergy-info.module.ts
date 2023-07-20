@@ -17,6 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ListItemsBaseModule } from 'src/app/controls/list-item-base/list-item.base.module';
 import { ErrorValidateModule } from 'src/app/controls/error-validate/error-validate.module';
 import { ClergyInfoComponent } from './clergy-info.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { ClergyInfoComponent } from './clergy-info.component';
     ListItemsBaseModule,
     MatListModule,
     MatDialogModule,
+    MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,

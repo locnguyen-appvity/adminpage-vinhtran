@@ -31,6 +31,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 	public dataItemGroup: FormGroup;
 	public hasChangedGroup: boolean = false;
 	public target: string = "";
+	public type: string = "giao_xu";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	// public organizationList$: Observable<any>;
@@ -47,6 +48,9 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		this.target = this.dialogData.target;
+		if(this.dialogData.type){
+			this.type = this.dialogData.type;
+		}
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
@@ -78,7 +82,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
 			abbreviation: this.localItem ? this.localItem.abbreviation : '',
 			groupID: this.localItem ? this.localItem.groupID : this.groupID,
-			type: [this.localItem ? this.localItem.type : 'giao_xu', [Validators.required]],
+			// type: [this.localItem ? this.localItem.type : 'giao_xu', [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
 			address: this.localItem ? this.localItem.address : '',
@@ -104,7 +108,8 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 	getGroups() {
 		this.groupList$ = of([]);
 		let options = {
-			select: 'id,name'
+			select: 'id,name',
+			filter: "type eq 'giao_hat'"
 		}
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -142,7 +147,7 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			abbreviation: valueForm.abbreviation,
 			content: valueForm.content,
 			description: valueForm.description,
-			type: valueForm.type
+			type: this.type
 		}
 		this.saveAction = 'save';
 		if (this.target == 'edit') {

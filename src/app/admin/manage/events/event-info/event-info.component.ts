@@ -103,8 +103,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			"date": this.sharedService.ISOStartDay(valueForm.date),
 			"description": valueForm.description,
 			"locationID": this.entityType == 'organization' ? this.entityID : valueForm.locationID,
-			"locationType": "organization",
-			"status": 'active'
+			"locationType": "organization"
 		}
 		if (this.localItem && this.localItem.id) {
 			this.dataProcessing = true;

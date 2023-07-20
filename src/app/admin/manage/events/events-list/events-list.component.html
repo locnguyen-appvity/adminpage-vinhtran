@@ -1,30 +1,40 @@
-<mat-nav-list>
-    <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
-        <h4 mat-line><strong> {{data?.name}}:</strong> {{data?.dayView}}</h4>
+<ng-container *ngIf="arrData?.length > 0; else noDataTemf">
+    <mat-nav-list>
+        <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;" (click)="onChangeData(data)">
+            <h4 mat-line><strong> {{data?.name}}:</strong> {{data?.dayView}}</h4>
+            <span fxFlex></span>
+            <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                matTooltip="Thao Tác Khác">
+                <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
+            </button>
+            <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
+                <button mat-menu-item (click)="onChangeData(data)">
+                    <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
+                </button>
+                <!-- <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
+                    (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
+                    <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
+                </button>
+                <button *ngIf="data.status == 'inactive'" mat-menu-item
+                    (click)="$event.stopPropagation();onUpdateStatus(data,'active')" matTooltip="Mở Lại">
+                    <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>Mở Lại
+                </button> -->
+                <button *ngIf="data?.status !== 'auto'" mat-menu-item
+                    (click)="$event.stopPropagation();deleteItem(data)">
+                    <mat-icon svgIcon="ic_delete_48px"></mat-icon>Xóa
+                </button>
+            </mat-menu>
+        </mat-list-item>
+    </mat-nav-list>
+    <mat-divider class="full-width"></mat-divider>
+    <div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
         <span fxFlex></span>
-        <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu" matTooltip="Thao Tác Khác">
-            <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
-        </button>
-        <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
-            <button mat-menu-item (click)="onChangeData(data)">
-                <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
-            </button>
-            <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
-                (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
-                <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
-            </button>
-            <button *ngIf="data.status == 'inactive'" mat-menu-item
-                (click)="$event.stopPropagation();onUpdateStatus(data,'active')" matTooltip="Mở Lại">
-                <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>Mở Lại
-            </button>
-            <button mat-menu-item (click)="$event.stopPropagation();deleteItem(data)">
-                <mat-icon svgIcon="ic_delete_48px"></mat-icon>Xóa
-            </button>
-        </mat-menu>
-    </mat-list-item>
-</mat-nav-list>
-<mat-divider class="full-width"></mat-divider>
-<div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
-    <span fxFlex></span>
-    <button (click)="onAddItem()" mat-button color="primary">Thêm Sự Kiện</button>
-</div>
+        <button (click)="onAddItem()" mat-button color="primary">Thêm Sự Kiện</button>
+    </div>
+</ng-container>
+<ng-template #noDataTemf>
+    <div fxLayout="column" fxLayoutAlign="center center">
+        <h4>Chưa có thông tin</h4>
+        <button (click)="onCreateAuto()" mat-flat-button color="primary">Tạo tự động sự kiện cơ bản</button>
+    </div>
+</ng-template>

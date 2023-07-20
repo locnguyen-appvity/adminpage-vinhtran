@@ -114,12 +114,19 @@
                                 </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="type">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Loại </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.typeView}}
+                                </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tiêu Đề </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tên </th>
                                 <td mat-cell *matCellDef="let element"
-                                    style="min-width: 500px; max-width: 500px; width: 500px"
-                                    [matTooltipDisabled]="!(element?.name?.length > 80)" [matTooltip]="element.name">
-                                    {{element.name | truncate: 80}}
+                                    style="min-width: 300px; max-width: 300px; width: 300px"
+                                    [matTooltipDisabled]="!(element?.name?.length > 50)" [matTooltip]="element.name">
+                                    {{element.name | truncate: 50}}
                                 </td>
                             </ng-container>
 

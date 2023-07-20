@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-            <div fxLayout="row wrap">
+            <div fxLayout="row wrap" *ngIf="localItem?.status != 'auto'">
                 <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tên Sự Kiện</mat-label>
@@ -13,14 +13,18 @@
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Loại</mat-label>
                         <mat-select formControlName="type" required>
-                            <mat-option value="ngay_ky_niem">Ngày Kỷ Niệm</mat-option>
-                            <mat-option value="ngay_sinh">Ngày Sinh</mat-option>
-                            <mat-option value="ngay_thanh_lap">Ngày Thành Lập</mat-option>
-                            <mat-option value="ngay_mat">Ngày Mất</mat-option>
+                            <mat-option value="anniversary">Ngày Kỷ Niệm</mat-option>
+                            <!-- <mat-option value="ngay_sinh">Ngày Sinh</mat-option>
+                            <mat-option value="ngay_thanh_lap">Ngày Thành Lập</mat-option> -->
+                            <mat-option value="rip">Ngày Mất</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
+            <mat-form-field *ngIf="localItem?.status == 'auto'" appearance="outline" class="full-width">
+                <mat-label>Tên Sự Kiện</mat-label>
+                <input matInput required formControlName="name" autocomplete="off">
+            </mat-form-field>
             <div fxLayout="row wrap">
                 <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                     <mat-form-field appearance="outline" class="full-width">

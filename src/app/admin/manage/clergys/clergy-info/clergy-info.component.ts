@@ -7,7 +7,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { TYPE_CLERGY, TYPE_ORG } from '../../../../shared/data-manage';
+import { LEVEL_CLERGY, TYPE_ORG } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-info',
@@ -34,7 +34,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	public organizationList: any[] = [];
-	public typeList: any[] = [];
+	public levelList: any[] = [];
 	public typeOrgList: any[] = [];
 	public saintList$: Observable<any>;
 	public saintList: any[] = [];
@@ -82,8 +82,9 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			// items: this.fb.array([]),
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
 			stName: [this.localItem ? this.localItem.stName : '', [Validators.required]],
-			organizationID: (this.localItem && this.localItem.organizationID) ? this.localItem.organizationID : '-1',
-			type: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
+			belongOrgId: (this.localItem && this.localItem.belongOrgId) ? this.localItem.belongOrgId : '-1',
+			type: [this.localItem ? this.localItem.type : 'tu_trieu', [Validators.required]],
+			level: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
 			status: status,
@@ -93,7 +94,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	}
 
 	getAllData() {
-		this.typeList = TYPE_CLERGY;
+		this.levelList = LEVEL_CLERGY;
 		this.typeOrgList = TYPE_ORG;
 		this.getOrganizations();
 		// this.getListClergyType();
@@ -131,6 +132,9 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 				break;
 			case 'giao_xu':
 				item.name = `Giáo Xứ ${item.name}`;
+				break;
+			case 'giao_diem':
+				item.name = `Giáo Điểm ${item.name}`;
 				break;
 		}
 	}
@@ -173,8 +177,9 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
-			organizationID: valueForm.organizationID == '-1' ? "" : valueForm.organizationID,
-			type: valueForm.type
+			belongOrgId: valueForm.level == 'tu_dong' ? valueForm.belongOrgId : null,
+			type: valueForm.type,
+			level: valueForm.level
 		}
 		this.saveAction = 'save';
 		if (this.target == 'edit') {

@@ -13,13 +13,15 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 })
 export class GroupInfoComponent extends SimpleBaseComponent {
 
-	public title: string = 'Thêm';
+	public title: string = 'Thêm Giáo Hạt';
 	public textSave: string = 'Thêm';
 	public dataItemGroup: FormGroup;
 	public hasChangedGroup: boolean = false;
 	public target: string = "";
+	public typeGroup: string = "giao_hat";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
+	public localItem: any;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -27,22 +29,41 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		private service: SharedService,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
-		let name = '';
-		let status = true;
 		this.target = this.dialogData.target;
+		if (this.dialogData.typeGroup) {
+			this.typeGroup = this.dialogData.typeGroup;
+		}
+		if (this.target !== 'edit') {
+			if (this.typeGroup == 'hoi_doan') {
+				this.title = 'Thêm Hội Đoàn';
+			}
+			else if (this.typeGroup == 'co_so_giao_phan') {
+				this.title = 'Thêm Cơ Sở Giáo Phận';
+			}
+			else if (this.typeGroup == 'ban_muc_vu') {
+				this.title = 'Thêm Ban Mục Vụ';
+			}
+			else if (this.typeGroup == 'ban_chuyen_tranh') {
+				this.title = 'Thêm Ban Chuyên Trách';
+			}
+			else if (this.typeGroup == 'dong_tu') {
+				this.title = 'Thêm Dòng Tu';
+			}
+		}
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
 			this.canDelete = false;
-			name = this.dialogData.item.name;
 			this.ID = this.dialogData.item.id;
-			status = this.dialogData.item.status == 'active' ? true : false;
+			this.localItem = this.dialogData.item;
+			this.title = this.localItem.name;
 		}
+		
 		this.dataItemGroup = this.fb.group({
-			name: [name, [Validators.required]],
-			description: this.dialogData.item ? this.dialogData.item.description : "",
-			content: this.dialogData.item ? this.dialogData.item.content : "",
-			status: status
+			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
+			description: this.localItem ? this.localItem.description : "",
+			content: this.localItem ? this.localItem.content : "",
+			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
 			if (this.target === 'edit') {
@@ -55,10 +76,10 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	}
 
 	isChangedForm(valueForm: any) {
-		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
+		if (this.sharedService.isChangedValue(valueForm.name, this.localItem.name)) {
 			return true;
 		}
-		let status = this.dialogData.item.status == 'active' ? true : false;
+		let status = this.localItem.status == 'active' ? true : false;
 		if (this.sharedService.isChangedValue(valueForm.status, status)) {
 			return true;
 		}
@@ -85,7 +106,8 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			name: valueForm.name,
 			description: valueForm.description,
 			content: valueForm.content,
-			status: valueForm.status ? 'active' : 'inactive'
+			status: valueForm.status ? 'active' : 'inactive',
+			type: this.typeGroup
 		}
 		if (this.target == 'edit') {
 			this.dataProcessing = true;

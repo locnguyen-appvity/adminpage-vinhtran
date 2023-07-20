@@ -7,18 +7,18 @@ const myRoutes: Routes = [
 		path: '', component: GroupsComponent,
 		children: [
 			{
-				path: 'groups-list',
+				path: 'list',
 				loadChildren: () => import('./groups-list/groups-list.module').then(m => m.GroupsListModule)
 			},
 			{
-				path: 'group',
+				path: 'detail',
 				loadChildren: () => import('./group-detail/group-detail.module').then(m => m.GroupDetailModule)
 			},
 			{
-				path: 'group/:id',
+				path: 'detail/:id',
 				loadChildren: () => import('./group-detail/group-detail.module').then(m => m.GroupDetailModule)
 			},
-			{ path: '', redirectTo: 'groups-list', pathMatch: 'full' },
+			{ path: '', redirectTo: 'list', pathMatch: 'full' },
 		]
 	},
 ];

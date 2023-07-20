@@ -15,11 +15,12 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 
 	public dataItemGroup: FormGroup;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Giáo Xứ";
+	public matTooltipBack: string = "Danh Sách Giáo Hạt";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'
 	}
+	public target: string = "giao-hat";
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -28,6 +29,21 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		private service: SharedService) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
+		if (this.router.url.includes("hoi-doan")) {
+			this.target = 'hoi-doan';
+		}
+		else if (this.router.url.includes("co_so_giao_phan")) {
+			this.target = 'co_so_giao_phan';
+		}
+		else if (this.router.url.includes("ban_muc_vu")) {
+			this.target = 'ban_muc_vu';
+		}
+		else if (this.router.url.includes("ban_chuyen_tranh")) {
+			this.target = 'ban_chuyen_tranh';
+		}
+		else if (this.router.url.includes("dong_tu")) {
+			this.target = 'dong_tu';
+		}
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getGroup();
 		}
@@ -35,7 +51,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			name: ["", [Validators.required]],
 			description: "",
 			content: "",
-			status: false
+			// status: true
 		});
 	}
 
@@ -84,7 +100,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			name: valueForm.name,
 			description: valueForm.description,
 			content: valueForm.content,
-			status: valueForm.status ? 'active' : 'inactive'
+			// status: valueForm.status ? 'active' : 'inactive',
+			// type: 'giao_hat'
 		}
 		this.dataProcessing = true;
 		this.service.updateGroup(this.ID, dataJSON).pipe(take(1)).subscribe({
@@ -97,7 +114,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 
 
 	routeToBack() {
-		this.router.navigate(['/admin/manage/groups/groups-list']);
+		this.router.navigate([`/admin/manage/${this.target}/list`]);
 	}
 
 }

@@ -1,32 +1,40 @@
-<mat-nav-list>
-    <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;">
-        <h4 mat-line><strong>{{data?.name}}</strong></h4>
-        <p mat-line>Chức vụ: {{data?.positionView}} - Trạng thái: {{data?.statusView}}</p>
-        <p mat-line>Thời gian phục vụ: {{data?.fromDateView}} <span *ngIf="data?.toDateView?.length > 0"> - {{data?.toDateView}}</span></p>
-        <p mat-line>Do {{data?.appointerName}} bổ nhiệm vào ngày {{data?.effectiveDateView}}</p>
-        <span fxFlex></span>
-        <!-- <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
-            matTooltip="Thao Tác Khác">
-            <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
-        </button>
-        <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
-            <button mat-menu-item (click)="onChangeData(data)">
-                <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
+<ng-container *ngIf="arrData?.length > 0; else noDataTemf">
+    <mat-nav-list>
+        <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;">
+            <h4 mat-line><strong>{{data?.name}}</strong></h4>
+            <p mat-line>Chức vụ: {{data?.positionView}} - Trạng thái: {{data?.statusView}}</p>
+            <p mat-line>Thời gian phục vụ: {{data?.fromDateView}} <span *ngIf="data?.toDateView?.length > 0"> -
+                    {{data?.toDateView}}</span></p>
+            <p mat-line>Do {{data?.appointerName}} bổ nhiệm vào ngày {{data?.effectiveDateView}}</p>
+            <span fxFlex></span>
+            <!-- <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                matTooltip="Thao Tác Khác">
+                <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
             </button>
-            <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
-                (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
-                <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
-            </button>
-            <button *ngIf="data.status == 'inactive'" mat-menu-item
-                (click)="$event.stopPropagation();onUpdateStatus(data,'active')" matTooltip="Mở Lại">
-                <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>Mở Lại
-            </button>
-            <button mat-menu-item (click)="$event.stopPropagation();deleteItem(data)">
-                <mat-icon svgIcon="ic_delete_48px"></mat-icon>Xóa
-            </button>
-        </mat-menu> -->
-    </mat-list-item>
-</mat-nav-list>
+            <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
+                <button mat-menu-item (click)="onChangeData(data)">
+                    <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
+                </button>
+                <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
+                    (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
+                    <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
+                </button>
+                <button *ngIf="data.status == 'inactive'" mat-menu-item
+                    (click)="$event.stopPropagation();onUpdateStatus(data,'active')" matTooltip="Mở Lại">
+                    <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>Mở Lại
+                </button>
+                <button mat-menu-item (click)="$event.stopPropagation();deleteItem(data)">
+                    <mat-icon svgIcon="ic_delete_48px"></mat-icon>Xóa
+                </button>
+            </mat-menu> -->
+        </mat-list-item>
+    </mat-nav-list>
+</ng-container>
+<ng-template #noDataTemf>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <span>Chưa có thông tin</span>
+    </div>
+</ng-template>
 <!-- <mat-divider class="full-width"></mat-divider> -->
 <!-- <div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
     <span fxFlex></span>

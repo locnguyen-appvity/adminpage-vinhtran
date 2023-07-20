@@ -1,4 +1,68 @@
-export const TYPE_CLERGY = [
+export const ANNIVERSARIES = [
+    {
+        name: "Ngày Sinh",
+        type: "birth",
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Ngày Thành Lập",
+        type: "birth",
+        typeClergy: "",
+        typeOrg: "all",
+    },
+    {
+        name: "Rửa Tội",
+        type: "baptize",
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Bổn Mạng",
+        type: "saint",
+        typeClergy: "all",
+        typeOrg: "all",
+    },
+    {
+        name: "Thêm Sức",
+        type: "confirmation",
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Đại Chủng Viện",
+        type: "bigSeminary",
+        typeClergy: "tu_trieu",
+        typeOrg: "",
+    },
+    {
+        name: "Tiểu Chủng Viện",
+        type: "smallSeminary",
+        typeClergy: "tu_trieu",
+        typeOrg: "",
+    },
+    {
+        name: "Tiểu Chủng Viện",
+        type: "vow",
+        typeClergy: "tu_dong",
+        typeOrg: "",
+    }
+    // {
+    //     name: "Ngày Mất",
+    //     entityID: "",
+    //     entityType: "",
+    //     date: "",
+    //     day: "",
+    //     description: "",
+    //     type: "rip",
+    //     content: "",
+    //     locationID: "",
+    //     locationType: "",
+    //     status: "active"
+    // }
+]
+
+export const LEVEL_CLERGY = [
     {
         name: 'Giám Mục',
         code: 'giam_muc'
