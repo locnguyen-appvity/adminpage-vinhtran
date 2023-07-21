@@ -206,15 +206,25 @@
                                     </button>
                                     <mat-menu #actionsMenu="matMenu" [overlapTrigger]="overlapTrigger">
                                         <button mat-menu-item [disabled]="dataProcessing"
-                                            (click)="getRowSelected(element)">
+                                            (click)="getRowSelected(element,'edit')">
                                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                             <span>Sửa</span>
+                                        </button>
+                                        <button mat-menu-item [disabled]="dataProcessing" class="approve-button"
+                                            (click)="getRowSelected(element,'thuyen_chuyen')">
+                                            <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
+                                            <span>Thuyên Chuyển</span>
+                                        </button>
+                                        <button mat-menu-item [disabled]="dataProcessing" class="reject-button"
+                                            (click)="getRowSelected(element,'ket_thuc')">
+                                            <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
+                                            <span>Kết Thúc</span>
                                         </button>
                                         <button mat-menu-item [disabled]="dataProcessing" (click)="onDelete(element)">
                                             <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                                             <span>Xoá</span>
                                         </button>
-                                        <button mat-menu-item *ngIf="element.status !== 'inactive'"
+                                        <!-- <button mat-menu-item *ngIf="element.status !== 'inactive'"
                                             [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                             <span>Tạm Ẩn</span>
@@ -224,7 +234,7 @@
                                             [disabled]="dataProcessing" (click)="onUpdateStatus(element,'active')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                             <span>Mở Lại</span>
-                                        </button>
+                                        </button> -->
 
                                     </mat-menu>
                                 </td>
@@ -234,17 +244,18 @@
                             <ng-container matColumnDef="expandedDetail">
                                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayColumns.length">
                                     <div [@detailExpand]="element?._expand_detail ? 'expanded' : 'collapsed'">
-                                        <div *ngIf="element?._expand_detail" fxLayout="row" fxLayoutAlign="center center" style="padding: 24px;">
+                                        <div *ngIf="element?._expand_detail && element?.expandData" fxLayout="row" fxLayoutAlign="center center" style="padding: 24px;">
                                             <div fxLayout="column">
-                                                <h3>Chuyển Từ: {{element?.entityName}}</h3>
-                                                <h6>Chức Vụ: {{element?.positionView}}</h6>
+                                                <h3>Chuyển Từ: {{element?.expandData?.entityName}}</h3>
+                                                <h6>Chức Vụ: {{element?.expandData?.positionView}}</h6>
                                                 <h6>Thời Gian Phục Vụ: 3 năm 2 tháng</h6>
-                                                <h6>Người Bổ Nhiệm: {{element?.appointerName}}</h6>
+                                                <h6>Người Bổ Nhiệm: {{element?.expandData?.appointerName}}</h6>
                                             </div>
                                             <mat-icon svgIcon="ic_arrow_forward" class="mrl-24 mrr-24"></mat-icon>
                                             <div fxLayout="column">
                                                 <h3>Đến: {{element?.entityName}}</h3>
                                                 <h6>Chức Vụ: {{element?.positionView}}</h6>
+                                                <h6>Pục vụ từ: {{element?.fromDateView}}</h6>
                                                 <h6>Người Bổ Nhiệm: {{element?.appointerName}}</h6>
                                             </div>
                                         </div>

@@ -19,11 +19,11 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 	styleUrls: ['./appointments-list.component.scss'],
 	animations: [
 		trigger('detailExpand', [
-		  state('collapsed', style({height: '0px', minHeight: '0'})),
-		  state('expanded', style({height: '*'})),
-		  transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+			state('collapsed', style({ height: '0px', minHeight: '0' })),
+			state('expanded', style({ height: '*' })),
+			transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
 		]),
-	  ],
+	],
 })
 export class AppointmentsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
@@ -45,7 +45,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		this.dataSettingsKey = 'user-list';
 		this.getPositions();
 	}
-	
+
 	getPositions() {
 		// let options = {
 		// 	filter: "type eq 'giao_xu'"
@@ -101,7 +101,8 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 
 	getDataGridApplications() {
 		let options = {
-			filter: this.getFilter()
+			filter: this.getFilter(),
+			sort:'effectiveDate desc'
 		}
 		if (this.subscription['getAppointments']) {
 			this.subscription['getAppointments'].unsubscribe();
@@ -114,24 +115,8 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				dataItems = res.value;
 				for (let item of dataItems) {
 					item.disabledItem = false;
-					item.statusView = this.updateStatus(item);
-					this.getPosition(item);
-					if (item.created) {
-						item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
-						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
-					}
-					if (item.effectiveDate) {
-						item._effectiveDate = this.sharedService.convertDateStringToMoment(item.effectiveDate, this.offset);
-						item.effectiveDateView = item._effectiveDate.format('DD/MM/YYYY hh:mm A');
-					}
-					if (item.fromDate) {
-						item._fromDate = this.sharedService.convertDateStringToMoment(item.fromDate, this.offset);
-						item.fromDateView = item._fromDate.format('DD/MM/YYYY hh:mm A');
-					}
-					if (item.toDate) {
-						item._toDate = this.sharedService.convertDateStringToMoment(item.toDate, this.offset);
-						item.toDateView = item._toDate.format('DD/MM/YYYY hh:mm A');
-					}
+					item.readyLoadExpand = false;
+					this.handleDataItem(item);
 				}
 			}
 			this.gridDataChanges.data = dataItems;
@@ -143,6 +128,27 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			}
 
 		})
+	}
+
+	handleDataItem(item: any){
+		item.statusView = this.updateStatus(item);
+		this.getPosition(item);
+		if (item.created) {
+			item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
+			item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+		}
+		if (item.effectiveDate) {
+			item._effectiveDate = this.sharedService.convertDateStringToMoment(item.effectiveDate, this.offset);
+			item.effectiveDateView = this.sharedService.formatDate(item._effectiveDate);
+		}
+		if (item.fromDate) {
+			item._fromDate = this.sharedService.convertDateStringToMoment(item.fromDate, this.offset);
+			item.fromDateView = this.sharedService.formatDate(item._fromDate);
+		}
+		if (item.toDate) {
+			item._toDate = this.sharedService.convertDateStringToMoment(item.toDate, this.offset);
+			item.toDateView = this.sharedService.formatDate(item._toDate);
+		}
 	}
 
 	getPosition(item: any) {
@@ -199,8 +205,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	addItem() {
 		let config: any = {
 			data: {
-				target: 'new',
-				entityID: this.entityID
+				target: 'new'
 			}
 		};
 		config.disableClose = true;
@@ -223,13 +228,18 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		});
 	}
 
-	getRowSelected(item: any) {
+	getRowSelected(item: any, action: string) {
 		if (this.isNullOrEmpty(this.entityID)) {
 			let config: any = {
 				data: {
 					target: 'edit',
-					entityID: this.entityID,
-					item: item
+					// entityID: item.entityID,
+					// entityName: item.entityName,
+					// entityType: item.entityType,
+					item: item,
+					clergyID: item.clergyID,
+					clergyName: item.clergyName,
+					action: action
 				}
 			};
 			config.disableClose = true;
@@ -276,7 +286,21 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	toggleExpandElements(item: any) {
-		item._expand_detail = !item._expand_detail;
+		if(item.readyLoadExpand){
+			item._expand_detail = !item._expand_detail;
+			return;
+		}
+		if(!this.isNullOrEmpty(item.fromAppointmentID)){
+			this.service.getAppointment(item.fromAppointmentID).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					this.handleDataItem(res);
+					item.readyLoadExpand = true;
+					item.expandData = res;
+					item._expand_detail = !item._expand_detail;
+					
+				}
+			})
+		}
 	}
 
 

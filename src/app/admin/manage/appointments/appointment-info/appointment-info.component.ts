@@ -28,6 +28,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 	public dataItemGroup: FormGroup;
+	public mode: string = 'new';
 	public localItem: any;
 	public title: string = "Thêm";
 	public entityID: string = "";
@@ -40,12 +41,15 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	public entityList: any[] = [];
 	public appointmentsList: any[] = [];
 	public positionList: any[] = [];
+	public positionFromList: any[] = [];
 	public positionListCache: any[] = [];
 	public levelList: any[] = LEVEL_CLERGY;
 	public statusClergy: any[] = STATUS_CLERGY;
 	public searchValue: string = '';
 
 	public target: string = 'bo_nhiem';
+	public action: string = '';
+	private fromAppointmentItem: any;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -53,9 +57,19 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		public dialogRef: MatDialogRef<AppointmentsInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
+		if (this.dialogData.action) {
+			this.action = this.dialogData.action;
+		}
 		if (this.dialogData.item) {
 			this.title = "Sửa";
-			this.localItem = this.dialogData.item;
+			if (this.action == 'thuyen_chuyen') {
+				this.fromAppointmentItem = this.dialogData.item;
+				this.target = 'chon_thuyen_chuyen';
+			}
+			else {
+				this.mode = 'edit';
+				this.localItem = this.dialogData.item;
+			}
 		}
 		if (this.dialogData.entityID) {
 			this.entityID = this.dialogData.entityID;
@@ -95,8 +109,25 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	}
 
 	selectedTabChange(event: MatTabChangeEvent) {
+		this.dataItemGroup.patchValue({
+			fromEntityID: "",
+			fromEntityName: "",
+			fromAppointerID: "",
+			fromAppointerName: "",
+			fromEntityType: "",
+			fromPosition: "",
+			fromStatus: "",
+			fromFromDate: "",
+			fromEffectiveDate: "",
+			fromToDate: "",
+			fromAppointmentID: "",
+			fromAppointmentName: ""
+		})
 		if (event.index == 1) {
-			this.target = 'thuyen_chuyen';
+			this.target = 'chon_thuyen_chuyen';
+		}
+		else if (event.index == 2) {
+			this.target = 'tao_moi_thuyen_chuyen';
 		}
 		else {
 			this.target = 'bo_nhiem';
@@ -119,7 +150,12 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			item._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(item.effectiveDate);
 			effectiveDate = item._effectiveDate;
 		}
-		this.handlePositionList(item ? item.entityType : '');
+		if (item && item.fromAppointmentID) {
+			this.target = 'chon_thuyen_chuyen';
+			this.getAppointment(item.fromAppointmentID);
+		}
+		this.handlePositionList(item ? item.entityType : '', 'entityName');
+		this.handlePositionList(item ? item.entityType : '', 'fromEntityName');
 		return this.fb.group({
 			id: item ? item.id : '',
 			clergyName: item ? item.clergyName : this.clergyName,
@@ -143,9 +179,22 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			fromStatus: "",
 			fromFromDate: "",
 			fromEffectiveDate: "",
+			fromFromDateView: "",
+			fromToDateView: "",
+			fromPositionView: "",
+			fromEffectiveDateView: "",
 			fromToDate: "",
-			fromAppointmentID: ""
+			fromAppointmentID: item ? item.fromAppointmentID : (this.fromAppointmentItem ? this.fromAppointmentItem.id : ""),
+			fromAppointmentName: ""
 		});
+	}
+
+	getAppointment(appointmentID: string) {
+		this.service.getAppointment(appointmentID).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				this.fromAppointmentItem = res;
+			}
+		})
 	}
 
 	valueChangeAutocomplete(event: any, target: string) {
@@ -157,122 +206,178 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (event && event.id) {
 				this.dataItemGroup.get('entityID').setValue(event.id);
 				this.dataItemGroup.get('entityType').setValue(event.type);
-				this.handlePositionList(event.type);
+				this.handlePositionList(event.type, 'entityName');
 			}
 			else {
 				this.dataItemGroup.get('entityID').setValue("");
 				this.dataItemGroup.get('entityType').setValue("");
-				this.handlePositionList("")
+				this.handlePositionList("", 'entityName')
+			}
+		}
+		else if (target == 'fromEntityName') {
+			if (event && event.id) {
+				this.dataItemGroup.get('fromEntityID').setValue(event.id);
+				this.dataItemGroup.get('fromEntityType').setValue(event.type);
+				this.handlePositionList(event.type, 'fromEntityName');
+			}
+			else {
+				this.dataItemGroup.get('fromEntityID').setValue("");
+				this.dataItemGroup.get('fromEntityType').setValue("");
+				this.handlePositionList("", 'fromEntityName')
 			}
 		}
 		else if (target == 'appointerName') {
 			this.dataItemGroup.get('appointerID').setValue(event);
 		}
-		else if (target == 'fromEntityName') {
-			if (event) {
-				let fromDate = '';
-				let toDate = '';
-				let effectiveDate = '';
-				if (event && event.fromDate) {
-					event._fromDate = this.sharedService.convertDateStringToMomentUTC_0(event.fromDate);
-					fromDate = event._fromDate;
-				}
-				if (event && event.toDate) {
-					event._toDate = this.sharedService.convertDateStringToMomentUTC_0(event.toDate);
-					toDate = event._toDate;
-				}
-				if (event && event.effectiveDate) {
-					event._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(event.effectiveDate);
-					effectiveDate = event._effectiveDate;
-				}
-				this.dataItemGroup.patchValue({
-					fromEntityID: event.entityID,
-					fromEntityName: event.entityName,
-					fromAppointerID: event.appointerID,
-					fromAppointerName: event.appointerName,
-					fromEntityType: event.entityType,
-					fromPosition: event.position,
-					fromStatus: 'man_nhiem',
-					fromFromDate: fromDate,
-					fromEffectiveDate: effectiveDate,
-					fromToDate: toDate,
-					fromAppointmentID: event.id
-				})
-				this.dataItemGroup.get('fromPosition').disable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromStatus').disable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromEffectiveDate').disable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromFromDate').disable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromAppointerName').disable({
-					onlySelf: true
-				})
+		else if (target == 'fromAppointmentName') {
+			this.updateFromAppointment(event);
+		}
+	}
+
+	updateFromAppointment(event: any) {
+		if (event) {
+			let fromDate = '';
+			let toDate = '';
+			let effectiveDate = '';
+			let fromFromDateView = '';
+			let fromToDateView = '';
+			let fromEffectiveDateView = '';
+			if (event && event.fromDate) {
+				event._fromDate = this.sharedService.convertDateStringToMomentUTC_0(event.fromDate);
+				fromDate = event._fromDate;
+				fromFromDateView = this.sharedService.formatDate(event._fromDate);
 			}
-			else {
-				this.dataItemGroup.patchValue({
-					fromEntityID: "",
-					fromEntityName: "",
-					fromAppointerID: "",
-					fromAppointerName: "",
-					fromEntityType: "",
-					fromPosition: "",
-					fromStatus: "",
-					fromFromDate: "",
-					fromEffectiveDate: "",
-					fromToDate: "",
-					fromAppointmentID: "",
-				})
-				this.dataItemGroup.get('fromPosition').enable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromStatus').enable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromEffectiveDate').enable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromFromDate').enable({
-					onlySelf: true
-				})
-				this.dataItemGroup.get('fromAppointerName').enable({
-					onlySelf: true
-				})
+			if (event && event.toDate) {
+				event._toDate = this.sharedService.convertDateStringToMomentUTC_0(event.toDate);
+				toDate = event._toDate;
+				fromToDateView = this.sharedService.formatDate(event._toDate);
+			}
+			if (event && event.effectiveDate) {
+				event._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(event.effectiveDate);
+				effectiveDate = event._effectiveDate;
+				fromEffectiveDateView = this.sharedService.formatDate(event._effectiveDate);
+			}
+			this.dataItemGroup.patchValue({
+				fromEntityID: event.entityID,
+				fromEntityName: event.entityName,
+				fromAppointerID: event.appointerID,
+				fromAppointerName: event.appointerName,
+				fromEntityType: event.entityType,
+				fromPosition: event.position,
+				fromStatus: 'man_nhiem',
+				fromFromDate: fromDate,
+				fromEffectiveDate: effectiveDate,
+				fromToDate: toDate,
+				fromAppointmentID: event.id,
+				fromAppointmentName: event.entityName,
+				fromFromDateView: fromFromDateView,
+				fromToDateView: fromToDateView,
+				fromPositionView: this.sharedService.getNameExistsInArray(event.position, this.positionListCache, 'code'),
+				fromEffectiveDateView: fromEffectiveDateView,
+			})
+			this.dataItemGroup.get('fromPosition').disable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromStatus').disable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromEffectiveDate').disable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromFromDate').disable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromAppointerName').disable({
+				onlySelf: true
+			})
+		}
+		else {
+			this.dataItemGroup.patchValue({
+				fromEntityID: "",
+				fromEntityName: "",
+				fromAppointerID: "",
+				fromAppointerName: "",
+				fromEntityType: "",
+				fromPosition: "",
+				fromStatus: "",
+				fromFromDate: "",
+				fromEffectiveDate: "",
+				fromToDate: "",
+				fromAppointmentID: "",
+				fromAppointmentName: "",
+				fromFromDateView: "",
+				fromPositionView: "",
+				fromEffectiveDateView: "",
+			})
+			this.dataItemGroup.get('fromPosition').enable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromStatus').enable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromEffectiveDate').enable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromFromDate').enable({
+				onlySelf: true
+			})
+			this.dataItemGroup.get('fromAppointerName').enable({
+				onlySelf: true
+			})
+		}
+	}
+
+	getPosition(item: any) {
+		item.positionView = 'Chưa xác định'
+		if (!this.isNullOrEmpty(item.position)) {
+			let position = this.sharedService.getValueAutocomplete(item.position, this.positionList, 'code');
+			if (position && position.name) {
+				item.positionView = position.name;
 			}
 		}
 	}
 
-	handlePositionList(entityType: string) {
+	handlePositionList(entityType: string, target: string) {
+		let positionList = this.positionListCache;
 		switch (entityType) {
 			case 'giao_xu':
 			case 'giao_diem':
-				this.positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'giao_xu' || it.level == 'dong_tu' || it.level == 'khac'));
+				positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'giao_xu' || it.level == 'dong_tu' || it.level == 'khac'));
 				break;
 			case 'co_so_giao_phan':
 			case 'ban_muc_vu':
 			case 'ban_chuyen_tranh':
-				this.positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'khac'));
+				positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'khac'));
 				break;
 			case 'giao_hat':
-				this.positionList = this.positionListCache.filter(it => it.level == 'giao_hat');
+				positionList = this.positionListCache.filter(it => it.level == 'giao_hat');
 				break;
 			default:
-				this.positionList = this.positionListCache;
+				positionList = this.positionListCache;
 				break;
+		}
+		if (target == "fromEntityName") {
+			this.positionFromList = positionList;
+		}
+		else {
+			this.positionList = positionList;
 		}
 	}
 
 	onValueChanges(event: any, target: string) {
-		if (target == 'entityName') {
-			this.searchValue = event;
-			this.dataItemGroup.get('entityName').setValue(event);
-			this.getEntityList();
-			this.handlePositionList('');
+		if(this.searchValue != event){
+			if (target == 'entityName') {
+				this.searchValue = event;
+				// this.dataItemGroup.get('entityName').setValue(event);
+				this.getEntityList();
+				this.handlePositionList('', 'entityName');
+			}
+			else if (target == 'fromEntityName') {
+				this.searchValue = event;
+				// this.dataItemGroup.get('fromEntityName').setValue(event);
+				this.getEntityList();
+				this.handlePositionList('', 'fromEntityName');
+			}
 		}
 	}
 
@@ -393,9 +498,14 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					items = res.value;
 				}
 				this.positionListCache = items;
-				this.handlePositionList(this.localItem ? this.localItem.entityType : '');
 				if (this.localItem && this.localItem.entityType) {
-					this.handlePositionList(this.localItem.entityType);
+					this.handlePositionList(this.localItem.entityType, 'entityName');
+				}
+				else {
+					this.positionList = this.positionListCache;
+				}
+				if (this.fromAppointmentItem) {
+					this.updateFromAppointment(this.fromAppointmentItem);
 				}
 			}
 		})
@@ -417,51 +527,85 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	}
 
 	onSaveItem() {
-		let valueForm = this.dataItemGroup.value;
-		if (this.target == 'thuyen_chuyen') {
-			if (this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
-				let fromAppointmentJSON = {
-					clergyName: valueForm.clergyName,
-					clergyID: valueForm.clergyID,
-					entityID: valueForm.entityID,
-					entityName: valueForm.fromEntityName,
-					appointerID: valueForm.fromAppointerID,
-					appointerName: valueForm.fromAppointerName,
-					entityType: valueForm.fromEntityType,
-					fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
-					toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
-					effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
-					position: valueForm.fromPosition,
-					fromAppointmentID: "",
-					status: valueForm.fromStatus,
-				}
-				this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
-					next: (res: any) => {
-						console.log('createAppointment........', res);
-						this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
+		if (this.mode == 'new') {
+			let valueForm = this.dataItemGroup.value;
+			// if (this.isNullOrEmpty(this.action)) {
+
+				if (this.target == 'chon_thuyen_chuyen') {
+					if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
+						let fromAppointmentJSON = {
+							toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
+							status: this.dataItemGroup.get("fromStatus").value
+						}
+						forkJoin([
+							this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
+							this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
+								next: () => {
+									this.dialogRef.close("OK");
+								}
+							})
+					}
+					else {
+						this.onSaveAppointment("").pipe(take(1)).subscribe({
 							next: () => {
 								this.dialogRef.close("OK");
 							}
 						})
 					}
-				})
-			}
-			else {
-				let fromAppointmentJSON = {
-					toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
-					status: this.dataItemGroup.get("fromStatus").value
 				}
-				forkJoin([
-					this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
-					this.service.updateAppointment(this.localItem.id, fromAppointmentJSON)]).pipe(take(1)).subscribe({
+				else if (this.target == 'tao_moi_thuyen_chuyen') {
+					if (!this.isNullOrEmpty(this.dataItemGroup.get("fromEntityName").value)) {
+						let fromAppointmentJSON = {
+							clergyName: valueForm.clergyName,
+							clergyID: valueForm.clergyID,
+							entityID: valueForm.entityID,
+							entityName: valueForm.fromEntityName,
+							appointerID: valueForm.fromAppointerID,
+							appointerName: valueForm.fromAppointerName,
+							entityType: valueForm.fromEntityType,
+							fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
+							toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
+							effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
+							position: valueForm.fromPosition,
+							fromAppointmentID: "",
+							status: valueForm.fromStatus,
+						}
+						this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
+							next: (res: any) => {
+								let fromAppointmentId = null;
+								if (res && res.data && res.data.id) {
+									fromAppointmentId = res.data.id;
+								}
+								this.onSaveAppointment(fromAppointmentId).pipe(take(1)).subscribe({
+									next: () => {
+										this.dialogRef.close("OK");
+									}
+								})
+							}
+						})
+					}
+					else {
+						this.onSaveAppointment("").pipe(take(1)).subscribe({
+							next: () => {
+								this.dialogRef.close("OK");
+							}
+						})
+					}
+				}
+				else {
+					this.onSaveAppointment("").pipe(take(1)).subscribe({
 						next: () => {
 							this.dialogRef.close("OK");
 						}
 					})
-			}
+				}
+			// }
+			// else {
+
+			// }
 		}
 		else {
-			this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
+			this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
 				next: () => {
 					this.dialogRef.close("OK");
 				}

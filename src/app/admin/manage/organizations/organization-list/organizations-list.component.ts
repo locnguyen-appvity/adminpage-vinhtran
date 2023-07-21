@@ -171,7 +171,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 	getRowSelected(item: any) {
 		if (this.isNullOrEmpty(this.groupID)) {
-			this.router.navigate([`/admin/manage/organizations/organization/${item.id}`]);
+			this.router.navigate([`/admin/manage/${item.type}/detail/${item.id}`]);
 		}
 	}
 

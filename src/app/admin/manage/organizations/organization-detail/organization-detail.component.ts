@@ -168,7 +168,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 
 	routeToBack() {
-		this.router.navigate(['/admin/manage/organizations/organizations-list']);
+		this.router.navigate([`/admin/manage/${this.localItem.type}/list`]);
 	}
 
 	getAllData() {
@@ -234,10 +234,6 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 				}
 			}
 		})
-	}
-
-	onCancel() {
-		this.router.navigate(['/admin/manage/organizations/organizations-list']);
 	}
 
 	onSave(status: string) {

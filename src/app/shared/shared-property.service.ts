@@ -93,22 +93,22 @@ export class SharedPropertyService {
         return null;
     }
 
-    
 
-	updateTypeOrg(type: string) {
-		switch (type) {
-			case 'giao_hat':
+
+    updateTypeOrg(type: string) {
+        switch (type) {
+            case 'giao_hat':
                 return 'Giáo hạt'
-			case 'giao_xu':
+            case 'giao_xu':
                 return 'Giáo xứ'
-			case 'giao_diem':
+            case 'giao_diem':
                 return 'Giáo điểm'
-			case 'dong_tu':
+            case 'dong_tu':
                 return 'Dòng'
-			default:
-				return "";
-		}
-	}
+            default:
+                return "";
+        }
+    }
 
     parseOffsetTimezone(offset: any): number {
         if (offset) {
@@ -166,6 +166,20 @@ export class SharedPropertyService {
             return data.endOf('day').format('YYYY-MM-DDTHH:mm:ss[Z]');
         };
         return null;
+    }
+
+    public formatDate(data: any): string {
+        if (!this.isNullOrEmpty(data)) {
+            return data.format('DD/MM/YYYY');
+        };
+        return "";
+    }
+
+    public formatDateTime(data: any): string {
+        if (!this.isNullOrEmpty(data)) {
+            return data.format('DD/MM/YYYY hh"mm');
+        };
+        return "";
     }
 
     public removeAccents(str) {
@@ -226,6 +240,19 @@ export class SharedPropertyService {
             }
         }
         return false;
+    }
+
+    public getNameExistsInArray(value: any, data: any, key: string = 'id', keyTitle: string = 'name') {
+        if (!this.isNullOrEmpty(value)) {
+            if (data && data.length > 0) {
+                for (let item of data) {
+                    if (item[key] === value) {
+                        return item[keyTitle];
+                    }
+                }
+            }
+        }
+        return "";
     }
 
     public getItemExistsInArray(value: any, data: any, key: string = 'id'): any {

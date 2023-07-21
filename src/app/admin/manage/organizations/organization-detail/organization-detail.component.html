@@ -12,7 +12,7 @@
             </div>
             <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
                 <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
-                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
+                <button (click)="routeToBack()" mat-flat-button color="warn">Hủy</button>
                 <ng-template [ngIf]="localItem?.status == 'publish'">
                     <button (click)="onSave('publish')" mat-flat-button color="primary">Lưu</button>
                 </ng-template>

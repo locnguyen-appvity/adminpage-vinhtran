@@ -8,6 +8,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { TYPE_ORG } from '../../../../shared/data-manage';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-organization-info',
@@ -44,11 +45,12 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		private service: SharedService,
+		public router: Router,
 		public dialogRef: MatDialogRef<OrganizationInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		this.target = this.dialogData.target;
-		if(this.dialogData.type){
+		if (this.dialogData.type) {
 			this.type = this.dialogData.type;
 		}
 		if (this.target === 'edit') {
@@ -173,25 +175,17 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			this.dataProcessing = true;
 			this.service.createOrganization(dataJSON).pipe(take(1)).subscribe({
 				next: (res) => {
-					// if (res && res.value && res.value.id) {
-					// 	this.createAnniversaryToTeamMember(res.value.id).pipe(takeUntil(this.unsubscribe)).subscribe({
-					// 		next: () => {
-					// 			this.saveAction = '';
-					// 			this.dataProcessing = false;
-					// 			this.dialogRef.close('OK');
-					// 		},
-					// 		error: error => {
-					// 			this.saveAction = '';
-					// 			this.dataProcessing = false;
-					// 			this.dialogRef.close('OK');
-					// 		}
-					// 	});
-					// }
-					// else {
-					this.saveAction = '';
-					this.dataProcessing = false;
-					this.dialogRef.close('OK');
-					// }
+					if (res && res.data && res.data.id) {
+						this.saveAction = '';
+						this.dataProcessing = false;
+						this.router.navigate([`/admin/manage/${res.data.type}/detail/${res.data.id}`]);
+						this.dialogRef.close('OK');
+					}
+					else {
+						this.saveAction = '';
+						this.dataProcessing = false;
+						this.dialogRef.close('OK');
+					}
 				}
 			})
 		}

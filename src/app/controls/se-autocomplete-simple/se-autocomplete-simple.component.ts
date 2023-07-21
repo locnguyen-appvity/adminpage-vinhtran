@@ -1,6 +1,6 @@
 import { Component, Input, HostBinding, OnDestroy, Optional, Self, ElementRef, OnChanges, Output, EventEmitter, ViewChild, SimpleChanges, AfterViewInit } from '@angular/core';
 import { FormControl, NgControl, AsyncValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
-import { map, startWith, takeUntil, distinctUntilChanged } from 'rxjs/operators';
+import { map, startWith, takeUntil, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { Subject, Observable, of, timer } from 'rxjs';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -8,6 +8,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { LinqService } from 'src/app/shared/linq.service';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 // declare let jQuery: any;
 
 @Component({
@@ -88,7 +89,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 
 	ngAfterViewInit(): void {
 		if (this.mode == 'search-runtime') {
-			this.inputControl.valueChanges.pipe(takeUntil(this._unsubscribe$)).subscribe({
+			this.inputControl.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), takeUntil(this._unsubscribe$)).subscribe({
 				next: (value: any) => {
 					if (this.isSelected || this.originalValue == value) {
 						this.isSelected = false;
@@ -100,7 +101,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 		}
 		else {
 			if (this.mode == 'emit-change') {
-				this.inputControl.valueChanges.pipe(takeUntil(this._unsubscribe$)).subscribe({
+				this.inputControl.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), takeUntil(this._unsubscribe$)).subscribe({
 					next: (value: any) => {
 						if (this.isSelected || this.originalValue == value) {
 							return;
@@ -227,6 +228,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 				return item[this.keyValue] === this.value;
 			});
 			if (defaultItem) {
+				this.originalValue = defaultItem[this.keyTitle];
 				this.inputControl.setValue(defaultItem[this.keyTitle]);
 			}
 		}
@@ -259,6 +261,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 				return item[this.keyValue] === value;
 			});
 			if (defaultItem) {
+				this.originalValue = defaultItem[this.keyTitle];
 				this.inputControl.setValue(defaultItem[this.keyTitle]);
 			}
 			else {
@@ -331,6 +334,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	clearValue() {
 		timer(500).pipe(takeUntil(this._unsubscribe$)).subscribe({
 			next: () => {
+				this.originalValue = '';
 				this.inputControl.setValue('');
 				this.valueChange.emit('');
 				this.onChange('');
@@ -361,6 +365,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 			let value = null;
 			if (defaultItem) {
 				value = defaultItem[this.keyValueEmit];
+				this.originalValue = defaultItem[this.keyTitle];
 				this.inputControl.setValue(defaultItem[this.keyTitle]);
 				this.onSelectItem.emit(defaultItem);
 			}
