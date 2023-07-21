@@ -218,7 +218,7 @@
                                         <button mat-menu-item [disabled]="dataProcessing" class="reject-button"
                                             (click)="getRowSelected(element,'ket_thuc')">
                                             <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
-                                            <span>Kết Thúc</span>
+                                            <span>Kết Thúc Sức Vụ</span>
                                         </button>
                                         <button mat-menu-item [disabled]="dataProcessing" (click)="onDelete(element)">
                                             <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
@@ -244,20 +244,30 @@
                             <ng-container matColumnDef="expandedDetail">
                                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayColumns.length">
                                     <div [@detailExpand]="element?._expand_detail ? 'expanded' : 'collapsed'">
-                                        <div *ngIf="element?._expand_detail && element?.expandData" fxLayout="row" fxLayoutAlign="center center" style="padding: 24px;">
-                                            <div fxLayout="column">
-                                                <h3>Chuyển Từ: {{element?.expandData?.entityName}}</h3>
-                                                <h6>Chức Vụ: {{element?.expandData?.positionView}}</h6>
-                                                <h6>Thời Gian Phục Vụ: 3 năm 2 tháng</h6>
-                                                <h6>Người Bổ Nhiệm: {{element?.expandData?.appointerName}}</h6>
-                                            </div>
-                                            <mat-icon svgIcon="ic_arrow_forward" class="mrl-24 mrr-24"></mat-icon>
-                                            <div fxLayout="column">
-                                                <h3>Đến: {{element?.entityName}}</h3>
-                                                <h6>Chức Vụ: {{element?.positionView}}</h6>
-                                                <h6>Pục vụ từ: {{element?.fromDateView}}</h6>
-                                                <h6>Người Bổ Nhiệm: {{element?.appointerName}}</h6>
-                                            </div>
+                                        <div *ngIf="element?._expand_detail" fxLayout="row" fxLayoutAlign="center center" style="padding: 24px;">
+                                            <ng-container *ngIf="element?.expandData; else nonDataExpand">
+                                                <div fxLayout="column">
+                                                    <h6>Chuyển Từ: <strong>{{element?.expandData?.entityName}}</strong></h6>
+                                                    <h6>Chức Vụ: {{element?.expandData?.positionView}}</h6>
+                                                    <h6>Pục vụ từ ngày {{element?.expandData?.fromDateView}} <span *ngIf="element?.expandData?.toDateView?.length > 0"> đến ngày <strong>{{element?.expandData?.toDateView}}</strong></span></h6>
+                                                    <h6>do {{element?.expandData?.appointerName}} bổ nhiệm ngày {{element?.expandData?.effectiveDateView}}</h6>
+                                                </div>
+                                                <mat-icon svgIcon="ic_arrow_forward" class="mrl-24 mrr-24"></mat-icon>
+                                                <div fxLayout="column">
+                                                    <h6>Đến: <strong>{{element?.entityName}}</strong></h6>
+                                                    <h6>Chức Vụ: {{element?.positionView}}</h6>
+                                                    <h6>Pục vụ từ ngày {{element?.fromDateView}} <span *ngIf="element?.toDateView?.length > 0"> đến ngày <strong>{{element?.toDateView}}</strong></span></h6>
+                                                    <h6>do {{element?.appointerName}} bổ nhiệm ngày {{element?.effectiveDateView}}</h6>
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #nonDataExpand>
+                                                <div fxLayout="column" fxLayoutAlign="center center">
+                                                    <h6>Phục vụ tại <strong>{{element?.entityName}}</strong></h6>
+                                                    <h6>với chức vụ <strong>{{element?.positionView}}</strong></h6>
+                                                    <h6>từ ngày <strong>{{element?.fromDateView}}</strong> <span *ngIf="element?.toDateView?.length > 0"> đến ngày <strong>{{element?.toDateView}}</strong></span></h6>
+                                                    <h6>do <strong>{{element?.appointerName}}</strong> bổ nhiệm ngày <strong>{{element?.effectiveDateView}}</strong></h6>
+                                                </div>
+                                            </ng-template>
                                         </div>
                                     </div>
                                 </td>

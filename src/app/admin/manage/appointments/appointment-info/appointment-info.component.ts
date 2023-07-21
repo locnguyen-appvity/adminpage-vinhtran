@@ -39,6 +39,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 	public clergysList: any[] = [];
 	public entityList: any[] = [];
+	public entityListFrom: any[] = [];
 	public appointmentsList: any[] = [];
 	public positionList: any[] = [];
 	public positionFromList: any[] = [];
@@ -369,13 +370,13 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (target == 'entityName') {
 				this.searchValue = event;
 				// this.dataItemGroup.get('entityName').setValue(event);
-				this.getEntityList();
+				this.getEntityList(target);
 				this.handlePositionList('', 'entityName');
 			}
 			else if (target == 'fromEntityName') {
 				this.searchValue = event;
 				// this.dataItemGroup.get('fromEntityName').setValue(event);
-				this.getEntityList();
+				this.getEntityList(target);
 				this.handlePositionList('', 'fromEntityName');
 			}
 		}
@@ -397,7 +398,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		return filter;
 	}
 
-	getEntityList() {
+	getEntityList(target: string) {
 		forkJoin({ organization: this.getOrganizations(), group: this.getGroups() }).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = [];
@@ -407,7 +408,12 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				if (res && res.group && res.group.length > 0) {
 					items.push(...res.group);
 				}
-				this.entityList = items;
+				if (target == 'entityName') {
+					this.entityList = items;
+				}
+				else if (target == 'fromEntityName') {
+					this.entityListFrom = items;
+				}
 			}
 		})
 	}
@@ -527,10 +533,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	}
 
 	onSaveItem() {
+		let valueForm = this.dataItemGroup.value;
 		if (this.mode == 'new') {
-			let valueForm = this.dataItemGroup.value;
 			// if (this.isNullOrEmpty(this.action)) {
-
 				if (this.target == 'chon_thuyen_chuyen') {
 					if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
 						let fromAppointmentJSON = {
@@ -605,11 +610,24 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			// }
 		}
 		else {
-			this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
-				next: () => {
-					this.dialogRef.close("OK");
+			if(this.action != 'ket_thuc'){
+				this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
+					next: () => {
+						this.dialogRef.close("OK");
+					}
+				})
+			}
+			else {
+				let appointmentJSON = {
+					toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+					status: 'man_nhiem',
 				}
-			})
+				this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
+					next: () => {
+						this.dialogRef.close("OK");
+					}
+				})
+			}
 		}
 
 	}

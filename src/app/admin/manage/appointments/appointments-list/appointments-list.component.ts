@@ -301,6 +301,10 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				}
 			})
 		}
+		else {
+			item.readyLoadExpand = true;
+			item._expand_detail = !item._expand_detail;
+		}
 	}
 
 

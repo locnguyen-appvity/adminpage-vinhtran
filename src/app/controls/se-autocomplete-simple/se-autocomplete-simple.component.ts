@@ -92,6 +92,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 			this.inputControl.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), takeUntil(this._unsubscribe$)).subscribe({
 				next: (value: any) => {
 					if (this.isSelected || this.originalValue == value) {
+						this.originalValue = value;
 						this.isSelected = false;
 						return;
 					}
@@ -104,6 +105,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 				this.inputControl.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), takeUntil(this._unsubscribe$)).subscribe({
 					next: (value: any) => {
 						if (this.isSelected || this.originalValue == value) {
+							this.originalValue = value;
 							return;
 						}
 						this.onChangeValue.emit(value);
