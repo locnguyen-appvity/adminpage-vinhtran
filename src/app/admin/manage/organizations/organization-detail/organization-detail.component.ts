@@ -268,7 +268,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 					message: 'Lưu Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.router.navigate(['/admin/manage/organizations/organizations-list']);
+				this.routeToBack();
 			}
 		})
 	}

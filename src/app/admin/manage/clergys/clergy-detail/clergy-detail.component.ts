@@ -41,8 +41,8 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public levelList: any[] = LEVEL_CLERGY;
 	public saintList: any[] = [];
 	public groupsList: any[] = [];
-	public orgsList: any[] = [];
 	public arrMasses: any[] = [];
+	public churchsList: any[] = [];
 
 	constructor(
 		private service: SharedService,
@@ -230,7 +230,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	getAllData() {
 		this.getSaints();
 		this.getGroups();
-		this.getOrganizations();
+		this.getChurchsList();
 	}
 
 	getSaints() {
@@ -267,25 +267,27 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		})
 	}
 
-	getOrganizations() {
-		this.orgsList = [];
+
+	getChurchsList() {
+		this.churchsList = [];
 		let options = {
 			select: 'id,name,type',
-			filter: "type eq 'dong_tu'"
+			filter: "type eq 'giao_xu' or type eq 'giao_diem' or type eq 'giao_ho'"
 		}
 		this.service.getOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
-					items.push(...res.value);
-					for (let item of items) {
-						item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`
+					for (let item of res.value) {
+						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 					}
+					items.push(...res.value);
 				}
-				this.orgsList = items;
+				this.churchsList = items;
 			}
 		})
 	}
+
 
 
 	getClergy() {

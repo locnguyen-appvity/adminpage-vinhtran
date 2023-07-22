@@ -116,27 +116,13 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 				}]
 				if (res && res.value && res.value.length > 0) {
 					for (let item of res.value) {
-						this.updateNameOfTypeOrg(item);
+						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 					}
 					items.push(...res.value);
 				}
 				this.organizationList = items;
 			}
 		})
-	}
-
-	updateNameOfTypeOrg(item: any) {
-		switch (item.type) {
-			case 'dong_tu':
-				item.name = `Dòng ${item.name}`;
-				break;
-			case 'giao_xu':
-				item.name = `Giáo Xứ ${item.name}`;
-				break;
-			case 'giao_diem':
-				item.name = `Giáo Điểm ${item.name}`;
-				break;
-		}
 	}
 
 	getSaints() {

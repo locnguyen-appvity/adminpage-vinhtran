@@ -31,7 +31,7 @@
                 <mat-toolbar *ngIf="selection?.selected?.length > 0" class="search-toolbar">
                     <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
                     <span fxFlex></span>
-                    <button mat-icon-button [disabled]="dataProcessing"
+                    <!-- <button mat-icon-button [disabled]="dataProcessing"
                         (click)="onUpdateStatus(selection?.selected[0],'inactive')"
                         *ngIf="selection?.selected?.length == 1 && selection?.selected[0]?.status !== 'inactive' && entityID == ''"
                         matTooltip="Tạm Ẩn">
@@ -46,7 +46,7 @@
                     <button mat-icon-button [disabled]="dataProcessing"
                         *ngIf="selection?.selected?.length == 1  && entityID == ''" matTooltip="Xóa">
                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
-                    </button>
+                    </button> -->
                 </mat-toolbar>
 
                 <mat-sidenav-container class="grid-container">
@@ -243,6 +243,10 @@
                                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                             <span>Sửa</span>
                                         </button>
+                                        <button mat-menu-item [disabled]="dataProcessing" (click)="addItem(element)">
+                                            <mat-icon svgIcon="ic_add_business_48dp"></mat-icon>
+                                            <span>Bổ Nhiệm</span>
+                                        </button>
                                         <button mat-menu-item [disabled]="dataProcessing" class="approve-button"
                                             (click)="getRowSelected(element,'thuyen_chuyen')">
                                             <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
@@ -252,6 +256,16 @@
                                             (click)="getRowSelected(element,'ket_thuc')">
                                             <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
                                             <span>Kết Thúc Sức Vụ</span>
+                                        </button>
+                                        <button *ngIf="element?.clergyID?.length > 0" mat-menu-item
+                                            [disabled]="dataProcessing" (click)="openNewTab(element,'clergy')">
+                                            <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
+                                            <span>Xem Thông Tin Linh Mục</span>
+                                        </button>
+                                        <button *ngIf="element?.entityID?.length > 0" mat-menu-item
+                                            [disabled]="dataProcessing" (click)="openNewTab(element,'entity')">
+                                            <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
+                                            <span>Xem Thông Tin Nơi Nhận Nhiệm Vụ</span>
                                         </button>
                                         <button mat-menu-item [disabled]="dataProcessing" (click)="onDelete(element)">
                                             <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>

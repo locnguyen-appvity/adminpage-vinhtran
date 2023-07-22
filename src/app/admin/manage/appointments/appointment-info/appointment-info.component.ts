@@ -88,7 +88,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			this.clergyName = this.dialogData.clergyName;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
-		// this.getEntityList();
+		this.getEntityList('entityName');
+		this.getEntityList('fromEntityName');
 		this.getClergies();
 		this.getPositions();
 	}
@@ -161,7 +162,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			id: item ? item.id : '',
 			clergyName: item ? item.clergyName : this.clergyName,
 			clergyID: item ? item.clergyID : this.clergyID,
-			entityID: item ? item.entityID : this.entityID,
+			entityID: item ? item.entityID :this.entityID,
+			_entityID: item ? `${item.entityType}_${item.entityID}` : (this.entityID ? `${this.entityType}_${this.entityID}` : ''),
 			entityName: item ? item.entityName : this.entityName,
 			appointerID: item ? item.appointerID : "",
 			appointerName: item ? item.appointerName : "",
@@ -172,6 +174,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			effectiveDate: effectiveDate,
 			toDate: toDate,
 			fromEntityID: "",
+			_fromEntityID: "",
 			fromEntityName: "",
 			fromAppointerID: "",
 			fromAppointerName: "",
@@ -207,11 +210,13 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (event && event.id) {
 				this.dataItemGroup.get('entityID').setValue(event.id);
 				this.dataItemGroup.get('entityType').setValue(event.type);
+				this.dataItemGroup.get('entityName').setValue(event.name);
 				this.handlePositionList(event.type, 'entityName');
 			}
 			else {
 				this.dataItemGroup.get('entityID').setValue("");
 				this.dataItemGroup.get('entityType').setValue("");
+				this.dataItemGroup.get('entityName').setValue("");
 				this.handlePositionList("", 'entityName')
 			}
 		}
@@ -219,11 +224,13 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (event && event.id) {
 				this.dataItemGroup.get('fromEntityID').setValue(event.id);
 				this.dataItemGroup.get('fromEntityType').setValue(event.type);
+				this.dataItemGroup.get('fromEntityName').setValue(event.name);
 				this.handlePositionList(event.type, 'fromEntityName');
 			}
 			else {
 				this.dataItemGroup.get('fromEntityID').setValue("");
 				this.dataItemGroup.get('fromEntityType').setValue("");
+				this.dataItemGroup.get('fromEntityName').setValue("");
 				this.handlePositionList("", 'fromEntityName')
 			}
 		}
@@ -264,7 +271,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				fromEffectiveDateView = this.sharedService.formatDate(event._effectiveDate);
 			}
 			this.dataItemGroup.patchValue({
-				fromEntityID: event.entityID,
+				fromEntityID: event ? event.entityID : '',
+				_fromEntityID: `${event.entityType}_${event.entityID}`,
 				fromEntityName: event.entityName,
 				fromAppointerID: event.appointerID,
 				fromAppointerName: event.appointerName,
@@ -300,6 +308,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		else {
 			this.dataItemGroup.patchValue({
 				fromEntityID: "",
+				_fromEntityID: "",
 				fromEntityName: "",
 				fromAppointerID: "",
 				fromAppointerName: "",
@@ -373,15 +382,15 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	onValueChanges(event: any, target: string) {
 		if (this.searchValue != event) {
 			if (target == 'entityName') {
-				this.searchValue = event;
+				// this.searchValue = event;
 				// this.dataItemGroup.get('entityName').setValue(event);
-				this.getEntityList(target);
+				// this.getEntityList(target);
 				this.handlePositionList('', 'entityName');
 			}
 			else if (target == 'fromEntityName') {
-				this.searchValue = event;
+				// this.searchValue = event;
 				// this.dataItemGroup.get('fromEntityName').setValue(event);
-				this.getEntityList(target);
+				// this.getEntityList(target);
 				this.handlePositionList('', 'fromEntityName');
 			}
 		}
@@ -428,8 +437,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			let options = {
 				select: 'id,name,type',
 				filter: this.getFilter(),
-				skip: 0,
-				top: 5
+				// skip: 0,
+				// top: 5
 			}
 			this.service.getOrganizations(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
@@ -437,9 +446,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							// item._type = 'organization';
-							item.groupName = 'Giáo Xứ - Dòng Tu';
-							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
+							item._id = `${item.type}_${item.id}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}
 					}
 					obs.next(items);
@@ -454,8 +463,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			let options = {
 				select: 'id,name,type',
 				filter: this.getFilter(),
-				skip: 0,
-				top: 5
+				// skip: 0,
+				// top: 5
 			}
 			this.service.getGroups(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
@@ -463,9 +472,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							// item._type = 'group';
-							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
-							item.groupName = 'Giáo Hạt';
+							item._id = `${item.type}_${item.id}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}
 					}
 					obs.next(items);

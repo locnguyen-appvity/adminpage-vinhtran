@@ -65,15 +65,15 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 		this.filterTypeEntityID = new FormControl('all');
 		this.filterTypeEntityID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((type: any) => {
-			if(type == 'all'){
+			if (type == 'all') {
 				this.entityList = this.entityListCache;
 			}
 			else {
-				this.entityList = this.entityListCache.filter(it=>it.type == type);
+				this.entityList = this.entityListCache.filter(it => it.type == type);
 				this.entityList.unshift({
 					order: '1',
 					groupName: "All",
-					type:'all',
+					type: 'all',
 					id: 'all',
 					_id: 'all',
 					name: `Tất cả ${this.sharedService.updateTypeOrg(type)}`
@@ -119,7 +119,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				items.unshift({
 					order: '1',
 					groupName: "All",
-					type:'all',
+					type: 'all',
 					id: 'all',
 					_id: 'all',
 					name: 'Tất Cả Nơi Bổ Nhiệm'
@@ -148,7 +148,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 							// item._type = 'organization';
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 							// item.order = this.sharedService.getOrderTypeOrg(item.type);
-							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 						}
 					}
 					obs.next(items);
@@ -173,7 +173,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 						items.push(...res.value);
 						for (let item of items) {
 							item._id = `${item.type}_${item.id}`;
-							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}
 					}
@@ -376,6 +376,21 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
+	openNewTab(element: any,target: string) {
+		let link = '';
+		if(target == 'clergy'){
+			link = `./#/admin/manage/clergys/clergy/${element.clergyID}`;
+		}
+		else {
+			link = `./#/admin/manage/${element.entityType}/detail/${element.entityID}`;
+		}
+		console.log('');
+		
+		// this.router.navigate([]).then(() => {
+			window.open(link, '_blank');
+		// });
+	}
+
 	onUpdateStatus(item: any, status: string) {
 		let dataJSON = {
 			status: status,
@@ -392,10 +407,11 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
-	addItem() {
+	addItem(item?: any) {
 		let config: any = {
 			data: {
-				target: 'new'
+				target: 'new',
+				clergyID: item ? item.clergyID : ''
 			}
 		};
 		config.disableClose = true;

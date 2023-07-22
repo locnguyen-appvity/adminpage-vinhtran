@@ -16,7 +16,7 @@
 					mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)">
 					<mat-tab label="Bổ Nhiệm"></mat-tab>
 					<mat-tab label="Chọn Thuyên Chuyển"></mat-tab>
-					<mat-tab label="Tạo Mới Thuyên Chuyển"></mat-tab>
+					<!-- <mat-tab label="Tạo Mới Thuyên Chuyển"></mat-tab> -->
 				</mat-tab-group>
 
 				<ng-template [ngIf]="target == 'chon_thuyen_chuyen'">
@@ -62,10 +62,10 @@
 					<h2>NƠI CHUYỂN ĐI</h2>
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Nơi Đi</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'fromEntityName'"
+						<se-autocomplete-simple [required]="false" [formControlName]="'_fromEntityID'"
 							[optgroup]="false" [placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'"
-							[keyValueEmit]="'name'" [keyValue]="'id'" [autocomplete]="true" [items]="entityListFrom"
-							[mode]="'search-runtime'" (onChangeValue)="onValueChanges($event,'fromEntityName')"
+							[keyValueEmit]="'id'" [keyValue]="'_id'" [autocomplete]="true" [items]="entityListFrom"
+							 (onChangeValue)="onValueChanges($event,'fromEntityName')"
 							[optgroup]="true" (onSelectItem)="valueChangeAutocomplete($event,'fromEntityName')">
 						</se-autocomplete-simple>
 					</mat-form-field>
@@ -150,9 +150,9 @@
 				<h2 *ngIf="target != 'bo_nhiem'">NƠI CHUYỂN ĐẾN</h2>
 				<mat-form-field *ngIf="entityType !== 'organization'" appearance="outline" class="full-width">
 					<mat-label>Nơi Đến</mat-label>
-					<se-autocomplete-simple [required]="false" [formControlName]="'entityName'" [optgroup]="false"
-						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
-						[autocomplete]="true" [items]="entityList" [mode]="'search-runtime'"
+					<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="false"
+						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'_id'"
+						[autocomplete]="true" [items]="entityList"
 						(onChangeValue)="onValueChanges($event,'entityName')" [optgroup]="true"
 						(onSelectItem)="valueChangeAutocomplete($event,'entityName')">
 					</se-autocomplete-simple>

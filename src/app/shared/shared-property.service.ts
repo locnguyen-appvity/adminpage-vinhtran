@@ -127,6 +127,27 @@ export class SharedPropertyService {
         }
     }
 
+    updateNameTypeOrg(type: string) {
+        switch (type) {
+            case 'giao_hat':
+                return 'Giáo hạt'
+            case 'giao_xu':
+                return 'Giáo xứ'
+            case 'giao_diem':
+                return 'Giáo điểm'
+            case 'dong_tu':
+                return 'Dòng'
+            // case 'co_so_giao_phan':
+            //     return 'Cơ Sở Giáo Phận';
+            // case 'ban_muc_vu':
+            //     return 'Ban Mục Vụ';
+            // case 'ban_chuyen_mon':
+            //     return 'Ban Chuyên Môn';
+            default:
+                return "";
+        }
+    }
+
     parseOffsetTimezone(offset: any): number {
         if (offset) {
             if (typeof offset === "number") {
