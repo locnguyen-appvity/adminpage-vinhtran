@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import moment from 'moment';
+import { LEVEL_CLERGY } from './data-manage';
 
 @Injectable({
     providedIn: "root"
@@ -50,6 +51,7 @@ export class SharedPropertyService {
     }
 
     public dataItem = new Subject<any>();
+    public levelList: any[] = LEVEL_CLERGY;
     // Observable any streams
     dataItemObs = this.dataItem.asObservable();
     // Service message commands
@@ -94,6 +96,15 @@ export class SharedPropertyService {
     }
 
 
+	getClergyType(item: any) {
+		if (!this.isNullOrEmpty(item.level)) {
+			let level = this.getValueAutocomplete(item.level, this.levelList, 'code');
+			if (level && level.name) {
+				return level.name;
+			}
+		}
+		return "";
+	}
 
     updateTypeOrg(type: string) {
         switch (type) {
@@ -105,6 +116,12 @@ export class SharedPropertyService {
                 return 'Giáo điểm'
             case 'dong_tu':
                 return 'Dòng'
+            case 'co_so_giao_phan':
+                return 'Cơ Sở Giáo Phận';
+            case 'ban_muc_vu':
+                return 'Ban Mục Vụ';
+            case 'ban_chuyen_mon':
+                return 'Ban Chuyên Môn';
             default:
                 return "";
         }

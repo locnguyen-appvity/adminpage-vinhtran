@@ -1,14 +1,14 @@
 <form class="form-horizontal" novalidate [formGroup]="formGroupControl" autocomplete="off">
     <div fxLayout="row" fxLayoutAlign="start center">
-        <div class="step-header step-title">Thông Tin Tu Sĩ</div>
+        <div class="step-header step-title">Thông Tin Linh Mục</div>
         <span fxFlex></span>
         <!-- <mat-icon class="step-header" svgIcon="ic_drag_indicator" matIcon>
         </mat-icon> -->
     </div>
     <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Tên Tu Sĩ</mat-label>
+        <mat-label>Tên Linh Mục</mat-label>
         <se-autocomplete-simple [required]="false" [formControlName]="'clergyID'"  [optgroup]="false"
-            [placeHolder]="'Nhập tên tu sĩ...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'id'"
+            [placeHolder]="'Nhập tên linh mục...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'id'"
             [autocomplete]="true" [items]="clergysList" (valueChange)="valueChangeAutocomplete($event,'clergyID')">
         </se-autocomplete-simple>
     </mat-form-field>
@@ -16,9 +16,9 @@
     <div fxLayout="row wrap">
         <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
             <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Phân Loại Tu Sĩ</mat-label>
+                <mat-label>Phân Loại Linh Mục</mat-label>
                 <se-autocomplete-simple [required]="false" [formControlName]="'type'"  [optgroup]="false"
-                    [placeHolder]="'Nhập Loại Tu Sĩ...'" [keyTitle]="'name'" [keyValue]="'code'" [keyValueEmit]="'code'"
+                    [placeHolder]="'Nhập Loại linh mục...'" [keyTitle]="'name'" [keyValue]="'code'" [keyValueEmit]="'code'"
                     [autocomplete]="false" [items]="typeList">
                 </se-autocomplete-simple>
             </mat-form-field>

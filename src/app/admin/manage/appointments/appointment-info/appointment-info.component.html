@@ -4,7 +4,7 @@
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
 			<ng-template [ngIf]="action != 'ket_thuc'">
 				<mat-form-field *ngIf="entityType !== 'clergy'" appearance="outline" class="full-width">
-					<mat-label>Tên Tu Sĩ</mat-label>
+					<mat-label>Tên Linh Mục</mat-label>
 					<se-autocomplete-simple [required]="false" [formControlName]="'clergyName'" [optgroup]="false"
 						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
 						[autocomplete]="true" [items]="clergysList"
@@ -22,7 +22,7 @@
 				<ng-template [ngIf]="target == 'chon_thuyen_chuyen'">
 					<h2>NƠI CHUYỂN ĐI</h2>
 					<div *ngIf="!dataItemGroup?.value?.clergyID" fxLayout="column" fxLayoutAlign="center center">
-						<span>Vui lòng chọn tu sĩ thuyên chuyển để chọn bổ nhiệm</span>
+						<span>Vui lòng chọn linh mục thuyên chuyển để chọn bổ nhiệm</span>
 					</div>
 					<mat-form-field *ngIf="mode == 'new'  && action == ''" appearance="outline" class="full-width">
 						<mat-label>Chọn bổ nhiệm</mat-label>
@@ -226,10 +226,10 @@
 				</div>
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Người Bổ Nhiệm</mat-label>
-					<se-autocomplete-simple [required]="false" [formControlName]="'appointerName'" [optgroup]="false"
-						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
-						[autocomplete]="true" [items]="clergysList"
-						(valueChangeSelect)="valueChangeAutocomplete($event,'appointerName')">
+					<se-autocomplete-simple [required]="false" [formControlName]="'appointerID'" [optgroup]="false"
+						[placeHolder]="'Chọn người bổ nhiệm...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
+						[autocomplete]="false" [items]="appointerList"
+						(onSelectItem)="onSelectItem($event,'appointerID')">
 					</se-autocomplete-simple>
 				</mat-form-field>
 			</ng-template>

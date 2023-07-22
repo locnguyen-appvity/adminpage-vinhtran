@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Router } from '@angular/router';
@@ -9,9 +9,10 @@ import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.c
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { Store } from '@ngrx/store';
-import { STATUS_CLERGY } from 'src/app/shared/data-manage';
+import { LTYPE_ORG, STATUS_CLERGY } from 'src/app/shared/data-manage';
 import { AppointmentsInfoComponent } from '../appointment-info/appointment-info.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-appointments-list',
@@ -30,6 +31,15 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	@Input() entityID: string = '';
 	public statusClergy: any[] = STATUS_CLERGY;
 	public positionList: any[] = [];
+	public clergysList: any[] = [];
+	public entityList: any[] = [];
+	public entityListCache: any[] = [];
+	public entityTypeList: any[] = LTYPE_ORG;
+	public filterClergyID: FormControl;
+	public filterEntityID: FormControl;
+	public filterTypeEntityID: FormControl;
+	public filterStatus: FormControl;
+	public filterEntity: string = '';
 
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -41,9 +51,137 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
+		this.entityTypeList.unshift({
+			code: 'all',
+			name: 'Tất Cả Loại Nơi Bổ Nhiệm'
+		})
+		this.statusClergy.unshift({
+			code: 'all',
+			name: 'Tất Cả Trạng Thái'
+		})
+		this.filterClergyID = new FormControl('all');
+		this.filterClergyID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+			this.getDataGridAndCounterApplications();
+		})
+		this.filterTypeEntityID = new FormControl('all');
+		this.filterTypeEntityID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((type: any) => {
+			if(type == 'all'){
+				this.entityList = this.entityListCache;
+			}
+			else {
+				this.entityList = this.entityListCache.filter(it=>it.type == type);
+				this.entityList.unshift({
+					order: '1',
+					groupName: "All",
+					type:'all',
+					id: 'all',
+					_id: 'all',
+					name: `Tất cả ${this.sharedService.updateTypeOrg(type)}`
+				})
+			}
+			this.filterClergyID.setValue('all');
+		})
+		this.filterEntityID = new FormControl('all');
+		this.filterEntityID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+			this.getDataGridAndCounterApplications();
+		})
+		this.filterStatus = new FormControl('all');
+		this.filterStatus.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+			this.getDataGridAndCounterApplications();
+		})
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
 		this.getPositions();
+		this.getClergies();
+		this.getEntityList();
+	}
+
+	onSelectItem(event: any, target: string) {
+		if (target == 'entityID') {
+			this.filterEntity = "";
+			if (event && event.id != 'all') {
+				this.filterEntity = event.id;
+			}
+			this.getDataGridAndCounterApplications();
+		}
+	}
+
+	getEntityList() {
+		forkJoin({ organization: this.getOrganizations(), group: this.getGroups() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.organization && res.organization.length > 0) {
+					items.push(...res.organization);
+				}
+				if (res && res.group && res.group.length > 0) {
+					items.push(...res.group);
+				}
+				items.unshift({
+					order: '1',
+					groupName: "All",
+					type:'all',
+					id: 'all',
+					_id: 'all',
+					name: 'Tất Cả Nơi Bổ Nhiệm'
+				})
+				this.entityListCache = items;
+				this.entityList = items;
+			}
+		})
+	}
+
+	getOrganizations() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: this.getFilter(),
+				// skip: 0,
+				// top: 5
+			}
+			this.service.getOrganizations(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = []
+					if (res && res.value && res.value.length > 0) {
+						items.push(...res.value);
+						for (let item of items) {
+							item._id = `${item.type}_${item.id}`;
+							// item._type = 'organization';
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
+							// item.order = this.sharedService.getOrderTypeOrg(item.type);
+							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
+						}
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getGroups() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: this.getFilter(),
+				// skip: 0,
+				// top: 5
+			}
+			this.service.getGroups(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = []
+					if (res && res.value && res.value.length > 0) {
+						items.push(...res.value);
+						for (let item of items) {
+							item._id = `${item.type}_${item.id}`;
+							item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`;
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
+						}
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
+		})
 	}
 
 	getPositions() {
@@ -63,6 +201,26 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
+	getClergies() {
+		this.clergysList = [];
+		this.service.getClergies().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+					for (let item of items) {
+						item.name = `${this.sharedService.getClergyType(item)} ${item.stName} ${item.name}`;
+					}
+				}
+				items.unshift({
+					id: 'all',
+					name: 'Tất Cả Linh Mục'
+				})
+				this.clergysList = items;
+			}
+		})
+	}
+
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['entityID']) {
 			this.getDataGridAndCounterApplications();
@@ -78,6 +236,38 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			}
 			else {
 				filter = `(${filter}) and (entityID eq ${this.entityID})`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.filterEntity) && this.filterEntity != 'all') {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `entityID eq  ${this.filterEntity}`;
+			}
+			else {
+				filter = `(${filter}) and (entityID eq ${this.filterEntity})`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.filterStatus.value) && this.filterStatus.value != 'all') {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `status eq '${this.filterStatus.value}'`;
+			}
+			else {
+				filter = `(${filter}) and (status eq '${this.filterClergyID.value}')`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.filterClergyID.value) && this.filterClergyID.value != 'all') {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `clergyID eq ${this.filterClergyID.value}`;
+			}
+			else {
+				filter = `(${filter}) and (clergyID eq ${this.filterClergyID.value})`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.filterTypeEntityID.value) && this.filterTypeEntityID.value != 'all') {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `entityType eq '${this.filterTypeEntityID.value}'`;
+			}
+			else {
+				filter = `(${filter}) and (entityType eq '${this.filterTypeEntityID.value}')`;
 			}
 		}
 		if (!this.isNullOrEmpty(this.searchValue)) {
@@ -102,7 +292,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	getDataGridApplications() {
 		let options = {
 			filter: this.getFilter(),
-			sort:'effectiveDate desc'
+			sort: 'effectiveDate desc'
 		}
 		if (this.subscription['getAppointments']) {
 			this.subscription['getAppointments'].unsubscribe();
@@ -130,7 +320,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
-	handleDataItem(item: any){
+	handleDataItem(item: any) {
 		item.statusView = this.updateStatus(item);
 		this.getPosition(item);
 		if (item.created) {
@@ -286,18 +476,18 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	toggleExpandElements(item: any) {
-		if(item.readyLoadExpand){
+		if (item.readyLoadExpand) {
 			item._expand_detail = !item._expand_detail;
 			return;
 		}
-		if(!this.isNullOrEmpty(item.fromAppointmentID)){
+		if (!this.isNullOrEmpty(item.fromAppointmentID)) {
 			this.service.getAppointment(item.fromAppointmentID).pipe(take(1)).subscribe({
 				next: (res: any) => {
 					this.handleDataItem(res);
 					item.readyLoadExpand = true;
 					item.expandData = res;
 					item._expand_detail = !item._expand_detail;
-					
+
 				}
 			})
 		}

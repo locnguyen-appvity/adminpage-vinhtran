@@ -122,7 +122,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 				};
 				if (res === 'OK') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Tu Sĩ Thành Công' : 'Thêm Tu Sĩ Thành Công';
+					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
 					this.getDataItems();
 				}

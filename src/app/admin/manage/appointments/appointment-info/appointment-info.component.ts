@@ -38,13 +38,13 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	public entityType: string = "";
 
 	public clergysList: any[] = [];
+	public appointerList: any[] = [];
 	public entityList: any[] = [];
 	public entityListFrom: any[] = [];
 	public appointmentsList: any[] = [];
 	public positionList: any[] = [];
 	public positionFromList: any[] = [];
 	public positionListCache: any[] = [];
-	public levelList: any[] = LEVEL_CLERGY;
 	public statusClergy: any[] = STATUS_CLERGY;
 	public searchValue: string = '';
 
@@ -227,11 +227,16 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				this.handlePositionList("", 'fromEntityName')
 			}
 		}
-		else if (target == 'appointerName') {
-			this.dataItemGroup.get('appointerID').setValue(event);
-		}
+		// else if (target == 'appointerID') {
+		// 	this.dataItemGroup.get('appointerName').setValue(event);
+		// }
 		else if (target == 'fromAppointmentName') {
 			this.updateFromAppointment(event);
+		}
+	}
+	onSelectItem(event: any, target: string) {
+		if (target == 'appointerID') {
+			this.dataItemGroup.get('appointerName').setValue(event ? event.name : "");
 		}
 	}
 
@@ -347,7 +352,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				break;
 			case 'co_so_giao_phan':
 			case 'ban_muc_vu':
-			case 'ban_chuyen_tranh':
+			case 'ban_chuyen_mon':
 				positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'khac'));
 				break;
 			case 'giao_hat':
@@ -366,7 +371,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	}
 
 	onValueChanges(event: any, target: string) {
-		if(this.searchValue != event){
+		if (this.searchValue != event) {
 			if (target == 'entityName') {
 				this.searchValue = event;
 				// this.dataItemGroup.get('entityName').setValue(event);
@@ -472,16 +477,18 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 
 	getClergies() {
 		this.clergysList = [];
+		this.appointerList = [];
 		this.service.getClergies().pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
 					for (let item of items) {
-						item.name = `${this.getClergyType(item)} ${item.stName} ${item.name}`;
+						item.name = `${this.sharedService.getClergyType(item)} ${item.stName} ${item.name}`;
 					}
 				}
 				this.clergysList = items;
+				this.appointerList = this.clergysList.filter(it => it.level == 'giam_muc');
 				if (this.isNullOrEmpty(this.dialogData.item)) {
 					let clergy = this.sharedService.getItemExistsInArray(this.clergyID, this.clergysList);
 					if (clergy) {
@@ -517,17 +524,6 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
-
-	getClergyType(item: any) {
-		if (!this.isNullOrEmpty(item.level)) {
-			let level = this.sharedService.getValueAutocomplete(item.level, this.levelList, 'code');
-			if (level && level.name) {
-				return level.name;
-			}
-		}
-		return "";
-	}
-
 	closeDialog() {
 		this.dialogRef.close(null)
 	}
@@ -536,66 +532,19 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		let valueForm = this.dataItemGroup.value;
 		if (this.mode == 'new') {
 			// if (this.isNullOrEmpty(this.action)) {
-				if (this.target == 'chon_thuyen_chuyen') {
-					if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
-						let fromAppointmentJSON = {
-							toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
-							status: this.dataItemGroup.get("fromStatus").value
-						}
-						forkJoin([
-							this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
-							this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
-								next: () => {
-									this.dialogRef.close("OK");
-								}
-							})
+			if (this.target == 'chon_thuyen_chuyen') {
+				if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
+					let fromAppointmentJSON = {
+						toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
+						status: this.dataItemGroup.get("fromStatus").value
 					}
-					else {
-						this.onSaveAppointment("").pipe(take(1)).subscribe({
+					forkJoin([
+						this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
+						this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
 							next: () => {
 								this.dialogRef.close("OK");
 							}
 						})
-					}
-				}
-				else if (this.target == 'tao_moi_thuyen_chuyen') {
-					if (!this.isNullOrEmpty(this.dataItemGroup.get("fromEntityName").value)) {
-						let fromAppointmentJSON = {
-							clergyName: valueForm.clergyName,
-							clergyID: valueForm.clergyID,
-							entityID: valueForm.entityID,
-							entityName: valueForm.fromEntityName,
-							appointerID: valueForm.fromAppointerID,
-							appointerName: valueForm.fromAppointerName,
-							entityType: valueForm.fromEntityType,
-							fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
-							toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
-							effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
-							position: valueForm.fromPosition,
-							fromAppointmentID: "",
-							status: valueForm.fromStatus,
-						}
-						this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
-							next: (res: any) => {
-								let fromAppointmentId = null;
-								if (res && res.data && res.data.id) {
-									fromAppointmentId = res.data.id;
-								}
-								this.onSaveAppointment(fromAppointmentId).pipe(take(1)).subscribe({
-									next: () => {
-										this.dialogRef.close("OK");
-									}
-								})
-							}
-						})
-					}
-					else {
-						this.onSaveAppointment("").pipe(take(1)).subscribe({
-							next: () => {
-								this.dialogRef.close("OK");
-							}
-						})
-					}
 				}
 				else {
 					this.onSaveAppointment("").pipe(take(1)).subscribe({
@@ -604,13 +553,60 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 						}
 					})
 				}
+			}
+			else if (this.target == 'tao_moi_thuyen_chuyen') {
+				if (!this.isNullOrEmpty(this.dataItemGroup.get("fromEntityName").value)) {
+					let fromAppointmentJSON = {
+						clergyName: valueForm.clergyName,
+						clergyID: valueForm.clergyID,
+						entityID: valueForm.entityID,
+						entityName: valueForm.fromEntityName,
+						appointerID: valueForm.fromAppointerID,
+						appointerName: valueForm.fromAppointerName,
+						entityType: valueForm.fromEntityType,
+						fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
+						toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
+						effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
+						position: valueForm.fromPosition,
+						fromAppointmentID: "",
+						status: valueForm.fromStatus,
+					}
+					this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
+						next: (res: any) => {
+							let fromAppointmentId = null;
+							if (res && res.data && res.data.id) {
+								fromAppointmentId = res.data.id;
+							}
+							this.onSaveAppointment(fromAppointmentId).pipe(take(1)).subscribe({
+								next: () => {
+									this.dialogRef.close("OK");
+								}
+							})
+						}
+					})
+				}
+				else {
+					this.onSaveAppointment("").pipe(take(1)).subscribe({
+						next: () => {
+							this.dialogRef.close("OK");
+						}
+					})
+				}
+			}
+			else {
+				this.onSaveAppointment("").pipe(take(1)).subscribe({
+					next: () => {
+						this.dialogRef.close("OK");
+					}
+				})
+			}
 			// }
 			// else {
 
 			// }
 		}
 		else {
-			if(this.action != 'ket_thuc'){
+			if (this.action != 'ket_thuc') {
 				this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
 					next: () => {
 						this.dialogRef.close("OK");

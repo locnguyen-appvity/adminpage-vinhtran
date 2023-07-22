@@ -33,7 +33,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public dataItemGroup: FormGroup;
 	public fileSelected: any;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Tu Sĩ";
+	public matTooltipBack: string = "Danh Sách Linh Mục";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'

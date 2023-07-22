@@ -31,7 +31,7 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{
-				path: 'ban_chuyen_tranh',
+				path: 'ban_chuyen_mon',
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
 			{

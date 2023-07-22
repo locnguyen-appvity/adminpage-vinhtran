@@ -7,7 +7,7 @@
                     {{data?.toDateView}}</span></p>
             <p mat-line>Do {{data?.appointerName}} bổ nhiệm vào ngày {{data?.effectiveDateView}}</p>
             <span fxFlex></span>
-            <!-- <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
+            <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
                 matTooltip="Thao Tác Khác">
                 <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
             </button>
@@ -15,7 +15,7 @@
                 <button mat-menu-item (click)="onChangeData(data)">
                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
                 </button>
-                <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
+                <!-- <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
                     (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
                     <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
                 </button>
@@ -25,8 +25,8 @@
                 </button>
                 <button mat-menu-item (click)="$event.stopPropagation();deleteItem(data)">
                     <mat-icon svgIcon="ic_delete_48px"></mat-icon>Xóa
-                </button>
-            </mat-menu> -->
+                </button> -->
+            </mat-menu>
         </mat-list-item>
     </mat-nav-list>
 </ng-container>
@@ -36,10 +36,10 @@
     </div>
 </ng-template>
 <!-- <mat-divider class="full-width"></mat-divider> -->
-<!-- <div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
+<div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
     <span fxFlex></span>
     <button (click)="onAddItem()" mat-button color="primary">
-        <span *ngIf="entityType == 'organization'">Thêm Tu Sĩ</span>
+        <span *ngIf="entityType == 'organization'">Thêm Linh Mục</span>
         <span *ngIf="entityType == 'clergy'">Thêm Giáo Xứ</span>
     </button>
-</div> -->
+</div>

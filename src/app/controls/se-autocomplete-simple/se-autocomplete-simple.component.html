@@ -31,7 +31,7 @@
     <!-- Select Template -->
     <ng-template #nonAutoComplete>
         <ng-container *ngIf="optgroup === true; else nonOptgroup">
-            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)">
+            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)" [formControl]="inputControl">
                 <mat-optgroup *ngFor="let group of groupItems| async; trackBy: trackByFn" [label]="group.groupName">
                     <mat-option *ngFor="let item of group.controls" [value]="item[keyValue]">
                         {{item[keyTitle]}}
@@ -40,7 +40,7 @@
             </mat-select>
         </ng-container>
         <ng-template #nonOptgroup>
-            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)">
+            <mat-select [placeholder]="placeHolder" (valueChange)="onValueChange($event)" [formControl]="inputControl">
                 <ng-container *ngFor="let item of items; trackBy: trackByFn">
                     <mat-option [value]="item[keyValue]">
                         {{item[keyTitle]}}

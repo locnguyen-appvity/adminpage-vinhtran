@@ -12,6 +12,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppointmentInfoModule } from '../appointment-info/appointment-info.module';
+import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { AppointmentInfoModule } from '../appointment-info/appointment-info.modu
     ReactiveFormsModule,
     MatCardModule,
     MatTooltipModule,
+    MatFormFieldModule,
+    AutocompleteSimpleModule,
     AppointmentInfoModule
   ],
   exports: [AppointmentsListComponent]

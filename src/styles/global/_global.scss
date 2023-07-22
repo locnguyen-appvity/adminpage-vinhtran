@@ -235,7 +235,10 @@ mat-dialog-container.mat-dialog-container {
 	}
 
 	h2 {
-		font: 500 20px/32px "Roboto", "Helvetica Neue", sans-serif;
+		font:
+			500 20px/32px "Roboto",
+			"Helvetica Neue",
+			sans-serif;
 		letter-spacing: normal;
 		margin: 0 0 20px;
 		display: block;
@@ -514,9 +517,9 @@ mat-dialog-container.mat-dialog-container {
 	font-size: 14px;
 	line-height: 20px;
 	text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -528,9 +531,9 @@ mat-dialog-container.mat-dialog-container {
 	font-size: 14px;
 	line-height: 20px;
 	text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #000000;
@@ -541,10 +544,10 @@ mat-dialog-container.mat-dialog-container {
 	font-weight: 600;
 	font-size: 14px;
 	line-height: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -555,10 +558,10 @@ mat-dialog-container.mat-dialog-container {
 	font-weight: 600;
 	font-size: 14px;
 	line-height: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -569,10 +572,10 @@ mat-dialog-container.mat-dialog-container {
 	font-weight: 600;
 	font-size: 14px;
 	line-height: 20px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -584,9 +587,9 @@ mat-dialog-container.mat-dialog-container {
 	font-size: 14px;
 	line-height: 20px;
 	text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -598,9 +601,9 @@ mat-dialog-container.mat-dialog-container {
 	font-size: 14px;
 	line-height: 20px;
 	text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -612,9 +615,9 @@ mat-dialog-container.mat-dialog-container {
 	font-size: 14px;
 	line-height: 20px;
 	text-align: center;
-    text-transform: uppercase;
-    width: 150px;
-    height: 27px;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
 	padding: 4px 18px 3px;
 	border-radius: 50px;
 	color: #fff;
@@ -678,8 +681,8 @@ table {
 				line-height: 1;
 				padding: 0 !important;
 				text-align: center;
-				button{
-					mat-icon{
+				button {
+					mat-icon {
 						width: 20px;
 						height: 20px;
 					}
@@ -735,42 +738,51 @@ table {
 }
 
 .se-grid-tables {
-	
 	mat-toolbar.search-toolbar {
-		padding: 0 16px;
-		background: #fff;
 		border-radius: 8px 8px 0 0;
-		min-height: 56px !important;
+		height: 56px;
+		padding: 0 16px;
+		background-color: #fff;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+		.material-icons {
+			@include medium-gray-text;
+		}
+
+		.mat-icon-button.mat-button-disabled.mat-button-disabled {
+			.material-icons {
+				color: rgba(0, 0, 0, 0.26);
+			}
+		}
+
 		.search-icon {
 			margin-right: 12px;
-			color: #78849e;
 		}
 
 		input {
 			width: 100%;
 			border: 0;
 			outline: 0;
-			background-color: rgba(0, 0, 0, 0);
-			color: #78849e;
-			font-size: 15px;
 			font-weight: 400;
-			line-height: 1.4;
+			background-color: rgba(0, 0, 0, 0);
+			@include medium-gray-text;
+			font-size: 15px;
 		}
 
 		::-webkit-input-placeholder {
-			color: #78849e;
+			@include medium-gray-text;
 		}
 
 		::-moz-placeholder {
-			color: #78849e;
+			@include medium-gray-text;
 		}
 
 		:-ms-input-placeholder {
-			color: #78849e;
+			@include medium-gray-text;
 		}
 
 		:-moz-placeholder {
-			color: #78849e;
+			@include medium-gray-text;
 		}
 	}
 
@@ -792,24 +804,24 @@ table {
 					height: calc(100vh - 255px);
 				}
 
-				&--mediafiles{
+				&--mediafiles {
 					height: calc(100vh - 211px);
 				}
 
-				&--orgingroups{
+				&--orgingroups {
 					height: calc(100vh - 400px);
 				}
 
-				&--mediafilesselect{
+				&--mediafilesselect {
 					min-height: 300px;
 					height: 100%;
 				}
-				&--tracksfilesselect{
+				&--tracksfilesselect {
 					min-height: 300px;
 					height: calc(100vh - 380px);
 				}
 
-				&--control{
+				&--control {
 					height: calc(100vh - 600px);
 				}
 
@@ -885,7 +897,10 @@ table {
 .secondary-sidenav {
 	.mat-nav-list {
 		.mat-list-item {
-			font: 400 16px/24px "Roboto", "Helvetica Neue", sans-serif;
+			font:
+				400 16px/24px "Roboto",
+				"Helvetica Neue",
+				sans-serif;
 
 			.mat-icon {
 				margin-right: 12px;

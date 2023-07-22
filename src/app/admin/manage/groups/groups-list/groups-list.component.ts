@@ -32,8 +32,8 @@ export class GroupsListComponent extends ListItemBaseComponent {
 		else if (this.router.url.includes("ban_muc_vu")) {
 			this.type = 'ban_muc_vu';
 		}
-		else if (this.router.url.includes("ban_chuyen_tranh")) {
-			this.type = 'ban_chuyen_tranh';
+		else if (this.router.url.includes("ban_chuyen_mon")) {
+			this.type = 'ban_chuyen_mon';
 		}
 		else if (this.router.url.includes("dong_tu")) {
 			this.type = 'dong_tu';

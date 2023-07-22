@@ -43,7 +43,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			else if (this.typeGroup == 'ban_muc_vu') {
 				this.title = 'Thêm Ban Mục Vụ';
 			}
-			else if (this.typeGroup == 'ban_chuyen_tranh') {
+			else if (this.typeGroup == 'ban_chuyen_mon') {
 				this.title = 'Thêm Ban Chuyên Trách';
 			}
 			else if (this.typeGroup == 'dong_tu') {

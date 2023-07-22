@@ -360,26 +360,37 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 
 	onValueChange(valueItem: any): void {
 		this.isSelected = true;
-		if (this.items && ((this.autocomplete && this.items.length > 0))) {
+		if (this.autocomplete) {
+			if (this.items && this.items.length > 0) {
+				const defaultItem = this.items.find((item: any) => {
+					return item[this.keyValue] === valueItem;
+				});
+				let value = null;
+				if (defaultItem) {
+					value = defaultItem[this.keyValueEmit];
+					this.originalValue = defaultItem[this.keyTitle];
+					this.inputControl.setValue(defaultItem[this.keyTitle]);
+					this.onSelectItem.emit(defaultItem);
+				}
+				this.valueChangeSelect.emit(defaultItem[this.keyValue]);
+				this.valueChange.emit(value);
+				this.onChange(value);
+				let err: ValidationErrors = null;
+				this.ngControl.control.setErrors(err);
+				this.errorState = false;
+				this.stateChanges.next();
+				return;
+			}
+		}
+		else {
 			const defaultItem = this.items.find((item: any) => {
 				return item[this.keyValue] === valueItem;
 			});
-			let value = null;
 			if (defaultItem) {
-				value = defaultItem[this.keyValueEmit];
-				this.originalValue = defaultItem[this.keyTitle];
-				this.inputControl.setValue(defaultItem[this.keyTitle]);
 				this.onSelectItem.emit(defaultItem);
 			}
-			this.valueChangeSelect.emit(defaultItem[this.keyValue]);
-			this.valueChange.emit(value);
-			this.onChange(value);
-			let err: ValidationErrors = null;
-			this.ngControl.control.setErrors(err);
-			this.errorState = false;
-			this.stateChanges.next();
-			return;
 		}
+		this.originalValue = valueItem;
 		this.valueChange.emit(valueItem);
 		let err: ValidationErrors = null;
 		this.onChange(valueItem);

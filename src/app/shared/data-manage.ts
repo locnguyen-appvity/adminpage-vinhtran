@@ -97,10 +97,6 @@ export const STATUS_CLERGY = [
     {
         name: 'Mãn Nhiệm',
         code: 'man_nhiem'
-    },
-    {
-        name: 'Khác',
-        code: 'khac'
     }
 ]
 
@@ -124,6 +120,49 @@ export const LEVEL_POSITION = [
     {
         name: 'Khác',
         code: 'khac'
+    }
+]
+
+export const LTYPE_ORG = [
+    {
+        name: 'Giáo Hạt',
+        code: 'giao_hat',
+        group:'group'
+    },
+    {
+        name: 'Giáo Xứ',
+        code: 'giao_xu',
+        group:'organization'
+    },
+    {
+        name: 'Giáo Điểm',
+        code: 'giao_diem',
+        group:'organization'
+    },
+    {
+        name: 'Giáo Họ',
+        code: 'giao_ho',
+        group:'organization'
+    },
+    {
+        name: 'Dòng Tu',
+        code: 'dong_tu',
+        group:'group'
+    },
+    {
+        name: 'Cơ Sở Giáo Phận',
+        code: 'co_so_giao_phan',
+        group:'group'
+    },
+    {
+        name: 'Ban Mục Vụ',
+        code: 'ban_muc_vu',
+        group:'group'
+    },
+    {
+        name: 'Ban Chuyên Môn',
+        code: 'ban_chuyen_mon',
+        group:'group'
     }
 ]
 // export const POSITION = [
