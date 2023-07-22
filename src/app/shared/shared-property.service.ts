@@ -106,6 +106,17 @@ export class SharedPropertyService {
 		return "";
 	}
 
+    getClergyStatus(status: string) {
+        switch (status) {
+            case 'duong_nhiem':
+                return 'Đương Nhiệm'
+            case 'man_nhiem':
+                return 'Mãn Nhiệm'
+            default:
+                return "Chưa Xác Định";
+        }
+    }
+
     updateTypeOrg(type: string) {
         switch (type) {
             case 'giao_hat':

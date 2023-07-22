@@ -129,7 +129,7 @@
                                     SỰ KIỆN QUAN TRỌNG
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <app-events-list [entityID]="ID" [entityType]="'organization'" [entityName]="localItem?.name"></app-events-list>
+                            <app-events-list [entityID]="ID" [entityType]="localItem?.type" [entityName]="localItem?.name"></app-events-list>
                         </mat-expansion-panel>
 
                         <mat-expansion-panel expanded>
@@ -140,7 +140,7 @@
                             </mat-expansion-panel-header>
                             <!-- <ng-template ngFor let-data let-i="index" let-last="last"
                                     [ngForOf]="getControls(dataItemGroup, 'items')"> -->
-                            <app-appointments-list-control [entityID]="ID" [entityType]="'organization'">
+                            <app-appointments-list-control [entityID]="ID" [entityType]="localItem?.type">
                             </app-appointments-list-control>
                             <!-- <mat-divider class="mrb-24" *ngIf="!last"></mat-divider> -->
                             <!-- </ng-template> -->

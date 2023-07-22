@@ -273,7 +273,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(tolower(name), tolower('${quick}'))`;
+			let quickSearch = `contains(tolower(clergyName), tolower('${quick}'))`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
@@ -460,7 +460,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 					};
 					if (res === 'OK') {
 						snackbarData.key = 'new-item';
-						snackbarData.message = 'Thêm Giáo Xứ Thành Công';
+						snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
 						this.showInfoSnackbar(snackbarData);
 						this.getDataGridApplications();
 					}
