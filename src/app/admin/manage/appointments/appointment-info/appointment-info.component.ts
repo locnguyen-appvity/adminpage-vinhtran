@@ -72,7 +72,6 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			else {
 				this.localItem = this.dialogData.item;
 				this.mode = 'edit';
-				this.title = `Sửa Bổ Nhiệm Của ${this.localItem.clergyName}`;
 			}
 		}
 		if (this.dialogData.entityID) {
@@ -144,7 +143,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			fromAppointmentName: ""
 		})
 		if (event.index == 1) {
-			this.target = 'chon_thuyen_chuyen';
+			// this.target = 'chon_thuyen_chuyen';
 		}
 		else if (event.index == 2) {
 			this.target = 'tao_moi_thuyen_chuyen';
@@ -170,10 +169,10 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			item._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(item.effectiveDate);
 			effectiveDate = item._effectiveDate;
 		}
-		if (item && item.fromAppointmentID) {
-			this.target = 'chon_thuyen_chuyen';
-			this.getAppointment(item.fromAppointmentID);
-		}
+		// if (item && item.fromAppointmentID) {
+		// 	this.target = 'chon_thuyen_chuyen';
+		// 	this.getAppointment(item.fromAppointmentID);
+		// }
 		this.handlePositionList(item ? item.entityType : '', 'entityName');
 		this.handlePositionList(item ? item.entityType : '', 'fromEntityName');
 		return this.fb.group({
@@ -670,6 +669,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 											position: 'chanh_xu',
 											status: 'duong_nhiem',
 											fromDate: "",
+											toDate: "",
 											effectiveDate: "",
 										})
 										// this.dataItemGroup.get('clergyName').disable({

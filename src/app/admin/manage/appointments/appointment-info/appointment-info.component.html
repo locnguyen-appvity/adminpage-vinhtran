@@ -1,9 +1,13 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{title}}
+	<span *ngIf="mode == 'edit'">
+		Bổ Nhiệm Của <strong>{{localItem.clergyName}}</strong>
+	</span>
+</h2>
 <mat-dialog-content>
 	<div class="content-dialog" [ngClass]="{'content-dialog--minHeight': action != 'ket_thuc'}">
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-			<ng-template [ngIf]="action != 'ket_thuc'  && mode != 'edit'">
-				<mat-form-field *ngIf="entityType !== 'clergy' && action != 'thuyen_chuyen'"
+			<ng-template [ngIf]="action != 'ket_thuc'">
+				<mat-form-field *ngIf="entityType !== 'clergy' && action != 'thuyen_chuyen' && mode != 'edit'"
 					appearance="outline" class="full-width">
 					<mat-label>Tên Linh Mục</mat-label>
 					<se-autocomplete-simple [required]="false" [formControlName]="'clergyName'" [optgroup]="false"
@@ -20,8 +24,8 @@
 				</mat-tab-group>
 
 				<ng-template [ngIf]="target == 'chon_thuyen_chuyen'">
-					<h2 *ngIf="action != 'thuyen_chuyen'">NƠI CHUYỂN ĐI</h2>
-					<h2 *ngIf="action == 'thuyen_chuyen'">THUYỂN CHUYỂN</h2>
+					<h2 *ngIf="action != 'thuyen_chuyen' && mode != 'edit'">NƠI CHUYỂN ĐI</h2>
+					<h2 *ngIf="action == 'thuyen_chuyen' || mode == 'edit'">THUYỂN CHUYỂN</h2>
 					<div *ngIf="!dataItemGroup?.value?.clergyID" fxLayout="column" fxLayoutAlign="center center">
 						<span>Vui lòng chọn linh mục thuyên chuyển để chọn bổ nhiệm</span>
 					</div>
@@ -36,9 +40,11 @@
 					</mat-form-field>
 					<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID">
 						<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
-							<h6 *ngIf="action == 'thuyen_chuyen'"><strong>{{dataItemGroup?.value?.clergyName}}</strong>
-								từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong></h6>
-							<h6 *ngIf="action != 'thuyen_chuyen'">Chuyển từ
+							<h6 *ngIf="action == 'thuyen_chuyen' || mode == 'edit'">
+								<strong>{{dataItemGroup?.value?.clergyName}}</strong>
+								từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
+							</h6>
+							<h6 *ngIf="action != 'thuyen_chuyen' && mode != 'edit'">Chuyển từ
 								<strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
 							</h6>
 							<h6>với chức vụ <strong>{{dataItemGroup?.value?.fromPositionView}}</strong></h6>
