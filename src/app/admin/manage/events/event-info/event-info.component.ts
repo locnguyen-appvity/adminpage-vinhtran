@@ -53,6 +53,11 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			this.entityType = this.dialogData.entityType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
+		if(this.localItem && this.localItem.status == 'auto'){
+			this.dataItemGroup.get('name').disable({
+				onlySelf: true
+			})
+		}
 		this.getOrganizations();
 	}
 
@@ -64,6 +69,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			date: item ? item._date : '',
 			type: [item ? item.type : 'ngay_ky_niem', Validators.required],
 			description: item ? item.description : '',
+			content: item ? item.content : '',
 			locationID: item ? item.locationID : (this.entityType == 'organization' ? this.entityID : ''),
 			locationType: item ? item.locationType : (this.entityType == 'organization' ? 'organization' : ''),
 			locationName: item ? item.locationName : (this.entityType == 'organization' ? this.entityName : ''),
@@ -109,7 +115,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			"entityID": this.entityID,
 			"entityType": this.entityType,
-			"name": valueForm.name,
+			"name": this.dataItemGroup.get('name').value,
 			"day": valueForm.day,
 			"date": this.sharedService.ISOStartDay(valueForm.date),
 			"description": valueForm.description,

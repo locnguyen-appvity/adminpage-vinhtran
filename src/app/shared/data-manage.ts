@@ -8,7 +8,7 @@ export const ANNIVERSARIES = [
     },
     {
         name: "Ngày Thành Lập",
-        type: "birth",
+        type: "createdDate",
         includes: ['giao_xu','giao_diem','giao_ho','dong_tu','co_so_giao_phan','giao_hat'],
         typeClergy: "",
         typeOrg: "all",

@@ -83,7 +83,7 @@
                     <se-upload-avatar (valueChanges)="valueChangesFile($event)"
                         [filePath]="localItem?.photo"></se-upload-avatar>
                     <mat-form-field appearance="outline" class="full-width">
-                        <mat-label>Bổn Mạng</mat-label>
+                        <mat-label>Tước Hiệu</mat-label>
                         <se-autocomplete-simple [required]="true" [formControlName]="'anniversary'" 
                             [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
                             [keyValue]="'id'" [autocomplete]="true" [items]="saintList">
