@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { Observable, of, take } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -20,7 +20,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		title: "Tạo Mới",
 		class: 'draft-label'
 	}
-	public target: string = "giao-hat";
+	public target: string = "giao_hat";
+	public groupList$: Observable<any>;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -51,8 +52,26 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			name: ["", [Validators.required]],
 			description: "",
 			content: "",
-			// status: true
+			groupID: ""
 		});
+		if (this.target != 'giao_hat') {
+			this.getGroups();
+		}
+	}
+
+	getGroups() {
+		this.groupList$ = of([]);
+		let options = {
+			select: 'id,name',
+			filter: "type eq 'giao_hat'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.groupList$ = of(res.value);
+				}
+			}
+		})
 	}
 
 	getGroup() {
@@ -64,7 +83,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						description: this.localItem.description,
-						content: this.localItem.content
+						content: this.localItem.content,
+						groupID: this.localItem.groupID
 					});
 				}
 			}

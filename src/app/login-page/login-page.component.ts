@@ -36,6 +36,10 @@ export class LoginPageComponent extends SimpleBaseComponent {
 			this.invalidLogin = false;
 		})
 		this.getAvatarMyChurch();
+		let accessToken = localStorage.getItem('accessToken');
+		if (!this.isNullOrEmpty(accessToken)) {
+			this.router.navigate(['/admin']);
+		}
 	}
 
 	getAvatarMyChurch() {

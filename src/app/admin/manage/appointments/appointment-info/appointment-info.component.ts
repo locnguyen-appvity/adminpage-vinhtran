@@ -557,70 +557,21 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		this.dialogRef.close(null)
 	}
 
-	onSaveItem() {
+	onSaveNew() {
 		let valueForm = this.dataItemGroup.value;
-		if (this.mode == 'new') {
-			// if (this.isNullOrEmpty(this.action)) {
-			if (this.target == 'chon_thuyen_chuyen') {
-				if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
-					let fromAppointmentJSON = {
-						toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
-						status: this.dataItemGroup.get("fromStatus").value
-					}
-					forkJoin([
-						this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
-						this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
-							next: () => {
-								this.dialogRef.close("OK");
-							}
-						})
+		if (this.target == 'chon_thuyen_chuyen') {
+			if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
+				let fromAppointmentJSON = {
+					toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
+					status: this.dataItemGroup.get("fromStatus").value
 				}
-				else {
-					this.onSaveAppointment("").pipe(take(1)).subscribe({
+				forkJoin([
+					this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
+					this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
 						next: () => {
 							this.dialogRef.close("OK");
 						}
 					})
-				}
-			}
-			else if (this.target == 'tao_moi_thuyen_chuyen') {
-				if (!this.isNullOrEmpty(this.dataItemGroup.get("fromEntityName").value)) {
-					let fromAppointmentJSON = {
-						clergyName: valueForm.clergyName,
-						clergyID: valueForm.clergyID,
-						entityID: valueForm.entityID,
-						entityName: valueForm.fromEntityName,
-						appointerID: valueForm.fromAppointerID,
-						appointerName: valueForm.fromAppointerName,
-						entityType: valueForm.fromEntityType,
-						fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
-						toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
-						effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
-						position: valueForm.fromPosition,
-						fromAppointmentID: "",
-						status: valueForm.fromStatus,
-					}
-					this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
-						next: (res: any) => {
-							let fromAppointmentId = null;
-							if (res && res.data && res.data.id) {
-								fromAppointmentId = res.data.id;
-							}
-							this.onSaveAppointment(fromAppointmentId).pipe(take(1)).subscribe({
-								next: () => {
-									this.dialogRef.close("OK");
-								}
-							})
-						}
-					})
-				}
-				else {
-					this.onSaveAppointment("").pipe(take(1)).subscribe({
-						next: () => {
-							this.dialogRef.close("OK");
-						}
-					})
-				}
 			}
 			else {
 				this.onSaveAppointment("").pipe(take(1)).subscribe({
@@ -629,10 +580,98 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 					}
 				})
 			}
-			// }
-			// else {
+		}
+		else if (this.target == 'tao_moi_thuyen_chuyen') {
+			if (!this.isNullOrEmpty(this.dataItemGroup.get("fromEntityName").value)) {
+				let fromAppointmentJSON = {
+					clergyName: valueForm.clergyName,
+					clergyID: valueForm.clergyID,
+					entityID: valueForm.entityID,
+					entityName: valueForm.fromEntityName,
+					appointerID: valueForm.fromAppointerID,
+					appointerName: valueForm.fromAppointerName,
+					entityType: valueForm.fromEntityType,
+					fromDate: this.sharedService.ISOStartDay(valueForm.fromFromDate),
+					toDate: this.sharedService.ISOStartDay(valueForm.fromToDate),
+					effectiveDate: this.sharedService.ISOStartDay(valueForm.fromEffectiveDate),
+					position: valueForm.fromPosition,
+					fromAppointmentID: "",
+					status: valueForm.fromStatus,
+				}
+				this.service.createAppointment(fromAppointmentJSON).pipe(take(1)).subscribe({
+					next: (res: any) => {
+						let fromAppointmentId = null;
+						if (res && res.data && res.data.id) {
+							fromAppointmentId = res.data.id;
+						}
+						this.onSaveAppointment(fromAppointmentId).pipe(take(1)).subscribe({
+							next: () => {
+								this.dialogRef.close("OK");
+							}
+						})
+					}
+				})
+			}
+			else {
+				this.onSaveAppointment("").pipe(take(1)).subscribe({
+					next: () => {
+						this.dialogRef.close("OK");
+					}
+				})
+			}
+		}
+		else {
+			this.onSaveAppointment("").pipe(take(1)).subscribe({
+				next: () => {
+					this.dialogRef.close("OK");
+				}
+			})
+		}
+	}
 
-			// }
+	onSaveItem() {
+		let valueForm = this.dataItemGroup.value;
+		if (this.mode == 'new') {
+			if (this.dataItemGroup.get('position').value == 'huu' || this.dataItemGroup.get('position').value == 'nghi_duong') {
+				//Xin thêm những chức vụ nào chỉ có 1, position thêm multi level, thêm biến acceptMember: 1,2,3
+				this.onSaveNew();
+			}
+			else {
+				this.checkValidateEntity(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value).pipe(take(1)).subscribe({
+					next: (res: any) => {
+						if (this.isNullOrEmpty(res)) {
+							this.onSaveNew();
+						}
+						else {
+							let config: any = {
+								data: {
+									submitBtn: 'Đồng Ý',
+									cancelBtn: 'Hủy Tất Cả',
+									confirmMessage: `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có 1 <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
+									nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của <strong>${res.clergyName}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(res.position, this.positionListCache, 'code')}</strong> tại ${res.entityName} thành <strong>Chờ Thuyên Chuyển</strong>`
+								}
+							};
+							this.showDialogConfirm(config).pipe(take(1)).subscribe({
+								next: (action: string) => {
+									if (action == 'ok') {
+										let appointmentJSON = {
+											status: 'cho_thuyen_chuyen',
+										}
+										this.service.updateAppointment(res.id, appointmentJSON).pipe(take(1)).subscribe({
+											next: () => {
+												this.onSaveNew();
+											}
+										})
+									}
+									else {
+										this.dialogRef.close(null);
+									}
+								}
+							})
+						}
+					}
+				})
+			}
 		}
 		else {
 			this.checkValidateStatus(this.dataItemGroup.get('status').value, this.dataItemGroup.get('clergyID').value, this.localItem.id).pipe(take(1)).subscribe({
@@ -648,35 +687,36 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 						this.showDialogConfirm(config).pipe(take(1)).subscribe({
 							next: (action: string) => {
 								if (action == 'ok') {
-									if (this.action != 'ket_thuc') {
-									}
-									else {
-										this.action = 'thuyen_chuyen';
-										this.fromAppointmentItem = this.dialogData.item;
-										this.updateFromAppointment(this.fromAppointmentItem);
-										this.localItem = null;
-										this.mode = 'new';
-										this.dataItemGroup.patchValue({
-											fromStatus: 'man_nhiem',
-											fromToDate: this.dataItemGroup.get('toDate').value,
-											id: '',
-											entityID: "",
-											_entityID: "",
-											entityName: "",
-											appointerID: "",
-											appointerName: "",
-											entityType: "",
-											position: 'chanh_xu',
-											status: 'duong_nhiem',
-											fromDate: "",
-											toDate: "",
-											effectiveDate: "",
-										})
-										// this.dataItemGroup.get('clergyName').disable({
-										// 	onlySelf: true
-										// })
-										this.target = 'chon_thuyen_chuyen';
-									}
+									// if (this.action != 'ket_thuc') {
+
+									// }
+									// else {
+									this.action = 'thuyen_chuyen';
+									this.fromAppointmentItem = this.dialogData.item;
+									this.updateFromAppointment(this.fromAppointmentItem);
+									this.localItem = null;
+									this.mode = 'new';
+									this.dataItemGroup.patchValue({
+										fromStatus: 'man_nhiem',
+										fromToDate: this.dataItemGroup.get('toDate').value,
+										id: '',
+										entityID: "",
+										_entityID: "",
+										entityName: "",
+										appointerID: "",
+										appointerName: "",
+										entityType: "",
+										position: 'chanh_xu',
+										status: 'duong_nhiem',
+										fromDate: "",
+										toDate: "",
+										effectiveDate: "",
+									})
+									// this.dataItemGroup.get('clergyName').disable({
+									// 	onlySelf: true
+									// })
+									this.target = 'chon_thuyen_chuyen';
+									// }
 								}
 								else {
 									this.dialogRef.close(null);
@@ -789,6 +829,28 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				obs.next('valid');
 				obs.complete();
 			}
+		})
+	}
+
+	checkValidateEntity(entityID: string, entityType: string) {
+		return new Observable(obs => {
+			let options = {
+				filter: `entityID eq ${entityID} and entityType eq '${entityType}' and status eq 'duong_nhiem'`,
+				top: 1
+			}
+			this.dataProcessing = true;
+			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+				this.dataProcessing = false;
+				if (res && res.value && res.value.length > 0) {
+					obs.next(res.value[0]);
+					obs.complete();
+				}
+				else {
+					obs.next(null);
+					obs.complete();
+				}
+
+			})
 		})
 	}
 

@@ -65,7 +65,6 @@ export class AdminComponent extends SimpleBaseComponent {
 		if (this.isNullOrEmpty(accessToken)) {
 			this.router.navigate(['/login']);
 		}
-
 	}
 
 	getTitle() {

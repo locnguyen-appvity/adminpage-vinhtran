@@ -13,6 +13,7 @@ import { EditorControlModule } from 'src/app/controls/editor-control/editor-cont
 import { OrganizationsListModule } from '../../organizations/organization-list/organizations-list.module';
 import { GroupDetailRoutingModule } from './group-detail-routing.module';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatSlideToggleModule,
     EditorControlModule,
     OrganizationsListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    AutocompleteSimpleModule
   ],
   exports: [GroupDetailComponent]
 })

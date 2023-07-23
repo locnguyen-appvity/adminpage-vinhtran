@@ -112,8 +112,25 @@ export class SharedPropertyService {
                 return 'Đương Nhiệm'
             case 'man_nhiem':
                 return 'Mãn Nhiệm'
+            case 'cho_thuyen_chuyen':
+                return 'Chờ Thuyên Chuyển'
             case 'cho_xac_nhan':
                 return 'Chờ Xác Nhận'
+            default:
+                return "Chưa Xác Định";
+        }
+    }
+
+    getClergyStatusClass(status: string) {
+        switch (status) {
+            case 'duong_nhiem':
+                return 'approved-label'
+            case 'man_nhiem':
+                return 'rejected-label'
+            case 'cho_thuyen_chuyen':
+                return 'pending-label pending-label--appointment'
+            case 'cho_xac_nhan':
+                return 'draft-label'
             default:
                 return "Chưa Xác Định";
         }

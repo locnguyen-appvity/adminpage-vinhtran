@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { take, takeUntil } from 'rxjs';
+import { Observable, of, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -22,6 +22,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	public localItem: any;
+	public groupList$: Observable<any>;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -63,6 +64,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
+			groupID: this.localItem ? this.localItem.groupID : "",
 			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -71,6 +73,24 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			}
 			else {
 				this.hasChangedGroup = true;
+			}
+		})
+		if (this.typeGroup != 'giao_hat') {
+			this.getGroups();
+		}
+	}
+
+	getGroups() {
+		this.groupList$ = of([]);
+		let options = {
+			select: 'id,name',
+			filter: "type eq 'giao_hat'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					this.groupList$ = of(res.value);
+				}
 			}
 		})
 	}

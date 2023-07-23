@@ -11,6 +11,13 @@
 					<mat-label>Mô Tả</mat-label>
 					<textarea matInput rows="3" formControlName="description"></textarea>
 				</mat-form-field>
+				<mat-form-field *ngIf="typeGroup != 'giao_hat'" appearance="outline" class="full-width">
+					<mat-label>Giáo Hạt</mat-label>
+					<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+						[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
+						[autocomplete]="false" [items$]="groupList$">
+					</se-autocomplete-simple>
+				</mat-form-field>
 				<se-editor-control formControlName="content"></se-editor-control>
 				<mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
 			</div>

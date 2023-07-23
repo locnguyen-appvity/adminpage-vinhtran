@@ -324,6 +324,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 
 	handleDataItem(item: any) {
 		item.statusView = this.updateStatus(item);
+		item.statusClass = this.sharedService.getClergyStatusClass(item.status);
 		this.getPosition(item);
 		if (item.created) {
 			item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);

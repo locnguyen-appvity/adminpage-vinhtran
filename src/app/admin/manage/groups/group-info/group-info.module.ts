@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { GroupInfoComponent } from './group-info.component';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
+import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { EditorControlModule } from 'src/app/controls/editor-control/editor-cont
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    EditorControlModule
+    EditorControlModule,
+    AutocompleteSimpleModule
   ],
   exports: [GroupInfoComponent]
 })

@@ -27,7 +27,7 @@ body {
 //     object-fit: cover;
 // }
 
-.disabled-item{
+.disabled-item {
 	opacity: 0.3 !important;
 }
 
@@ -542,6 +542,9 @@ mat-dialog-container.mat-dialog-container {
 	border-radius: 50px;
 	color: #000000;
 	background-color: #ffc107;
+	&--appointment {
+		width: 190px !important;
+	}
 }
 
 .approved-label {
