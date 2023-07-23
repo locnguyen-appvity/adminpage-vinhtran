@@ -13,7 +13,7 @@
                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
                 </button>
                 <button *ngIf="data?.locationID?.length > 0" mat-menu-item
-                    [disabled]="dataProcessing" (click)="openNewTab(element,'location')">
+                    [disabled]="dataProcessing" (click)="openNewTab(data,'location')">
                     <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
                     <span>Xem Nơi Nhận Nhiệm Vụ</span>
                 </button>
