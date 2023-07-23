@@ -384,8 +384,6 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		else {
 			link = `./#/admin/manage/${element.entityType}/detail/${element.entityID}`;
 		}
-		console.log('');
-		
 		// this.router.navigate([]).then(() => {
 			window.open(link, '_blank');
 		// });

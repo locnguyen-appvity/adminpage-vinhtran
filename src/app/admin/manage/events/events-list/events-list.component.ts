@@ -176,6 +176,11 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 		});
 	}
 
+	openNewTab(item: any, target: string){
+		if(target == 'location'){
+			window.open(`./#/admin/manage/${item.locationType}/detail/${item.locationID}`, '_blank');
+		}
+	}
 	// drop(event: CdkDragDrop<unknown>) {
 	// 	moveItemInArray(this.arrData, event.previousIndex, event.currentIndex);
 	// }

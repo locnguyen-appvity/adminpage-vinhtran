@@ -12,6 +12,11 @@
                 <button mat-menu-item (click)="onChangeData(data)">
                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon> Sửa
                 </button>
+                <button *ngIf="data?.locationID?.length > 0" mat-menu-item
+                    [disabled]="dataProcessing" (click)="openNewTab(element,'location')">
+                    <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
+                    <span>Xem Nơi Nhận Nhiệm Vụ</span>
+                </button>
                 <!-- <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
                     (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">
                     <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>Tạm Ẩn
