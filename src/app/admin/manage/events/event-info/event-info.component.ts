@@ -76,18 +76,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				items = res.value;
 				for (let item of items) {
-					item._type = 'organization';
-					switch (item.type) {
-						case 'giao_xu':
-							item.title = `Giáo xứ ${item.name}`;
-							break;
-						case 'dong_tu':
-							item.title = `Dòng ${item.name}`;
-							break;
-						default:
-							item.title = item.name;
-							break;
-					}
+					item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 				}
 			}
 			this.arrLocations = items;
@@ -98,7 +87,8 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	onChangeValue(event: any, target: string) {
 		if (target == "locationName") {
 			if (!this.isNullOrEmpty(this.dataItemGroup.get("locationID").value)) {
-				this.dataItemGroup.get("locationID").setValue(null);
+				this.dataItemGroup.get("locationID").setValue("");
+				this.dataItemGroup.get("locationType").setValue("");
 			}
 		}
 	}

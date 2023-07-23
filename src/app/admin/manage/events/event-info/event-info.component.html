@@ -49,9 +49,9 @@
             <mat-form-field *ngIf="entityType != 'organization'" appearance="outline" class="full-width">
                 <mat-label>Vị Trí</mat-label>
                 <se-autocomplete-simple [required]="false" [formControlName]="'locationName'"
-                    (onChangeValue)="onChangeValue($event,'locationName')"
+                    (onChangeValue)="onChangeValue($event,'locationName')" [mode]="'emit-change'"
                     (onSelectItem)="valueChangeSelect($event,'locationName')" [optgroup]="false"
-                    [placeHolder]="'Nhập tên...'" [keyTitle]="'title'" [keyValue]="'id'" [keyValueEmit]="'id'"
+                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
                     [autocomplete]="true" [items]="arrLocations">
                 </se-autocomplete-simple>
             </mat-form-field>
