@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take, takeUntil } from 'rxjs';
+import { BehaviorSubject, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SaintInfoComponent } from './saint-info/saint-info.component';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
+import { SAINTS_DATA } from 'src/app/shared/data-manage';
 
 @Component({
 	selector: 'se-saints',
@@ -56,12 +57,72 @@ export class SaintsComponent extends ListItemBaseComponent {
 		})
 	}
 
+	deleteItem(item: any){
+		this.dataProcessing = true;
+		this.service.deleteSaint(item.id).pipe(take(1)).subscribe(() => {
+			this.dataProcessing = false;
+			let snackbarData: any = {
+				key: 'delete-item',
+				message: 'Xóa Thành Công'
+			};
+			this.showInfoSnackbar(snackbarData);
+			this.getDataItems();
+		})
+	}
+
 	onAddItem() {
 		let config: any = {};
 		config.data = {
 			target: 'add'
 		};
 		this.openFormDialog(config, 'add');
+	}
+
+	onAddAuto() {
+		let dataDefault = SAINTS_DATA;
+		if (dataDefault && dataDefault.length > 0) {
+			this.spinerLoading = true;
+			this.dataProcessing = true;
+			let sub = new BehaviorSubject(0);
+			sub.subscribe({
+				next: (index: number) => {
+					if (index < dataDefault.length) {
+						if (dataDefault[index]) {
+							let valueForm = dataDefault[index];
+							let dataJSON = {
+								name: valueForm.name,
+								code: valueForm.code,
+								status: 'active'
+							}
+							this.service.createSaint(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+								next: () => {
+									index++;
+									sub.next(index);
+								},
+								error: error => {
+									console.log(error);
+									index++;
+									sub.next(index);
+								}
+							});
+
+						}
+						else {
+							index++;
+							sub.next(index);
+						}
+					}
+					else {
+						this.dataProcessing = false;
+						this.spinerLoading = false;
+						this.getDataItems();
+						sub.complete();
+						sub.unsubscribe();
+					}
+
+				}
+			});
+		}
 	}
 
 	onChangeData(item: any) {
@@ -81,10 +142,10 @@ export class SaintsComponent extends ListItemBaseComponent {
 		let dialogRef = this.dialog.open(SaintInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
-				let snackbarData: any = {
-					key: ''
-				};
 				if (res === 'OK') {
+					let snackbarData: any = {
+						key: ''
+					};
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
 					snackbarData.message = target === 'edit' ? 'Sửa Thánh Thành Công' : 'Thêm Thánh Thành Công';
 					this.showInfoSnackbar(snackbarData);
