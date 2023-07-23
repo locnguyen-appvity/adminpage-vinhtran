@@ -2,6 +2,17 @@
 <mat-dialog-content>
 	<div class="content-dialog">
 		<div fxLayout="column"> <span [innerHTML]="confirmMessage | safeHtml"></span></div>
+		<mat-form-field *ngIf="valueType == 'date'" appearance="outline" class="full-width">
+			<mat-label>{{lableCtrl}}</mat-label>
+			<input matInput [matDatepicker]="datePic" placeholder="DD/MM/YYYY" autocomplete="off" [formControl]="formCtrl" [required]="requireCtrl">
+			<mat-datepicker-toggle matSuffix [for]="datePic">
+			</mat-datepicker-toggle>
+			<mat-datepicker #datePic></mat-datepicker>
+		</mat-form-field>
+		<mat-form-field *ngIf="valueType == 'text'" appearance="outline" class="full-width">
+			<mat-label>{{lableCtrl}}</mat-label>
+			<input matInput [placeholder]="lableCtrl" autocomplete="off" [formControl]="formCtrl" [required]="requireCtrl">
+		</mat-form-field>
 	</div>
 	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
 		<span fxFlex></span>

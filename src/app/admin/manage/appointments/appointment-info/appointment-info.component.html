@@ -2,8 +2,9 @@
 <mat-dialog-content>
 	<div class="content-dialog" [ngClass]="{'content-dialog--minHeight': action != 'ket_thuc'}">
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-			<ng-template [ngIf]="action != 'ket_thuc'">
-				<mat-form-field *ngIf="entityType !== 'clergy'" appearance="outline" class="full-width">
+			<ng-template [ngIf]="action != 'ket_thuc'  && mode != 'edit'">
+				<mat-form-field *ngIf="entityType !== 'clergy' && action != 'thuyen_chuyen'"
+					appearance="outline" class="full-width">
 					<mat-label>Tên Linh Mục</mat-label>
 					<se-autocomplete-simple [required]="false" [formControlName]="'clergyName'" [optgroup]="false"
 						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
@@ -11,7 +12,6 @@
 						(valueChangeSelect)="valueChangeAutocomplete($event,'clergyName')">
 					</se-autocomplete-simple>
 				</mat-form-field>
-
 				<mat-tab-group *ngIf="mode == 'new' && action == ''" class="full-width" mat-stretch-tabs="false"
 					mat-align-tabs="center" (selectedTabChange)="selectedTabChange($event)">
 					<mat-tab label="Bổ Nhiệm"></mat-tab>
@@ -20,7 +20,8 @@
 				</mat-tab-group>
 
 				<ng-template [ngIf]="target == 'chon_thuyen_chuyen'">
-					<h2>NƠI CHUYỂN ĐI</h2>
+					<h2 *ngIf="action != 'thuyen_chuyen'">NƠI CHUYỂN ĐI</h2>
+					<h2 *ngIf="action == 'thuyen_chuyen'">THUYỂN CHUYỂN</h2>
 					<div *ngIf="!dataItemGroup?.value?.clergyID" fxLayout="column" fxLayoutAlign="center center">
 						<span>Vui lòng chọn linh mục thuyên chuyển để chọn bổ nhiệm</span>
 					</div>
@@ -35,7 +36,11 @@
 					</mat-form-field>
 					<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID">
 						<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
-							<h6>Chuyển từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong></h6>
+							<h6 *ngIf="action == 'thuyen_chuyen'"><strong>{{dataItemGroup?.value?.clergyName}}</strong>
+								từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong></h6>
+							<h6 *ngIf="action != 'thuyen_chuyen'">Chuyển từ
+								<strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
+							</h6>
 							<h6>với chức vụ <strong>{{dataItemGroup?.value?.fromPositionView}}</strong></h6>
 							<h6>từ ngày <strong>{{dataItemGroup?.value?.fromFromDateView}}</strong>
 								<span *ngIf="mode != 'new' && action != 'thuyen_chuyen'"> đến
@@ -65,8 +70,8 @@
 						<se-autocomplete-simple [required]="false" [formControlName]="'_fromEntityID'"
 							[optgroup]="false" [placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'"
 							[keyValueEmit]="'id'" [keyValue]="'_id'" [autocomplete]="true" [items]="entityListFrom"
-							 (onChangeValue)="onValueChanges($event,'fromEntityName')"
-							[optgroup]="true" (onSelectItem)="valueChangeAutocomplete($event,'fromEntityName')">
+							(onChangeValue)="onValueChanges($event,'fromEntityName')" [optgroup]="true"
+							(onSelectItem)="valueChangeAutocomplete($event,'fromEntityName')">
 						</se-autocomplete-simple>
 					</mat-form-field>
 
@@ -138,10 +143,10 @@
 					</div>
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Người Bổ Nhiệm</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'fromAppointerName'"
+						<se-autocomplete-simple [required]="false" [formControlName]="'fromAppointerID'"
 							[optgroup]="false" [placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'"
-							[keyValueEmit]="'name'" [keyValue]="'id'" [autocomplete]="true" [items]="clergysList"
-							(valueChangeSelect)="valueChangeAutocomplete($event,'appointerName')">
+							[keyValueEmit]="'name'" [keyValue]="'id'" [autocomplete]="false" [items]="clergysList"
+							(valueChangeSelect)="valueChangeAutocomplete($event,'fromAppointerID')">
 						</se-autocomplete-simple>
 					</mat-form-field>
 					<mat-divider class="full-width mrb-24"></mat-divider>
@@ -152,9 +157,8 @@
 					<mat-label>Nơi Đến</mat-label>
 					<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="false"
 						[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'_id'"
-						[autocomplete]="true" [items]="entityList"
-						(onChangeValue)="onValueChanges($event,'entityName')" [optgroup]="true"
-						(onSelectItem)="valueChangeAutocomplete($event,'entityName')">
+						[autocomplete]="true" [items]="entityList" (onChangeValue)="onValueChanges($event,'entityName')"
+						[optgroup]="true" (onSelectItem)="valueChangeAutocomplete($event,'entityName')">
 					</se-autocomplete-simple>
 				</mat-form-field>
 
@@ -227,8 +231,8 @@
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Người Bổ Nhiệm</mat-label>
 					<se-autocomplete-simple [required]="false" [formControlName]="'appointerID'" [optgroup]="false"
-						[placeHolder]="'Chọn người bổ nhiệm...'" [keyTitle]="'name'" [keyValueEmit]="'name'" [keyValue]="'id'"
-						[autocomplete]="false" [items]="appointerList"
+						[placeHolder]="'Chọn người bổ nhiệm...'" [keyTitle]="'name'" [keyValueEmit]="'name'"
+						[keyValue]="'id'" [autocomplete]="false" [items]="appointerList"
 						(onSelectItem)="onSelectItem($event,'appointerID')">
 					</se-autocomplete-simple>
 				</mat-form-field>

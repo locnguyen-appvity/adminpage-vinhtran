@@ -1,10 +1,11 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Observable, forkJoin, take } from 'rxjs';
-import { STATUS_CLERGY, LEVEL_CLERGY } from 'src/app/shared/data-manage';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
+import { DialogConfirmComponent } from 'src/app/controls/confirm';
+import { STATUS_CLERGY } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -55,6 +56,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		private service: SharedService,
+		public dialog: MatDialog,
 		public dialogRef: MatDialogRef<AppointmentsInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
@@ -68,8 +70,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				this.target = 'chon_thuyen_chuyen';
 			}
 			else {
-				this.mode = 'edit';
 				this.localItem = this.dialogData.item;
+				this.mode = 'edit';
+				this.title = `Sửa Bổ Nhiệm Của ${this.localItem.clergyName}`;
 			}
 		}
 		if (this.dialogData.entityID) {
@@ -88,6 +91,21 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			this.clergyName = this.dialogData.clergyName;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
+		if (!this.isNullOrEmpty(this.clergyID)) {
+			this.dataItemGroup.get('clergyName').setValue(this.clergyName);
+			this.getAppointments(this.clergyID);
+			// this.dataItemGroup.get('clergyName').disable({
+			// 	onlySelf: true
+			// })
+		}
+		if (this.localItem && this.localItem.status == 'man_nhiem') {
+			this.dataItemGroup.get('status').disable({
+				onlySelf: true
+			})
+		}
+		if (this.localItem && this.action == 'ket_thuc') {
+			this.dataItemGroup.get('status').setValue('man_nhiem');
+		}
 		this.getEntityList('entityName');
 		this.getEntityList('fromEntityName');
 		this.getClergies();
@@ -98,7 +116,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		this.appointmentsList = [];
 		if (!this.isNullOrEmpty(clergyID)) {
 			let options = {
-				filter: `clergyID eq ${clergyID}`
+				filter: `clergyID eq ${clergyID} and status eq 'duong_nhiem'`
 			}
 			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
 				let dataItems = [];
@@ -162,7 +180,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			id: item ? item.id : '',
 			clergyName: item ? item.clergyName : this.clergyName,
 			clergyID: item ? item.clergyID : this.clergyID,
-			entityID: item ? item.entityID :this.entityID,
+			entityID: item ? item.entityID : this.entityID,
 			_entityID: item ? `${item.entityType}_${item.entityID}` : (this.entityID ? `${this.entityType}_${this.entityID}` : ''),
 			entityName: item ? item.entityName : this.entityName,
 			appointerID: item ? item.appointerID : "",
@@ -245,6 +263,9 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		if (target == 'appointerID') {
 			this.dataItemGroup.get('appointerName').setValue(event ? event.name : "");
 		}
+		else if (target == 'fromAppointerID') {
+			this.dataItemGroup.get('fromAppointerName').setValue(event ? event.name : "");
+		}
 	}
 
 	updateFromAppointment(event: any) {
@@ -289,21 +310,21 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				fromPositionView: this.sharedService.getNameExistsInArray(event.position, this.positionListCache, 'code'),
 				fromEffectiveDateView: fromEffectiveDateView,
 			})
-			this.dataItemGroup.get('fromPosition').disable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromStatus').disable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromEffectiveDate').disable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromFromDate').disable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromAppointerName').disable({
-				onlySelf: true
-			})
+			// this.dataItemGroup.get('fromPosition').disable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromStatus').disable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromEffectiveDate').disable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromFromDate').disable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromAppointerName').disable({
+			// 	onlySelf: true
+			// })
 		}
 		else {
 			this.dataItemGroup.patchValue({
@@ -324,21 +345,21 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				fromPositionView: "",
 				fromEffectiveDateView: "",
 			})
-			this.dataItemGroup.get('fromPosition').enable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromStatus').enable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromEffectiveDate').enable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromFromDate').enable({
-				onlySelf: true
-			})
-			this.dataItemGroup.get('fromAppointerName').enable({
-				onlySelf: true
-			})
+			// this.dataItemGroup.get('fromPosition').enable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromStatus').enable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromEffectiveDate').enable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromFromDate').enable({
+			// 	onlySelf: true
+			// })
+			// this.dataItemGroup.get('fromAppointerName').enable({
+			// 	onlySelf: true
+			// })
 		}
 	}
 
@@ -615,24 +636,77 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			// }
 		}
 		else {
-			if (this.action != 'ket_thuc') {
-				this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
-					next: () => {
-						this.dialogRef.close("OK");
+			this.checkValidateStatus(this.dataItemGroup.get('status').value, this.dataItemGroup.get('clergyID').value, this.localItem.id).pipe(take(1)).subscribe({
+				next: (check: string) => {
+					if (check == 'enter-new-appointment') {
+						let config: any = {
+							data: {
+								submitBtn: 'Tạo bổ nhiệm mới',
+								cancelBtn: 'Hủy Tất Cả',
+								confirmMessage: `${this.clergyName} chỉ có thể kết thúc bổ nhiệm khi tạo một bổ nhiệm mới`
+							}
+						};
+						this.showDialogConfirm(config).pipe(take(1)).subscribe({
+							next: (action: string) => {
+								if (action == 'ok') {
+									if (this.action != 'ket_thuc') {
+									}
+									else {
+										this.action = 'thuyen_chuyen';
+										this.fromAppointmentItem = this.dialogData.item;
+										this.updateFromAppointment(this.fromAppointmentItem);
+										this.localItem = null;
+										this.mode = 'new';
+										this.dataItemGroup.patchValue({
+											fromStatus: 'man_nhiem',
+											fromToDate: this.dataItemGroup.get('toDate').value,
+											id: '',
+											entityID: "",
+											_entityID: "",
+											entityName: "",
+											appointerID: "",
+											appointerName: "",
+											entityType: "",
+											position: 'chanh_xu',
+											status: 'duong_nhiem',
+											fromDate: "",
+											effectiveDate: "",
+										})
+										// this.dataItemGroup.get('clergyName').disable({
+										// 	onlySelf: true
+										// })
+										this.target = 'chon_thuyen_chuyen';
+									}
+								}
+								else {
+									this.dialogRef.close(null);
+								}
+							}
+						})
+
 					}
-				})
-			}
-			else {
-				let appointmentJSON = {
-					toDate: this.sharedService.ISOStartDay(valueForm.toDate),
-					status: 'man_nhiem',
+					else {
+						if (this.action != 'ket_thuc') {
+							this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
+								next: () => {
+									this.dialogRef.close("OK");
+								}
+							})
+						}
+						else {
+							let appointmentJSON = {
+								toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+								status: 'man_nhiem',
+							}
+							this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
+								next: () => {
+									this.dialogRef.close("OK");
+								}
+							})
+						}
+					}
 				}
-				this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
-					next: () => {
-						this.dialogRef.close("OK");
-					}
-				})
-			}
+			})
 		}
 
 	}
@@ -641,8 +715,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		return new Observable(obs => {
 			let valueForm = this.dataItemGroup.value;
 			let appointmentJSON = {
-				clergyName: valueForm.clergyName,
-				clergyID: valueForm.clergyID,
+				clergyName: this.dataItemGroup.get('clergyName').value,
+				clergyID: this.dataItemGroup.get('clergyID').value,
 				entityID: valueForm.entityID,
 				entityName: valueForm.entityName,
 				appointerID: valueForm.appointerID,
@@ -653,7 +727,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				effectiveDate: this.sharedService.ISOStartDay(valueForm.effectiveDate),
 				position: valueForm.position,
 				fromAppointmentID: fromAppointmentID,
-				status: valueForm.status,
+				status: this.dataItemGroup.get('status').value,
 			}
 			if (this.localItem && this.localItem.id) {
 				this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
@@ -670,6 +744,50 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 						obs.complete();
 					}
 				})
+			}
+		})
+	}
+
+	showDialogConfirm(config: any) {
+		return new Observable(obs => {
+			config.disableClose = true;
+			config.panelClass = 'dialog-form-l';
+			config.maxWidth = '80vw';
+			config.autoFocus = false;
+			let dialogRef = this.dialog.open(DialogConfirmComponent, config);
+			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					obs.next(res.action);
+					obs.complete();
+				}
+			});
+		})
+	}
+
+	checkValidateStatus(statusChange: string, clergyID: string, appointerID: string) {
+		return new Observable(obs => {
+			if (statusChange == 'man_nhiem') {
+				let options = {
+					filter: `id ne ${appointerID} and clergyID eq ${clergyID} and status eq 'duong_nhiem'`,
+					top: 1
+				}
+				this.dataProcessing = true;
+				this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+					this.dataProcessing = false;
+					if (res && res.value && res.value.length > 0) {
+						obs.next('valid');
+						obs.complete();
+					}
+					else {
+						obs.next('enter-new-appointment');
+						obs.complete();
+					}
+
+				})
+			}
+			else {
+				obs.next('valid');
+				obs.complete();
 			}
 		})
 	}

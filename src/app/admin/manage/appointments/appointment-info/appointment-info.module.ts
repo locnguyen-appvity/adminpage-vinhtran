@@ -12,6 +12,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { AppointmentsInfoComponent } from './appointment-info.component';
 import { MatSelectModule } from '@angular/material/select';
 import {MatTabsModule} from '@angular/material/tabs';
+import { DialogConfirmModule } from 'src/app/controls/confirm';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatSlideToggleModule,
     MatDatepickerModule,
     AutocompleteSimpleModule,
-    MatTabsModule
+    MatTabsModule,
+    DialogConfirmModule
   ],
   exports: [
     AppointmentsInfoComponent

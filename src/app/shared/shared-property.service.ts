@@ -112,6 +112,8 @@ export class SharedPropertyService {
                 return 'Đương Nhiệm'
             case 'man_nhiem':
                 return 'Mãn Nhiệm'
+            case 'cho_xac_nhan':
+                return 'Chờ Xác Nhận'
             default:
                 return "Chưa Xác Định";
         }

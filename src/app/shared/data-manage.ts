@@ -105,6 +105,14 @@ export const STATUS_CLERGY = [
     {
         name: 'Mãn Nhiệm',
         code: 'man_nhiem'
+    },
+    {
+        name: 'Chờ Xác Nhận',
+        code: 'cho_xac_nhan'
+    },
+    {
+        name: 'Chờ Thuyên Chuyển',
+        code: 'cho_thuyen_chuyen'
     }
 ]
 

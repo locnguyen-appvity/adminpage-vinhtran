@@ -21,7 +21,7 @@
                     <mat-icon svgIcon="ic_add_business_48dp"></mat-icon>
                     <span>Bổ Nhiệm</span>
                 </button> -->
-                <button *ngIf="entityType == 'clergy' && !data?.fromAppointmentID" mat-menu-item [disabled]="dataProcessing" class="approve-button"
+                <button *ngIf="entityType == 'clergy' && data?.status == 'duong_nhiem'" mat-menu-item [disabled]="dataProcessing" class="approve-button"
                     (click)="getRowSelected(data,'thuyen_chuyen')">
                     <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
                     <span>Thuyên Chuyển</span>

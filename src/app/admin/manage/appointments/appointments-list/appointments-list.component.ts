@@ -29,12 +29,12 @@ import { FormControl } from '@angular/forms';
 export class AppointmentsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
 	@Input() entityID: string = '';
-	public statusClergy: any[] = STATUS_CLERGY;
+	public statusClergy: any[] = [];
 	public positionList: any[] = [];
 	public clergysList: any[] = [];
 	public entityList: any[] = [];
 	public entityListCache: any[] = [];
-	public entityTypeList: any[] = LTYPE_ORG;
+	public entityTypeList: any[] = [];
 	public filterClergyID: FormControl;
 	public filterEntityID: FormControl;
 	public filterTypeEntityID: FormControl;
@@ -54,11 +54,13 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		this.entityTypeList.unshift({
 			code: 'all',
 			name: 'Tất Cả Loại Nơi Bổ Nhiệm'
-		})
+		});
+		this.entityTypeList.push(...LTYPE_ORG);
 		this.statusClergy.unshift({
 			code: 'all',
 			name: 'Tất Cả Trạng Thái'
 		})
+		this.statusClergy.push(...STATUS_CLERGY);
 		this.filterClergyID = new FormControl('all');
 		this.filterClergyID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
 			this.getDataGridAndCounterApplications();
@@ -415,7 +417,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
-		config.autoFocus = true;
+		config.autoFocus = false;
 		let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
@@ -449,7 +451,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			config.disableClose = true;
 			config.panelClass = 'dialog-form-l';
 			config.maxWidth = '80vw';
-			config.autoFocus = true;
+			config.autoFocus = false;
 			let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
 			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: (res: any) => {
