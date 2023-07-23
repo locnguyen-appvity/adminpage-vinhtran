@@ -1,5 +1,12 @@
 export const ANNIVERSARIES = [
     {
+        name: "Bổn Mạng",
+        type: "saint",
+        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
+        typeClergy: "all",
+        typeOrg: "all",
+    },
+    {
         name: "Ngày Sinh",
         type: "birth",
         includes: ['clergy'],
@@ -9,7 +16,7 @@ export const ANNIVERSARIES = [
     {
         name: "Ngày Thành Lập",
         type: "createdDate",
-        includes: ['giao_xu','giao_diem','giao_ho','dong_tu','co_so_giao_phan','giao_hat'],
+        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
         typeClergy: "",
         typeOrg: "all",
     },
@@ -21,24 +28,10 @@ export const ANNIVERSARIES = [
         typeOrg: "",
     },
     {
-        name: "Bổn Mạng",
-        type: "saint",
-        includes: ['clergy'],
-        typeClergy: "all",
-        typeOrg: "all",
-    },
-    {
         name: "Thêm Sức",
         type: "confirmation",
         includes: ['clergy'],
         typeClergy: "all",
-        typeOrg: "",
-    },
-    {
-        name: "Đại Chủng Viện",
-        type: "bigSeminary",
-        includes: ['clergy'],
-        typeClergy: "tu_trieu",
         typeOrg: "",
     },
     {
@@ -49,7 +42,14 @@ export const ANNIVERSARIES = [
         typeOrg: "",
     },
     {
-        name: "Tiểu Chủng Viện",
+        name: "Đại Chủng Viện",
+        type: "bigSeminary",
+        includes: ['clergy'],
+        typeClergy: "tu_trieu",
+        typeOrg: "",
+    },
+    {
+        name: "Ngày Khấn",
         type: "vow",
         includes: ['clergy'],
         typeClergy: "tu_dong",
@@ -135,42 +135,42 @@ export const LTYPE_ORG = [
     {
         name: 'Giáo Hạt',
         code: 'giao_hat',
-        group:'group'
+        group: 'group'
     },
     {
         name: 'Giáo Xứ',
         code: 'giao_xu',
-        group:'organization'
+        group: 'organization'
     },
     {
         name: 'Giáo Điểm',
         code: 'giao_diem',
-        group:'organization'
+        group: 'organization'
     },
     {
         name: 'Giáo Họ',
         code: 'giao_ho',
-        group:'organization'
+        group: 'organization'
     },
     {
         name: 'Dòng Tu',
         code: 'dong_tu',
-        group:'group'
+        group: 'group'
     },
     {
         name: 'Cơ Sở Giáo Phận',
         code: 'co_so_giao_phan',
-        group:'group'
+        group: 'group'
     },
     {
         name: 'Ban Mục Vụ',
         code: 'ban_muc_vu',
-        group:'group'
+        group: 'group'
     },
     {
         name: 'Ban Chuyên Môn',
         code: 'ban_chuyen_mon',
-        group:'group'
+        group: 'group'
     }
 ]
 // export const POSITION = [

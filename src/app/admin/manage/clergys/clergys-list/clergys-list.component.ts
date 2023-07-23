@@ -120,13 +120,24 @@ export class ClergysListComponent extends ListItemBaseComponent {
 				let snackbarData: any = {
 					key: ''
 				};
-				if (res === 'OK') {
+				if (res && res.action == 'save') {
 					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
 					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
 					this.getDataItems();
 				}
-				else if (res === 'Deleted') {
+				else if (res && res.action == 'save-open-detail') {
+					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					if (res.data && res.data.id) {
+						this.onChangeData(res.data);
+					}
+					else {
+						this.getDataItems();
+					}
+				}
+				else if (res && res.delete == 'delete') {
 					this.getDataItems();
 				}
 			}

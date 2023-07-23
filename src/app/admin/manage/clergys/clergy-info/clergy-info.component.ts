@@ -2,12 +2,12 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable, of, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, Observable, of, take, takeUntil } from 'rxjs';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { LEVEL_CLERGY, TYPE_ORG } from '../../../../shared/data-manage';
+import { ANNIVERSARIES, LEVEL_CLERGY, TYPE_ORG } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-info',
@@ -40,6 +40,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public saintList: any[] = [];
 	public localItem: any;
 	public anniversarys: any[] = [];
+	public dataDefault: any[] = ANNIVERSARIES;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -151,11 +152,11 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		this.service.deleteClergy(this.ID).pipe(take(1)).subscribe(() => {
 			this.saveAction = ''
 			this.dataProcessing = false;
-			this.dialogRef.close('Deleted');
+			this.dialogRef.close({ action: 'delete' });
 		})
 	}
 
-	onSaveItem() {
+	onSaveItem(saveAction: string) {
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
 			stName: valueForm.stName,
@@ -167,26 +168,104 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			type: valueForm.type,
 			level: valueForm.level
 		}
-		this.saveAction = 'save';
+		this.saveAction = saveAction;
 		if (this.target == 'edit') {
 			this.dataProcessing = true;
 			this.service.updateClergy(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
 				this.saveAction = ''
 				this.dataProcessing = false;
-				this.dialogRef.close('OK');
+				this.dialogRef.close({ action: saveAction, data: this.localItem });
 			})
 		}
 		else {
 			this.dataProcessing = true;
 			this.service.createClergy(dataJSON).pipe(take(1)).subscribe(
 				{
-					next: () => {
-						this.saveAction = ''
-						this.dataProcessing = false;
-						this.dialogRef.close('OK');
+					next: (res: any) => {
+						if (res && res.data) {
+							this.onCreateAutoAnniversary(res.data).pipe(take(1)).subscribe({
+								next: () => {
+									this.saveAction = ''
+									this.dataProcessing = false;
+									this.dialogRef.close({ action: saveAction, data: res.data });
+								}
+							})
+						}
+
 					}
 				})
 		}
+	}
+
+	onCreateAutoAnniversary(item: any) {
+		return new Observable(obs => {
+			if (this.dataDefault && this.dataDefault.length > 0) {
+				let dataDefault = this.dataDefault.filter(it => {
+					if (this.sharedService.checkValueExistsInArray("clergy", it.includes)) {
+						if (it.type == 'vow' && item.type == 'tu_dong') {
+							return true;
+						}
+						else if ((it.type == 'smallSeminary' || it.type == 'bigSeminary') && item.type == 'tu_trieu') {
+							return true;
+						}
+						else if (it.type != 'vow' && it.type != 'smallSeminary' && it.type != 'bigSeminary') {
+							return true;
+						}
+					}
+					return false;
+				}
+				)
+				if (dataDefault.length == 0) {
+					obs.next();
+					obs.complete();
+					return;
+				}
+				this.dataProcessing = true;
+				let sub = new BehaviorSubject(0);
+				sub.subscribe({
+					next: (index: number) => {
+						if (index < dataDefault.length) {
+							if (dataDefault[index]) {
+								let valueForm = dataDefault[index];
+								let dataJSON = {
+									"entityID": item.id,
+									"entityType": "clergy",
+									"name": valueForm.name,
+									"day": "",
+									"type": valueForm.type,
+									"date": "",
+									"description": "",
+									"status": 'auto'
+								}
+								this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+									next: () => {
+										index++;
+										sub.next(index);
+									},
+									error: error => {
+										console.log(error);
+										index++;
+										sub.next(index);
+									}
+								});
+
+							}
+							else {
+								index++;
+								sub.next(index);
+							}
+						}
+						else {
+							obs.next();
+							obs.complete();
+							sub.complete();
+							sub.unsubscribe();
+						}
+
+					}
+				});
+			}
+		})
 	}
 
 }

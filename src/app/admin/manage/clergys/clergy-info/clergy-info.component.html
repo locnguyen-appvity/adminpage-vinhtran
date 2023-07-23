@@ -67,16 +67,22 @@
 		<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
 			<span fxFlex></span>
 			<a mat-button (click)="closeDialog()" color="default">Hủy</a>
-			<div class="btn-save-process">
-				<button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete' || target !== 'edit'"
+			<div *ngIf="target == 'edit'" class="btn-save-process">
+				<button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete'"
 					aria-label="Delete" (click)="deleteItem()" color="warn">Xóa</button>
 				<mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>
 			</div>
 			<div class="btn-save-process">
 				<button mat-flat-button color="primary"
 					[disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
-					aria-label="Save" (click)="onSaveItem()">{{textSave}}</button>
+					aria-label="Save" (click)="onSaveItem('save')">{{textSave}}</button>
 				<mat-spinner [diameter]="24" *ngIf="saveAction === 'save'"></mat-spinner>
+			</div>
+			<div class="btn-save-process">
+				<button mat-flat-button color="primary"
+					[disabled]="!hasChangedGroup || !dataItemGroup.valid || dataProcessing || saveAction === 'save'"
+					aria-label="Save" (click)="onSaveItem('save-open-detail')">Thêm Sau Đó Mở Chi Tiết</button>
+				<mat-spinner [diameter]="24" *ngIf="saveAction === 'save-open-detail'"></mat-spinner>
 			</div>
 		</div>
 	</div>
