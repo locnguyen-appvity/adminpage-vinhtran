@@ -115,7 +115,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		this.appointmentsList = [];
 		if (!this.isNullOrEmpty(clergyID)) {
 			let options = {
-				filter: `clergyID eq ${clergyID} and status eq 'duong_nhiem'`
+				filter: `clergyID eq ${clergyID} and (status eq 'duong_nhiem' or status eq 'cho_thuyen_chuyen')`
 			}
 			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
 				let dataItems = [];

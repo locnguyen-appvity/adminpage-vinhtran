@@ -20,7 +20,7 @@
 		</div>
 	</div>
 	<app-search-organizations [title]="''" [data]="data" *ngIf="target == 'organizations'"></app-search-organizations>
-	<app-search-clergys [title]="''" [target]="'clergys'" *ngIf="target == 'clergys'"></app-search-clergys>
+	<app-search-clergys [title]="''" [target]="'clergys'" [data]="data" *ngIf="target == 'clergys'"></app-search-clergys>
 	<div class="btn-dialog-actions mrt-12" fxLayout="row" fxLayoutAlign="start center">
 		<span fxFlex></span>
 		<button mat-flat-button (click)="closeDialog()" color="primary">Đóng</button>

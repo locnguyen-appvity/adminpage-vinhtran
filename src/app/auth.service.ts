@@ -19,6 +19,9 @@ export class AuthenIntercept implements HttpInterceptor {
 		if (url.includes("/api/v1/auth")) {
 			return next.handle(req.clone());
 		}
+		if (url.startsWith("http://gppc_client")) {
+			return next.handle(req.clone());
+		}
 		else if (url.includes("/v1/api/public")) {
 			return next.handle(req.clone({
 				// headers: req.headers
