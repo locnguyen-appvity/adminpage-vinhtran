@@ -2,9 +2,10 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { take, takeUntil } from 'rxjs';
+import { debounceTime, take, takeUntil } from 'rxjs';
 import { ANNIVERSARIES } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -55,13 +56,23 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			this.entityType = this.dialogData.entityType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
-		if(this.localItem && this.localItem.status == 'auto'){
+		if (this.localItem && this.localItem.status == 'auto') {
 			this.dataItemGroup.get('name').disable({
 				onlySelf: true
 			})
 		}
+		this.dataItemGroup.get("date").valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), takeUntil(this.unsubscribe)).subscribe((value: any) => {
+			if (this.dataItemGroup.get("date").valid) {
+				if (!this.isNullOrEmpty(value)) {
+					this.dataItemGroup.get("day").setValue(value.format('DD/MM'));
+				}
+				else {
+					this.dataItemGroup.get("day").setValue("");
+				}
+			}
+		})
 		this.getOrganizations();
-		this.typeEvents = ANNIVERSARIES.filter(it=>!it.hasAuto);
+		this.typeEvents = ANNIVERSARIES.filter(it => !it.hasAuto);
 	}
 
 	initialEventGroup(item: any): FormGroup {
