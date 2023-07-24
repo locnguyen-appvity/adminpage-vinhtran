@@ -67,7 +67,7 @@
                                 <button mat-icon-button matTooltip="Sửa" (click)="onChangeData(data)">
                                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                 </button>
-                                <button mat-icon-button matTooltip="Xem" (click)="$event.stopPropagation()">
+                                <button mat-icon-button matTooltip="Xem" (click)="$event.stopPropagation();onViewDetail(data)">
                                     <mat-icon class="material-icons" svgIcon="ic_visibility_48dp"></mat-icon>
                                 </button>
                                 <button mat-icon-button (click)="$event.stopPropagation();deleteItem(data)"

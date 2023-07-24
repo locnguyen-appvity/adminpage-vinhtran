@@ -109,6 +109,10 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		this.router.navigate([`/admin/manage/clergys/clergy/${item.id}`]);
 	}
 
+	onViewDetail(item: any){
+		this.router.navigate([`/admin/clergy-view/${item.id}`]);
+	}
+
 	openFormDialog(config: any, target: string) {
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-m';

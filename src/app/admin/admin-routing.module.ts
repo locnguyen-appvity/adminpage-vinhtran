@@ -64,6 +64,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./slides/slides.module').then(m => m.SlidesModule)
 			},
 			{
+			  path: 'clergy-view/:id',
+			  loadChildren: () => import('./manage/clergys/clergy-view/clergy-view.module').then(m => m.ClergyViewModule)
+			},
+			{
 				path: 'manage',
 				loadChildren: () => import('./manage/manage.module').then(m => m.ManageModule)
 			},
