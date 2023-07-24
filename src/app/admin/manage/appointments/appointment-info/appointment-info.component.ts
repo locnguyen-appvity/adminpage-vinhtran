@@ -633,143 +633,197 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
 		if (this.mode == 'new') {
-			if (this.dataItemGroup.get('position').value == 'huu' || this.dataItemGroup.get('position').value == 'nghi_duong') {
-				//Xin thêm những chức vụ nào chỉ có 1, position thêm multi level, thêm biến acceptMember: 1,2,3
-				this.onSaveNew();
-			}
-			else {
-				let positionItem = this.sharedService.getItemExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code');
-				let top = positionItem ? positionItem.slot : 1;
-				this.checkValidateEntity(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, top).pipe(take(1)).subscribe({
-					next: (res: any) => {
-						if (this.isNullOrEmpty(res)) {
+			this.checkValidateSaveAppointment(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, this.dataItemGroup.get('clergyID').value, "").pipe(take(1)).subscribe({
+				next: (pass: boolean) => {
+					if (pass) {
+						if (this.dataItemGroup.get('position').value == 'huu' || this.dataItemGroup.get('position').value == 'nghi_duong') {
+							//Xin thêm những chức vụ nào chỉ có 1, position thêm multi level, thêm biến acceptMember: 1,2,3
 							this.onSaveNew();
 						}
 						else {
-
-							let data: any = {
-								submitBtn: 'Đồng Ý',
-								cancelBtn: 'Hủy Tất Cả'
-							}
-							let clergyNames = "";
-							if (res && res.length > 0) {
-								clergyNames = res.map(it => it.clergyName).join(", ");
-							}
-							let confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
-								nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
-							if (res && res.length > 1) {
-								data.arrFromList = res.map(it => {
-									return {
-										name: it.clergyName,
-										value: it.id
-									}
-								});
-								data.valueType = 'select';
-								data.requireCtrl = true;
-								confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
-								nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của 1 trong những người sau <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
-							}
-							data.confirmMessage = confirmMessage;
-							let config: any = {
-								data: data
-							};
-							this.showDialogConfirm(config).pipe(take(1)).subscribe({
-								next: (resConfirm: any) => {
-									if (resConfirm && resConfirm.action == 'ok') {
-										let appointmentJSON = {
-											status: 'cho_thuyen_chuyen',
+							let positionItem = this.sharedService.getItemExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code');
+							if (positionItem && positionItem.slot > 0) {
+								let top = positionItem ? positionItem.slot : 1;
+								this.checkValidateEntity(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, top).pipe(take(1)).subscribe({
+									next: (res: any) => {
+										if (this.isNullOrEmpty(res)) {
+											this.onSaveNew();
 										}
-										let id = res[0].id;
-										if (resConfirm.data) {
-											id = resConfirm.data;
-										}
-										this.service.updateAppointment(id, appointmentJSON).pipe(take(1)).subscribe({
-											next: () => {
-												this.onSaveNew();
+										else {
+											let data: any = {
+												submitBtn: 'Đồng Ý',
+												cancelBtn: 'Hủy Tất Cả'
 											}
-										})
+											let clergyNames = "";
+											if (res && res.length > 0) {
+												clergyNames = res.map(it => it.clergyName).join(", ");
+											}
+											let confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
+												nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
+											if (res && res.length > 1) {
+												data.arrFromList = res.map(it => {
+													return {
+														name: it.clergyName,
+														value: it.id
+													}
+												});
+												data.valueType = 'select';
+												data.requireCtrl = true;
+												confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
+												nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của 1 trong những người sau <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
+											}
+											data.confirmMessage = confirmMessage;
+											let config: any = {
+												data: data
+											};
+											this.showDialogConfirm(config).pipe(take(1)).subscribe({
+												next: (resConfirm: any) => {
+													if (resConfirm && resConfirm.action == 'ok') {
+														let appointmentJSON = {
+															status: 'cho_thuyen_chuyen',
+														}
+														let id = res[0].id;
+														if (resConfirm.data) {
+															id = resConfirm.data;
+														}
+														this.service.updateAppointment(id, appointmentJSON).pipe(take(1)).subscribe({
+															next: () => {
+																this.onSaveNew();
+															}
+														})
+													}
+													else {
+														this.dialogRef.close(null);
+													}
+												}
+											})
+										}
 									}
-									else {
-										this.dialogRef.close(null);
-									}
-								}
-							})
+								})
+							}
+							else {
+								this.onSaveNew();
+							}
 						}
 					}
-				})
-			}
-		}
-		else {
-			this.checkValidateStatus(this.dataItemGroup.get('status').value, this.dataItemGroup.get('clergyID').value, this.localItem.id).pipe(take(1)).subscribe({
-				next: (check: string) => {
-					if (check == 'enter-new-appointment') {
+					else {
 						let config: any = {
 							data: {
-								submitBtn: 'Tạo bổ nhiệm mới',
+								submitBtn: 'Nhập lại',
 								cancelBtn: 'Hủy Tất Cả',
-								confirmMessage: `${this.clergyName} chỉ có thể kết thúc bổ nhiệm khi tạo một bổ nhiệm mới`
+								confirmMessage: `<strong>Bổ nhiệm bị trừng lặp</strong>. ${this.dataItemGroup.get('clergyName').value} hiện đang ở ${this.dataItemGroup.get('entityName').value} bạn không thể tạo mới bổ nhiệm.`
 							}
 						};
 						this.showDialogConfirm(config).pipe(take(1)).subscribe({
 							next: (resConfirm: any) => {
 								if (resConfirm && resConfirm.action == 'ok') {
-									// if (this.action != 'ket_thuc') {
 
-									// }
-									// else {
-									this.action = 'thuyen_chuyen';
-									this.fromAppointmentItem = this.dialogData.item;
-									this.updateFromAppointment(this.fromAppointmentItem);
-									this.localItem = null;
-									this.mode = 'new';
-									this.dataItemGroup.patchValue({
-										fromStatus: 'man_nhiem',
-										fromToDate: this.dataItemGroup.get('toDate').value,
-										id: '',
-										entityID: "",
-										_entityID: "",
-										entityName: "",
-										appointerID: "",
-										appointerName: "",
-										entityType: "",
-										position: 'chanh_xu',
-										status: 'duong_nhiem',
-										fromDate: "",
-										toDate: "",
-										effectiveDate: "",
-									})
-									// this.dataItemGroup.get('clergyName').disable({
-									// 	onlySelf: true
-									// })
-									this.target = 'chon_thuyen_chuyen';
-									// }
 								}
 								else {
 									this.dialogRef.close(null);
 								}
 							}
 						})
+					}
+				}
+			})
+		}
+		else {
+			this.checkValidateSaveAppointment(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, this.dataItemGroup.get('clergyID').value, this.localItem.id).pipe(take(1)).subscribe({
+				next: (pass: boolean) => {
+					if (pass) {
+						this.checkValidateStatus(this.dataItemGroup.get('status').value, this.dataItemGroup.get('clergyID').value, this.localItem.id).pipe(take(1)).subscribe({
+							next: (check: string) => {
+								if (check == 'enter-new-appointment') {
+									let config: any = {
+										data: {
+											submitBtn: 'Tạo bổ nhiệm mới',
+											cancelBtn: 'Hủy Tất Cả',
+											confirmMessage: `${this.clergyName} chỉ có thể kết thúc bổ nhiệm khi tạo một bổ nhiệm mới`
+										}
+									};
+									this.showDialogConfirm(config).pipe(take(1)).subscribe({
+										next: (resConfirm: any) => {
+											if (resConfirm && resConfirm.action == 'ok') {
+												// if (this.action != 'ket_thuc') {
 
+												// }
+												// else {
+												this.action = 'thuyen_chuyen';
+												this.fromAppointmentItem = this.dialogData.item;
+												this.updateFromAppointment(this.fromAppointmentItem);
+												this.localItem = null;
+												this.mode = 'new';
+												this.dataItemGroup.patchValue({
+													fromStatus: 'man_nhiem',
+													fromToDate: this.dataItemGroup.get('toDate').value,
+													id: '',
+													entityID: "",
+													_entityID: "",
+													entityName: "",
+													appointerID: "",
+													appointerName: "",
+													entityType: "",
+													position: 'chanh_xu',
+													status: 'duong_nhiem',
+													fromDate: "",
+													toDate: "",
+													effectiveDate: "",
+												})
+												// this.dataItemGroup.get('clergyName').disable({
+												// 	onlySelf: true
+												// })
+												this.target = 'chon_thuyen_chuyen';
+												// }
+											}
+											else {
+												this.dialogRef.close(null);
+											}
+										}
+									})
+
+								}
+								else {
+									if (this.action != 'ket_thuc') {
+										this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
+											next: () => {
+												this.dialogRef.close("OK");
+											}
+										})
+									}
+									else {
+										let appointmentJSON = {
+											toDate: this.sharedService.ISOStartDay(valueForm.toDate),
+											status: 'man_nhiem',
+										}
+										this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
+											next: () => {
+												this.dialogRef.close("OK");
+											}
+										})
+									}
+								}
+							}
+						})
 					}
 					else {
-						if (this.action != 'ket_thuc') {
-							this.onSaveAppointment(this.localItem.fromAppointmentID).pipe(take(1)).subscribe({
-								next: () => {
-									this.dialogRef.close("OK");
-								}
-							})
-						}
-						else {
-							let appointmentJSON = {
-								toDate: this.sharedService.ISOStartDay(valueForm.toDate),
-								status: 'man_nhiem',
+						let config: any = {
+							data: {
+								submitBtn: 'Nhập lại',
+								cancelBtn: 'Hủy Tất Cả',
+								confirmMessage: `<strong>Bổ nhiệm bị trừng lặp</strong>. ${this.dataItemGroup.get('clergyName').value} hiện đang ở ${this.dataItemGroup.get('entityName').value} bạn không thể chuyển nơi bổ nhiệm.`
 							}
-							this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
-								next: () => {
-									this.dialogRef.close("OK");
+						};
+						this.showDialogConfirm(config).pipe(take(1)).subscribe({
+							next: (resConfirm: any) => {
+								if (resConfirm && resConfirm.action == 'ok') {
+
 								}
-							})
-						}
+								else {
+									this.dialogRef.close(null);
+								}
+							}
+						})
 					}
 				}
 			})
@@ -873,6 +927,32 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				}
 				else {
 					obs.next(null);
+					obs.complete();
+				}
+
+			})
+		})
+	}
+
+	checkValidateSaveAppointment(entityID: string, entityType: string, clergyID: string, appointmentID: string) {
+		return new Observable(obs => {
+			let filter = `entityID eq ${entityID} and entityType eq '${entityType}' and clergyID eq ${clergyID} and status eq 'duong_nhiem'`;
+			if (!this.isNullOrEmpty(appointmentID)) {
+				filter = `${filter} and id ne ${appointmentID}`;
+			}
+			let options = {
+				filter: filter,
+				top: 1
+			}
+			this.dataProcessing = true;
+			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+				this.dataProcessing = false;
+				if (res && res.value && res.value.length > 0) {
+					obs.next(false);
+					obs.complete();
+				}
+				else {
+					obs.next(true);
 					obs.complete();
 				}
 
