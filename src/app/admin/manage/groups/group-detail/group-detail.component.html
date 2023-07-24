@@ -23,7 +23,7 @@
 		<form [formGroup]="dataItemGroup">
 			<div fxLayout="column" fxLayoutAlign="start start">
 				<!-- <div fxFlex="50" class="mrr-24"> -->
-				<div fxLayout="row wrap" class="full-width">
+				<div *ngIf="target != 'giao_hat'" fxLayout="row wrap" class="full-width">
 					<div fxFlex.gt-xs="70" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 						<mat-form-field appearance="outline" class="full-width">
 							<mat-label>Tên</mat-label>
@@ -31,15 +31,21 @@
 						</mat-form-field>
 					</div>
 					<div fxFlex.gt-xs="30" fxFlex="100">
-						<mat-form-field *ngIf="target != 'giao_hat'" appearance="outline" class="full-width">
+						<mat-form-field appearance="outline" class="full-width">
 							<mat-label>Giáo Hạt</mat-label>
-							<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+							<se-autocomplete-simple [required]="false" [formControlName]="'entityID'" [optgroup]="false"
 								[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
-								[autocomplete]="false" [items$]="groupList$">
+								[autocomplete]="false" [items]="groupsList"
+								(onSelectItem)="onSelectItem($event,'entityID')">
 							</se-autocomplete-simple>
 						</mat-form-field>
 					</div>
 				</div>
+				<mat-form-field *ngIf="target == 'giao_hat'" appearance="outline" class="full-width">
+					<mat-label>Tên</mat-label>
+					<input matInput required formControlName="name" autocomplete="off">
+				</mat-form-field>
+
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Mô Tả</mat-label>
 					<textarea matInput rows="3" formControlName="description"></textarea>

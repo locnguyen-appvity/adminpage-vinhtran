@@ -593,6 +593,10 @@ export const TYPE_ORG = [
         code: 'giao_xu'
     },
     {
+        name: 'Giáo Họ',
+        code: 'giao_ho'
+    },
+    {
         name: 'Giáo Điểm',
         code: 'giao_diem'
     },

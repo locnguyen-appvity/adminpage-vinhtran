@@ -62,12 +62,21 @@
                                 <input matInput formControlName="address" autocomplete="off">
                             </mat-form-field>
                         </div>
-                        <div fxFlex.gt-xs="30" fxFlex="100">
+                        <div *ngIf="target == 'giao_xu'" fxFlex.gt-xs="30" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Giáo Hạt</mat-label>
                                 <se-autocomplete-simple [required]="true" [formControlName]="'groupID'" 
                                     [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
                                     [keyValueEmit]="'id'" [keyValue]="'id'" [autocomplete]="true" [items]="groupsList">
+                                </se-autocomplete-simple>
+                            </mat-form-field>
+                        </div>
+                        <div *ngIf="target != 'giao_xu'" fxFlex.gt-xs="30" fxFlex="100">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Thuộc</mat-label>
+                                <se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="true"
+                                    [placeHolder]="'Nhập tên để tìm kiếm'" [keyTitle]="'name'" [keyValue]="'_id'" [keyValueEmit]="'_id'"
+                                    [autocomplete]="true" [items]="entityList" (onSelectItem)="onSelectItem($event,'entityID')">
                                 </se-autocomplete-simple>
                             </mat-form-field>
                         </div>
@@ -88,6 +97,7 @@
                             [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
                             [keyValue]="'id'" [autocomplete]="true" [items]="saintList">
                         </se-autocomplete-simple>
+                        <mat-hint>Nhập mới hoặc chọn trong danh sách</mat-hint>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Số Điện Thoại</mat-label>

@@ -142,6 +142,8 @@ export class SharedPropertyService {
                 return 'Giáo hạt'
             case 'giao_xu':
                 return 'Giáo xứ'
+            case 'giao_ho':
+                return 'Giáo họ'
             case 'giao_diem':
                 return 'Giáo điểm'
             case 'dong_tu':

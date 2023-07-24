@@ -21,7 +21,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		class: 'draft-label'
 	}
 	public target: string = "giao_hat";
-	public groupList$: Observable<any>;
+	public groupsList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -52,15 +52,22 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			name: ["", [Validators.required]],
 			description: "",
 			content: "",
-			groupID: ""
+			entityID: "",
+			entityType: ""
 		});
 		if (this.target != 'giao_hat') {
 			this.getGroups();
 		}
 	}
 
+	onSelectItem(event: any, target: string) {
+		if (target == "entityID") {
+			this.dataItemGroup.get("entityType").setValue(event ? event.type : "");
+		}
+	}
+
 	getGroups() {
-		this.groupList$ = of([]);
+		this.groupsList = [];
 		let options = {
 			select: 'id,name',
 			filter: "type eq 'giao_hat'"
@@ -68,7 +75,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
-					this.groupList$ = of(res.value);
+					this.groupsList = res.value;
 				}
 			}
 		})
@@ -84,7 +91,9 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 						name: this.localItem.name,
 						description: this.localItem.description,
 						content: this.localItem.content,
-						groupID: this.localItem.groupID
+						groupID: this.localItem.groupID,
+						entityID: this.localItem.entityID,
+						entityType: this.localItem.entityType
 					});
 				}
 			}
@@ -120,6 +129,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			name: valueForm.name,
 			description: valueForm.description,
 			content: valueForm.content,
+			entityID: valueForm.entityID,
+			entityType: valueForm.entityType,
 			// status: valueForm.status ? 'active' : 'inactive',
 			// type: 'giao_hat'
 		}

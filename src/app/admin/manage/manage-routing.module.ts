@@ -43,6 +43,10 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{
+				path: 'giao_ho',
+				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
+			},
+			{
 				path: 'migrations',
 				loadChildren: () => import('./migrations/migrations.module').then(m => m.MigrationsModule)
 			},

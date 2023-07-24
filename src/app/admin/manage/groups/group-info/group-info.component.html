@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<h2 mat-dialog-title>{{title}} {{orgTypeName}}</h2>
 <mat-dialog-content>
 	<div class="content-dialog content-dialog--minHeight">
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
@@ -13,9 +13,9 @@
 				</mat-form-field>
 				<mat-form-field *ngIf="typeGroup != 'giao_hat'" appearance="outline" class="full-width">
 					<mat-label>Giáo Hạt</mat-label>
-					<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+					<se-autocomplete-simple [required]="false" [formControlName]="'entityID'" [optgroup]="false"
 						[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
-						[autocomplete]="false" [items$]="groupList$">
+						[autocomplete]="false" [items]="groupsList" (onSelectItem)="onSelectItem($event,'entityID')">
 					</se-autocomplete-simple>
 				</mat-form-field>
 				<se-editor-control formControlName="content"></se-editor-control>

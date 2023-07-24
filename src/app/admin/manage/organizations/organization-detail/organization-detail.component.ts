@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 // import { JoditAngularComponent } from 'jodit-angular';
-import { take } from 'rxjs';
+import { Observable, forkJoin, take } from 'rxjs';
 // import { DialogSelectedImgsComponent } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.component';
 import { ToastSnackbarAppComponent } from 'src/app/controls/toast-snackbar/toast-snackbar.component';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -40,8 +40,11 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 	public typeList: any[] = [];
 	public saintList: any[] = [];
-	public groupsList: any[] = [];
+	public groupsList: any = [];
 	public arrMasses: any[] = [];
+	public target: string = 'giao_xu'
+	public orgList: any[] = [];
+	public entityList: any[] = [];
 
 	constructor(
 		private service: SharedService,
@@ -53,11 +56,28 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		public dialog: MatDialog
 	) {
 		super(sharedService);
+		if (this.router.url.includes("giao_xu")) {
+			this.target = 'giao_xu';
+		}
+		else if (this.router.url.includes("giao_diem")) {
+			this.target = 'giao_diem';
+		}
+		else if (this.router.url.includes("giao_ho")) {
+			this.target = 'giao_ho';
+		}
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getOrganization();
 		}
+		this.getAllData();
+	}
 
+	onSelectItem(event: any, target: string) {
+		if (target == "entityID") {
+			this.dataItemGroup.get("entityType").setValue(event ? event.entityType : "");
+			this.dataItemGroup.get("groupID").setValue(event ? event.groupID : "");
+			this.dataItemGroup.get("entityID").setValue(event ? event.entityID : "");
+		}
 	}
 
 	ngOnInit(): void {
@@ -71,13 +91,15 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			memberCount: 0,
 			population: 0,
 			groupID: '',
+			entityID: "",
+			entityType: "",
 			phoneNumber: '',
 			email: '',
 			address: '',
 			anniversary: '',
-			photo: ''
+			photo: '',
+			_entityID: "",
 		});
-		this.getAllData();
 	}
 
 	// getControls(frmGrp: FormGroup, key: string) {
@@ -174,7 +196,16 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	getAllData() {
 		this.typeList = TYPE_ORG;
 		this.getSaints();
-		this.getGroups();
+		if (this.target == 'giao_xu') {
+			this.getGroups().pipe(take(1)).subscribe();
+		}
+		else {
+			forkJoin([this.getOrganizations(), this.getGroups()]).pipe(take(1)).subscribe({
+				next: () => {
+					this.entityList = this.orgList.concat(this.groupsList);
+				}
+			});
+		}
 		// this.getMasses();
 	}
 
@@ -193,18 +224,57 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	}
 
 	getGroups() {
-		this.groupsList = [];
-		let options = {
-			select: 'id,name'
-		}
-		this.service.getGroups(options).pipe(take(1)).subscribe({
-			next: (res: any) => {
-				if (res && res.value && res.value.length > 0) {
-					this.groupsList = res.value;
-				}
+		return new Observable(obs => {
+			this.groupsList = [];
+			let options = {
+				select: 'id,name,type',
+				filter: "type eq 'giao_hat' and status ne 'inactive'"
 			}
+			this.service.getGroups(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._id = `${item.type}_${item.id}`;
+							item.groupID = item.id;
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
+							item.entityID = "";
+							item.entityType = "";
+						}
+						this.groupsList = res.value;
+					}
+					obs.next();
+					obs.complete();
+				}
+			})
 		})
 	}
+
+	getOrganizations() {
+		return new Observable(obs => {
+			this.orgList = [];
+			let options = {
+				select: 'id,name,groupID,type',
+				filter: "type eq 'giao_xu' and status ne 'inactive'"
+			}
+			this.service.getOrganizations(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._id = `${item.type}_${item.id}`;
+							item.groupName = this.sharedService.updateTypeOrg(item.type);
+							item.entityID = item.id;
+							item.entityType = item.type;
+							item.groupID = item.groupID;
+						}
+						this.orgList = res.value;
+					}
+					obs.next();
+					obs.complete();
+				}
+			})
+		})
+	}
+
 
 	getOrganization() {
 		this.service.getOrganization(this.ID).pipe(take(1)).subscribe({
@@ -216,6 +286,12 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
+					let groupID = this.localItem ? this.localItem.groupID : "";
+					let _entityID = groupID ? `giao_hat_${groupID}` : "";
+					if (this.localItem && this.localItem.entityID && this.localItem.entityType) {
+						_entityID = `${this.localItem.entityType}_${this.localItem.entityID}`;
+					}
+
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						email: this.localItem.email,
@@ -229,7 +305,10 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 						type: this.localItem.type,
 						memberCount: this.localItem.memberCount,
 						population: this.localItem.population,
-						photo: this.localItem.photo
+						photo: this.localItem.photo,
+						entityID: this.localItem.entityID,
+						entityType: this.localItem.entityType,
+						_entityID: _entityID,
 					});
 				}
 			}
@@ -245,6 +324,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			phoneNumber: valueForm.phoneNumber,
 			address: valueForm.address,
 			groupID: valueForm.groupID,
+			entityID: valueForm.entityID,
+			entityType: valueForm.entityType,
 			abbreviation: valueForm.abbreviation,
 			anniversary: valueForm.anniversary,
 			content: valueForm.content,

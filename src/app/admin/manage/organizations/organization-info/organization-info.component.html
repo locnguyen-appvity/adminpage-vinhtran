@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}} Giáo Xứ và Dòng Tu</h2>
+<h2 mat-dialog-title>{{title}} {{orgTypeName}}</h2>
 <mat-dialog-content>
 	<div class="content-dialog">
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
@@ -28,14 +28,21 @@
 					</mat-form-field>
 				</div>
 				<div fxFlex.gt-xs="50" fxFlex="100"> -->
-					<mat-form-field appearance="outline" class="full-width">
-						<mat-label>Giáo Hạt</mat-label>
-						<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" 
-							[optgroup]="false" [placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'"
-							[keyValueEmit]="'id'" [autocomplete]="false" [items$]="groupList$">
-						</se-autocomplete-simple>
-					</mat-form-field>
-				<!-- </div>
+			<mat-form-field *ngIf="type == 'giao_xu'" appearance="outline" class="full-width">
+				<mat-label>Giáo Hạt</mat-label>
+				<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+					[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
+					[autocomplete]="false" [items]="groupsList">
+				</se-autocomplete-simple>
+			</mat-form-field>
+			<mat-form-field *ngIf="type != 'giao_xu'" appearance="outline" class="full-width">
+				<mat-label>Thuộc</mat-label>
+				<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="true"
+					[placeHolder]="'Nhập tên để tìm kiếm'" [keyTitle]="'name'" [keyValue]="'_id'" [keyValueEmit]="'_id'"
+					[autocomplete]="true" [items]="entityList" (onSelectItem)="onSelectItem($event,'entityID')">
+				</se-autocomplete-simple>
+			</mat-form-field>
+			<!-- </div>
 			</div> -->
 			<div fxLayout="row wrap">
 				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">

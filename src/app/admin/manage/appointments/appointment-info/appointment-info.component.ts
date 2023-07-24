@@ -377,6 +377,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		switch (entityType) {
 			case 'giao_xu':
 			case 'giao_diem':
+			case 'giao_ho':
 				positionList = this.positionListCache.filter(it => (it.level.includes('giao_xu') || it.level.includes('khac')));
 				break;
 			case 'co_so_giao_phan':

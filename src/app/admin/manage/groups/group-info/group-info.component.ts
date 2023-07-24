@@ -13,7 +13,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 })
 export class GroupInfoComponent extends SimpleBaseComponent {
 
-	public title: string = 'Thêm Giáo Hạt';
+	public title: string = 'Thêm';
 	public textSave: string = 'Thêm';
 	public dataItemGroup: FormGroup;
 	public hasChangedGroup: boolean = false;
@@ -22,7 +22,8 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	public localItem: any;
-	public groupList$: Observable<any>;
+	public groupsList: any[] = [];
+	public orgTypeName: string = "Giáo hạt";
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -34,23 +35,23 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		if (this.dialogData.typeGroup) {
 			this.typeGroup = this.dialogData.typeGroup;
 		}
-		if (this.target !== 'edit') {
-			if (this.typeGroup == 'hoi_doan') {
-				this.title = 'Thêm Hội Đoàn';
-			}
-			else if (this.typeGroup == 'co_so_giao_phan') {
-				this.title = 'Thêm Cơ Sở Giáo Phận';
-			}
-			else if (this.typeGroup == 'ban_muc_vu') {
-				this.title = 'Thêm Ban Mục Vụ';
-			}
-			else if (this.typeGroup == 'ban_chuyen_mon') {
-				this.title = 'Thêm Ban Chuyên Trách';
-			}
-			else if (this.typeGroup == 'dong_tu') {
-				this.title = 'Thêm Dòng Tu';
-			}
-		}
+		// if (this.target !== 'edit') {
+		// 	if (this.typeGroup == 'hoi_doan') {
+		// 		this.title = 'Thêm Hội Đoàn';
+		// 	}
+		// 	else if (this.typeGroup == 'co_so_giao_phan') {
+		// 		this.title = 'Thêm Cơ Sở Giáo Phận';
+		// 	}
+		// 	else if (this.typeGroup == 'ban_muc_vu') {
+		// 		this.title = 'Thêm Ban Mục Vụ';
+		// 	}
+		// 	else if (this.typeGroup == 'ban_chuyen_mon') {
+		// 		this.title = 'Thêm Ban Chuyên Trách';
+		// 	}
+		// 	else if (this.typeGroup == 'dong_tu') {
+		// 		this.title = 'Thêm Dòng Tu';
+		// 	}
+		// }
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
@@ -59,12 +60,14 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			this.localItem = this.dialogData.item;
 			this.title = this.localItem.name;
 		}
-		
+
+		this.orgTypeName = this.sharedService.updateTypeOrg(this.typeGroup);
 		this.dataItemGroup = this.fb.group({
 			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
-			groupID: this.localItem ? this.localItem.groupID : "",
+			entityID: this.localItem ? this.localItem.entityID : '',
+			entityType: this.localItem ? this.localItem.entityType : '',
 			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -80,8 +83,15 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		}
 	}
 
+
+	onSelectItem(event: any, target: string) {
+		if (target == "entityID") {
+			this.dataItemGroup.get("entityType").setValue(event ? event.type : "");
+		}
+	}
+
 	getGroups() {
-		this.groupList$ = of([]);
+		this.groupsList = [];
 		let options = {
 			select: 'id,name',
 			filter: "type eq 'giao_hat'"
@@ -89,7 +99,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
-					this.groupList$ = of(res.value);
+					this.groupsList = res.value;
 				}
 			}
 		})
@@ -127,7 +137,9 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			description: valueForm.description,
 			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive',
-			type: this.typeGroup
+			type: this.typeGroup,
+			entityID: valueForm.entityID,
+			entityType: valueForm.entityType,
 		}
 		if (this.target == 'edit') {
 			this.dataProcessing = true;

@@ -36,6 +36,10 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		if (this.router.url.includes("giao_diem")) {
 			this.type = 'giao_diem';
 		}
+		else if(this.router.url.includes("giao_ho")){
+			this.type = 'giao_ho';
+
+		}
 		this.getDataGridAndCounterApplications();
 	}
 
