@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { take, takeUntil } from 'rxjs';
+import { ANNIVERSARIES } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -32,6 +33,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public entityType: string = "";
 	public localItem: any;
 	public arrLocations: any[] = [];
+	public typeEvents: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -59,6 +61,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			})
 		}
 		this.getOrganizations();
+		this.typeEvents = ANNIVERSARIES.filter(it=>!it.hasAuto);
 	}
 
 	initialEventGroup(item: any): FormGroup {

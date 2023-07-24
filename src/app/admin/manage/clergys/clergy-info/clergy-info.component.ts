@@ -201,7 +201,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		return new Observable(obs => {
 			if (this.dataDefault && this.dataDefault.length > 0) {
 				let dataDefault = this.dataDefault.filter(it => {
-					if (this.sharedService.checkValueExistsInArray("clergy", it.includes)) {
+					if (this.sharedService.checkValueExistsInArray("clergy", it.includes) && it.hasAuto) {
 						if (it.type == 'vow' && item.type == 'tu_dong') {
 							return true;
 						}

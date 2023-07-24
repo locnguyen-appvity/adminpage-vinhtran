@@ -38,7 +38,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	onCreateAuto() {
 		if (this.dataDefault && this.dataDefault.length > 0) {
-			let dataDefault = this.dataDefault.filter(it => this.sharedService.checkValueExistsInArray(this.entityType,it.includes))
+			let dataDefault = this.dataDefault.filter(it => this.sharedService.checkValueExistsInArray(this.entityType,it.includes) && it.hasAuto);
 			if(dataDefault.length == 0){
 				return;
 			}
@@ -175,7 +175,7 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 
 	getDataItems() {
 		let options = {
-			filter: `entityID eq ${this.entityID} and entityType eq '${this.entityType}'`,
+			filter: `type ne 'birth' and entityID eq ${this.entityID} and entityType eq '${this.entityType}'`,
 			sort:'created asc'
 		}
 		this.arrData = [];

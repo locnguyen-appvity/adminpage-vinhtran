@@ -334,6 +334,7 @@ export const ANNIVERSARIES = [
     {
         name: "Bổn Mạng",
         type: "saint",
+        hasAuto: true,
         includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "all",
@@ -341,6 +342,7 @@ export const ANNIVERSARIES = [
     {
         name: "Ngày Sinh",
         type: "birth",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "all",
         typeOrg: "",
@@ -348,6 +350,7 @@ export const ANNIVERSARIES = [
     {
         name: "Ngày Thành Lập",
         type: "createdDate",
+        hasAuto: true,
         includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
         typeClergy: "",
         typeOrg: "all",
@@ -355,6 +358,7 @@ export const ANNIVERSARIES = [
     {
         name: "Rửa Tội",
         type: "baptize",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "all",
         typeOrg: "",
@@ -362,6 +366,7 @@ export const ANNIVERSARIES = [
     {
         name: "Thêm Sức",
         type: "confirmation",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "all",
         typeOrg: "",
@@ -369,6 +374,7 @@ export const ANNIVERSARIES = [
     {
         name: "Tiểu Chủng Viện",
         type: "smallSeminary",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "tu_trieu",
         typeOrg: "",
@@ -376,6 +382,7 @@ export const ANNIVERSARIES = [
     {
         name: "Đại Chủng Viện",
         type: "bigSeminary",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "tu_trieu",
         typeOrg: "",
@@ -383,10 +390,43 @@ export const ANNIVERSARIES = [
     {
         name: "Ngày Khấn",
         type: "vow",
+        hasAuto: true,
         includes: ['clergy'],
         typeClergy: "tu_dong",
         typeOrg: "",
-    }
+    },
+    {
+        name: "Kỷ Niệm",
+        type: "anniversary",
+        hasAuto: false,
+        includes: ['clergy','giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Ngày Mất",
+        type: "rip",
+        hasAuto: false,
+        includes: ['clergy'],
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Thụ Phong Phó Tế",
+        type: "pho_te",
+        hasAuto: false,
+        includes: ['clergy'],
+        typeClergy: "all",
+        typeOrg: "",
+    },
+    {
+        name: "Thụ Phong Linh Mục",
+        type: "linh_muc",
+        hasAuto: false,
+        includes: ['clergy'],
+        typeClergy: "all",
+        typeOrg: "",
+    },
     // {
     //     name: "Ngày Mất",
     //     entityID: "",
