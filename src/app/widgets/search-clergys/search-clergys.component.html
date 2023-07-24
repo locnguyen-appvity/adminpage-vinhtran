@@ -13,14 +13,14 @@
                         <div class="thumb">
                             <img [src]="item.pictureUrl" />
                         </div>
-                        <div class="info" fxFlex="50">
+                        <div class="info mrl-24" fxFlex="50">
                             <h2>{{item.groupName}}</h2>
                             <h3>Năm Sinh: {{item.dateOfBirthView}}</h3>
                             <h3>Chịu Chức: {{item.dateOfBirthView}}</h3>
                         </div>
-                        <div class="times">
+                        <div class="times" fxFlex="50">
                             <h2 class="title">Hoạt động sức vụ</h2>
-                            <h3 *ngFor="let app of item.controls">{{app.entityName}}: {{item.positionView}}</h3>
+                            <h3 *ngFor="let app of item.controls">Đang {{app.positionView}} tại {{app.entityName}}</h3>
                             <!-- <h3>Chủ nhật: {{item.sunday}}</h3>
                             <h3>Ngày thường: {{item.days}}</h3> -->
                         </div>

@@ -18,6 +18,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 	@Input() data: any;
 
 	public dataLists: any = [];
+	public cacheDataLists: any = [];
 	public loading: boolean = false;
 	public positionList: any[] = [];
 
@@ -64,11 +65,12 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		}
 		this.loading = true;
 		this.dataLists = [];
+		this.cacheDataLists = [];
 		this.service.searchClergies(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				let items = []
 				if (res && res.data && res.data.length > 0) {
-					for (let item of res.data) {
+					this.cacheDataLists = res.data;
+					for (let item of this.cacheDataLists) {
 						item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
@@ -77,9 +79,8 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 							item.pictureUrl = "../../assets/images/banner.jpg"
 						}
 					}
-					items = this.groupData(res.data);
 				}
-				this.dataLists = items;
+				this.dataLists = this.groupData(this.cacheDataLists);
 				this.loading = false;
 			}
 		})
@@ -115,6 +116,10 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 					items = res.value;
 				}
 				this.positionList = items;
+				for (let item of this.cacheDataLists) {
+					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
+				}
+				this.dataLists = this.groupData(this.cacheDataLists);
 			}
 		})
 	}
