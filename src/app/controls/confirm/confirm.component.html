@@ -4,14 +4,24 @@
 		<div fxLayout="column"> <span [innerHTML]="confirmMessage | safeHtml"></span></div>
 		<mat-form-field *ngIf="valueType == 'date'" appearance="outline" class="full-width">
 			<mat-label>{{lableCtrl}}</mat-label>
-			<input matInput [matDatepicker]="datePic" placeholder="DD/MM/YYYY" autocomplete="off" [formControl]="formCtrl" [required]="requireCtrl">
+			<input matInput [matDatepicker]="datePic" placeholder="DD/MM/YYYY" autocomplete="off"
+				[formControl]="formCtrl" [required]="requireCtrl">
 			<mat-datepicker-toggle matSuffix [for]="datePic">
 			</mat-datepicker-toggle>
 			<mat-datepicker #datePic></mat-datepicker>
 		</mat-form-field>
 		<mat-form-field *ngIf="valueType == 'text'" appearance="outline" class="full-width">
 			<mat-label>{{lableCtrl}}</mat-label>
-			<input matInput [placeholder]="lableCtrl" autocomplete="off" [formControl]="formCtrl" [required]="requireCtrl">
+			<input matInput [placeholder]="lableCtrl" autocomplete="off" [formControl]="formCtrl"
+				[required]="requireCtrl">
+		</mat-form-field>
+		<mat-form-field *ngIf="valueType == 'select'" appearance="outline" class="full-width">
+			<mat-label>{{lableCtrl}}</mat-label>
+			<mat-select [formControl]="formCtrl">
+				<mat-option *ngFor="let item of arrFromList" [value]="item.value">
+					{{item.name}}
+				</mat-option>
+			</mat-select>
 		</mat-form-field>
 	</div>
 	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
@@ -20,7 +30,7 @@
 			{{ cancelBtn }}
 		</a>
 		<div class="btn-save-process">
-			<button mat-flat-button [color]="colorSubmit" [attr.aria-label]="submitBtn"
+			<button mat-flat-button [color]="colorSubmit" [attr.aria-label]="submitBtn" [disabled]="formCtrl?.invalid"
 				(click)="saveData(actionSubmit)">
 				{{ submitBtn }}
 			</button>

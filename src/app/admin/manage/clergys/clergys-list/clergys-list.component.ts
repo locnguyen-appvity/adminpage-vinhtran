@@ -71,7 +71,8 @@ export class ClergysListComponent extends ListItemBaseComponent {
 	getDataItems() {
 		this.spinerLoading = true;
 		let options = {
-			filter: this.getFilter()
+			filter: this.getFilter(),
+			sort: 'name asc'
 		}
 		this.service.getClergies(options).pipe(take(1)).subscribe((res: any) => {
 			this.spinerLoading = false;

@@ -12,8 +12,12 @@
           <input matInput formControlName="code" autocomplete="off">
         </mat-form-field>
         <mat-form-field appearance="outline">
+          <mat-label>Số Chức Vụ Có Thể Đương Nhiệm</mat-label>
+          <input matInput formControlName="slot" autocomplete="off" se-number-only>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>Level</mat-label>
-          <mat-select formControlName="level">
+          <mat-select formControlName="level" multiple>
             <mat-option *ngFor="let item of levelPositions" [value]="item.code">{{item.name}}</mat-option>
         </mat-select>
         </mat-form-field>

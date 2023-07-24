@@ -257,7 +257,7 @@
 		<span fxFlex></span>
 		<a mat-button (click)="closeDialog()" color="default">Hủy</a>
 		<div class="btn-save-process">
-			<button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Save"
+			<button mat-flat-button color="primary" [disabled]="dataProcessing || dataItemGroup.invalid" aria-label="Save"
 				(click)="onSaveItem()">Lưu</button>
 			<mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
 		</div>

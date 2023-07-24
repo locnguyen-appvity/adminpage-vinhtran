@@ -1,5 +1,5 @@
 import { Component, Inject, Optional } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -180,15 +180,15 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			clergyName: item ? item.clergyName : this.clergyName,
 			clergyID: item ? item.clergyID : this.clergyID,
 			entityID: item ? item.entityID : this.entityID,
-			_entityID: item ? `${item.entityType}_${item.entityID}` : (this.entityID ? `${this.entityType}_${this.entityID}` : ''),
+			_entityID: [item ? `${item.entityType}_${item.entityID}` : (this.entityID ? `${this.entityType}_${this.entityID}` : ''), Validators.required],
 			entityName: item ? item.entityName : this.entityName,
 			appointerID: item ? item.appointerID : "",
 			appointerName: item ? item.appointerName : "",
 			entityType: item ? item.entityType : this.entityType,
-			position: item ? item.position : 'chanh_xu',
+			position: [item ? item.position : '', Validators.required],
 			status: item ? item.status : 'duong_nhiem',
 			fromDate: fromDate,
-			effectiveDate: effectiveDate,
+			effectiveDate: [effectiveDate, Validators.required],
 			toDate: toDate,
 			fromEntityID: "",
 			_fromEntityID: "",
@@ -377,15 +377,15 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		switch (entityType) {
 			case 'giao_xu':
 			case 'giao_diem':
-				positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'giao_xu' || it.level == 'dong_tu' || it.level == 'khac'));
+				positionList = this.positionListCache.filter(it => (it.level.includes('giao_xu') || it.level.includes('khac')));
 				break;
 			case 'co_so_giao_phan':
 			case 'ban_muc_vu':
 			case 'ban_chuyen_mon':
-				positionList = this.positionListCache.filter(it => (it.level == 'giao_phan' || it.level == 'khac'));
+				positionList = this.positionListCache.filter(it => (it.level.includes('giao_phan') || it.level.includes('khac')));
 				break;
 			case 'giao_hat':
-				positionList = this.positionListCache.filter(it => it.level == 'giao_hat');
+				positionList = this.positionListCache.filter(it => (it.level.includes('giao_hat') || it.level.includes('khac')));
 				break;
 			default:
 				positionList = this.positionListCache;
@@ -529,11 +529,12 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 	}
 
 	getPositions() {
-		// let options = {
-		// 	filter: "type eq 'giao_xu'"
-		// }
+		let options = {
+			select: "id,name,code,slot,level",
+			filter: "status ne 'inactive'"
+		}
 		this.positionListCache = [];
-		this.service.getPositions().pipe(take(1)).subscribe({
+		this.service.getPositions(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
@@ -637,27 +638,52 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				this.onSaveNew();
 			}
 			else {
-				this.checkValidateEntity(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value).pipe(take(1)).subscribe({
+				let positionItem = this.sharedService.getItemExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code');
+				let top = positionItem ? positionItem.slot : 1;
+				this.checkValidateEntity(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, top).pipe(take(1)).subscribe({
 					next: (res: any) => {
 						if (this.isNullOrEmpty(res)) {
 							this.onSaveNew();
 						}
 						else {
+
+							let data: any = {
+								submitBtn: 'Đồng Ý',
+								cancelBtn: 'Hủy Tất Cả'
+							}
+							let clergyNames = "";
+							if (res && res.length > 0) {
+								clergyNames = res.map(it => it.clergyName).join(", ");
+							}
+							let confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
+								nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
+							if (res && res.length > 1) {
+								data.arrFromList = res.map(it => {
+									return {
+										name: it.clergyName,
+										value: it.id
+									}
+								});
+								data.valueType = 'select';
+								data.requireCtrl = true;
+								confirmMessage = `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có ${top} <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
+								nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của 1 trong những người sau <strong>${clergyNames}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong> tại ${this.dataItemGroup.get('entityName').value} thành <strong>Chờ Thuyên Chuyển</strong>`;
+							}
+							data.confirmMessage = confirmMessage;
 							let config: any = {
-								data: {
-									submitBtn: 'Đồng Ý',
-									cancelBtn: 'Hủy Tất Cả',
-									confirmMessage: `<strong>${this.dataItemGroup.get('entityName').value}</strong> chỉ có thể có 1 <strong>${this.sharedService.getNameExistsInArray(this.dataItemGroup.get('position').value, this.positionListCache, 'code')}</strong>
-									nếu ấn nút <strong>Đồng Ý</strong> có nghĩa là bạn sẽ chuyển trạng thái của <strong>${res.clergyName}</strong> hiện đang làm <strong>${this.sharedService.getNameExistsInArray(res.position, this.positionListCache, 'code')}</strong> tại ${res.entityName} thành <strong>Chờ Thuyên Chuyển</strong>`
-								}
+								data: data
 							};
 							this.showDialogConfirm(config).pipe(take(1)).subscribe({
-								next: (action: string) => {
-									if (action == 'ok') {
+								next: (resConfirm: any) => {
+									if (resConfirm && resConfirm.action == 'ok') {
 										let appointmentJSON = {
 											status: 'cho_thuyen_chuyen',
 										}
-										this.service.updateAppointment(res.id, appointmentJSON).pipe(take(1)).subscribe({
+										let id = res[0].id;
+										if (resConfirm.data) {
+											id = resConfirm.data;
+										}
+										this.service.updateAppointment(id, appointmentJSON).pipe(take(1)).subscribe({
 											next: () => {
 												this.onSaveNew();
 											}
@@ -685,8 +711,8 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 							}
 						};
 						this.showDialogConfirm(config).pipe(take(1)).subscribe({
-							next: (action: string) => {
-								if (action == 'ok') {
+							next: (resConfirm: any) => {
+								if (resConfirm && resConfirm.action == 'ok') {
 									// if (this.action != 'ket_thuc') {
 
 									// }
@@ -797,7 +823,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			let dialogRef = this.dialog.open(DialogConfirmComponent, config);
 			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: (res: any) => {
-					obs.next(res.action);
+					obs.next(res);
 					obs.complete();
 				}
 			});
@@ -832,17 +858,17 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
-	checkValidateEntity(entityID: string, entityType: string) {
+	checkValidateEntity(entityID: string, entityType: string, top: number) {
 		return new Observable(obs => {
 			let options = {
 				filter: `entityID eq ${entityID} and entityType eq '${entityType}' and status eq 'duong_nhiem'`,
-				top: 1
+				top: top
 			}
 			this.dataProcessing = true;
 			this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
 				this.dataProcessing = false;
-				if (res && res.value && res.value.length > 0) {
-					obs.next(res.value[0]);
+				if (res && res.value && res.value.length > top - 1) {
+					obs.next(res.value);
 					obs.complete();
 				}
 				else {

@@ -379,16 +379,16 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
-	openNewTab(element: any,target: string) {
+	openNewTab(element: any, target: string) {
 		let link = '';
-		if(target == 'clergy'){
+		if (target == 'clergy') {
 			link = `./#/admin/manage/clergys/clergy/${element.clergyID}`;
 		}
 		else {
 			link = `./#/admin/manage/${element.entityType}/detail/${element.entityID}`;
 		}
 		// this.router.navigate([]).then(() => {
-			window.open(link, '_blank');
+		window.open(link, '_blank');
 		// });
 	}
 
@@ -485,10 +485,10 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 
 	registerGridColumns() {
 		if (!this.isNullOrEmpty(this.entityID)) {
-			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'created'];
+			this.displayColumns = ['id', 'clergyName', 'entityName', 'position', 'status', 'appointerName', 'effectiveDate', 'created'];
 		}
 		else {
-			this.displayColumns = ['id', 'clergyName', 'entityName', 'status', 'appointerName', 'effectiveDate', 'created', 'moreActions'];
+			this.displayColumns = ['id', 'clergyName', 'entityName', 'position', 'status', 'appointerName', 'effectiveDate', 'created', 'moreActions'];
 		}
 	}
 

@@ -16,6 +16,7 @@ import { ToastSnackbarAppModule } from '../controls/toast-snackbar/toast-snackba
 import { SafeHtmlPipe } from './safehtml.pipe';
 import { PureWordsMaskDirective } from './input-validate.directive';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NumberOnlyDirective } from './number.only.directive';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -32,7 +33,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		InitialsPipe,
 		TruncatePipe,
 		SafeHtmlPipe,
-		PureWordsMaskDirective
+		PureWordsMaskDirective,
+		NumberOnlyDirective
 	],
 	exports: [
 		RouterModule,
@@ -49,7 +51,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 		ToastSnackbarAppModule,
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
-		MatSnackBarModule
+		MatSnackBarModule,
+		NumberOnlyDirective
 	],
 	
 })

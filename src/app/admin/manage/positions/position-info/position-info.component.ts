@@ -38,12 +38,14 @@ export class PositionInfoComponent extends SimpleBaseComponent {
 			this.localItem = this.dialogData.item;
 			this.ID = this.localItem.id;
 		}
-		this.dataItemGroup = this.fb.group({
-			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
-			code: this.localItem ? this.localItem.code : "",
-			level: this.localItem ? this.localItem.level : "giao_phan",
-			status: this.localItem && this.localItem.status == 'inactive' ? false : true,
-		})
+		this.dataItemGroup = this.initialEventGroup(this.localItem);
+
+		let level = ["giao_phan"]
+		if (this.localItem && this.localItem.level){
+			level = this.localItem.level.split(",");
+			this.localItem._level = level;
+		}
+		this.dataItemGroup.get('level').setValue(level);
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
 			if (this.target === 'edit') {
 				this.hasChangedGroup = this.isChangedForm(valueForm);
@@ -57,6 +59,17 @@ export class PositionInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
+	initialEventGroup(item: any): FormGroup {
+		
+		return this.fb.group({
+			name: [item ? item.name : "", [Validators.required]],
+			code: item ? item.code : "",
+			slot: item ? item.slot : 1,
+			level: [],
+			status: item && item.status == 'inactive' ? false : true,
+		})
+	}
+
 	isChangedForm(valueForm: any) {
 		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
 			return true;
@@ -64,11 +77,15 @@ export class PositionInfoComponent extends SimpleBaseComponent {
 		if (this.sharedService.isChangedValue(valueForm.code, this.dialogData.item.code)) {
 			return true;
 		}
-		if (this.sharedService.isChangedValue(valueForm.level, this.dialogData.item.level)) {
+		if (this.sharedService.isChangedValue(valueForm.slot, this.dialogData.item.slot)) {
 			return true;
 		}
-		let status = this.dialogData.item.deActive == 0 ? true : false;
+		let status = this.dialogData.item.status == 'inactive' ? false : true;
 		if (this.sharedService.isChangedValue(valueForm.status, status)) {
+			return true;
+		}
+		let level = valueForm.level ? valueForm.level.join(",") : "";
+		if (this.sharedService.isChangedValue(this.dialogData.item.level, level)) {
 			return true;
 		}
 		return false;
@@ -91,7 +108,8 @@ export class PositionInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			name: valueForm.name,
 			code: valueForm.code,
-			level: valueForm.level,
+			level: valueForm.level ? valueForm.level.join(",") : "",
+			slot: valueForm.slot,
 			status: valueForm.status ? 'active' : 'inactive'
 		}
 		if (this.target == 'edit') {

@@ -1,5 +1,5 @@
 import { Component, Inject, Optional } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -32,6 +32,7 @@ export class DialogConfirmComponent {
 	public valueType: string = '';
 	public lableCtrl: string = '';
 	public requireCtrl: boolean = false;
+	public arrFromList: any[] = [];
 
 	constructor(
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any,
@@ -64,10 +65,20 @@ export class DialogConfirmComponent {
 		if (this.dialogData.valueType) {
 			this.valueType = this.dialogData.valueType;
 		}
+		if (this.dialogData.arrFromList) {
+			this.arrFromList = this.dialogData.arrFromList;
+		}
 		if (this.dialogData.value) {
 			this.value = this.dialogData.value;
 		}
+		if (this.dialogData.requireCtrl) {
+			this.requireCtrl = this.dialogData.requireCtrl;
+		}
 		this.formCtrl = new FormControl(this.value);
+		if(this.requireCtrl){
+			this.formCtrl.setValidators(Validators.required);
+			this.formCtrl.updateValueAndValidity();
+		}
 	}
 
 	saveData(action: string) {

@@ -163,6 +163,13 @@
                                 </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="position">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Chức Vụ </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.positionView}}
+                                </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="appointerName">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Người Thuyên Chuyển </th>
                                 <td mat-cell *matCellDef="let dataItem">
