@@ -4,14 +4,20 @@
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
 			<div fxLayout="column">
 				<div fxLayout="row wrap">
-					<div fxFlex.gt-xs="60" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+					<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 						<mat-form-field appearance="outline">
 							<mat-label>Tên</mat-label>
 							<input matInput required formControlName="name" autocomplete="off">
 							<mat-hint>Code: {{dataItemGroup?.value?.code}}</mat-hint>
 						</mat-form-field>
 					</div>
-					<div fxFlex.gt-xs="40" fxFlex="100">
+					<div fxFlex.gt-xs="25" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+						<mat-form-field appearance="outline">
+							<mat-label>Tên Viết Tắt</mat-label>
+							<input matInput formControlName="abbreviation" autocomplete="off">
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-xs="25" fxFlex="100">
 						<mat-form-field appearance="outline" class="full-width">
 							<mat-label>Ngày Lễ Bổn Mạng</mat-label>
 							<input matInput placeholder="DD/MM" mask="d0/M0" [dropSpecialCharacters]="false"
@@ -19,6 +25,10 @@
 						</mat-form-field>
 					</div>
 				</div>
+				<mat-form-field appearance="outline" class="full-width">
+					<mat-label>Subtitle</mat-label>
+					<input matInput formControlName="subtitle" autocomplete="off">
+				</mat-form-field>
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Mô Tả</mat-label>
 					<textarea matInput rows="4" formControlName="description"></textarea>

@@ -40,6 +40,8 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
 			status: (this.localItem && this.localItem.status == 'inactive') ? false : true,
 			code: this.localItem ? this.localItem.code : "",
+			abbreviation: this.localItem ? this.localItem.abbreviation : "",
+			subtitle: this.localItem ? this.localItem.subtitle : "",
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
 			anniversary: this.localItem ? this.localItem.anniversary : ""
@@ -53,7 +55,8 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			}
 		})
 		this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: string) => {
-			this.dataItemGroup.get('code').setValue(this.sharedService.convertLocaleLowerCase(this.sharedService.removeVietnameseTones(name)));
+			this.dataItemGroup.get('code').setValue(this.sharedService.getLinkOfName(name));
+			// this.dataItemGroup.get('abbreviation').setValue(name);
 		})
 	}
 
@@ -68,6 +71,12 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			return true;
 		}
 		if (this.sharedService.isChangedValue(valueForm.content, this.dialogData.content)) {
+			return true;
+		}
+		if (this.sharedService.isChangedValue(valueForm.subtitle, this.dialogData.subtitle)) {
+			return true;
+		}
+		if (this.sharedService.isChangedValue(valueForm.abbreviation, this.dialogData.abbreviation)) {
 			return true;
 		}
 		let status = this.dialogData.item.status == 'inactive' ? false : true;
@@ -94,6 +103,8 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 		let dataJSON = {
 			name: valueForm.name,
 			code: valueForm.code,
+			abbreviation: valueForm.abbreviation,
+			subtitle: valueForm.subtitle,
 			anniversary: valueForm.anniversary,
 			description: valueForm.description,
 			content: valueForm.content,

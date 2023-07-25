@@ -18,7 +18,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
-		super(sharedService,snackbar);
+		super(sharedService, snackbar);
 		this.getDataItems();
 	}
 
@@ -26,7 +26,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 		this.spinerLoading = true;
 		let options = {
 			filter: this.getFilter(),
-			sort:'name asc'
+			sort: 'name asc'
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe((res: any) => {
 			this.arrData = [];
@@ -57,7 +57,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 		})
 	}
 
-	deleteItem(item: any){
+	deleteItem(item: any) {
 		this.dataProcessing = true;
 		this.service.deleteSaint(item.id).pipe(take(1)).subscribe(() => {
 			this.dataProcessing = false;
@@ -79,6 +79,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 	}
 
 	onAddAuto() {
+		// this.updateAddAuto(this.arrData);
 		let dataDefault = SAINTS_DATA;
 		if (dataDefault && dataDefault.length > 0) {
 			this.spinerLoading = true;
@@ -95,6 +96,50 @@ export class SaintsComponent extends ListItemBaseComponent {
 								status: 'active'
 							}
 							this.service.createSaint(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+								next: () => {
+									index++;
+									sub.next(index);
+								},
+								error: error => {
+									console.log(error);
+									index++;
+									sub.next(index);
+								}
+							});
+
+						}
+						else {
+							index++;
+							sub.next(index);
+						}
+					}
+					else {
+						this.dataProcessing = false;
+						this.spinerLoading = false;
+						this.getDataItems();
+						sub.complete();
+						sub.unsubscribe();
+					}
+
+				}
+			});
+		}
+	}
+
+	updateAddAuto(dataDefault) {
+		if (dataDefault && dataDefault.length > 0) {
+			this.spinerLoading = true;
+			this.dataProcessing = true;
+			let sub = new BehaviorSubject(0);
+			sub.subscribe({
+				next: (index: number) => {
+					if (index < dataDefault.length) {
+						if (dataDefault[index]) {
+							let valueForm = dataDefault[index];
+							let dataJSON = {
+								abbreviation: valueForm.name
+							}
+							this.service.updateSaint(valueForm.id, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
 								next: () => {
 									index++;
 									sub.next(index);
