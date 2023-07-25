@@ -514,7 +514,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
 					for (let item of items) {
-						item.name = `${this.sharedService.getClergyType(item)} ${item.stName} ${item.name}`;
+						item.name = `${this.sharedService.getClergyLevel(item)} ${item.stName} ${item.name}`;
 					}
 				}
 				this.clergysList = items;

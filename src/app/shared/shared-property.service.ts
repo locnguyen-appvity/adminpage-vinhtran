@@ -96,15 +96,31 @@ export class SharedPropertyService {
     }
 
 
-	getClergyType(item: any) {
-		if (!this.isNullOrEmpty(item.level)) {
-			let level = this.getValueAutocomplete(item.level, this.levelList, 'code');
-			if (level && level.name) {
-				return level.name;
-			}
-		}
-		return "";
-	}
+    getClergyLevel(item: any) {
+        if (!this.isNullOrEmpty(item.level)) {
+            let level = this.getValueAutocomplete(item.level, this.levelList, 'code');
+            if (level && level.name) {
+                return level.name;
+            }
+        }
+        return "";
+    }
+
+    getOrderPositionClergy(position: string) {
+        switch (position) {
+            case 'chanh_xu':
+                return '1';
+            case 'pho_xu':
+                return '2';
+            case 'pho_biet_cu':
+                return '3';
+            case 'huu':
+            case 'nghi_duong':
+                return '9';
+            default:
+                return "5";
+        }
+    }
 
     getClergyStatus(status: string) {
         switch (status) {

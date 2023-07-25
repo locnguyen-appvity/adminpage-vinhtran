@@ -126,19 +126,23 @@ export class EventInfoComponent extends SimpleBaseComponent {
 
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
-		let dataJSON = {
+		let dataJSON:any = {
 			"entityID": this.entityID,
 			"entityType": this.entityType,
 			"name": this.dataItemGroup.get('name').value,
 			"day": valueForm.day,
 			"date": this.sharedService.ISOStartDay(valueForm.date),
 			"description": valueForm.description,
+			"content": valueForm.content,
 			"locationName": valueForm.locationName,
 			"locationID": valueForm.locationID,
 			"locationType": valueForm.locationType
 		}
 		if (this.localItem && this.localItem.id) {
 			this.dataProcessing = true;
+			if(!this.localItem.hasAuto){
+				dataJSON.type = valueForm.type;
+			}
 			this.service.updateAnniversary(this.localItem.id, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: () => {
 					this.dataProcessing = false;
@@ -147,6 +151,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			})
 		}
 		else {
+			dataJSON.type = valueForm.type;
 			this.dataProcessing = true;
 			this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: () => {

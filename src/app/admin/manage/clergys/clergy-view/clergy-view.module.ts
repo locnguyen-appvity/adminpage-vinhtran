@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { ClergyViewComponent } from './clergy-view.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ClergyViewRoutingModule } from './clergy-view-routing.module';
+import { MatDividerModule } from '@angular/material/divider';
 // import { JoditAngularModule } from 'jodit-angular';
 // import { DialogSelectedImgsModule } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.module';
 @NgModule({
@@ -10,7 +11,8 @@ import { ClergyViewRoutingModule } from './clergy-view-routing.module';
   ],
   imports: [
     SharedModule,
-    ClergyViewRoutingModule
+    ClergyViewRoutingModule,
+    MatDividerModule
   ]
 })
 export class ClergyViewModule { }

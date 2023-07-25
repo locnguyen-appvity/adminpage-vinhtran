@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { LEVEL_CLERGY } from '../../../../shared/data-manage';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { LinqService } from 'src/app/shared/linq.service';
 
 @Component({
 	selector: 'app-clergy-view',
@@ -17,24 +14,26 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 })
 export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	public localItem: any;
-	public levelList: any[] = LEVEL_CLERGY;
+	// public levelList: any[] = LEVEL_CLERGY;
 	public groupsList: any[] = [];
 	public arrMasses: any[] = [];
 	public churchsList: any[] = [];
+	public arrAppointments: any[] = [];
+	public arrAnniversaries: any[] = [];
+	public positionList: any[] = [];
 
 	constructor(
 		private service: SharedService,
 		public sharedService: SharedPropertyService,
-		private fb: FormBuilder,
+		public linq: LinqService,
 		public router: Router,
-		public snackbar: MatSnackBar,
-		public activeRoute: ActivatedRoute,
-		public dialog: MatDialog
+		public activeRoute: ActivatedRoute
 	) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getClergy();
+			this.getAnniversaries(this.ID);
 		}
 
 	}
@@ -146,6 +145,25 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	getAllData() {
 		this.getGroups();
 		this.getChurchsList();
+		this.getPositions();
+	}
+
+	getPositions() {
+		let options = {
+			select: "id,name,code,slot,level",
+			filter: "status ne 'inactive'"
+		}
+		this.positionList = [];
+		this.service.getPositions(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+				this.getAppointments(this.ID);
+			}
+		})
 	}
 
 	getGroups() {
@@ -196,10 +214,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
-					this.localItem._metaKeyword = [];
-					if (this.localItem.metaKeyword) {
-						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
-					}
+					this.localItem.displayName =  `${this.sharedService.getClergyLevel(this.localItem)} ${this.localItem.stName}`;
 					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
 					}
@@ -208,6 +223,45 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 						this.localItem.pictureUrl = `${GlobalSettings.Settings.Server}/${this.localItem.photo}`;
 					}
 				}
+			}
+		})
+	}
+
+	getAppointments(clergyID: string){
+		let options = {
+			filter: `clergyID eq ${clergyID} and status eq 'duong_nhiem'`
+		}
+		this.arrAppointments = [];
+		this.dataProcessing = true;
+		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+			this.dataProcessing = false;
+			if (res && res.value && res.value.length > 0) {
+				for(let item of res.value){
+					item.order = this.sharedService.getOrderPositionClergy(item.position);
+					item.positionView = this.sharedService.getNameExistsInArray(item.position,this.positionList,'code');
+				}
+				this.arrAppointments = this.linq.Enumerable().From(res.value).OrderBy("$.order").ToArray();
+			}
+		})
+	}
+
+	getAnniversaries(clergyID: string){
+		let options = {
+			sort: 'date asc',
+			filter: `type ne 'saint' and entityID eq ${clergyID} and entityType eq 'clergy' and (status eq 'auto' or type eq 'pho_te' or type eq 'linh_muc' or type eq 'rip')`
+		}
+		this.arrAnniversaries = [];
+		this.dataProcessing = true;
+		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
+			this.dataProcessing = false;
+			if (res && res.value && res.value.length > 0) {
+				for(let item of res.value){
+					if (item.date) {
+						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
+						item.dateView = this.sharedService.formatDate(item._date);
+					}
+				}
+				this.arrAnniversaries = res.value;
 			}
 		})
 	}

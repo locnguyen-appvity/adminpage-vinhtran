@@ -380,7 +380,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 							next: (res: any) => {
 								if (res && res.value && res.value[0]) {
 									let dataJSON = {
-										"name": valueForm.orgName,
+										"name": "Ngày Sinh",
 										"day": valueForm.dateOfBirth ? valueForm.dateOfBirth.format("DD/MM") : "",
 										"date": this.sharedService.ISOStartDay(valueForm.dateOfBirth),
 										"locationName": valueForm.placeOfBirth,

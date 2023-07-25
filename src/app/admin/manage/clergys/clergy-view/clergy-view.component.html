@@ -1,22 +1,43 @@
 <div class="clergy-view">
-    <div class="clergy-view-container" fxLayout="row wrap">
-        <div class="clergy-view-container-l" fxLayout="row" fxLayoutAlign="center center" fxFlex.gt-xs="30" fxFlex="100"
-            [ngStyle.gt-xs]="{'padding-right': '24px'}">
+    <div class="clergy-view-container">
+        <div class="clergy-view-container-l" fxLayout="column" fxLayoutAlign="center center" fxFlex.gt-xs="30"
+            fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
             <div class="avatar-img">
                 <img [src]="localItem?.pictureUrl" />
             </div>
-            <div class="content" fxLayout="column" fxLayoutAlign="center center">
-                <p>
-                    Gioan Baotixita
-                </p>
-                <p >
-                    Nguyễn Văn Riễn
-                </p>
-                <p>Chánh Xứ, giáo xứ Thánh Giuse, giáo hạt Phú Cường</p>
+            <div class="content mrt-24" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="6">
+                <span class="display-name">{{localItem?.displayName}}</span>
+                <span class="name">{{localItem?.name}}</span>
+                <div *ngIf="arrAppointments?.length > 0" class="content" fxLayout="column"
+                    fxLayoutAlign="center center">
+                    <span>Hiện đang làm <strong>{{arrAppointments[0]?.positionView}}</strong> tại
+                        <strong>{{arrAppointments[0]?.entityName}}</strong></span>
+                </div>
+                <div *ngIf="arrAppointments?.length > 1" class="full-width" fxLayout="column"
+                    fxLayoutAlign="start start">
+                    <span>CÁC CHỨC VỤ KHÁC</span>
+                    <ng-template ngFor let-data let-i="index" [ngForOf]="arrAppointments">
+                        <span *ngIf="i!=0"><strong>{{data?.positionView}}</strong> tại
+                            <strong>{{data?.entityName}}</strong></span>
+                    </ng-template>
+                </div>
+                <div class="anniversaries-container mrt-24" fxLayout="column" fxLayoutAlign="center center">
+                    <span class="title">BÍ TÍCH</span>
+                    <div class="full-width" fxLayout="column" fxLayoutAlign="start start">
+                        <ng-template ngFor let-data let-last="last" [ngForOf]="arrAnniversaries">
+                            <div [ngClass]="{'mrb-12': !last}" class="full-width" fxLayout="column" fxLayoutAlign="start start">
+                                <span style="font-size: 20px;font-weight: 500;color: rgb(0, 170, 170);"><strong>{{data?.name}}</strong></span>
+                                <span>ngày <strong>{{data?.dateView}}</strong></span>
+                                <span>tại <strong>{{data?.locationName}}</strong></span>
+                                <span>{{data?.content}}</span>
+                                <mat-divider *ngIf="!last" class="full-width"></mat-divider>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex.gt-xs="70" fxFlex="100">
+
             </div>
         </div>
-        <div fxFlex.gt-xs="70" fxFlex="100">
-
-        </div>
     </div>
-</div>
