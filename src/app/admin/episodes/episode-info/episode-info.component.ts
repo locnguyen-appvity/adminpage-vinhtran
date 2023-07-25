@@ -66,7 +66,7 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 		// 		let htmlElement = document.getElementsByClassName('miniSound__logo');
 		// 		if (htmlElement && htmlElement.length > 0) {
 		// 			// for(let temf of htmlElement){
-						
+
 		// 			// }
 		// 			// htmlElement.style.display = 'none';
 		// 			if (this.subscription[`scheduleSignalR`]) {
@@ -84,6 +84,8 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 			link: "",
 			metaDescription: "",
 			entityId: "",
+			entityType: "",
+			_entityId: "",
 			content: "",
 			photo: "",
 			mediaFile: "",
@@ -104,6 +106,12 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 		}
 	}
 
+	onSelectItem(event: any, target: string) {
+		if (target == "entityId") {
+			this.episodeFormGroup.get("entityType").setValue(event ? event.entityType : "");
+			this.episodeFormGroup.get("entityId").setValue(event ? event.id : "");
+		}
+	}
 
 	updateLabelTitle(status: string) {
 		let statusLabel = {
@@ -144,7 +152,8 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 						for (let item of res.getBooks.value) {
 							item.groupName = 'Sách';
 							item.groupCode = 'book';
-							item._id = `book~${item.id}`;
+							item.entityType = 'book';
+							item._id = `book_${item.id}`;
 						}
 						items.push(...res.getBooks.value);
 					}
@@ -152,7 +161,8 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 						for (let item of res.getChapters.value) {
 							item.groupName = 'Chương';
 							item.groupCode = 'chapter';
-							item._id = `chapter~${item.id}`;
+							item.entityType = 'chapter';
+							item._id = `chapter_${item.id}`;
 						}
 						items.push(...res.getChapters.value);
 					}
@@ -175,7 +185,7 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 					this.localItem._eventDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.eventDate);
 					this.localItem._entityId = "";
 					if (!this.isNullOrEmpty(this.localItem.entityId) && !this.isNullOrEmpty(this.localItem.entityType)) {
-						this.localItem._entityId = `${this.localItem.entityType}~${this.localItem.entityId}`
+						this.localItem._entityId = `${this.localItem.entityType}_${this.localItem.entityId}`
 					}
 					if (!this.isNullOrEmpty(this.localItem.mediaFileId)) {
 						this.getMediaFileId(this.localItem.mediaFileId);
@@ -184,7 +194,9 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 						title: this.localItem.title,
 						link: this.localItem.link,
 						metaDescription: this.localItem.metaDescription,
-						entityId: this.localItem._entityId,
+						_entityId: this.localItem._entityId,
+						entityId: this.localItem.entityId,
+						entityType: this.localItem.entityType,
 						mediaFileId: this.localItem.mediaFileId,
 						categoryIds: this.localItem.categoryIds,
 						metaKeyword: this.localItem._metaKeyword,
@@ -235,19 +247,9 @@ export class EpisodeInfoComponent extends SimpleBaseComponent implements OnInit,
 
 	onSave(status: string) {
 		let valueForm = this.episodeFormGroup.value;
-		let entityId = "";
-		let entityType = "";
-		if (!this.isNullOrEmpty(valueForm.entityId)) {
-			let entity = valueForm.entityId.split("~");
-			if (entity) {
-				entityType = entity[0];
-				entityId = entity[1];
-			}
-
-		}
 		let dataJSON = {
-			"entityId": entityId,
-			"entityType": entityType,
+			"entityId":  valueForm.entityId,
+			"entityType":  valueForm.entityType,
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,

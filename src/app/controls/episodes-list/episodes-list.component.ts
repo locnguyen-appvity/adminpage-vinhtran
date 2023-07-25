@@ -109,6 +109,9 @@ export class EpisodesListControlComponent extends TemplateGridApplicationCompone
 						if (item.duration) {
 							item.durationView = item.duration;
 						}
+						if (item.entityId) {
+							item.includesView = item.entityId;
+						}
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
@@ -243,7 +246,7 @@ export class EpisodesListControlComponent extends TemplateGridApplicationCompone
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'created', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'title', 'includes', 'created', 'moreActions'];
 	}
 
 }
