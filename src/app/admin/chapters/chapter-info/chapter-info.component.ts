@@ -54,7 +54,7 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 			entityId: "",
 			entityType: "",
 			photo: "",
-			categoryIds: [],
+			// categoryIds: [],
 			tags: [],
 			metaKeyword: [],
 		});
@@ -126,7 +126,7 @@ export class ChapterInfoComponent extends SimpleBaseComponent implements OnInit 
 			"title": valueForm.title,
 			"photo": this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			"link": valueForm.link,
-			"categoryIds": valueForm.categoryIds,
+			// "categoryIds": valueForm.categoryIds,
 			"tags": valueForm.tags,
 			"metaDescription": valueForm.metaDescription,
 			"metaTitle": valueForm.link,

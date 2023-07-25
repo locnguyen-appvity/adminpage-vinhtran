@@ -212,11 +212,16 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 	getSaints() {
 		this.saintList = [];
 		let options = {
-			select: 'id,name'
+			select: 'id,name,abbreviation'
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
+					for (let item of res.value) {
+						if(!this.isNullOrEmpty(item.abbreviation)){
+							item.name = item.abbreviation;
+						}
+					}
 					this.saintList = res.value;
 				}
 			}

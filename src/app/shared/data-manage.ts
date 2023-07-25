@@ -553,6 +553,24 @@ export const LTYPE_ORG = [
         group: 'group'
     }
 ]
+
+const parableDaily = {
+    name:"",
+    code:"",
+    quotation: "",
+    parableID:"",
+    date: ""
+}
+
+const scheduleEvents = {
+    name:"",
+    code:"",
+    quotation: "",
+    startDate: "",
+    endDate: "",
+    entityID:"",
+    entityType: ""
+}
 // export const POSITION = [
 //     {
 //         name: 'Chánh xứ',
