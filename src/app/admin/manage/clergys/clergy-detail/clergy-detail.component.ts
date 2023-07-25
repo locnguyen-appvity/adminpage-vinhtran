@@ -411,6 +411,14 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 							}
 						})
 					}
+					else {
+						let snackbarData: any = {
+							key: 'saved-item',
+							message: 'Lưu Thành Công'
+						};
+						this.showInfoSnackbar(snackbarData);
+						this.router.navigate(['/admin/manage/clergys/clergys-list']);
+					}
 				}
 				else {
 					let snackbarData: any = {

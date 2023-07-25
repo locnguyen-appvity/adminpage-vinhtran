@@ -81,7 +81,7 @@
                 </div>
             </div>
             <div fxLayoutAlign="center center">
-                <h4 class="tit-maxim">
+                <h4 *ngIf="localItem?.parable?.length > 0" class="tit-maxim">
                     {{localItem?.parable}}
                 </h4>
             </div>
