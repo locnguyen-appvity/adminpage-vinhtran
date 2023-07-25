@@ -26,12 +26,19 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		public linq: LinqService,
 		public service: PageService) {
 		super(sharedService);
-		this.getPositions();
+
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['data']) {
-			this.getClergies();
+			if (this.data) {
+				if (this.positionList.length > 0) {
+					this.getClergies();
+				}
+				else {
+					this.getPositions();
+				}
+			}
 		}
 	}
 
@@ -41,18 +48,18 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 			"value": "duong_nhiem"
 		}];
 		if (this.data) {
-			if (this.data.groupID && this.data.groupID != 'all') {
-				restrictions.push({
-					"key": "GroupID",
-					"value": this.data.groupID
-				})
-			}
-			if (this.data.position && this.data.position != 'all') {
-				restrictions.push({
-					"key": "position",
-					"value": this.data.position
-				})
-			}
+			// if (this.data.groupID && this.data.groupID != 'all') {
+			restrictions.push({
+				"key": "GroupID",
+				"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
+			})
+			// }
+			// if (this.data.position && this.data.position != 'all') {
+			restrictions.push({
+				"key": "position",
+				"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
+			})
+			// }
 		}
 		let options = {
 			"restrictions": restrictions,
@@ -78,6 +85,8 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 						else {
 							item.pictureUrl = "../../assets/images/banner.jpg"
 						}
+						this.getAppointments(item);
+						this.getAnniversaries(item);
 					}
 				}
 				this.dataLists = this.groupData(this.cacheDataLists);
@@ -116,10 +125,46 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 					items = res.value;
 				}
 				this.positionList = items;
-				for (let item of this.cacheDataLists) {
-					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
+				// for (let item of this.cacheDataLists) {
+				// 	item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
+				// }
+				// this.dataLists = this.groupData(this.cacheDataLists);
+				this.getClergies();
+			}
+		})
+	}
+
+	getAppointments(item: any) {
+		let options = {
+			filter: `clergyID eq ${item.clergyID} and status eq 'duong_nhiem'`
+		}
+		item.arrAppointments = [];
+		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+			if (res && res.value && res.value.length > 0) {
+				for (let item of res.value) {
+					item.order = this.sharedService.getOrderPositionClergy(item.position);
+					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, 'code');
 				}
-				this.dataLists = this.groupData(this.cacheDataLists);
+				item.arrAppointments = this.linq.Enumerable().From(res.value).OrderBy("$.order").ToArray();
+			}
+		})
+	}
+
+	getAnniversaries(item: any) {
+		let options = {
+			sort: 'date asc',
+			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and (type eq 'pho_te' or type eq 'linh_muc' or type eq 'rip')`
+		}
+		item.arrAnniversaries = [];
+		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
+			if (res && res.value && res.value.length > 0) {
+				for (let item of res.value) {
+					if (item.date) {
+						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
+						item.dateView = this.sharedService.formatDate(item._date);
+					}
+				}
+				item.arrAnniversaries = res.value;
 			}
 		})
 	}

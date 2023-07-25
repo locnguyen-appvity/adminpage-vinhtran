@@ -61,6 +61,16 @@ export class PageService {
 		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPositions', error)));
 	}
 
+	getAnniversaries(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/anniversaries';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAnniversaries', error)));
+	}
+
+	getAppointments(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/appointments';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAppointments', error)));
+	}
+
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {
 		let errorResponse: any = {
 			status: 0,
