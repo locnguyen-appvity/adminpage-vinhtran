@@ -1,6 +1,6 @@
 <div class="clergy-view">
-    <div class="clergy-view-container">
-        <div class="clergy-view-container-l" fxLayout="column" fxLayoutAlign="center center" fxFlex.gt-xs="30"
+    <div class="clergy-view-container" fxLayout="row wrap">
+        <div class="clergy-view-container-l" fxLayout="column" fxLayoutAlign="center center" fxFlex.gt-md="30"
             fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
             <div class="avatar-img">
                 <img [src]="localItem?.pictureUrl" />
@@ -25,8 +25,10 @@
                     <span class="title">BÍ TÍCH</span>
                     <div class="full-width" fxLayout="column" fxLayoutAlign="start start">
                         <ng-template ngFor let-data let-last="last" [ngForOf]="arrAnniversaries">
-                            <div [ngClass]="{'mrb-12': !last}" class="full-width" fxLayout="column" fxLayoutAlign="start start">
-                                <span style="font-size: 20px;font-weight: 500;color: rgb(0, 170, 170);"><strong>{{data?.name}}</strong></span>
+                            <div [ngClass]="{'mrb-12': !last}" class="full-width" fxLayout="column"
+                                fxLayoutAlign="start start">
+                                <span
+                                    style="font-size: 20px;font-weight: 500;color: rgb(0, 170, 170);"><strong>{{data?.name}}</strong></span>
                                 <span>ngày <strong>{{data?.dateView}}</strong></span>
                                 <span>tại <strong>{{data?.locationName}}</strong></span>
                                 <span>{{data?.content}}</span>
@@ -36,8 +38,55 @@
                     </div>
                 </div>
             </div>
-            <div fxFlex.gt-xs="70" fxFlex="100">
-
+        </div>
+        <div class="clergy-view-container-r" fxFlex.gt-md="70" fxFlex="100">
+            <h4 class="text-info-title">Thông tin cá nhân</h4>
+            <div class="info-personal" fxLayout="column">
+                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
+                    <span>
+                        Ngày sinh: <label>20-01-1954</label>
+                    </span>
+                    <span>
+                        tại: <label>Làng Tràng Lũ, Thái Bình</label>
+                    </span>
+                </div>
+                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
+                    <span>
+                        Giáo xứ: <label>Tràng Lũ</label>
+                    </span>
+                    <span>
+                        Giáo phận: <label>Giáo Phận Phú Cường</label>
+                    </span>
+                </div>
+                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
+                    <span>
+                        Tên cha: <label>Gioan.B Nguyễn Văn Bể</label>
+                    </span>
+                    <span>
+                        Tên mẹ: <label>Maria Nguyễn Thị Sắm</label>
+                    </span>
+                </div>
+                <div class="info-personal-container" fxLayout="row wrap">
+                    <span>
+                        CMND: <label>280052238</label>
+                    </span>
+                </div>
+                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
+                    <span>
+                        Ngày cấp: <label>14-02-2019</label>
+                    </span>
+                    <span>
+                        Nơi cấp: <label>CA Bình Dương</label>
+                    </span>
+                </div>
+            </div>
+            <div fxLayoutAlign="center center">
+                <h4 class="tit-maxim">
+                    {{localItem?.parable}}
+                </h4>
+            </div>
+            <div fxLayoutAlign="start center" class="full-width">
+              <se-list-appointments-clergy [clergyID]="ID"></se-list-appointments-clergy>
             </div>
         </div>
     </div>

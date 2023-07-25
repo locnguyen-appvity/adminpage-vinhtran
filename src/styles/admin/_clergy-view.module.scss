@@ -1,4 +1,5 @@
 .clergy-view {
+    height: calc(100vh - 58px);
     .clergy-view-container {
         .clergy-view-container-l {
             background-color: rgba(66, 65, 65, 0.0588235294) !important;
@@ -19,17 +20,45 @@
                     font-size: 20px;
                     text-transform: uppercase !important;
                 }
-                .name{
+                .name {
                     font-weight: 600;
                     font-size: 25px;
                 }
-                .anniversaries-container{
+                .anniversaries-container {
                     width: 100%;
-                    .title{
+                    .title {
                         font-weight: 600;
                         font-size: 25px;
                     }
                 }
+            }
+        }
+        .clergy-view-container-r {
+            padding: 1rem !important;
+            margin-top: 1rem !important;
+            .text-info-title {
+                font-weight: 600;
+                text-transform: uppercase;
+            }
+            .info-personal {
+                padding: 1rem !important;
+                border-radius: 24px;
+                border: solid 1px rgba(0, 0, 0, 0.12);
+                .info-personal-container {
+                    margin-left: 24px;
+                    label {
+                        font-style: italic;
+                        font-weight: 600;
+                    }
+                }
+            }
+            .tit-maxim{
+                border: 4px solid rgb(5, 9, 207);
+                display: inline-block;
+                margin: 20px auto;
+                padding: 15px 70px;
+                font-size: 2.2rem;
+                border-radius: 35px;
             }
         }
     }
