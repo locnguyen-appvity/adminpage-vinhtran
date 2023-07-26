@@ -250,19 +250,27 @@
                                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                             <span>Sửa</span>
                                         </button>
-                                        <button *ngIf="element?.status == 'duong_nhiem' || element?.status == 'cho_thuyen_chuyen'" mat-menu-item
-                                            [disabled]="dataProcessing" (click)="addItem(element)">
+                                        <button mat-menu-item [disabled]="dataProcessing"
+                                            (click)="getRowSelected(element,'auto')">
+                                            <mat-icon class="material-icons" svgIcon="ic_sync_24px"></mat-icon>
+                                            <span>Cập Nhật Lại Dữ Liệu</span>
+                                        </button>
+                                        <button
+                                            *ngIf="element?.status == 'duong_nhiem' || element?.status == 'cho_thuyen_chuyen'"
+                                            mat-menu-item [disabled]="dataProcessing" (click)="addItem(element)">
                                             <mat-icon svgIcon="ic_add_business_48dp"></mat-icon>
                                             <span>Bổ Nhiệm</span>
                                         </button>
-                                        <button *ngIf="element?.status == 'duong_nhiem' || element?.status == 'cho_thuyen_chuyen'" mat-menu-item
-                                            [disabled]="dataProcessing" class="approve-button"
+                                        <button
+                                            *ngIf="element?.status == 'duong_nhiem' || element?.status == 'cho_thuyen_chuyen'"
+                                            mat-menu-item [disabled]="dataProcessing" class="approve-button"
                                             (click)="getRowSelected(element,'thuyen_chuyen')">
                                             <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
                                             <span>Thuyên Chuyển</span>
                                         </button>
-                                        <button *ngIf="element?.status != 'man_nhiem' && element?.status != 'cho_thuyen_chuyen'" mat-menu-item
-                                            [disabled]="dataProcessing" class="reject-button"
+                                        <button
+                                            *ngIf="element?.status != 'man_nhiem' && element?.status != 'cho_thuyen_chuyen'"
+                                            mat-menu-item [disabled]="dataProcessing" class="reject-button"
                                             (click)="getRowSelected(element,'ket_thuc')">
                                             <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
                                             <span>Kết Thúc Sức Vụ</span>

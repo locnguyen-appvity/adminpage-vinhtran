@@ -1,7 +1,7 @@
 <ng-container *ngIf="arrData?.length > 0; else noDataTemf">
     <mat-nav-list>
         <mat-list-item *ngFor="let data of arrData; trackBy: trackByFn;"
-            [ngClass]="{'disabled-item': (data?.status != 'duong_nhiem' && entityType == 'clergy') }">
+            [ngClass]="{'disabled-item': (data?.status != 'duong_nhiem' && mode == 'clergy') }">
             <h4 mat-line><strong>{{data?.name}}</strong></h4>
             <p mat-line>Chức vụ: {{data?.positionView}} - Trạng thái: {{data?.statusView}}</p>
             <p mat-line>Thời gian phục vụ: {{data?.fromDateView}} <span *ngIf="data?.toDateView?.length > 0"> -
@@ -13,35 +13,39 @@
                 <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
             </button>
             <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
-                <button *ngIf="entityType == 'clergy'" mat-menu-item [disabled]="dataProcessing" (click)="getRowSelected(data,'edit')">
+                <button *ngIf="mode == 'clergy'" mat-menu-item [disabled]="dataProcessing" (click)="getRowSelected(data,'')">
                     <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                     <span>Sửa</span>
+                </button>
+                <button mat-menu-item [disabled]="dataProcessing" (click)="getRowSelected(data,'auto')">
+                    <mat-icon class="material-icons" svgIcon="ic_sync_24px"></mat-icon>
+                    <span>Cập Nhật Lại Dữ Liệu</span>
                 </button>
                 <!-- <button mat-menu-item [disabled]="dataProcessing" (click)="addItem()">
                     <mat-icon svgIcon="ic_add_business_48dp"></mat-icon>
                     <span>Bổ Nhiệm</span>
                 </button> -->
-                <button *ngIf="entityType == 'clergy' && data?.status == 'duong_nhiem'" mat-menu-item [disabled]="dataProcessing" class="approve-button"
+                <button *ngIf="mode == 'clergy' && data?.status == 'duong_nhiem'" mat-menu-item [disabled]="dataProcessing" class="approve-button"
                     (click)="getRowSelected(data,'thuyen_chuyen')">
                     <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
                     <span>Thuyên Chuyển</span>
                 </button>
-                <button *ngIf="entityType == 'clergy' && data?.status != 'man_nhiem'" mat-menu-item [disabled]="dataProcessing" class="reject-button"
+                <button *ngIf="mode == 'clergy' && data?.status != 'man_nhiem'" mat-menu-item [disabled]="dataProcessing" class="reject-button"
                     (click)="getRowSelected(data,'ket_thuc')">
                     <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
                     <span>Kết Thúc Sức Vụ</span>
                 </button>
-                <button *ngIf="entityType != 'clergy' && data?.clergyID?.length > 0" mat-menu-item [disabled]="dataProcessing"
+                <button *ngIf="mode != 'clergy' && data?.clergyID?.length > 0" mat-menu-item [disabled]="dataProcessing"
                     (click)="openNewTab(data,'clergy')">
                     <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
                     <span>Xem Thông Tin Linh Mục</span>
                 </button>
-                <button *ngIf="entityType == 'clergy' && data?.entityID?.length > 0" mat-menu-item [disabled]="dataProcessing"
+                <button *ngIf="mode == 'clergy' && data?.entityID?.length > 0" mat-menu-item [disabled]="dataProcessing"
                     (click)="openNewTab(data,'entity')">
                     <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
                     <span>Xem Nơi Nhận Nhiệm Vụ</span>
                 </button>
-                <button *ngIf="entityType == 'clergy'" mat-menu-item [disabled]="dataProcessing" (click)="onDelete(data)">
+                <button *ngIf="mode == 'clergy'" mat-menu-item [disabled]="dataProcessing" (click)="onDelete(data)">
                     <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                     <span>Xoá</span>
                 </button>
@@ -55,10 +59,10 @@
     </div>
 </ng-template>
 <!-- <mat-divider class="full-width"></mat-divider> -->
-<div *ngIf="entityType == 'clergy'" fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
+<div *ngIf="mode == 'clergy'" fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
     <span fxFlex></span>
     <button (click)="addItem()" mat-button color="primary">
         <!-- <span *ngIf="entityType == 'organization'">Thêm Linh Mục</span> -->
-        <span *ngIf="entityType == 'clergy'">Thêm Bổ Nhiệm</span>
+        <span *ngIf="mode == 'clergy'">Thêm Bổ Nhiệm</span>
     </button>
 </div>

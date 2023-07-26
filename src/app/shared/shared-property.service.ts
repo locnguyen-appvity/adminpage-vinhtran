@@ -106,6 +106,17 @@ export class SharedPropertyService {
         return "";
     }
 
+    getTypeGetData(entityType: string) {
+        switch (entityType) {
+            case 'giao_xu':
+            case 'giao_diem':
+            case 'giao_ho':
+                return 'organization';
+            default:
+                return 'group';
+        }
+    }
+
     getOrderPositionClergy(position: string) {
         switch (position) {
             case 'chanh_xu':

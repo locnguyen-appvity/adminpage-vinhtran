@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import { take, takeUntil } from 'rxjs';
+import { forkJoin, take, takeUntil } from 'rxjs';
 import { AppointmentsInfoComponent } from 'src/app/admin/manage/appointments/appointment-info/appointment-info.component';
 
 @Component({
@@ -16,7 +16,9 @@ import { AppointmentsInfoComponent } from 'src/app/admin/manage/appointments/app
 export class AppointmentsListComponent extends ListItemBaseComponent implements OnChanges {
 
 	@Input() entityID: string = "";
+	@Input() clergyID: string = "";
 	@Input() entityType: string = "";
+	@Input() mode: string = "";
 	public positionList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -28,7 +30,7 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['entityID'] || changes['entityType']) {
+		if (changes['entityID'] || changes['entityType'] || changes['clergyID'] || changes['mode']) {
 			this.getDataItems();
 		}
 	}
@@ -54,13 +56,13 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 		let config: any = {
 			data: {
 				target: 'new',
-				clergyID: this.entityID
+				clergyID: this.clergyID
 			}
 		};
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
-		config.autoFocus = true;
+		config.autoFocus = false;
 		let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
@@ -78,37 +80,79 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	}
 
 	getRowSelected(item: any, action: string) {
-		if (this.isNullOrEmpty(this.entityID)) {
-			let config: any = {
-				data: {
-					target: 'edit',
-					// entityID: item.entityID,
-					// entityName: item.entityName,
-					// entityType: item.entityType,
-					item: item,
-					clergyID: item.clergyID,
-					clergyName: item.clergyName,
-					action: action
+		if(action == 'auto'){
+			let requets:any = {};
+			let options = {
+				select:'name'
+			}
+			if(!this.isNullOrEmpty(item.clergyID)){
+				requets.clergy = this.service.getClergy(item.clergyID,options);
+			}
+			if(!this.isNullOrEmpty(item.entityID)){
+				if(this.sharedService.getTypeGetData(item.entityType) == 'organization'){
+					requets.entity = this.service.getOrganization(item.entityID,options);
 				}
-			};
-			config.disableClose = true;
-			config.panelClass = 'dialog-form-l';
-			config.maxWidth = '80vw';
-			config.autoFocus = true;
-			let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
-			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
-				next: (res: any) => {
-					let snackbarData: any = {
-						key: ''
-					};
-					if (res === 'OK') {
-						snackbarData.key = 'new-item';
-						snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
-						this.showInfoSnackbar(snackbarData);
-						this.getDataItems();
+				else {
+					requets.entity = this.service.getGroup(item.entityID,options);
+				}
+			}
+			if(Object.keys(requets).length > 0){
+				forkJoin(requets).pipe(takeUntil(this.unsubscribe)).subscribe({
+					next: (res: any) => {
+						let appointmentJSON:any = {}
+						if(res.clergy){
+							appointmentJSON.clergyName = res.clergy.name;
+						}
+						if(res.entity){
+							appointmentJSON.entityName = res.entity.name;
+						}
+						this.service.updateAppointment(item.id, appointmentJSON).pipe(take(1)).subscribe({
+							next: () => {
+								let snackbarData: any = {
+									key: 'saved-item',
+									message: 'Cập Nhật Bổ Nhiệm Thành Công'
+								};
+								this.showInfoSnackbar(snackbarData);
+								this.getDataItems();
+							}
+						})
 					}
-				}
-			});
+				})
+			}
+		}
+		else {
+			if (this.isNullOrEmpty(this.entityID)) {
+				let config: any = {
+					data: {
+						target: 'edit',
+						// entityID: item.entityID,
+						// entityName: item.entityName,
+						// entityType: item.entityType,
+						item: item,
+						clergyID: item.clergyID,
+						clergyName: item.clergyName,
+						action: action
+					}
+				};
+				config.disableClose = true;
+				config.panelClass = 'dialog-form-l';
+				config.maxWidth = '80vw';
+				config.autoFocus = false;
+				let dialogRef = this.dialog.open(AppointmentsInfoComponent, config);
+				dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+					next: (res: any) => {
+						let snackbarData: any = {
+							key: ''
+						};
+						if (res === 'OK') {
+							snackbarData.key = 'new-item';
+							snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
+							this.showInfoSnackbar(snackbarData);
+							this.getDataItems();
+						}
+					}
+				});
+			}
 		}
 	}
 
@@ -142,8 +186,8 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 
 	getDataItems() {
 		let filter = '';
-		if (this.entityType == 'clergy') {
-			filter = `clergyID eq ${this.entityID}`;
+		if (this.mode == 'clergy') {
+			filter = `clergyID eq ${this.clergyID}`;
 		}
 		else {
 			filter = `entityId eq ${this.entityID} and entityType eq '${this.entityType}'`;
@@ -162,7 +206,7 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 					this.noData = false;
 					this.arrData = res.value;
 					for (let item of this.arrData) {
-						if (this.entityType == 'clergy') {
+						if (this.mode == 'clergy') {
 							item.name = item.entityName;
 						}
 						else {
