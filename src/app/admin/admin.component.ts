@@ -67,6 +67,13 @@ export class AdminComponent extends SimpleBaseComponent {
 		}
 	}
 
+	onLogOut(){
+		localStorage.removeItem('accessToken');
+		localStorage.removeItem('refreshToken');
+		localStorage.removeItem('refreshTokenExpiryTime');
+		this.router.navigate(['/login']);
+	}
+
 	getTitle() {
 		if(this.router.url.includes('/admin/categories-list')){
 			this.title = "Danh Mục";

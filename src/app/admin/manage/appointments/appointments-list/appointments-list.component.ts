@@ -438,13 +438,17 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	getRowSelected(item: any, action: string) {
 		if (action == 'auto') {
 			let requets: any = {};
-			let options = {
-				select: 'name'
-			}
+			
 			if (!this.isNullOrEmpty(item.clergyID)) {
-				requets.clergy = this.service.getClergy(item.clergyID, options);
+				let optionsClergy = {
+					select: 'name,level,stName'
+				}
+				requets.clergy = this.service.getClergy(item.clergyID, optionsClergy);
 			}
 			if (!this.isNullOrEmpty(item.entityID)) {
+				let options = {
+					select: 'name,type'
+				}
 				if (this.sharedService.getTypeGetData(item.entityType) == 'organization') {
 					requets.entity = this.service.getOrganization(item.entityID, options);
 				}
@@ -457,10 +461,10 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 					next: (res: any) => {
 						let appointmentJSON: any = {}
 						if (res.clergy) {
-							appointmentJSON.clergyName = res.clergy.name;
+							appointmentJSON.clergyName = `${this.sharedService.getClergyLevel(res.clergy)} ${res.clergy.stName} ${res.clergy.name}`;
 						}
 						if (res.entity) {
-							appointmentJSON.entityName = res.entity.name;
+							appointmentJSON.entityName = `${this.sharedService.updateNameTypeOrg(res.entity.type)} ${res.entity.name}`;
 						}
 						this.service.updateAppointment(item.id, appointmentJSON).pipe(take(1)).subscribe({
 							next: () => {

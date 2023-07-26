@@ -186,7 +186,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			appointerName: item ? item.appointerName : "",
 			entityType: item ? item.entityType : this.entityType,
 			position: [item ? item.position : '', Validators.required],
-			status: item ? item.status : 'duong_nhiem',
+			status: item ? item.status : 'cho_xac_nhan',
 			fromDate: fromDate,
 			effectiveDate: [effectiveDate, Validators.required],
 			toDate: toDate,

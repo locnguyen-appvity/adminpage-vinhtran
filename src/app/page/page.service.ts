@@ -9,7 +9,7 @@ import { GlobalSettings } from '../shared/global.settings';
 })
 export class PageService {
 
-	private rootAPI: string = "http://gppc_client.tuhoinusongthanhthe.org/api/v1";
+	private rootAPI: string = GlobalSettings.Settings.ServerClient + "/api/v1";
 	private rootAPIAdmin: string = GlobalSettings.Settings.Server + '/api/v1/admin';
 	constructor(public service: HttpService) {
 	}
@@ -30,20 +30,20 @@ export class PageService {
 	}
 
 	searchClergies(options: any): Observable<any> {
-		let pageOption:any = {}
+		let pageOption: any = {}
 		let restrictions = [];
 		let sorts = [];
-		if(options){
-			if(options.page){
+		if (options) {
+			if (options.page) {
 				pageOption.page = options.page;
 			}
-			if(options.pageSize){
+			if (options.pageSize) {
 				pageOption.pageSize = options.pageSize;
 			}
-			if(options.restrictions){
+			if (options.restrictions) {
 				restrictions = options.restrictions;
 			}
-			if(options.sorts){
+			if (options.sorts) {
 				sorts = options.sorts;
 			}
 		}

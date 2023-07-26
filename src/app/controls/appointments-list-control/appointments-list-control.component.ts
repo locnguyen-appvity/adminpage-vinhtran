@@ -80,31 +80,35 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	}
 
 	getRowSelected(item: any, action: string) {
-		if(action == 'auto'){
-			let requets:any = {};
-			let options = {
-				select:'name'
+		if (action == 'auto') {
+			let requets: any = {};
+
+			if (!this.isNullOrEmpty(item.clergyID)) {
+				let optionsClergy = {
+					select: 'name,level,stName'
+				}
+				requets.clergy = this.service.getClergy(item.clergyID, optionsClergy);
 			}
-			if(!this.isNullOrEmpty(item.clergyID)){
-				requets.clergy = this.service.getClergy(item.clergyID,options);
-			}
-			if(!this.isNullOrEmpty(item.entityID)){
-				if(this.sharedService.getTypeGetData(item.entityType) == 'organization'){
-					requets.entity = this.service.getOrganization(item.entityID,options);
+			if (!this.isNullOrEmpty(item.entityID)) {
+				let options = {
+					select: 'name,type'
+				}
+				if (this.sharedService.getTypeGetData(item.entityType) == 'organization') {
+					requets.entity = this.service.getOrganization(item.entityID, options);
 				}
 				else {
-					requets.entity = this.service.getGroup(item.entityID,options);
+					requets.entity = this.service.getGroup(item.entityID, options);
 				}
 			}
-			if(Object.keys(requets).length > 0){
+			if (Object.keys(requets).length > 0) {
 				forkJoin(requets).pipe(takeUntil(this.unsubscribe)).subscribe({
 					next: (res: any) => {
-						let appointmentJSON:any = {}
-						if(res.clergy){
-							appointmentJSON.clergyName = res.clergy.name;
+						let appointmentJSON: any = {}
+						if (res.clergy) {
+							appointmentJSON.clergyName = `${this.sharedService.getClergyLevel(res.clergy)} ${res.clergy.stName} ${res.clergy.name}`;
 						}
-						if(res.entity){
-							appointmentJSON.entityName = res.entity.name;
+						if (res.entity) {
+							appointmentJSON.entityName = `${this.sharedService.updateNameTypeOrg(res.entity.type)} ${res.entity.name}`;
 						}
 						this.service.updateAppointment(item.id, appointmentJSON).pipe(take(1)).subscribe({
 							next: () => {
