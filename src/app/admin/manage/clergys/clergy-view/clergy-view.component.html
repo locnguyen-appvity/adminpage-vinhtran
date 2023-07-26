@@ -31,8 +31,8 @@
                                     style="font-size: 20px;font-weight: 500;color: rgb(0, 170, 170);"><strong>{{data?.name}}</strong></span>
                                 <span>ngày <strong>{{data?.dateView}}</strong></span>
                                 <span>tại <strong>{{data?.locationName}}</strong></span>
-                                <span>{{data?.content}}</span>
-                                <mat-divider *ngIf="!last" class="full-width"></mat-divider>
+                                <span>{{data?.descriptionView}}</span>
+                                <mat-divider class="full-width"></mat-divider>
                             </div>
                         </ng-template>
                     </div>
@@ -41,25 +41,25 @@
         </div>
         <div class="clergy-view-container-r" fxFlex.gt-md="70" fxFlex="100">
             <h4 class="text-info-title">Thông tin cá nhân</h4>
-            <div class="info-personal" fxLayout="column">
-                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
-                    <span>
+            <div class="info-personal" fxLayout="column" fxLayoutGap="12">
+                <div class="info-personal-container" fxLayout="row wrap">
+                    <span fxFlex.gt-md="50" fxFlex="100">
                         Ngày sinh: <label>{{localItem?.dateOfBirthView}}</label>
                     </span>
                     <span>
                         tại: <label>{{localItem?.placeOfBirth}}</label>
                     </span>
                 </div>
-                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
-                    <span>
+                <div class="info-personal-container" fxLayout="row wrap">
+                    <span fxFlex.gt-md="50" fxFlex="100">
                         Giáo xứ: <label>{{localItem?.orgName}}</label>
                     </span>
                     <span>
                         Giáo phận: <label>Giáo Phận Phú Cường</label>
                     </span>
                 </div>
-                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
-                    <span>
+                <div class="info-personal-container" fxLayout="row wrap">
+                    <span fxFlex.gt-md="50" fxFlex="100">
                         Tên cha: <label>{{localItem?.fatherName}}</label>
                     </span>
                     <span>
@@ -67,12 +67,10 @@
                     </span>
                 </div>
                 <div class="info-personal-container" fxLayout="row wrap">
-                    <span>
+                    <span fxFlex.gt-md="25" fxFlex="100">
                         {{localItem?.identityCardTypeView}}: <label>{{localItem?.identityCardNumber}}</label>
                     </span>
-                </div>
-                <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
-                    <span>
+                    <span fxFlex.gt-md="25" fxFlex="100">
                         Ngày cấp: <label>{{localItem?.identityCardIssueDateView}}</label>
                     </span>
                     <span>

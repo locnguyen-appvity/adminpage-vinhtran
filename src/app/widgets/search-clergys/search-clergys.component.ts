@@ -163,6 +163,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
 					}
+					
 				}
 				item.arrAnniversaries = res.value;
 			}

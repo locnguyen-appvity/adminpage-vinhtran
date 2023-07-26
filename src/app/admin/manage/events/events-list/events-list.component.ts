@@ -192,6 +192,9 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 							item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 							item.dayView = item._date.format('DD/MM/YYYY');
 						}
+						if((item.type =='pho_te' || item.type =='linh_muc') && !this.isNullOrEmpty(item.description)){
+							item.descriptionView = `Thụ phong bới: ${item.description}`
+						}
 					}
 				}
 				else {

@@ -5,7 +5,9 @@
             <p *ngIf="data?.type == 'saint'" mat-line> ngày <strong>{{data?.day}}</strong></p>
             <h4 *ngIf="data?.type != 'saint'" mat-line>{{data?.name}}: <strong>{{data?.dayView}}</strong></h4>
             <p *ngIf="data?.type != 'saint' && data?.entityType == 'clergy'" mat-line>tại
-                <strong>{{data?.locationName}}</strong></p>
+                <strong>{{data?.locationName}}</strong>
+            </p>
+            <h4 *ngIf="data?.type != 'saint'" mat-line>{{data?.descriptionView}}</h4>
             <span fxFlex></span>
             <button (click)="$event.stopPropagation();" mat-icon-button [matMenuTriggerFor]="actionsMenu"
                 matTooltip="Thao Tác Khác">
@@ -18,7 +20,7 @@
                 <button *ngIf="data?.locationID?.length > 0" mat-menu-item [disabled]="dataProcessing"
                     (click)="openNewTab(data,'location')">
                     <mat-icon svgIcon="ic_open_in_new_48dp"></mat-icon>
-                    <span>Xem Nơi Nhận Nhiệm Vụ</span>
+                    <span>Xem Nơi Diễn Ra Sự Kiện</span>
                 </button>
                 <!-- <button *ngIf="data.status !== 'inactive'" mat-menu-item matTooltip="Tạm Ẩn"
                     (click)="$event.stopPropagation();onUpdateStatus(data,'inactive')">

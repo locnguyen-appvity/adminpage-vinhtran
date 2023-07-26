@@ -215,8 +215,8 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 				if (res) {
 					this.localItem = res;
 					this.localItem.dateOfBirthView = "Chưa cập nhật";
-					this.localItem.identityCardTypeView = "Chứng Minh";
-					this.localItem.identityCardIssueDateView = "Chứng Minh";
+					this.localItem.identityCardTypeView = this.sharedService.getIdentityCardTypeName(this.localItem.identityCardType);
+					this.localItem.identityCardIssueDateView = "Chưa cập nhật";
 					this.localItem.displayName =  `${this.sharedService.getClergyLevel(this.localItem)} ${this.localItem.stName}`;
 					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
@@ -256,7 +256,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	getAnniversaries(clergyID: string){
 		let options = {
 			sort: 'date asc',
-			filter: `type ne 'saint' and entityID eq ${clergyID} and entityType eq 'clergy' and (status eq 'auto' or type eq 'pho_te' or type eq 'linh_muc' or type eq 'rip')`
+			filter: `entityID eq ${clergyID} and entityType eq 'clergy' and (type eq 'baptize' or type eq 'confirmation' or type eq 'smallSeminary' or type eq 'bigSeminary' or type eq 'vow' or type eq 'pho_te' or type eq 'linh_muc')`
 		}
 		this.arrAnniversaries = [];
 		this.dataProcessing = true;
@@ -267,6 +267,9 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					if (item.date) {
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
+					}
+					if((item.type =='pho_te' || item.type =='linh_muc') && !this.isNullOrEmpty(item.description)){
+						item.descriptionView = `Thụ phong bới: ${item.description}`
 					}
 				}
 				this.arrAnniversaries = res.value;

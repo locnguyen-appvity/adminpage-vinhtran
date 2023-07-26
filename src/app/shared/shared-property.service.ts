@@ -152,6 +152,19 @@ export class SharedPropertyService {
         }
     }
 
+    getIdentityCardTypeName(identityCardType: string) {
+        switch (identityCardType) {
+            case 'chung_minh':
+                return 'Chứng Minh'
+            case 'can_cuoc':
+                return 'Căn Cước'
+            case 'passport':
+                return 'Passport'
+            default:
+                return identityCardType;
+        }
+    }
+
     updateTypeOrg(type: string) {
         switch (type) {
             case 'giao_hat':
