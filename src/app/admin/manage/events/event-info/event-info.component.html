@@ -49,9 +49,9 @@
                     </mat-form-field>
                 </div>
             </div>
-            <mat-form-field *ngIf="dataItemGroup?.value?.type == 'linh_muc' || dataItemGroup?.value?.type == 'pho_te'"
+            <mat-form-field *ngIf="dataItemGroup?.value?.type == 'linh_muc' || dataItemGroup?.value?.type == 'pho_te' || dataItemGroup?.value?.type == 'baptize' || dataItemGroup?.value?.type == 'confirmation'"
                 appearance="outline" class="full-width">
-                <mat-label>Giám Mục Thụ Phong</mat-label>
+                <mat-label>Bởi</mat-label>
                 <input matInput formControlName="description" autocomplete="off">
             </mat-form-field>
             <mat-form-field *ngIf="entityType == 'clergy' && dataItemGroup?.value?.type != 'saint'" appearance="outline"

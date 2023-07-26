@@ -26,7 +26,8 @@ export class SaintsComponent extends ListItemBaseComponent {
 		this.spinerLoading = true;
 		let options = {
 			filter: this.getFilter(),
-			sort: 'name asc'
+			sort: 'name asc',
+			select: 'abbreviation,code,anniversary,description,name,subtitle,status,content'
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe((res: any) => {
 			this.arrData = [];

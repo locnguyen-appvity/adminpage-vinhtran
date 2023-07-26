@@ -268,8 +268,8 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
 					}
-					if((item.type =='pho_te' || item.type =='linh_muc') && !this.isNullOrEmpty(item.description)){
-						item.descriptionView = `Thụ phong bới: ${item.description}`
+					if((item.type =='pho_te' || item.type =='linh_muc' || item.type =='baptize' || item.type =='confirmation') && !this.isNullOrEmpty(item.description)){
+						item.descriptionView = `bới: ${item.description}`
 					}
 				}
 				this.arrAnniversaries = res.value;
