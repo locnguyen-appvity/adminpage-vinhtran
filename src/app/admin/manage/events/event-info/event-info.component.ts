@@ -32,6 +32,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public entityID: string = "";
 	public entityName: string = "";
 	public entityType: string = "";
+	public eventType: string = "ngay_ky_niem";
 	public localItem: any;
 	public arrLocations: any[] = [];
 	public typeEvents: any[] = [];
@@ -54,6 +55,9 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		}
 		if (this.dialogData.entityType) {
 			this.entityType = this.dialogData.entityType;
+		}
+		if (this.dialogData.eventType) {
+			this.eventType = this.dialogData.eventType;
 		}
 		this.dataItemGroup = this.initialEventGroup(this.localItem);
 		if (this.localItem && this.localItem.status == 'auto') {
@@ -81,7 +85,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			name: [item ? item.name : '', Validators.required],
 			day: [item ? item.day : '', Validators.required],
 			date: item ? item._date : '',
-			type: [item ? item.type : 'ngay_ky_niem', Validators.required],
+			type: [item ? item.type : this.eventType, Validators.required],
 			description: item ? item.description : '',
 			content: item ? item.content : '',
 			locationID: item ? item.locationID : (this.entityType == 'organization' ? this.entityID : ''),

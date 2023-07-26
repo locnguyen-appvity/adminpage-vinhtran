@@ -21,6 +21,11 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 	@Input() entityName: string = "";
 
 	public dataDefault: any[] = ANNIVERSARIES;
+	public hasShowAdd: any = {
+		pho_te: true,
+		linh_muc: true,
+		rip: true
+	}
 
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
@@ -89,12 +94,13 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 		}
 	}
 
-	onAddItem() {
+	onNewItem(eventType: string) {
 		let config: any = {};
 		config.data = {
 			type: 'new',
 			entityID: this.entityID,
-			entityType: this.entityType
+			entityType: this.entityType,
+			eventType: eventType
 		};
 		this.openFormDialog(config, 'new');
 	}
@@ -193,7 +199,11 @@ export class EventsListComponent extends ListItemBaseComponent implements OnChan
 							item.dayView = item._date.format('DD/MM/YYYY');
 						}
 						if((item.type =='pho_te' || item.type =='linh_muc' || item.type =='baptize' || item.type =='confirmation') && !this.isNullOrEmpty(item.description)){
-							item.descriptionView = `bới: ${item.description}`
+							item.descriptionView = `bới: ${item.description}`;
+							this.hasShowAdd[item.type] = false;
+						}
+						else if(item.type =='rip'){
+							this.hasShowAdd[item.type] = false;
 						}
 					}
 				}

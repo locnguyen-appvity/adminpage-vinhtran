@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-            <div fxLayout="row wrap" *ngIf="localItem?.status != 'auto'">
+            <!-- <div fxLayout="row wrap" *ngIf="localItem?.status != 'auto'">
                 <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tên Sự Kiện</mat-label>
@@ -17,8 +17,8 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
-            <div fxLayout="row wrap" *ngIf="localItem?.status == 'auto'">
+            </div> -->
+            <div fxLayout="row wrap">
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Tên Sự Kiện</mat-label>
                     <input matInput required formControlName="name" autocomplete="off">
@@ -49,7 +49,8 @@
                     </mat-form-field>
                 </div>
             </div>
-            <mat-form-field *ngIf="dataItemGroup?.value?.type == 'linh_muc' || dataItemGroup?.value?.type == 'pho_te' || dataItemGroup?.value?.type == 'baptize' || dataItemGroup?.value?.type == 'confirmation'"
+            <mat-form-field
+                *ngIf="dataItemGroup?.value?.type == 'linh_muc' || dataItemGroup?.value?.type == 'pho_te' || dataItemGroup?.value?.type == 'baptize' || dataItemGroup?.value?.type == 'confirmation'"
                 appearance="outline" class="full-width">
                 <mat-label>Bởi</mat-label>
                 <input matInput formControlName="description" autocomplete="off">
@@ -63,6 +64,10 @@
                     [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
                     [autocomplete]="true" [items]="arrLocations">
                 </se-autocomplete-simple>
+            </mat-form-field>
+            <mat-form-field *ngIf="entityType != 'clergy'" appearance="outline" class="full-width">
+                <mat-label>Mô tả</mat-label>
+                <textarea matInput rows="2" formControlName="description" autocomplete="off"></textarea>
             </mat-form-field>
             <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Ghi Chú</mat-label>

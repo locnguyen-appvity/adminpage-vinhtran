@@ -39,7 +39,27 @@
     <mat-divider class="full-width"></mat-divider>
     <div fxLayout="row" fxLayoutAlign="center center" class="mrt-12">
         <span fxFlex></span>
-        <button (click)="onAddItem()" mat-button color="primary">Thêm Sự Kiện</button>
+        <ng-container *ngIf="(hasShowAdd?.pho_te || hasShowAdd?.linh_muc || hasShowAdd?.rip) && entityType == 'clergy'; else nonMore">
+            <button  mat-button color="primary" [matMenuTriggerFor]="eventsMenu">Thêm Sự Kiện</button>
+            <mat-menu #eventsMenu="matMenu" [overlapTrigger]="false" xPosition="after">
+                <button *ngIf="hasShowAdd?.pho_te" mat-menu-item [disabled]="dataProcessing" (click)="onNewItem('pho_te')">
+                    <span >Ngày Thụ Phong Phó Tế</span>
+                </button>
+                <button *ngIf="hasShowAdd?.linh_muc" mat-menu-item [disabled]="dataProcessing"
+                    (click)="onNewItem('linh_muc')">
+                    <span>Ngày Thụ Phong Linh Mục</span>
+                </button>
+                <button *ngIf="hasShowAdd?.rip" mat-menu-item [disabled]="dataProcessing" (click)="onNewItem('rip')">
+                    <span>Ngày Mất</span>
+                </button>
+                <button mat-menu-item [disabled]="dataProcessing" (click)="onNewItem('anniversary')">
+                    <span>Kỷ Niệm Khác</span>
+                </button>
+            </mat-menu>
+        </ng-container>
+        <ng-template #nonMore>
+            <button  mat-button color="primary" (click)="onNewItem('anniversary')">Thêm Sự Kiện</button>
+        </ng-template>
     </div>
 </ng-container>
 <ng-template #noDataTemf>
