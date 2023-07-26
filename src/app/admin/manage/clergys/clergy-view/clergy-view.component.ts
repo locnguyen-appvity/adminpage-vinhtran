@@ -6,6 +6,9 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
+import { dataExport } from './data-export';
+import { saveAs } from 'file-saver';
+import { asBlob } from 'html-docx-js-typescript';
 
 @Component({
 	selector: 'app-clergy-view',
@@ -142,6 +145,22 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		// })
 	}
 
+	async onDownload() {
+		const htmlString = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  ${dataExport}
+</body>
+</html>`
+		const blob = await asBlob(dataExport);
+		saveAs(blob, 'example.docx');
+	}
+
+
 	getAllData() {
 		this.getGroups();
 		this.getChurchsList();
@@ -217,7 +236,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					this.localItem.dateOfBirthView = "Chưa cập nhật";
 					this.localItem.identityCardTypeView = this.sharedService.getIdentityCardTypeName(this.localItem.identityCardType);
 					this.localItem.identityCardIssueDateView = "Chưa cập nhật";
-					this.localItem.displayName =  `${this.sharedService.getClergyLevel(this.localItem)} ${this.localItem.stName}`;
+					this.localItem.displayName = `${this.sharedService.getClergyLevel(this.localItem)} ${this.localItem.stName}`;
 					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
 						this.localItem.dateOfBirthView = this.sharedService.formatDate(this.localItem._dateOfBirth);
@@ -235,7 +254,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		})
 	}
 
-	getAppointments(clergyID: string){
+	getAppointments(clergyID: string) {
 		let options = {
 			filter: `clergyID eq ${clergyID} and status eq 'duong_nhiem'`
 		}
@@ -244,16 +263,16 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
 			this.dataProcessing = false;
 			if (res && res.value && res.value.length > 0) {
-				for(let item of res.value){
+				for (let item of res.value) {
 					item.order = this.sharedService.getOrderPositionClergy(item.position);
-					item.positionView = this.sharedService.getNameExistsInArray(item.position,this.positionList,'code');
+					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, 'code');
 				}
 				this.arrAppointments = this.linq.Enumerable().From(res.value).OrderBy("$.order").ToArray();
 			}
 		})
 	}
 
-	getAnniversaries(clergyID: string){
+	getAnniversaries(clergyID: string) {
 		let options = {
 			sort: 'date asc',
 			filter: `entityID eq ${clergyID} and entityType eq 'clergy' and (type eq 'baptize' or type eq 'confirmation' or type eq 'smallSeminary' or type eq 'bigSeminary' or type eq 'vow' or type eq 'pho_te' or type eq 'linh_muc')`
@@ -263,12 +282,12 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
 			this.dataProcessing = false;
 			if (res && res.value && res.value.length > 0) {
-				for(let item of res.value){
+				for (let item of res.value) {
 					if (item.date) {
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
 					}
-					if((item.type =='pho_te' || item.type =='linh_muc' || item.type =='baptize' || item.type =='confirmation') && !this.isNullOrEmpty(item.description)){
+					if ((item.type == 'pho_te' || item.type == 'linh_muc' || item.type == 'baptize' || item.type == 'confirmation') && !this.isNullOrEmpty(item.description)) {
 						item.descriptionView = `bới: ${item.description}`
 					}
 				}

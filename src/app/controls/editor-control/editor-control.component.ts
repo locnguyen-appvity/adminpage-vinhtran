@@ -123,6 +123,8 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 		super(sharedService);
 		this.editorFormCtrl = new FormControl("");
 		this.editorFormCtrl.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
+			console.log(this.editorCtrl.getContent());
+			
 			if (this.sharedService.isChangedValue(this.currentValue, valueForm)) {
 				this.currentValue = valueForm;
 				this.onChange(valueForm);
