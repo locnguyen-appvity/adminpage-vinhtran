@@ -1,5 +1,5 @@
 <div class="container-xl">
-    <div class="result-list-container">
+    <div class="result-list-container result-list-container--clergys">
         <ng-container *ngIf="loading; else temfData">
             <div fxLayout="row" fxLayoutAlign="center center" class="full-height">
                 <mat-spinner [diameter]="40"></mat-spinner>
@@ -11,37 +11,31 @@
             </div>
             <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
                 <div class="item-result" [ngClass]="{'last-item': last}">
-                    <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="12">
                         <div class="thumb">
                             <img [src]="item.pictureUrl" />
                         </div>
-                        <div class="info mrl-24" fxFlex="50">
-                            <h2>{{item.groupName}}</h2>
+                        <div class="info mrl-24" fxFlex="50" fxLayoutGap="12" fxLayout="column">
+                            <h2 class="name">{{item.name}}</h2>
                             <h3>Năm Sinh: {{item.dateOfBirthView}}</h3>
-                            <ng-template ngFor let-data [ngForOf]="item?.arrAnniversaries">
-                                <span><strong>{{data?.name}}</strong>: <strong>{{data?.dateView}}</strong></span>
-                            </ng-template>
+                            <h3>Chịu chức: {{item?.linh_muc}}</h3>
                         </div>
                         <div class="times" fxFlex="50">
-                            <h2 class="title">HOẠT ĐỘNG SỨC VỤ</h2>
+                            <h2 class="title mrb-12">HOẠT ĐỘNG SỨC VỤ</h2>
                             <div *ngIf="item?.arrAppointments?.length > 0" class="content" fxLayout="column"
-                                fxLayoutAlign="center center">
-                                <span>Hiện đang làm <strong>{{item?.arrAppointments[0]?.positionView}}</strong> tại
-                                    <strong>{{item?.arrAppointments[0]?.entityName}}</strong></span>
+                                fxLayoutAlign="center start" fxLayoutGap="12">
+                                <span>Hiện đang <span *ngIf="item?.arrAppointments[0]?.position !== 'huu' && item?.arrAppointments[0]?.position !== 'nghi_duong'">làm </span> <strong>{{item?.arrAppointments[0]?.positionView}}</strong></span>
+                                <span>tại <strong>{{item?.arrAppointments[0]?.entityName}}</strong></span>
                             </div>
                             <div *ngIf="item?.arrAppointments?.length > 1" class="full-width" fxLayout="column"
                                 fxLayoutAlign="start start">
                                 <span>Các chức vụ khác</span>
                                 <ng-template ngFor let-data let-i="index" [ngForOf]="item?.arrAppointments">
-                                    <span *ngIf="i!=0"><strong>{{data?.positionView}}</strong> tại <strong>{{data?.entityName}}</strong></span>
+                                    <span *ngIf="i!=0"><strong>{{data?.positionView}}</strong> tại
+                                        <strong>{{data?.entityName}}</strong></span>
                                 </ng-template>
                             </div>
                         </div>
-                        <!-- <div class="contact">
-                            <h3>Điện thoại: {{item.phoneNumber}}</h3>
-                            <h3>Dân số: {{item.population}}</h3>
-                            <h3>Số tín hữu: {{item.memberCount}}</h3>
-                        </div> -->
                     </div>
                 </div>
             </ng-template>

@@ -18,7 +18,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 	@Input() data: any;
 
 	public dataLists: any = [];
-	public cacheDataLists: any = [];
+	// public cacheDataLists: any = [];
 	public loading: boolean = false;
 	public positionList: any[] = [];
 
@@ -72,12 +72,13 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		}
 		this.loading = true;
 		this.dataLists = [];
-		this.cacheDataLists = [];
+		// this.cacheDataLists = [];
 		this.service.searchClergies(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.data && res.data.length > 0) {
-					this.cacheDataLists = res.data;
-					for (let item of this.cacheDataLists) {
+					// this.cacheDataLists = res.data;
+					this.dataLists = this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
+					for (let item of this.dataLists) {
 						item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
@@ -85,11 +86,15 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 						else {
 							item.pictureUrl = "../../assets/images/banner.jpg"
 						}
+						item.name = `${this.sharedService.getClergyLevel(item)} ${item.stName} ${item.name}`;
+						if (item.dateOfBirth) {
+							item._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(item.dateOfBirth);
+							item.dateOfBirthView = this.sharedService.formatDate(item._dateOfBirth);
+						}
 						this.getAppointments(item);
 						this.getAnniversaries(item);
 					}
 				}
-				this.dataLists = this.groupData(this.cacheDataLists);
 				this.loading = false;
 			}
 		})
@@ -99,13 +104,17 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		return this.linq.Enumerable().From(items).GroupBy("$.name", null, (key: any, data: any) => {
 			let _key = this.isNullOrEmpty(key) ? 'empty' : key;
 			let dateOfBirthView = "";
+			let pictureUrl = "../../assets/images/banner.jpg"
 			if (data.source[0] && data.source[0].dateOfBirth) {
 				let _dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(data.source[0].dateOfBirth);
 				dateOfBirthView = this.sharedService.formatDate(_dateOfBirth);
 			}
+			if (data.source[0] && data.source[0].pictureUrl) {
+				pictureUrl = data.source[0].pictureUrl
+			}
 			return {
 				groupName: _key,
-				pictureUrl: "../../assets/images/banner.jpg",
+				pictureUrl: pictureUrl,
 				dateOfBirthView: dateOfBirthView,
 				controls: data.source,
 			}
@@ -152,20 +161,16 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 
 	getAnniversaries(item: any) {
 		let options = {
-			sort: 'date asc',
-			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and (type eq 'pho_te' or type eq 'linh_muc' or type eq 'rip')`
+			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and type eq 'linh_muc'`,
+			top: 1
 		}
-		item.arrAnniversaries = [];
+		item['linh_muc'] = "Chưa cập nhật";
 		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
 			if (res && res.value && res.value.length > 0) {
-				for (let item of res.value) {
-					if (item.date) {
-						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
-						item.dateView = this.sharedService.formatDate(item._date);
-					}
-					
+				if (res.value[0].date) {
+					res.value[0]._date = this.sharedService.convertDateStringToMomentUTC_0(res.value[0].date);
+					item['linh_muc'] = this.sharedService.formatDate(res.value[0]._date);
 				}
-				item.arrAnniversaries = res.value;
 			}
 		})
 	}

@@ -67,8 +67,9 @@ export class SearchControlComponent extends SimpleBaseComponent {
 	openFormDialog(item: any) {
 		let config = {
 			disableClose: true,
-			panelClass: 'dialog-form-xl',
+			panelClass: 'dialog-form-xxl',
 			maxWidth: '80vw',
+			minHeight: '90vh',
 			autoFocus: true,
 			data: {
 				item: item,

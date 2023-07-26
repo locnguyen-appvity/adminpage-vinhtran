@@ -26,6 +26,9 @@
     background-color: #ccc;
     max-height: 400px;
     overflow: auto;
+    &--clergys{
+        max-height: 90vh;
+    }
     .item-result {
         padding-bottom: 24px;
         margin-bottom: 24px;
@@ -39,8 +42,8 @@
         .thumb {
             max-width: 150px;
             img {
-                width: 150px;
-                height: 100%;
+                width: auto;
+                height: 150px;
             }
         }
         .info,
@@ -49,7 +52,7 @@
             width: 200px;
             min-height: 100px;
             h2 {
-                font-size: 16px;
+                font-size: 25px;
                 font-weight: 600;
                 line-height: 1.4;
                 margin: 0;
