@@ -214,10 +214,17 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
+					this.localItem.dateOfBirthView = "Chưa cập nhật";
+					this.localItem.identityCardTypeView = "Chứng Minh";
+					this.localItem.identityCardIssueDateView = "Chứng Minh";
 					this.localItem.displayName =  `${this.sharedService.getClergyLevel(this.localItem)} ${this.localItem.stName}`;
 					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
 						this.localItem.dateOfBirthView = this.sharedService.formatDate(this.localItem._dateOfBirth);
+					}
+					if (this.localItem.identityCardIssueDate) {
+						this.localItem._identityCardIssueDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.identityCardIssueDate);
+						this.localItem.identityCardIssueDateView = this.sharedService.formatDate(this.localItem._identityCardIssueDate);
 					}
 					this.localItem.pictureUrl = './assets/icons/ic_priest.svg'
 					if (this.localItem.photo) {

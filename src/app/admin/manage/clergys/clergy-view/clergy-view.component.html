@@ -44,15 +44,15 @@
             <div class="info-personal" fxLayout="column">
                 <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
                     <span>
-                        Ngày sinh: <label>20-01-1954</label>
+                        Ngày sinh: <label>{{localItem?.dateOfBirthView}}</label>
                     </span>
                     <span>
-                        tại: <label>Làng Tràng Lũ, Thái Bình</label>
+                        tại: <label>{{localItem?.placeOfBirth}}</label>
                     </span>
                 </div>
                 <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
                     <span>
-                        Giáo xứ: <label>Tràng Lũ</label>
+                        Giáo xứ: <label>{{localItem?.orgName}}</label>
                     </span>
                     <span>
                         Giáo phận: <label>Giáo Phận Phú Cường</label>
@@ -60,23 +60,23 @@
                 </div>
                 <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
                     <span>
-                        Tên cha: <label>Gioan.B Nguyễn Văn Bể</label>
+                        Tên cha: <label>{{localItem?.fatherName}}</label>
                     </span>
                     <span>
-                        Tên mẹ: <label>Maria Nguyễn Thị Sắm</label>
+                        Tên mẹ: <label>{{localItem?.motherName}}</label>
                     </span>
                 </div>
                 <div class="info-personal-container" fxLayout="row wrap">
                     <span>
-                        CMND: <label>280052238</label>
+                        {{localItem?.identityCardTypeView}}: <label>{{localItem?.identityCardNumber}}</label>
                     </span>
                 </div>
                 <div class="info-personal-container" fxLayout="row wrap" fxLayoutGap="50">
                     <span>
-                        Ngày cấp: <label>14-02-2019</label>
+                        Ngày cấp: <label>{{localItem?.identityCardIssueDateView}}</label>
                     </span>
                     <span>
-                        Nơi cấp: <label>CA Bình Dương</label>
+                        Nơi cấp: <label>{{localItem?.identityCardIssuePlace}}</label>
                     </span>
                 </div>
             </div>
