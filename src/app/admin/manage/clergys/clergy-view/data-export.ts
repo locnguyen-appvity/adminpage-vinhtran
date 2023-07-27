@@ -1,41 +1,126 @@
-export const dataExport = `
-<div style="width: 559px; margin: 0 auto; position: relative;">
-<p><span style="font-family: &quot;times new roman&quot;, times, serif;"><strong>GIÁO PHẬN PHÚ CƯỜNG</strong><br><strong>Linh mục Đaminh Trạch Cao Xuân Khải</strong><br>Châm ngôn Linh mục: <strong>Châm Ngôn</strong></span></p>
-<img src="https://xdsoft.net/jodit/finder/files/3628d054-5091-437c-a9d6-b6cbb6df9f32.jpeg" width="133" height="200" style="position: absolute; top: 0;right: 5px;">
-<p style="text-align: center;"><span style="font-family: &quot;times new roman&quot;, times, serif;"><strong style="font-size: 24px;">CURRICULUM VITAE</strong></span></p>
-<p style="text-align: left;"><span style="font-family: &quot;times new roman&quot;, times, serif;"><span style="font-size: 24px;">Tên thánh : Đaminh Trạch<br>Họ và tên : Cao Xuân Khải<br>Sinh ngày : 06-09-1972<br>Tại : Lạc An, Bình Dương Tỉnh : <br>Giáo xứ : Võng Phan Giáo phận: Phú Cường<br>Tên thánh, họ và tên cha : Đaminh Cao Văn Thi<br>Tên thánh, họ và tên mẹ : Maria Ngô Thị Tỵ<br>Rửa tội tại giáo xứ :Võng Phan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ngày: 01-10-1972<br>Thêm sức tại giáo xứ : Võng Phan&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ngày: 27-10-1982<br>Vào Tiểu Chủng viện :Phú Cường&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ngày: 21/11/1990<br>Vào Đại Chủng viện : Thánh Giuse Sài Gòn ngày: 29-10-1982<br>Chịu chức Phó tế tại : Nhà Thờ Chánh Tòa&nbsp; &nbsp;ngày: 21/12/1122<br>Chịu chức Linh mục tại : Nhà Thờ Lái Thiêu&nbsp; ngày: 22-12-2000<br>do Đức Giám mục : Đức Cha Phêrô Trần Đình Tứ<br>Linh mục gốc Giáo phận (được tính từ ngày chịu chức Phó tế): Phú Cường<br>Gia nhập hàng giáo sỹ Giáo phận Phú Cường ngày: <br>Gia nhập vĩnh viễn Giáo phận: Phú Cường<br>Số CMND:123232323 cấp ngày: 11/11/1990 nơi cấp: Bình Dương</span></span></p>
-<p style="text-align: left;"><span style="font-family: &quot;times new roman&quot;, times, serif;"><span style="font-size: 24px;"><strong>Từ khi chịu chức linh mục đã làm gì? ở đâu?</strong></span></span></p>
-<table style="border-collapse: collapse; width: 74.7412%; text-align: center;">
-    <tbody>
-        <tr>
-            <td style="width: 20%;"><strong>TT</strong></td>
-            <td style="width: 20%;"><strong>CHỨC VỤ</strong></td>
-            <td style="width: 20%;"><strong>ĐỊA ĐIỂN</strong></td>
-            <td style="width: 20%;"><strong>THỜI GIAN ĐẾN</strong></td>
-            <td style="width: 20%;"><strong>THỜI GIAN ĐI</strong></td>
+export function getHtmlExport(localItem: any, appointments: any) {
+    return `
+    <html>
+    
+    <head>
+        <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+        <meta name=Generator content="Microsoft Word 15 (filtered)">
+        <title>GIÁO PHẬN PHÚ CƯỜNG</title>
+    
+    </head>
+    
+    <body lang=EN-US style='word-wrap:break-word'>
+    
+        <table style="border-collapse:collapse;width: 100%;">
+            <tbody>
+                <tr>
+                    <td style="width: 70%;vertical-align: top;"><span style="font-family: &quot;times new roman&quot;, times, serif;">
+                    <span style="font-size: 18px;">
+                                <strong style="font-family: &quot;times new roman&quot;, times, serif;">GIÁO PHẬN PHÚ CƯỜNG</strong><br>
+                                <strong style="font-family: &quot;times new roman&quot;, times, serif;">${localItem.displayName} ${localItem.name}</strong></span><br>
+                                Châm ngôn Linh mục: ${localItem.parable ? localItem.parable : ""}</span>
+                        <div style="color:rgba(0,0,0,0.01);width:0;height:0"><span
+                                style="font-family: &quot;times new roman&quot;, times, serif;">&nbsp;<br></span></div>
+                    </td>
+                    <td style="width: 20%;">
+                    <div style="width: auto;height: 80px;object-fit: cover;">
+                    <img src="${localItem.pictureUrl}">
+                    </div>
+                    </td>
+                    <td style="width: 10%;">
+                   
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="text-align: center;"><span style="font-family: &quot;times new roman&quot;, times, serif;"><strong
+                    style="font-size: 24px;">CURRICULUM VITAE</strong></span></p>
+        <p style="line-height: 2;"><span
+                style="font-family: &quot;times new roman&quot;, times, serif; font-size: 16px;">
+                
+                <span>Tên thánh: <strong>${localItem.stName ? localItem.stName : "Chưa cập nhật"}</strong></span><br>
+                <span>Họ và tên: <strong>${localItem.name ? localItem.name : "Chưa cập nhật"}</strong></span><br>
+                <span>Sinh ngày: <strong>${localItem.dateOfBirthView ? localItem.dateOfBirthView : "Chưa cập nhật"}</strong></span><br>
+                <span>Tại: <strong>${localItem.placeOfBirth ? localItem.placeOfBirth : "Chưa cập nhật"}</strong></span><br>
+                <span><span>Giáo xứ : <strong>${localItem.orgName ? localItem.orgName : "Chưa cập nhật"}</strong></span>.............<span>Gáo phận: <strong>Phú Cường</strong></span></span><br>
+                <span>Tên thánh, họ và tên cha: <strong>${localItem.fatherName ? localItem.fatherName : "Chưa cập nhật"}</strong></span><br>
+                <span>Tên thánh, họ và tên mẹ: <strong>${localItem.motherName ? localItem.motherName : "Chưa cập nhật"}</strong></span><br>
+                <span><span>Rửa tội tại giáo xứ: <strong>${localItem.anniversaries.baptize ? localItem.anniversaries.baptize.locationName : "Chưa cập nhật"}</strong></span>.............<span>ngày: <strong>${localItem.anniversaries.baptize ? localItem.anniversaries.baptize.dateView : "Chưa cập nhật"}</strong></span></span><br>
+                Thêm sức tại giáo xứ: <strong>${localItem.anniversaries.confirmation ? localItem.anniversaries.confirmation.locationName : "Chưa cập nhật"}</strong>.............<span>ngày: <strong>${localItem.anniversaries.confirmation ? localItem.anniversaries.confirmation.dateView : "Chưa cập nhật"}</strong></span><br>
+                Vào Tiểu Chủng viện: <strong>${localItem.anniversaries.smallSeminary ? localItem.anniversaries.smallSeminary.locationName : "Chưa cập nhật"}</strong>.............<span>ngày: <strong>${localItem.anniversaries.smallSeminary ? localItem.anniversaries.smallSeminary.dateView : "Chưa cập nhật"}</strong></span><br>
+                Vào Đại Chủng viện: <strong>${localItem.anniversaries.bigSeminary ? localItem.anniversaries.bigSeminary.locationName : "Chưa cập nhật"}</strong>.............<span>ngày: <strong>${localItem.anniversaries.bigSeminary ? localItem.anniversaries.bigSeminary.dateView : "Chưa cập nhật"}</strong></span><br>
+                Chịu chức Phó tế tại: <strong>${localItem.anniversaries.pho_te ? localItem.anniversaries.pho_te.locationName : "Chưa cập nhật"}</strong>.............<span>ngày: <strong>${localItem.anniversaries.pho_te ? localItem.anniversaries.pho_te.dateView : "Chưa cập nhật"}</strong></span><br>
+                Chịu chức Linh mục tại: <strong>${localItem.anniversaries.linh_muc ? localItem.anniversaries.linh_muc.locationName : "Chưa cập nhật"}</strong>.............<span>ngày: <strong>${localItem.anniversaries.linh_muc ? localItem.anniversaries.linh_muc.dateView : "Chưa cập nhật"}</strong></span><br>
+                do Đức Giám mục : <strong>${localItem.anniversaries.linh_muc ? localItem.anniversaries.linh_muc.description : "Chưa cập nhật"}</strong><br>
+                Linh mục gốc Giáo phận (được tính từ ngày chịu chức Phó tế): <strong>Phú Cường</strong><br>
+                Gia nhập hàng giáo sỹ Giáo phận Phú Cường ngày: <strong>10-10-1987</strong><br>
+                Gia nhập vĩnh viễn Giáo phận: <strong>Phú Cường</strong><br>
+                Số ${localItem.identityCardTypeView ? localItem.identityCardTypeView : "Chưa cập nhật"}: <strong>${localItem.identityCardNumber ? localItem.identityCardNumber : "Chưa cập nhật"}</strong>
+                .............cấp ngày: <strong>${localItem.identityCardIssueDateView ? localItem.identityCardIssueDateView : "Chưa cập nhật"}</strong>
+                .............nơi cấp: <strong>${localItem.identityCardIssuePlace ? localItem.identityCardIssuePlace : "Chưa cập nhật"}</strong></span>
+                </p>
+
+                <p style="line-height: 3;"><span style="font-family: &quot;times new roman&quot;, times, serif; font-size: 16px;"><strong style="font-family: &quot;times new roman&quot;, times, serif; font-size: 18px;">Từ khi chịu chức linh mục đã làm gì? ở đâu?</strong></span></p>
+
+    ${getHtmlAppointments(appointments)}
+        
+        <p><strong>Ghi chú</strong> <em>(dành riêng cho Giám mục):</em></p>
+        <p style="line-height: 1.4;">
+            <em>..................................................................................................................................................................................................................................................................................................................................................................................................................................</em>
+        </p>
+        <p style="line-height: 1.4;">Linh mục qua đời
+            lúc:.................................ngày:...............................................................................................
+        </p>
+        <p style="line-height: 1.4;">
+            tại..........................................................................................................................................................................
+        </p>
+    
+    </body>
+    
+    </html>
+    `
+}
+
+export function getHtmlAppointments(appointments: any) {
+    let trAppointments = [];
+    if (appointments && appointments.length > 0) {
+        let index = 1;
+        for (let it of appointments) {
+            trAppointments.push(`
+            <tr style="text-align: center;">
+            <td style="border-top:none;border-left:
+none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;border-left:solid windowtext 1.0pt;">${index}
+            </td>
+            <td style="border-top:none;border-left:
+none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;">${it.positionView}</td>
+            <td style="border-top:none;border-left:
+none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;">${it.entityName}</td>
+            <td style="border-top:none;border-left:
+none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;">${it.fromDateView ? it.fromDateView : ""}</td>
+
+            <td style="border-top:none;border-left:
+none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;">${it.toDateView ? it.toDateView : ""}</td>
         </tr>
-        <tr>
-            <td style="width: 20%;">1</td>
-            <td style="width: 20%;">Chánh xứ</td>
-            <td style="width: 20%;">Minh Thạnh</td>
-            <td style="width: 20%;">19/05/2001</td>
-            <td style="width: 20%;">01/02/2012</td>
-        </tr>
-    </tbody>
-</table>
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><strong><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;">Ghi chú</span></strong><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"> <em>(dành riêng cho Giám mục)</em>:</span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"><span>.........................................................................................................................................................</span></span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"><span>.........................................................................................................................................................</span></span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"><span>.........................................................................................................................................................</span></span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;">Linh mục qua đời
-        lúc: <span>............................... </span><span>&nbsp;</span>ngày:</span><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"><span>..........................................................................</span></span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;">tại:...................................................................................................................................................</span></p>
-
-<p class="MsoNormal" style="margin: 0in; font-size: 16px; font-family: VNI-Times;"><span style="font-size: 19px; font-family: &quot;Times New Roman&quot;, serif;"><span>........................................................................................................................................................</span></span></p>
-</div>
-`
+            `)
+            index++;
+        }
+        return `<table style="border-collapse:collapse;width: 100%;">
+        <tbody>
+            <tr>
+                <td style="width: 12.6294%; text-align: center;border:solid windowtext 1.0pt;
+    padding:0in 5.4pt 0in 5.4pt;height:5.65pt"><strong>STT</strong></td>
+                <td style="width: 18.8406%; text-align: center;border:solid windowtext 1.0pt;
+    padding:0in 5.4pt 0in 5.4pt;height:5.65pt"><strong>CHỨC VỤ</strong></td>
+                <td style="width: 19.6687%; text-align: center;border:solid windowtext 1.0pt;
+    padding:0in 5.4pt 0in 5.4pt;height:5.65pt"><strong>ĐỊA ĐIỂM</strong></td>
+                <td style="width: 21.7391%; text-align: center;border:solid windowtext 1.0pt;
+    padding:0in 5.4pt 0in 5.4pt;height:5.65pt"><strong>THỜI GIAN ĐẾN</strong></td>
+                <td style="width: 27.0186%; text-align: center;border:solid windowtext 1.0pt;
+    padding:0in 5.4pt 0in 5.4pt;height:5.65pt"><strong>THỜI GIAN ĐI</strong></td>
+            </tr>
+           ${trAppointments.join()}
+        </tbody>
+    </table>`
+    }
+    return ''
+}

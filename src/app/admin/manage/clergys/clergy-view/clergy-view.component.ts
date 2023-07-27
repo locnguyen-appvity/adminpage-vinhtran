@@ -6,7 +6,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
-import { dataExport } from './data-export';
+import { getHtmlExport } from './data-export';
 import { saveAs } from 'file-saver';
 import { asBlob } from 'html-docx-js-typescript';
 
@@ -24,7 +24,6 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	public arrAppointments: any[] = [];
 	public arrAnniversaries: any[] = [];
 	public positionList: any[] = [];
-
 	constructor(
 		private service: SharedService,
 		public sharedService: SharedPropertyService,
@@ -36,7 +35,6 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getClergy();
-			this.getAnniversaries(this.ID);
 		}
 
 	}
@@ -146,8 +144,42 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	}
 
 	async onDownload() {
-		const blob = await asBlob(dataExport);
-		saveAs(blob, 'example.docx');
+		if(this.dataProcessing){
+			return;
+		}
+		let options = {
+			filter: `clergyID eq ${this.ID}`,
+			sort: 'effectiveDate desc'
+		}
+		this.arrAppointments = [];
+		this.dataProcessing = true;
+		this.service.getAppointments(options).pipe(take(1)).subscribe(async (res: any) => {
+			this.dataProcessing = false;
+			let appointments = [];
+			if (res && res.value && res.value.length > 0) {
+				for (let item of res.value) {
+					item.statusView = this.sharedService.getClergyStatus(item.status);
+					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, 'code');
+					if (item && item.fromDate) {
+						item._fromDate = this.sharedService.convertDateStringToMomentUTC_0(item.fromDate);
+						item.fromDateView = item._fromDate.format('DD/MM/YYYY');
+					}
+					if (item && item.toDate) {
+						item._toDate = this.sharedService.convertDateStringToMomentUTC_0(item.toDate);
+						item.toDateView = item._toDate.format('DD/MM/YYYY');
+					}
+					if (item && item.effectiveDate) {
+						item._effectiveDate = this.sharedService.convertDateStringToMomentUTC_0(item.effectiveDate);
+						item.effectiveDateView = item._effectiveDate.format('DD/MM/YYYY');
+					}
+				}
+				appointments = res.value;
+			}
+			let dataExport = getHtmlExport(this.localItem, appointments);
+			const blob = await asBlob(dataExport, { margins: { top: 900, left: 900, right: 900, bottom: 900 } });
+			saveAs(blob, `${this.localItem.displayName} ${this.localItem.name}.docx`);
+		})
+
 	}
 
 
@@ -223,6 +255,8 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
+					this.localItem.anniversaries = {};
+					this.getAnniversaries(this.ID);
 					this.localItem.dateOfBirthView = "Chưa cập nhật";
 					this.localItem.identityCardTypeView = this.sharedService.getIdentityCardTypeName(this.localItem.identityCardType);
 					this.localItem.identityCardIssueDateView = "Chưa cập nhật";
@@ -273,13 +307,18 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			this.dataProcessing = false;
 			if (res && res.value && res.value.length > 0) {
 				for (let item of res.value) {
+					item.dateView = "Chưa cập nhật";
 					if (item.date) {
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
 					}
+					if(this.isNullOrEmpty(item.locationName)){
+						item.locationName = "Chưa cập nhật";
+					}
 					if ((item.type == 'pho_te' || item.type == 'linh_muc' || item.type == 'baptize' || item.type == 'confirmation') && !this.isNullOrEmpty(item.description)) {
 						item.descriptionView = `bới: ${item.description}`
 					}
+					this.localItem.anniversaries[item.type] = item;
 				}
 				this.arrAnniversaries = res.value;
 			}
