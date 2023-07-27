@@ -52,13 +52,23 @@
                     }
                 }
             }
-            .tit-maxim{
+            .tit-maxim {
                 border: 4px solid rgb(5, 9, 207);
                 display: inline-block;
+                // position: relative;
                 margin: 20px auto;
                 padding: 15px 70px;
                 font-size: 2.2rem;
                 border-radius: 35px;
+                // mat-icon {
+                //     position: absolute;
+                //     top: 6px;
+                //     // transform: rotate(-191deg);
+                //     left: 20px;
+                //     height: 32px !important;
+                //     width: 32px !important;
+                //     color: #b3b2b2c4;
+                // }
             }
         }
     }

@@ -153,7 +153,7 @@ export class SharedPropertyService {
             case 'duong_nhiem':
                 return 'approved-label'
             case 'man_nhiem':
-                return 'rejected-label'
+                return 'end-label'
             case 'cho_thuyen_chuyen':
                 return 'pending-label pending-label--appointment'
             case 'cho_xac_nhan':

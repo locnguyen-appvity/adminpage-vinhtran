@@ -146,16 +146,6 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	}
 
 	async onDownload() {
-		const htmlString = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-</head>
-<body>
-  ${dataExport}
-</body>
-</html>`
 		const blob = await asBlob(dataExport);
 		saveAs(blob, 'example.docx');
 	}

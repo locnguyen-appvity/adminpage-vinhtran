@@ -38,8 +38,8 @@
                     </div>
                 </div>
                 <div class="mrt-24 full-width" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="24">
-                    <button mat-raised-button color="primary" (click)="onDownload()">Tải Xuống</button>
-                    <button mat-raised-button color="primary">Tải Xuống</button>
+                    <button mat-raised-button color="primary" (click)="onDownload()">Download CV</button>
+                    <button mat-raised-button color="primary">Download Celebret</button>
                 </div>
             </div>
         </div>
@@ -83,8 +83,9 @@
                 </div>
             </div>
             <div fxLayoutAlign="center center">
-                <h4 *ngIf="localItem?.parable?.length > 0" class="tit-maxim">
-                    {{localItem?.parable}}
+                <h4 *ngIf="localItem?.parable?.length > 0" class="tit-maxim" fxLayout="row"  fxLayoutAlign="center center">
+                    <!-- <mat-icon svgIcon="icon_quote"></mat-icon> -->
+                    <span>"{{localItem?.parable}}"</span>
                 </h4>
             </div>
             <div fxLayoutAlign="start center" class="full-width">
