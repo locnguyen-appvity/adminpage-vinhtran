@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
@@ -35,6 +35,18 @@ export class SharedService {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * downloadFileAsBlob
+	 
+	* download file in 360Aware or Exxon
+	* @returns Observable<any>
+	*/
+	downloadFileAsBlob(url: string): Observable<any> {
+		let headers = new HttpHeaders();
+		headers = headers.set('Content-Type', 'application/octet-stream');
+		return this.service.http.get(url, { headers: headers, observe: 'response', responseType: 'blob' });
 	}
 
 	getRootEndPointAuth() {

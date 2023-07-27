@@ -56,7 +56,7 @@
                     <mat-nav-list *ngIf="!noData">
                         <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="0" maxBufferPx="0" class="list-viewport"
                             [ngClass]="{'list-viewport-no-data': noData ? true : false}">
-                            <mat-list-item *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
+                            <mat-list-item class="clergys" *cdkVirtualFor="let data of arrData; trackBy: trackByFn;"
                                 (click)="onChangeData(data)">
                                 <!-- <mat-icon mat-list-icon [ngClass]="data.statusClass" [matTooltip]="data.statusTooltip"
                                     [svgIcon]="data.statusIcon"></mat-icon> -->
