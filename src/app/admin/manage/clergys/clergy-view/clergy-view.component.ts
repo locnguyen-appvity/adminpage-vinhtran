@@ -9,7 +9,15 @@ import { LinqService } from 'src/app/shared/linq.service';
 import { getHtmlExport } from './data-export';
 import { saveAs } from 'file-saver';
 import { asBlob } from 'html-docx-js-typescript';
+import { HttpClient } from '@angular/common/http';
+import Docxtemplater from 'docxtemplater';
+import PizZipUtils from 'pizzip/utils/index.js';
+import PizZip from 'pizzip';
+import { DomSanitizer } from '@angular/platform-browser';
 
+function loadFile(url, callback) {
+	PizZipUtils.getBinaryContent(url, callback);
+}
 @Component({
 	selector: 'app-clergy-view',
 	templateUrl: './clergy-view.component.html',
@@ -29,7 +37,9 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
 		public router: Router,
-		public activeRoute: ActivatedRoute
+		public activeRoute: ActivatedRoute,
+		private httpClient: HttpClient,
+		private sanitizer: DomSanitizer
 	) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
@@ -144,7 +154,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	}
 
 	async onDownload() {
-		if(this.dataProcessing){
+		if (this.dataProcessing) {
 			return;
 		}
 		let options = {
@@ -175,9 +185,76 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 				}
 				appointments = res.value;
 			}
-			let dataExport = getHtmlExport(this.localItem, appointments);
-			const blob = await asBlob(dataExport, { margins: { top: 900, left: 900, right: 900, bottom: 900 } });
-			saveAs(blob, `${this.localItem.displayName} ${this.localItem.name}.docx`);
+			// let dataExport = getHtmlExport(this.localItem, appointments);
+			// const blob = await asBlob(dataExport, { margins: { top: 900, left: 900, right: 900, bottom: 900 } });
+			// saveAs(blob, `${this.localItem.displayName} ${this.localItem.name}.docx`);
+			let localItem = this.localItem;
+			let seft = this;
+			loadFile(
+				'/assets/user.docx',
+				function (error: Error | null, content: string) {
+					if (error) {
+						throw error;
+					}
+					const zip = new PizZip(content);
+					const doc = new Docxtemplater(zip, {
+						paragraphLoop: true,
+						linebreaks: true,
+					});
+					doc.setData({
+						pictureUrl: localItem.pictureUrl ? localItem.pictureUrl : "",
+						displayName: localItem.displayName ? localItem.displayName : "Chưa cập nhật",
+						name: localItem.name ? localItem.name : "Chưa cập nhật",
+						stName: localItem.stName ? localItem.stName : "Chưa cập nhật",
+						parable: localItem.parable ? localItem.parable : "Chưa cập nhật",
+						dateOfBirthView: localItem.dateOfBirthView ? localItem.dateOfBirthView : "Chưa cập nhật",
+						placeOfBirth: localItem.placeOfBirth ? localItem.placeOfBirth : "Chưa cập nhật",
+						orgName: localItem.orgName ? localItem.orgName : "Chưa cập nhật",
+						diocesName: localItem.diocesName ? localItem.diocesName : "Giáo Phận Phú Cường",
+						fatherName: localItem.fatherName ? localItem.fatherName : "Chưa cập nhật",
+						motherName : localItem.motherName ? localItem.motherName : "Chưa cập nhật"
+					});
+					try {
+						// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+						doc.render();
+					} catch (error) {
+						// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
+						function replaceErrors(key, value) {
+							if (value instanceof Error) {
+								return Object.getOwnPropertyNames(value).reduce(function (
+									error,
+									key
+								) {
+									error[key] = value[key];
+									return error;
+								},
+									{});
+							}
+							return value;
+						}
+						console.log(JSON.stringify({ error: error }, replaceErrors));
+
+						if (error.properties && error.properties.errors instanceof Array) {
+							const errorMessages = error.properties.errors
+								.map(function (error) {
+									return error.properties.explanation;
+								})
+								.join('\n');
+							console.log('errorMessages', errorMessages);
+							// errorMessages is a humanly readable message looking like this :
+							// 'The tag beginning with "foobar" is unopened'
+						}
+						throw error;
+					}
+					const out = doc.getZip().generate({
+						type: 'blob',
+						mimeType:
+							'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+					});
+					// Output the document using Data-URI
+					saveAs(out, `${seft.localItem.displayName} ${seft.localItem.name}.docx`);
+				}
+			);
 		})
 
 	}
@@ -312,7 +389,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 						item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 						item.dateView = this.sharedService.formatDate(item._date);
 					}
-					if(this.isNullOrEmpty(item.locationName)){
+					if (this.isNullOrEmpty(item.locationName)) {
 						item.locationName = "Chưa cập nhật";
 					}
 					if ((item.type == 'pho_te' || item.type == 'linh_muc' || item.type == 'baptize' || item.type == 'confirmation') && !this.isNullOrEmpty(item.description)) {

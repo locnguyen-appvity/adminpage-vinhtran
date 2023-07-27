@@ -3,9 +3,8 @@ export function getHtmlExport(localItem: any, appointments: any) {
     <html>
     
     <head>
-        <meta http-equiv=Content-Type content="text/html; charset=utf-8">
-        <meta name=Generator content="Microsoft Word 15 (filtered)">
-        <title>GIÁO PHẬN PHÚ CƯỜNG</title>
+    <meta charset="UTF-8">
+    <title>GIÁO PHẬN PHÚ CƯỜNG</title>
     
     </head>
     
@@ -42,7 +41,7 @@ export function getHtmlExport(localItem: any, appointments: any) {
                 <span>Họ và tên: <strong>${localItem.name ? localItem.name : "Chưa cập nhật"}</strong></span><br>
                 <span>Sinh ngày: <strong>${localItem.dateOfBirthView ? localItem.dateOfBirthView : "Chưa cập nhật"}</strong></span><br>
                 <span>Tại: <strong>${localItem.placeOfBirth ? localItem.placeOfBirth : "Chưa cập nhật"}</strong></span><br>
-                <span><span>Giáo xứ : <strong>${localItem.orgName ? localItem.orgName : "Chưa cập nhật"}</strong></span>.............<span>Gáo phận: <strong>Phú Cường</strong></span></span><br>
+                <span><span>Giáo xứ : <strong>${localItem.orgName ? localItem.orgName : "Chưa cập nhật"}</strong></span>.............<span>Gáo phận: <strong>diocesName Phú Cường</strong></span></span><br>
                 <span>Tên thánh, họ và tên cha: <strong>${localItem.fatherName ? localItem.fatherName : "Chưa cập nhật"}</strong></span><br>
                 <span>Tên thánh, họ và tên mẹ: <strong>${localItem.motherName ? localItem.motherName : "Chưa cập nhật"}</strong></span><br>
                 <span><span>Rửa tội tại giáo xứ: <strong>${localItem.anniversaries.baptize ? localItem.anniversaries.baptize.locationName : "Chưa cập nhật"}</strong></span>.............<span>ngày: <strong>${localItem.anniversaries.baptize ? localItem.anniversaries.baptize.dateView : "Chưa cập nhật"}</strong></span></span><br>
