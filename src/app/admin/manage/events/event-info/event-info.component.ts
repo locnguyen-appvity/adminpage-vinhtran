@@ -35,6 +35,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public eventType: string = "ngay_ky_niem";
 	public localItem: any;
 	public arrLocations: any[] = [];
+	public arrSaints: any[] = [];
 	public typeEvents: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -76,6 +77,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			}
 		})
 		this.getOrganizations();
+		this.getSaints();
 		this.typeEvents = ANNIVERSARIES.filter(it => !it.hasAuto);
 	}
 
@@ -84,6 +86,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			id: item ? item.id : '',
 			name: [item ? item.name : '', Validators.required],
 			day: [item ? item.day : '', Validators.required],
+			stName: item ? item.description : '',
 			date: item ? item._date : '',
 			type: [item ? item.type : this.eventType, Validators.required],
 			description: item ? item.description : '',
@@ -92,6 +95,23 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			locationType: item ? item.locationType : (this.entityType == 'organization' ? 'organization' : ''),
 			locationName: item ? item.locationName : (this.entityType == 'organization' ? this.entityName : ''),
 		});
+	}
+
+	getSaints() {
+		let options = {
+			filter: "status eq 'active'"
+		}
+		this.service.getSaints(options).pipe(take(1)).subscribe((res: any) => {
+			let items = [];
+			if (res && res.value && res.value.length > 0) {
+				items = res.value;
+				for (let item of items) {
+					item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+				}
+			}
+			this.arrSaints = items;
+
+		})
 	}
 
 	getOrganizations() {
@@ -115,12 +135,19 @@ export class EventInfoComponent extends SimpleBaseComponent {
 				this.dataItemGroup.get("locationType").setValue("");
 			}
 		}
+		else if (target == "stName") {
+			this.dataItemGroup.get("description").setValue(event);
+		}
 	}
 
 	valueChangeSelect(item: any, target: string) {
 		if (target == "locationName") {
 			this.dataItemGroup.get("locationID").setValue(item.id);
 			this.dataItemGroup.get("locationType").setValue(item.type);
+		}
+		else if (target == "stName") {
+			this.dataItemGroup.get("description").setValue(item.name);
+			this.dataItemGroup.get("day").setValue(item.anniversary);
 		}
 	}
 
@@ -130,7 +157,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
-		let dataJSON:any = {
+		let dataJSON: any = {
 			"entityID": this.entityID,
 			"entityType": this.entityType,
 			"name": this.dataItemGroup.get('name').value,
@@ -144,7 +171,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		}
 		if (this.localItem && this.localItem.id) {
 			this.dataProcessing = true;
-			if(!this.localItem.hasAuto){
+			if (!this.localItem.hasAuto) {
 				dataJSON.type = valueForm.type;
 			}
 			this.service.updateAnniversary(this.localItem.id, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({

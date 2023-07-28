@@ -315,7 +315,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					ngay_dai_chung_vien: anniversaries.bigSeminary ? anniversaries.bigSeminary.dateView : "Chưa cập nhật",
 					pho_te: anniversaries.pho_te ? anniversaries.pho_te.dateView : "Chưa cập nhật",
 					ngay_pho_te: anniversaries.pho_te ? anniversaries.pho_te.dateView : "Chưa cập nhật",
-					chiu_chuc:anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
+					chiu_chuc: anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
 					ngay_chiu_chuc: anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
 					duc_giam_muc: anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
 					identityCardTypeView: localItem.identityCardTypeView ? localItem.identityCardTypeView : "Chưa cập nhật",
@@ -323,8 +323,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					identityCardIssueDateView: localItem.identityCardIssueDateView ? localItem.identityCardIssueDateView : "Chưa cập nhật",
 					identityCardIssuePlace: localItem.identityCardIssuePlace ? localItem.identityCardIssuePlace : "Chưa cập nhật",
 					tableData: trAppointments
-				})
-					.then(function () {
+				}).then(function () {
 						// doc.setData();
 						try {
 							// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)

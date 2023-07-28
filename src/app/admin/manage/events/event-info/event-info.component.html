@@ -26,7 +26,12 @@
             </div>
             <mat-form-field *ngIf="dataItemGroup?.value?.type == 'saint'" appearance="outline" class="full-width">
                 <mat-label>Thánh Bổn Mạng</mat-label>
-                <input matInput formControlName="description" autocomplete="off">
+                <se-autocomplete-simple [required]="false" [formControlName]="'stName'"
+                (onChangeValue)="onChangeValue($event,'stName')" [mode]="'emit-change'"
+                    (onSelectItem)="valueChangeSelect($event,'stName')" [optgroup]="false"
+                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
+                    [autocomplete]="true" [items]="arrSaints">
+                </se-autocomplete-simple>
             </mat-form-field>
             <div fxLayout="row wrap">
                 <div fxFlex.gt-xs="50" fxFlex="100">
