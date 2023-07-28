@@ -68,6 +68,22 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		return item;
 	}
 
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(name), tolower('${quick}')) or contains(tolower(code), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
 	getDataItems() {
 		this.spinerLoading = true;
 		let options = {

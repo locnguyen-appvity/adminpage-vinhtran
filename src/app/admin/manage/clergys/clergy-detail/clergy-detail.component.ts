@@ -346,6 +346,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			name: valueForm.name,
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
+			code: this.sharedService.getLinkOfName(valueForm.name, ' '),
 			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			belongOrgId: valueForm.level == 'tu_dong' ? valueForm.belongOrgId : null,
 			type: valueForm.type,

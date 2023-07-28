@@ -11,6 +11,7 @@ import Docxtemplater from 'docxtemplater';
 import ImageModule from 'docxtemplater-image-module-free';
 import PizZipUtils from 'pizzip/utils/index.js';
 import PizZip from 'pizzip';
+import { DomSanitizer } from '@angular/platform-browser';
 
 function loadFile(url, callback) {
 	PizZipUtils.getBinaryContent(url, callback);
@@ -35,6 +36,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
 		public router: Router,
+		private sanitizer: DomSanitizer,
 		public activeRoute: ActivatedRoute
 	) {
 		super(sharedService);
@@ -237,8 +239,9 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		let localItem = this.localItem;
 		let anniversaries = this.anniversaries;
 		let seft = this;
+		let url = './assets/user.docx';
 		loadFile(
-			'/assets/user.docx',
+			url,
 			function (error: Error | null, content: string) {
 				if (error) {
 					throw error;

@@ -18,13 +18,34 @@ export class PositionsComponent extends ListItemBaseComponent {
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
-		super(sharedService,snackbar);
+		super(sharedService, snackbar);
+		this.searchKey = 'name';
 		this.getDataItems();
 	}
 
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(name), tolower('${quick}')) or contains(tolower(code), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
 	getDataItems() {
+		let options = {
+			filter: this.getFilter(),
+			sort: 'name asc'
+		}
 		this.spinerLoading = true;
-		this.service.getPositions().pipe(take(1)).subscribe((res: any) => {
+		this.service.getPositions(options).pipe(take(1)).subscribe((res: any) => {
 			this.spinerLoading = false;
 			this.arrData = [];
 			if (res && res.value && res.value.length > 0) {

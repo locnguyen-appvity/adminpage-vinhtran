@@ -136,7 +136,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					for (let item of res.value) {
-						if(!this.isNullOrEmpty(item.abbreviation)){
+						if (!this.isNullOrEmpty(item.abbreviation)) {
 							item.name = item.abbreviation;
 						}
 					}
@@ -169,6 +169,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
+			code: this.sharedService.getLinkOfName(valueForm.name, ' '),
 			belongOrgId: valueForm.level == 'tu_dong' ? valueForm.belongOrgId : null,
 			type: valueForm.type,
 			level: valueForm.level
