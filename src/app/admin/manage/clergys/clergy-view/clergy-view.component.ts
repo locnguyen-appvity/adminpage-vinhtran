@@ -235,6 +235,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 
 	saveWord(appointments: any) {
 		let localItem = this.localItem;
+		let anniversaries = this.anniversaries;
 		let seft = this;
 		loadFile(
 			'/assets/user.docx',
@@ -304,19 +305,19 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					diocesName: localItem.diocesName ? localItem.diocesName : "Giáo Phận Phú Cường",
 					fatherName: localItem.fatherName ? localItem.fatherName : "Chưa cập nhật",
 					motherName: localItem.motherName ? localItem.motherName : "Chưa cập nhật",
-					noi_rua_toi: localItem.noi_rua_toi ? localItem.noi_rua_toi : "Chưa cập nhật",
-					ngay_rua_toi: localItem.ngay_rua_toi ? localItem.ngay_rua_toi : "Chưa cập nhật",
-					noi_them_suc: localItem.noi_them_suc ? localItem.noi_them_suc : "Chưa cập nhật",
-					ngay_them_suc: localItem.ngay_them_suc ? localItem.noi_rua_toi : "Chưa cập nhật",
-					tieu_chung_vien: localItem.tieu_chung_vien ? localItem.tieu_chung_vien : "Chưa cập nhật",
-					ngay_tieu_chung_vien: localItem.ngay_tieu_chung_vien ? localItem.ngay_tieu_chung_vien : "Chưa cập nhật",
-					dai_chung_vien: localItem.dai_chung_vien ? localItem.dai_chung_vien : "Chưa cập nhật",
-					ngay_dai_chung_vien: localItem.ngay_dai_chung_vien ? localItem.ngay_dai_chung_vien : "Chưa cập nhật",
-					pho_te: localItem.pho_te ? localItem.pho_te : "Chưa cập nhật",
-					ngay_pho_te: localItem.ngay_pho_te ? localItem.ngay_pho_te : "Chưa cập nhật",
-					chiu_chuc: localItem.chiu_chuc ? localItem.chiu_chuc : "Chưa cập nhật",
-					ngay_chiu_chuc: localItem.ngay_chiu_chuc ? localItem.ngay_chiu_chuc : "Chưa cập nhật",
-					duc_giam_muc: localItem.duc_giam_muc ? localItem.duc_giam_muc : "Chưa cập nhật",
+					noi_rua_toi: anniversaries.baptize ? anniversaries.baptize.locationName : "Chưa cập nhật",
+					ngay_rua_toi: anniversaries.baptize ? anniversaries.baptize.dateView : "Chưa cập nhật",
+					noi_them_suc: anniversaries.confirmation ? anniversaries.confirmation.locationName : "Chưa cập nhật",
+					ngay_them_suc: anniversaries.anniversaries ? anniversaries.anniversaries.dateView : "Chưa cập nhật",
+					tieu_chung_vien: anniversaries.smallSeminary ? anniversaries.smallSeminary.locationName : "Chưa cập nhật",
+					ngay_tieu_chung_vien: anniversaries.smallSeminary ? anniversaries.smallSeminary.dateView : "Chưa cập nhật",
+					dai_chung_vien: anniversaries.bigSeminary ? anniversaries.bigSeminary.dateView : "Chưa cập nhật",
+					ngay_dai_chung_vien: anniversaries.bigSeminary ? anniversaries.bigSeminary.dateView : "Chưa cập nhật",
+					pho_te: anniversaries.pho_te ? anniversaries.pho_te.dateView : "Chưa cập nhật",
+					ngay_pho_te: anniversaries.pho_te ? anniversaries.pho_te.dateView : "Chưa cập nhật",
+					chiu_chuc:anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
+					ngay_chiu_chuc: anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
+					duc_giam_muc: anniversaries.linh_muc ? anniversaries.linh_muc.dateView : "Chưa cập nhật",
 					identityCardTypeView: localItem.identityCardTypeView ? localItem.identityCardTypeView : "Chưa cập nhật",
 					identityCardNumber: localItem.identityCardNumber ? localItem.identityCardNumber : "Chưa cập nhật",
 					identityCardIssueDateView: localItem.identityCardIssueDateView ? localItem.identityCardIssueDateView : "Chưa cập nhật",
