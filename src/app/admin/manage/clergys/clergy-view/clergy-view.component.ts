@@ -169,11 +169,10 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			filter: `clergyID eq ${this.ID}`,
 			sort: 'effectiveDate desc'
 		}
-		this.arrAppointments = [];
+		let arrAppointments = [];
 		this.dataProcessing = true;
 		this.service.getAppointments(options).pipe(take(1)).subscribe(async (res: any) => {
 			this.dataProcessing = false;
-			let appointments = [];
 			if (res && res.value && res.value.length > 0) {
 				for (let item of res.value) {
 					item.statusView = this.sharedService.getClergyStatus(item.status);
@@ -191,25 +190,9 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 						item.effectiveDateView = item._effectiveDate.format('DD/MM/YYYY');
 					}
 				}
-				appointments = res.value;
+				arrAppointments = res.value;
 			}
-
-			if (!this.isNullOrEmpty(this.localItem.pictureUrl)) {
-				this.service.downloadFileAsBlob(this.localItem.pictureUrl).pipe(map((res: any) => res.body), takeUntil(this.unsubscribe)).subscribe({
-					next: (blob: Blob) => {
-						this.blobToBase64(blob).pipe(map((res: any) => res.body), takeUntil(this.unsubscribe)).subscribe({
-							next: (base64: any) => {
-								this.localItem._pictureUrl = `data:image/jpeg;base64,${base64}`;
-								this.localItem._blob = blob;
-								this.saveWord();
-							}
-						})
-					}
-				});
-			}
-			else {
-				this.saveWord();
-			}
+			this.saveWord(arrAppointments);
 		})
 
 	}
@@ -250,7 +233,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		return bytes.buffer;
 	}
 
-	saveWord() {
+	saveWord(appointments: any) {
 		let localItem = this.localItem;
 		let seft = this;
 		loadFile(
@@ -259,28 +242,57 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 				if (error) {
 					throw error;
 				}
-				const imageOptions = {
-					centered: false,
-					fileType: "docx",
-					getImage(url) {
-						return loadFile(
-							url,
-							function (error: Error | null, value: string) {
-								return value;
-							})
-					},
-					getSize() {
-						return [150, 150];
-					},
-				};
-				var imageModule = new ImageModule(imageOptions);
+				var opts: any = {}
+				opts.centered = false;
+				opts.getImage = function async(tagValue, tagName) {
+					return new Promise(function (resolve, reject) {
+						PizZipUtils.getBinaryContent(tagValue, function (error, value) {
+							if (error) {
+								return reject(error);
+							}
+							return resolve(value);
+						});
+					});
+				}
+				opts.getSize = function (img, tagValue, tagName) {
+					// FOR FIXED SIZE IMAGE :
+					// return [150, 150];
+
+					// FOR IMAGE COMING FROM A URL (IF TAGVALUE IS AN ADRESS) :
+					// To use this feature, you have to be using docxtemplater async
+					// (if you are calling setData(), you are not using async).
+					return new Promise(function (resolve, reject) {
+						var image = new Image();
+						image.src = localItem.pictureUrl;
+						image.onload = function () {
+							resolve([120, (image.height / image.width) * 120]);
+						};
+						image.onerror = function (e) {
+							console.log('img, tagValue, tagName : ', img, tagValue, tagName);
+							alert("An error occured while loading " + tagValue);
+							reject(e);
+						}
+					});
+				}
+				let imageModule = new ImageModule(opts);
 				const zip = new PizZip(content);
 				const doc = new Docxtemplater(zip, {
 					paragraphLoop: true,
 					linebreaks: true,
 					modules: [imageModule]
-				});
-				doc.setData({
+				})
+				// new Docxtemplater(zip, {
+				// 	paragraphLoop: true,
+				// 	linebreaks: true,
+				// 	modules: [imageModule]
+				// });
+				let trAppointments = [];
+				let index = 1;
+				for (let it of appointments) {
+					trAppointments.push({ index: index, positionView: it.positionView, entityName: it.entityName, fromDateView: it.fromDateView, toDateView: it.toDateView });
+					index++;
+				}
+				doc.resolveData({
 					pictureUrl: localItem.pictureUrl ? localItem.pictureUrl : "",
 					displayName: localItem.displayName ? localItem.displayName : "Chưa cập nhật",
 					name: localItem.name ? localItem.name : "Chưa cập nhật",
@@ -291,47 +303,68 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					orgName: localItem.orgName ? localItem.orgName : "Chưa cập nhật",
 					diocesName: localItem.diocesName ? localItem.diocesName : "Giáo Phận Phú Cường",
 					fatherName: localItem.fatherName ? localItem.fatherName : "Chưa cập nhật",
-					motherName: localItem.motherName ? localItem.motherName : "Chưa cập nhật"
-				});
-				try {
-					// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-					doc.render();
-				} catch (error) {
-					// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
-					function replaceErrors(key, value) {
-						if (value instanceof Error) {
-							return Object.getOwnPropertyNames(value).reduce(function (
-								error,
-								key
-							) {
-								error[key] = value[key];
-								return error;
-							},
-								{});
-						}
-						return value;
-					}
-					console.log(JSON.stringify({ error: error }, replaceErrors));
+					motherName: localItem.motherName ? localItem.motherName : "Chưa cập nhật",
+					noi_rua_toi: localItem.noi_rua_toi ? localItem.noi_rua_toi : "Chưa cập nhật",
+					ngay_rua_toi: localItem.ngay_rua_toi ? localItem.ngay_rua_toi : "Chưa cập nhật",
+					noi_them_suc: localItem.noi_them_suc ? localItem.noi_them_suc : "Chưa cập nhật",
+					ngay_them_suc: localItem.ngay_them_suc ? localItem.noi_rua_toi : "Chưa cập nhật",
+					tieu_chung_vien: localItem.tieu_chung_vien ? localItem.tieu_chung_vien : "Chưa cập nhật",
+					ngay_tieu_chung_vien: localItem.ngay_tieu_chung_vien ? localItem.ngay_tieu_chung_vien : "Chưa cập nhật",
+					dai_chung_vien: localItem.dai_chung_vien ? localItem.dai_chung_vien : "Chưa cập nhật",
+					ngay_dai_chung_vien: localItem.ngay_dai_chung_vien ? localItem.ngay_dai_chung_vien : "Chưa cập nhật",
+					pho_te: localItem.pho_te ? localItem.pho_te : "Chưa cập nhật",
+					ngay_pho_te: localItem.ngay_pho_te ? localItem.ngay_pho_te : "Chưa cập nhật",
+					chiu_chuc: localItem.chiu_chuc ? localItem.chiu_chuc : "Chưa cập nhật",
+					ngay_chiu_chuc: localItem.ngay_chiu_chuc ? localItem.ngay_chiu_chuc : "Chưa cập nhật",
+					duc_giam_muc: localItem.duc_giam_muc ? localItem.duc_giam_muc : "Chưa cập nhật",
+					identityCardTypeView: localItem.identityCardTypeView ? localItem.identityCardTypeView : "Chưa cập nhật",
+					identityCardNumber: localItem.identityCardNumber ? localItem.identityCardNumber : "Chưa cập nhật",
+					identityCardIssueDateView: localItem.identityCardIssueDateView ? localItem.identityCardIssueDateView : "Chưa cập nhật",
+					identityCardIssuePlace: localItem.identityCardIssuePlace ? localItem.identityCardIssuePlace : "Chưa cập nhật",
+					tableData: trAppointments
+				})
+					.then(function () {
+						// doc.setData();
+						try {
+							// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+							doc.render();
+						} catch (error) {
+							// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
+							function replaceErrors(key, value) {
+								if (value instanceof Error) {
+									return Object.getOwnPropertyNames(value).reduce(function (
+										error,
+										key
+									) {
+										error[key] = value[key];
+										return error;
+									},
+										{});
+								}
+								return value;
+							}
+							console.log(JSON.stringify({ error: error }, replaceErrors));
 
-					if (error.properties && error.properties.errors instanceof Array) {
-						const errorMessages = error.properties.errors
-							.map(function (error) {
-								return error.properties.explanation;
-							})
-							.join('\n');
-						console.log('errorMessages', errorMessages);
-						// errorMessages is a humanly readable message looking like this :
-						// 'The tag beginning with "foobar" is unopened'
-					}
-					throw error;
-				}
-				const out = doc.getZip().generate({
-					type: 'blob',
-					mimeType:
-						'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-				});
-				// Output the document using Data-URI
-				saveAs(out, `${seft.localItem.displayName} ${seft.localItem.name}.docx`);
+							if (error.properties && error.properties.errors instanceof Array) {
+								const errorMessages = error.properties.errors
+									.map(function (error) {
+										return error.properties.explanation;
+									})
+									.join('\n');
+								console.log('errorMessages', errorMessages);
+								// errorMessages is a humanly readable message looking like this :
+								// 'The tag beginning with "foobar" is unopened'
+							}
+							throw error;
+						}
+						const out = doc.getZip().generate({
+							type: 'blob',
+							mimeType:
+								'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+						});
+						// Output the document using Data-URI
+						saveAs(out, `${seft.localItem.displayName} ${seft.localItem.name}.docx`);
+					})
 
 			}
 		);

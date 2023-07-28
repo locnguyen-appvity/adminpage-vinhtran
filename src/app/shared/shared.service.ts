@@ -46,7 +46,7 @@ export class SharedService {
 	downloadFileAsBlob(url: string): Observable<any> {
 		let headers = new HttpHeaders();
 		headers = headers.set('Content-Type', 'application/octet-stream');
-		return this.service.http.get(url, { headers: headers, observe: 'response', responseType: 'blob' });
+		return this.service.http.get(url, { headers: headers, observe: 'response', responseType: 'arraybuffer' });
 	}
 
 	getRootEndPointAuth() {
