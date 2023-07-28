@@ -290,7 +290,13 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 				let trAppointments = [];
 				let index = 1;
 				for (let it of appointments) {
-					trAppointments.push({ index: index, positionView: it.positionView, entityName: it.entityName, fromDateView: it.fromDateView, toDateView: it.toDateView });
+					trAppointments.push({
+						index: index,
+						positionView: it.positionView ? it.positionView : "Chưa cập nhật",
+						entityName: it.entityName ? it.entityName : "Chưa cập nhật",
+						fromDateView: it.fromDateView ? it.fromDateView : "",
+						toDateView: it.toDateView ? it.toDateView : ""
+					});
 					index++;
 				}
 				doc.resolveData({
@@ -322,49 +328,49 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 					identityCardNumber: localItem.identityCardNumber ? localItem.identityCardNumber : "Chưa cập nhật",
 					identityCardIssueDateView: localItem.identityCardIssueDateView ? localItem.identityCardIssueDateView : "Chưa cập nhật",
 					identityCardIssuePlace: localItem.identityCardIssuePlace ? localItem.identityCardIssuePlace : "Chưa cập nhật",
-					tableData: trAppointments
+					trAppointments: trAppointments
 				}).then(function () {
-						// doc.setData();
-						try {
-							// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-							doc.render();
-						} catch (error) {
-							// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
-							function replaceErrors(key, value) {
-								if (value instanceof Error) {
-									return Object.getOwnPropertyNames(value).reduce(function (
-										error,
-										key
-									) {
-										error[key] = value[key];
-										return error;
-									},
-										{});
-								}
-								return value;
+					// doc.setData();
+					try {
+						// render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+						doc.render();
+					} catch (error) {
+						// The error thrown here contains additional information when logged with JSON.stringify (it contains a properties object containing all suberrors).
+						function replaceErrors(key, value) {
+							if (value instanceof Error) {
+								return Object.getOwnPropertyNames(value).reduce(function (
+									error,
+									key
+								) {
+									error[key] = value[key];
+									return error;
+								},
+									{});
 							}
-							console.log(JSON.stringify({ error: error }, replaceErrors));
-
-							if (error.properties && error.properties.errors instanceof Array) {
-								const errorMessages = error.properties.errors
-									.map(function (error) {
-										return error.properties.explanation;
-									})
-									.join('\n');
-								console.log('errorMessages', errorMessages);
-								// errorMessages is a humanly readable message looking like this :
-								// 'The tag beginning with "foobar" is unopened'
-							}
-							throw error;
+							return value;
 						}
-						const out = doc.getZip().generate({
-							type: 'blob',
-							mimeType:
-								'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-						});
-						// Output the document using Data-URI
-						saveAs(out, `${seft.localItem.displayName} ${seft.localItem.name}.docx`);
-					})
+						console.log(JSON.stringify({ error: error }, replaceErrors));
+
+						if (error.properties && error.properties.errors instanceof Array) {
+							const errorMessages = error.properties.errors
+								.map(function (error) {
+									return error.properties.explanation;
+								})
+								.join('\n');
+							console.log('errorMessages', errorMessages);
+							// errorMessages is a humanly readable message looking like this :
+							// 'The tag beginning with "foobar" is unopened'
+						}
+						throw error;
+					}
+					const out = doc.getZip().generate({
+						type: 'blob',
+						mimeType:
+							'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+					});
+					// Output the document using Data-URI
+					saveAs(out, `${seft.localItem.displayName} ${seft.localItem.name}.docx`);
+				})
 
 			}
 		);
