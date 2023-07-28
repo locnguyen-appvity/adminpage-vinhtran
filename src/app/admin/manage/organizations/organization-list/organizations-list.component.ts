@@ -63,7 +63,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(tolower(name), tolower('${quick}'))`;
+			let quickSearch = `contains(tolower(name), tolower('${quick}')) or contains(tolower(latin), tolower('${quick}'))`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
@@ -81,7 +81,8 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 	getDataGridApplications() {
 		let options = {
-			filter: this.getFilter()
+			filter: this.getFilter(),
+			sort: 'created desc'
 		}
 		if (this.subscription['getOrganizations']) {
 			this.subscription['getOrganizations'].unsubscribe();

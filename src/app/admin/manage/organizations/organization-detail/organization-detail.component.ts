@@ -324,6 +324,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
 			name: valueForm.name,
+			latin: this.sharedService.getLinkOfName(valueForm.name, ' '),
 			status: status,
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,

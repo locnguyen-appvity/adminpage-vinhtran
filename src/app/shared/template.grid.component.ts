@@ -322,8 +322,8 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 	}
 
 	applyPageSizeChanged() {
-		this.dataSettings[this.dataSettingsKey]['page-size-changed'] = this.pageSize;
-		this.onSaveDataSettings();
+		// this.dataSettings[this.dataSettingsKey]['page-size-changed'] = this.pageSize;
+		// this.onSaveDataSettings();
 	}
 
 	getDataSettings() {

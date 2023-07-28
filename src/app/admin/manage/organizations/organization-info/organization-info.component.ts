@@ -207,8 +207,8 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 	onSaveItem() {
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
-			stName: valueForm.stName,
 			name: valueForm.name,
+			latin: this.sharedService.getLinkOfName(valueForm.name, ' '),
 			status: valueForm.status ? 'publish' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
