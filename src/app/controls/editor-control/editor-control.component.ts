@@ -42,7 +42,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
-				name: 'insertImage',
+				name: 'insertImageCustom',
 				tooltip: 'Insert image',
 				icon: 'image'
 			},
@@ -62,7 +62,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
-				name: 'insertImage',
+				name: 'insertImageCustom',
 				tooltip: 'Insert image',
 				icon: 'image'
 			},
@@ -82,7 +82,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
-				name: 'insertImage',
+				name: 'insertImageCustom',
 				tooltip: 'Insert image',
 				icon: 'image'
 			},
@@ -102,7 +102,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
-				name: 'insertImage',
+				name: 'insertImageCustom',
 				tooltip: 'Insert image',
 				icon: 'image'
 			},
@@ -123,8 +123,6 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 		super(sharedService);
 		this.editorFormCtrl = new FormControl("");
 		this.editorFormCtrl.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-			console.log(this.editorCtrl.getContent());
-			
 			if (this.sharedService.isChangedValue(this.currentValue, valueForm)) {
 				this.currentValue = valueForm;
 				this.onChange(valueForm);
@@ -180,8 +178,8 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 					this.unsubscribe['add-custom-button'].complete();
 					this.unsubscribe['add-custom-button'].unsubscribe();
 					let seft = this;
-					if (this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertImage')) {
-						fromEvent(this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertImage'), 'click').pipe(takeUntil(this.unsubscribe)).subscribe({
+					if (this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertImageCustom')) {
+						fromEvent(this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertImageCustom'), 'click').pipe(takeUntil(this.unsubscribe)).subscribe({
 							next: (evt: any) => {
 								seft.openDialogImg();
 							}
@@ -189,7 +187,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 					}
 					if (this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertFile')) {
 						this.editorCtrl.elementRef.nativeElement.querySelector('.jodit-ui-group__insertFile').addEventListener('click', function () {
-							seft.openDialogImg();
+							// seft.openDialogImg();
 						});
 					}
 				}
@@ -212,7 +210,15 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 		let dialogRef = this.dialog.open(DialogSelectedImgsComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
-				this.onInsertHTML('vvvvvvvvvvvvvvvvvv');
+				// console.log("DialogSelectedImgsComponent..........",res);êww
+				// return;
+				if(res && res.data && res.data.length > 0){
+					let imgs = []
+					for(let file of res.data){
+						imgs.push(`<p style="text-align: center;"><img src="${file.imageUrl}" width="400" style="max-width: 80%;"></p>`)
+					}
+					this.onInsertHTML(imgs.join('<br>'));
+				}
 			}
 		})
 	}

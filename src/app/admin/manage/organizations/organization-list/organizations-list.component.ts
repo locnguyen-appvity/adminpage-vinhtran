@@ -80,9 +80,12 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	getDataGridApplications() {
+		this.skip = this.currentPageIndex * this.pageSize;
 		let options = {
 			filter: this.getFilter(),
-			sort: 'created desc'
+			sort: 'created desc',
+			skip: this.skip,
+			top: this.pageSize
 		}
 		if (this.subscription['getOrganizations']) {
 			this.subscription['getOrganizations'].unsubscribe();

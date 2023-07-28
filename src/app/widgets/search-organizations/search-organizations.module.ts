@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgxMaskModule } from 'ngx-mask';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
 	declarations: [
@@ -17,7 +18,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 			validation: false,
 		}),
 		MatDialogModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		ScrollingModule
 	],
 	exports: [SearchOrganizationsComponent]
 })

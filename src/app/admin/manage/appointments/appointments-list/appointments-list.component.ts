@@ -292,7 +292,10 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	getDataGridApplications() {
+		this.skip = this.currentPageIndex * this.pageSize;
 		let options = {
+			skip: this.skip,
+			top: this.pageSize,
 			filter: this.getFilter(),
 			sort: 'effectiveDate desc'
 		}

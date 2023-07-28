@@ -22,6 +22,11 @@ export class AuthenIntercept implements HttpInterceptor {
 		if (url.startsWith("http://gppc_client")) {
 			return next.handle(req.clone());
 		}
+		else if (url.includes("/public/storage/images")) {
+			console.log("imageUrl.......", url);
+
+			return next.handle(req.clone());
+		}
 		else if (url.includes("/v1/api/public")) {
 			return next.handle(req.clone({
 				// headers: req.headers
@@ -39,7 +44,7 @@ export class AuthenIntercept implements HttpInterceptor {
 		if (accessToken == null || accessToken == undefined) {
 			// console.log('url...', url)
 			// console.log("Access Token is empty");
-			return EMPTY;``
+			return EMPTY; ``
 		}
 		const authReq = req.clone({
 			headers: req.headers

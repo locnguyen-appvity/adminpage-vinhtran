@@ -1,5 +1,5 @@
 <div class="container-xl">
-    <div class="result-list-container">
+    <div class="result-list-container-search">
         <ng-container *ngIf="loading; else temfData">
             <mat-spinner [diameter]="24"></mat-spinner>
         </ng-container>
@@ -7,29 +7,39 @@
             <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
                 <p>Không có dữ liệu.</p>
             </div>
-            <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
-                <div class="item-result" [ngClass]="{'last-item': last}">
-                    <div fxLayout="row" fxLayoutAlign="start center">
-                        <div class="thumb">
-                            <img [src]="item.pictureUrl" />
-                        </div>
-                        <div class="info" fxFlex="50">
-                            <h2>{{item.name}}</h2>
-                            <h3>Địa chỉ: {{item.address}}</h3>
-                            <h3>Email: {{item.email}}</h3>
-                        </div>
-                        <div class="contact">
-                            <h3>Điện thoại: {{item.phoneNumber}}</h3>
-                            <h3>Dân số: {{item.population}}</h3>
-                            <h3>Số tín hữu: {{item.memberCount}}</h3>
-                        </div>
-                        <div class="times" fxLayout="column" fxLayoutAlign="start start">
-                            <h2 class="title">Giờ lễ</h2>
-                            <h3 *ngFor="let masses of item.arrMasseses">{{masses.name}}: {{masses.time}}</h3>
+            <cdk-virtual-scroll-viewport itemSize="125" minBufferPx="0" maxBufferPx="0" class="list-viewport"
+                [ngClass]="{'list-viewport-no-data': dataLists?.length == 0 ? true : false}">
+                <ng-container *cdkVirtualFor="let item of dataLists; let i=index;">
+                    <div class="item-result" [ngClass]="{'last-item':i==dataLists?.length -1}">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <div class="thumb">
+                                <img [src]="item.pictureUrl" />
+                            </div>
+                            <div class="info" fxFlex="50">
+                                <h2>{{item.name}}</h2>
+                                <h3>Địa chỉ: {{item.address}}</h3>
+                                <h3>Email: {{item.email}}</h3>
+                            </div>
+                            <div class="contact">
+                                <h3>Điện thoại: {{item.phoneNumber}}</h3>
+                                <h3>Dân số: {{item.population}}</h3>
+                                <h3>Số tín hữu: {{item.memberCount}}</h3>
+                            </div>
+                            <div class="times" fxLayout="column" fxLayoutAlign="start start">
+                                <h2 class="title">Giờ lễ</h2>
+                                <ng-container *ngIf="item?.arrMasseses?.length > 0">
+                                    <h3 *ngFor="let masses of item.arrMasseses"><strong>{{masses.name}}: </strong>{{masses.data}}
+                                        <!-- <span style="padding-left: 30px;display: block;">+ {{masses.data}}</span> -->
+                                    </h3>
+                                </ng-container>
+                                <ng-container *ngIf="item?.arrMasseses?.length == 0">
+                                    Chưa cập nhật
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
+                </ng-container>
+            </cdk-virtual-scroll-viewport>
         </ng-template>
     </div>
 </div>

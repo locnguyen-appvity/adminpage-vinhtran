@@ -50,8 +50,8 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	public total: number = 0;
 	public skip: number = 0;
 	public currentPageIndex: number = 0;
-	public pageSize: number = 4;
-	public pageSizeOptions: any[] = [4, 8, 12];
+	public pageSize: number = 8;
+	public pageSizeOptions: any[] = [8, 12, 24];
 	public txtSearch: FormControl;
 	public searchValue: string = "";
 
@@ -111,14 +111,31 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 		}
 	}
 
+	pageChanged($event: any) {
+		if (this.currentPageIndex !== $event.pageIndex) {
+			this.currentPageIndex = $event.pageIndex;
+			this.pageSize = $event.pageSize;
+			this.dataSources = [];
+			this.getFiles();
+			return;
+		}
+		this.pageSize = $event.pageSize;
+		this.dataSources = [];
+		this.getFiles();
+	}
+
 	getAllFiles() {
 		this.dataProcessing = true;
+		this.skip = this.currentPageIndex * this.pageSize;
 		let options = {
+			skip: this.skip,
+			top: this.pageSize,
 			filter: this.getFilter()
 		}
 		this.loadingFile = true;
 		this.service.getFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
+				this.total = res.total || 0;
 				let items = [];
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
@@ -141,13 +158,24 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 
 	getEntityFileListForEntity() {
 		this.dataProcessing = true;
+		this.skip = this.currentPageIndex * this.pageSize;
+		let filter = this.getFilter();
+		if (this.isNullOrEmpty(filter)) {
+			filter = `folderId eq ${this.id}`;
+		}
+		else {
+			filter = `(${filter}) and folderId eq ${this.id}`
+		}
 		let options = {
-			filter: this.getFilter()
+			skip: this.skip,
+			top: this.pageSize,
+			filter: filter
 		}
 		this.loadingFile = true;
-		this.service.getFolderFiles(this.id, options).pipe(takeUntil(this.unsubscribe)).subscribe({
+		this.service.getFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let items = [];
+				this.total = res.total || 0;
 				if (res && res.value && res.value.length > 0) {
 					items = res.value;
 					for (let item of items) {

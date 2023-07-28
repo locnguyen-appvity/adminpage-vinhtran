@@ -1,5 +1,5 @@
 <div class="container-xl">
-    <div class="result-list-container result-list-container--clergys">
+    <div class="result-list-container-search">
         <ng-container *ngIf="loading; else temfData">
             <div fxLayout="row" fxLayoutAlign="center center" class="full-height">
                 <mat-spinner [diameter]="40"></mat-spinner>
@@ -9,36 +9,41 @@
             <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
                 <p>Không có dữ liệu.</p>
             </div>
-            <ng-template ngFor let-item let-last="last" [ngForOf]="dataLists">
-                <div class="item-result" [ngClass]="{'last-item': last}">
-                    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="12">
-                        <div class="thumb thumb--clergys">
-                            <img [src]="item.pictureUrl" />
-                        </div>
-                        <div class="info mrl-24" fxFlex="50" fxLayoutGap="12" fxLayout="column">
-                            <h2 class="name">{{item.name}}</h2>
-                            <h3>Năm Sinh: {{item.dateOfBirthView}}</h3>
-                            <h3>Chịu chức: {{item?.linh_muc}}</h3>
-                        </div>
-                        <div class="times" fxFlex="50">
-                            <h2 class="title mrb-12">HOẠT ĐỘNG SỨC VỤ</h2>
-                            <div *ngIf="item?.arrAppointments?.length > 0" class="content" fxLayout="column"
-                                fxLayoutAlign="center start" fxLayoutGap="12">
-                                <span>Hiện đang <span *ngIf="item?.arrAppointments[0]?.position !== 'huu' && item?.arrAppointments[0]?.position !== 'nghi_duong'">làm </span> <strong>{{item?.arrAppointments[0]?.positionView}}</strong></span>
-                                <span>tại <strong>{{item?.arrAppointments[0]?.entityName}}</strong></span>
+            <cdk-virtual-scroll-viewport itemSize="125" minBufferPx="0" maxBufferPx="0" class="list-viewport"
+                [ngClass]="{'list-viewport-no-data': dataLists?.length == 0 ? true : false}">
+                <ng-container *cdkVirtualFor="let item of dataLists; let i=index;">
+                    <div class="item-result" [ngClass]="{'last-item': i==dataLists?.length -1}">
+                        <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="12">
+                            <div class="thumb thumb--clergys">
+                                <img [src]="item.pictureUrl" />
                             </div>
-                            <div *ngIf="item?.arrAppointments?.length > 1" class="full-width" fxLayout="column"
-                                fxLayoutAlign="start start">
-                                <span>Các chức vụ khác</span>
-                                <ng-template ngFor let-data let-i="index" [ngForOf]="item?.arrAppointments">
-                                    <span *ngIf="i!=0"><strong>{{data?.positionView}}</strong> tại
-                                        <strong>{{data?.entityName}}</strong></span>
-                                </ng-template>
+                            <div class="info mrl-24" fxFlex="50" fxLayoutGap="12" fxLayout="column">
+                                <h2 class="name">{{item.name}}</h2>
+                                <h3>Năm Sinh: {{item.dateOfBirthView}}</h3>
+                                <h3>Chịu chức: {{item?.linh_muc}}</h3>
+                            </div>
+                            <div class="times" fxFlex="50">
+                                <h2 class="title mrb-12">HOẠT ĐỘNG SỨC VỤ</h2>
+                                <div *ngIf="item?.arrAppointments?.length > 0" class="content" fxLayout="column"
+                                    fxLayoutAlign="center start" fxLayoutGap="12">
+                                    <span>Hiện đang <span
+                                            *ngIf="item?.arrAppointments[0]?.position !== 'huu' && item?.arrAppointments[0]?.position !== 'nghi_duong'">làm
+                                        </span> <strong>{{item?.arrAppointments[0]?.positionView}}</strong></span>
+                                    <span>tại <strong>{{item?.arrAppointments[0]?.entityName}}</strong></span>
+                                </div>
+                                <div *ngIf="item?.arrAppointments?.length > 1" class="full-width" fxLayout="column"
+                                    fxLayoutAlign="start start">
+                                    <span>Các chức vụ khác</span>
+                                    <ng-template ngFor let-data let-i="index" [ngForOf]="item?.arrAppointments">
+                                        <span *ngIf="i!=0"><strong>{{data?.positionView}}</strong> tại
+                                            <strong>{{data?.entityName}}</strong></span>
+                                    </ng-template>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
+                </ng-container>
+            </cdk-virtual-scroll-viewport>
         </ng-template>
     </div>
 </div>

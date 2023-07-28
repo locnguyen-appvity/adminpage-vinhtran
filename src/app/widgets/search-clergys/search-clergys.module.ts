@@ -3,6 +3,7 @@ import { SearchClergysComponent } from './search-clergys.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
 	declarations: [
@@ -11,7 +12,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 	imports: [
 		SharedModule,
 		MatButtonModule,
-		MatProgressSpinnerModule
+		MatProgressSpinnerModule,
+		ScrollingModule
 	],
 	exports: [SearchClergysComponent]
 })

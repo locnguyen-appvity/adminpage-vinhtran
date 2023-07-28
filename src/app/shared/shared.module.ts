@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedConfig, SHARED_CONFIG } from './config';
 import { SimpleBaseComponent } from './simple.base.component';
-import {LayoutModule} from '@angular/cdk/layout';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { InitialsPipe } from './initials.pipe';
@@ -16,7 +16,8 @@ import { ToastSnackbarAppModule } from '../controls/toast-snackbar/toast-snackba
 import { SafeHtmlPipe } from './safehtml.pipe';
 import { PureWordsMaskDirective } from './input-validate.directive';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NumberOnlyDirective } from './number.only.directive';
+import { NumberOnlyDirective } from './number.only.directive';;
+import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
 @NgModule({
 	imports: [
 		CommonModule,
@@ -34,7 +35,8 @@ import { NumberOnlyDirective } from './number.only.directive';
 		TruncatePipe,
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
-		NumberOnlyDirective
+		NumberOnlyDirective,
+		ImageUrlTransformerPipe
 	],
 	exports: [
 		RouterModule,
@@ -52,9 +54,9 @@ import { NumberOnlyDirective } from './number.only.directive';
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
 		MatSnackBarModule,
-		NumberOnlyDirective
+		NumberOnlyDirective,
+		ImageUrlTransformerPipe
 	],
-	
 })
 
 export class SharedModule {

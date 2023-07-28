@@ -38,7 +38,8 @@
             </div>
             <ng-template [ngIf]="!noFilesUploads">
                 <mat-grid-list [cols]="5" rowHeight="1:1" role="listitem">
-                    <mat-grid-tile *ngFor="let file of dataSources; let i=index; trackBy: trackByFn" (click)="selectedItem(file)">
+                    <mat-grid-tile *ngFor="let file of dataSources; let i=index; trackBy: trackByFn"
+                        (click)="selectedItem(file)">
                         <img *ngIf="file?.imageUrl?.length > 0" class="img-container" [src]="file?.imageUrl" />
                         <!-- <img (load)="loadValueFile(file)" style="display: none;"
                         src="./assets/icons/ic_image_48dp.svg"> -->
@@ -73,5 +74,8 @@
                 </mat-grid-list>
             </ng-template>
         </ng-template>
+        <mat-paginator #paginator [length]="total" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+            (page)="pageChanged($event)" showFirstLastButtons>
+        </mat-paginator>
     </mat-card-content>
 </mat-card>

@@ -53,7 +53,10 @@ export class SearchControlComponent extends SimpleBaseComponent {
 
 	getGroups() {
 		this.arrGroups = [];
-		this.service.getGroups().pipe(take(1)).subscribe({
+		let options = {
+			filter: "type eq 'giao_hat'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
