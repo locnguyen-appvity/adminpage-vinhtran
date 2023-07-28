@@ -1,9 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs';
-import { PageService } from 'src/app/page/page.service';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
+import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
@@ -24,7 +25,8 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 
 	constructor(public sharedService: SharedPropertyService,
 		public linq: LinqService,
-		public service: PageService) {
+		private sanitizer: DomSanitizer,
+		public service: SharedService) {
 		super(sharedService);
 
 	}
@@ -73,26 +75,34 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		this.loading = true;
 		this.dataLists = [];
 		// this.cacheDataLists = [];
-		this.service.searchClergies(options).pipe(take(1)).subscribe({
+		this.service.getClergies(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				if (res && res.data && res.data.length > 0) {
+				if (res && res.value && res.value.length > 0) {
 					// this.cacheDataLists = res.data;
-					this.dataLists = this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
+					this.dataLists = res.value//this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
 					for (let item of this.dataLists) {
 						item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
 						else {
-							item.pictureUrl = "../../assets/images/banner.jpg"
+							item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg');
 						}
 						item.name = `${this.sharedService.getClergyLevel(item)} ${item.stName} ${item.name}`;
 						if (item.dateOfBirth) {
 							item._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(item.dateOfBirth);
 							item.dateOfBirthView = this.sharedService.formatDate(item._dateOfBirth);
 						}
-						this.getAppointments(item);
-						this.getAnniversaries(item);
+						item.clergyID = item.id;
+						// this.getAppointments(item);
+						item.appointment = {
+							position: "Chưa cập nhật",
+							entityName: "Chưa cập nhật"
+						};
+						item.stateGetAppointments = '';
+						item.stateGetAnniversaries = '';
+						item.anniversaries = [];
+						// this.getAnniversaries(item);
 					}
 				}
 				this.loading = false;
@@ -143,35 +153,38 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		})
 	}
 
-	getAppointments(item: any) {
-		let options = {
-			filter: `clergyID eq ${item.clergyID} and status eq 'duong_nhiem'`
-		}
-		item.arrAppointments = [];
-		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
-			if (res && res.value && res.value.length > 0) {
-				for (let item of res.value) {
-					item.order = this.sharedService.getOrderPositionClergy(item.position);
-					item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, 'code');
-				}
-				item.arrAppointments = this.linq.Enumerable().From(res.value).OrderBy("$.order").ToArray();
-			}
-		})
-	}
+	// getAppointments(item: any) {
+	// 	let options = {
+	// 		filter: `clergyID eq ${item.clergyID} and status eq 'duong_nhiem'`
+	// 	}
+	// 	item.arrAppointments = [];
+	// 	this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+	// 		if (res && res.value && res.value.length > 0) {
+	// 			for (let item of res.value) {
+	// 				item.order = this.sharedService.getOrderPositionClergy(item.position);
+	// 				item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, 'code');
+	// 			}
+	// 			item.arrAppointments = this.linq.Enumerable().From(res.value).OrderBy("$.order").ToArray();
+	// 		}
+	// 	})
+	// }
 
-	getAnniversaries(item: any) {
-		let options = {
-			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and type eq 'linh_muc'`,
-			top: 1
-		}
-		item['linh_muc'] = "Chưa cập nhật";
-		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
-			if (res && res.value && res.value.length > 0) {
-				if (res.value[0].date) {
-					res.value[0]._date = this.sharedService.convertDateStringToMomentUTC_0(res.value[0].date);
-					item['linh_muc'] = this.sharedService.formatDate(res.value[0]._date);
-				}
-			}
-		})
-	}
+	// getAnniversaries(item: any) {
+	// 	let options = {
+	// 		filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and (type eq 'linh_muc' or type eq 'pho_te' or type eq 'giam_muc')`,
+	// 		top: 1
+	// 	}
+	// 	item.anniversaries = [];
+	// 	this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {
+	// 		if (res && res.value && res.value.length > 0) {
+	// 			for(let it of res.value){
+	// 				it._date = this.sharedService.convertDateStringToMomentUTC_0(it.date);
+	// 				item.anniversaries.push({
+	// 					name: it.name,
+	// 					dateView: this.sharedService.formatDate(it._date)
+	// 				})
+	// 			}
+	// 		}
+	// 	})
+	// }
 }

@@ -7,7 +7,7 @@
             <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
                 <p>Không có dữ liệu.</p>
             </div>
-            <cdk-virtual-scroll-viewport itemSize="125" minBufferPx="0" maxBufferPx="0" class="list-viewport"
+            <cdk-virtual-scroll-viewport itemSize="198" minBufferPx="0" maxBufferPx="0" class="list-viewport"
                 [ngClass]="{'list-viewport-no-data': dataLists?.length == 0 ? true : false}">
                 <ng-container *cdkVirtualFor="let item of dataLists; let i=index;">
                     <div class="item-result" [ngClass]="{'last-item':i==dataLists?.length -1}">
@@ -17,20 +17,20 @@
                             </div>
                             <div class="info" fxFlex="50">
                                 <h2>{{item.name}}</h2>
-                                <h3>Địa chỉ: {{item.address}}</h3>
-                                <h3>Email: {{item.email}}</h3>
+                                <h4>Địa chỉ: {{item.address}}</h4>
+                                <h4>Email: {{item.email}}</h4>
                             </div>
                             <div class="contact">
-                                <h3>Điện thoại: {{item.phoneNumber}}</h3>
-                                <h3>Dân số: {{item.population}}</h3>
-                                <h3>Số tín hữu: {{item.memberCount}}</h3>
+                                <h4 class="mtr-32">Điện thoại: {{item.phoneNumber}}</h4>
+                                <h4>Dân số: {{item.population}}</h4>
+                                <h4>Số tín hữu: {{item.memberCount}}</h4>
                             </div>
                             <div class="times" fxLayout="column" fxLayoutAlign="start start">
-                                <h2 class="title">Giờ lễ</h2>
+                                <h3 class="title mtr-32">Giờ lễ</h3>
                                 <ng-container *ngIf="item?.arrMasseses?.length > 0">
-                                    <h3 *ngFor="let masses of item.arrMasseses"><strong>{{masses.name}}: </strong>{{masses.data}}
+                                    <h4 *ngFor="let masses of item.arrMasseses"><strong>{{masses.name}}: </strong>{{masses.data}}
                                         <!-- <span style="padding-left: 30px;display: block;">+ {{masses.data}}</span> -->
-                                    </h3>
+                                    </h4>
                                 </ng-container>
                                 <ng-container *ngIf="item?.arrMasseses?.length == 0">
                                     Chưa cập nhật
