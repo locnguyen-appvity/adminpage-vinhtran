@@ -8,7 +8,11 @@ const routes: Routes = [
 		path: '', component: AdminComponent,
 		children: [
 			{
-			  path: 'categories-list/:type',
+			  path: 'categories-post/:type',
+			  loadChildren: () => import('./categories/categories-list/categories-list.module').then(m => m.CategoriesListModule)
+			},
+			{
+			  path: 'categories-media/:type',
 			  loadChildren: () => import('./categories/categories-list/categories-list.module').then(m => m.CategoriesListModule)
 			},
 			{

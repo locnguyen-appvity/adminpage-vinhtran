@@ -63,14 +63,16 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 		public activeRoute: ActivatedRoute,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
+		
+		this.type = this.activeRoute.parent.snapshot.paramMap.get("type");
 		this.noData = false;
 		this.getDataItems();
+
 
 		this.treeFlattener = new MatTreeFlattener(this.transformer, this._getLevel,
 			this._isExpandable, this._getChildren);
 		this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
 		this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-		this.type = this.activeRoute.parent.snapshot.paramMap.get("type");
 		// this.rebuildTreeForData(TREE_DATA);
 		// database.dataChange.subscribe(data => this.rebuildTreeForData(data));
 	}
@@ -79,7 +81,8 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 		let config: any = {};
 		config.data = {
 			target: 'add',
-			parentItem: item
+			parentItem: item,
+			type: this.type
 		};
 		this.openFormDialog(config, 'add');
 	}
@@ -87,7 +90,8 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 	onAddItem() {
 		let config: any = {};
 		config.data = {
-			target: 'add'
+			target: 'add',
+			type: this.type
 		};
 		this.openFormDialog(config, 'add');
 	}
@@ -167,6 +171,13 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 				if (res && res.value && res.value.length > 0) {
 					this.noData = false;
 					this.arrData = res.value;
+					// let requests: Observable<any>[] = [];
+					// for(let item of this.arrData){
+					// 	requests.push(this.service.updateCategory(item.id,{type:"post"}));
+					// }
+					// forkJoin(requests).pipe(take(1)).subscribe({
+
+					// })
 					let tempData = this.buildTreeData(res.value);
 					// for (let i = 0; i < 5; i++) {
 					// 	tempData.push(...tempData);

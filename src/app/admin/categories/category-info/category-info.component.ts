@@ -24,6 +24,7 @@ export class CategoryInfoComponent extends SimpleBaseComponent {
     public arrCategoriesFilter: any[] = [];
     public parentItem: any;
     public localItem: any;
+    public type: string = 'post';
 
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
@@ -31,7 +32,9 @@ export class CategoryInfoComponent extends SimpleBaseComponent {
         public dialogRef: MatDialogRef<CategoryInfoComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
         super(sharedService);
-
+        if(this.dialogData.type){
+            this.type = this.dialogData.type;
+        }
         this.target = this.dialogData.target;
         if (this.target === 'edit') {
             this.title = "Sửa";
@@ -76,7 +79,7 @@ export class CategoryInfoComponent extends SimpleBaseComponent {
             link = this.localItem.link;
             parentId = this.localItem.parentId;
             level = this.localItem.level;
-            status = this.localItem.deActive == 0 ? true : false;
+            status = this.localItem.status == 'inactive' ? false : true;
         }
         else if (this.parentItem) {
             disabledParent = true;
@@ -126,9 +129,10 @@ export class CategoryInfoComponent extends SimpleBaseComponent {
         let level = this.dataItemGroup.get('level').value;
         let dataJSON = {
             name: valueForm.name,
-            // deActive: valueForm.status ? 0 : 1,
+            status: valueForm.status ? 'active' : 'inactive',
             link: valueForm.link,
             level: level,
+            type: this.type,
             parentId: level != 0 ? this.dataItemGroup.get('parentId').value : null
         }
         if (this.target == 'edit') {
