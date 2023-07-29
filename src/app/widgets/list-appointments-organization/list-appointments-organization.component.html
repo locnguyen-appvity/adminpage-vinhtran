@@ -1,0 +1,39 @@
+<div class="activity-panel" fxFlex="column" fxLayoutAlign="center center">
+    <!-- <h3 class="title">DANH SÁCH LINH MỤC</h3> -->
+    <ng-container *ngIf="activity?.length > 0">
+        <mat-list dense class="activity-list">
+            <mat-list-item *ngFor="let step of activity" class="activity-list-item">
+                <!-- <mat-icon [ngClass]="{'use-data': step?.data?.length > 0 ? true: false}" *ngIf="step?.icon"
+                        mat-list-icon [svgIcon]="step?.icon" class="activity-icon">
+                    </mat-icon> -->
+                <div [ngClass]="{'use-data': step?.data?.length > 0 ? true: false}" class="activity-icon" mat-list-icon
+                    fxLayoutAlign="center center">
+                    <span>{{step?.groupName}}</span>
+                </div>
+                <!-- <h4 mat-line [ngClass]="{'use-data': step?.data?.length > 0 ? true: false}" class="activity-action">
+                    {{step.name}}
+                </h4> -->
+                <!-- <p mat-line class="activity-name non-icon">{{step.name}}</p> -->
+                <!-- <p mat-line class="activity-date non-icon" [matTooltip]="step.value">{{step.value}}</p> -->
+                <div mat-line *ngFor="let item of step.data" class="activity-list-item-child">
+                    <mat-list-item>
+                        <h4 mat-line class="activity-action-sub">
+                            {{item.action}}
+                        </h4>
+                        <p mat-line class="activity-name-sub">{{item.clergyName}}</p>
+                        <p mat-line class="activity-date-sub">Chức vụ: {{item.positionView}} - Trạng thái:
+                            {{item.statusView}}</p>
+                        <p mat-line class="activity-date-sub"> từ ngày {{item.fromDateView}} <span
+                                *ngIf="item.status !== 'duong_nhiem'"> đến {{item.toDateView}}</span> </p>
+                        <p mat-line class="activity-app-sub"> Do {{item.appointerName}} bổ nhiệm ngày
+                            {{item.effectiveDateView}} </p>
+                    </mat-list-item>
+                </div>
+            </mat-list-item>
+        </mat-list>
+    </ng-container>
+    <ng-container *ngIf="activity?.length == 0">
+       <span>Chưa cập nhật</span>
+    </ng-container>
+
+</div>

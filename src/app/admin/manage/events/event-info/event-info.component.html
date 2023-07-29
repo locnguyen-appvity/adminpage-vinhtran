@@ -63,11 +63,11 @@
             <mat-form-field *ngIf="entityType == 'clergy' && dataItemGroup?.value?.type != 'saint'" appearance="outline"
                 class="full-width">
                 <mat-label>Vị Trí</mat-label>
-                <se-autocomplete-simple [required]="false" [formControlName]="'locationName'"
-                    (onChangeValue)="onChangeValue($event,'locationName')" [mode]="'emit-change'"
-                    (onSelectItem)="valueChangeSelect($event,'locationName')" [optgroup]="false"
-                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
-                    [autocomplete]="true" [items]="arrLocations">
+                <se-autocomplete-simple [required]="false" [formControlName]="'_locationID'"
+                    (onChangeValue)="onChangeValue($event,'_locationID')" [mode]="'emit-change'"
+                    (onSelectItem)="valueChangeSelect($event,'_locationID')" [optgroup]="true"
+                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'_id'" [keyValueEmit]="'_id'"
+                    [autocomplete]="true" [items$]="arrLocations$">
                 </se-autocomplete-simple>
             </mat-form-field>
             <mat-form-field *ngIf="entityType != 'clergy'" appearance="outline" class="full-width">

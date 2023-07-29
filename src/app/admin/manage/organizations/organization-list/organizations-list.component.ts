@@ -11,6 +11,7 @@ import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { Store } from '@ngrx/store';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-organizations-list',
@@ -28,6 +29,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		public service: SharedService,
 		public dialog: MatDialog,
 		public snackbar: MatSnackBar,
+		private sanitizer: DomSanitizer,
 		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
@@ -101,6 +103,9 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 					item.title = item.name;
 					if (item.photo) {
 						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+					}
+					else {
+						item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
 					}
 					this.updateStatus(item);
 					item.typeView = this.sharedService.updateTypeOrg(item.type);

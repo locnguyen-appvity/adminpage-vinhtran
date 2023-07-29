@@ -23,8 +23,6 @@ function loadFile(url, callback) {
 })
 export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 	public localItem: any;
-	// public levelList: any[] = LEVEL_CLERGY;
-	public groupsList: any[] = [];
 	public arrMasses: any[] = [];
 	public churchsList: any[] = [];
 	public arrAppointments: any[] = [];
@@ -163,7 +161,7 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 		// })
 	}
 
-	async onDownload() {
+	onDownload() {
 		if (this.dataProcessing) {
 			return;
 		}
@@ -381,8 +379,6 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 
 
 	getAllData() {
-		this.getGroups();
-		this.getChurchsList();
 		this.getPositions();
 	}
 
@@ -403,49 +399,6 @@ export class ClergyViewComponent extends SimpleBaseComponent implements OnInit {
 			}
 		})
 	}
-
-	getGroups() {
-		this.groupsList = [];
-		let options = {
-			select: 'id,name,type',
-			filter: "type eq 'dong_tu'"
-		}
-		this.service.getGroups(options).pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = []
-				if (res && res.value && res.value.length > 0) {
-					items.push(...res.value);
-					for (let item of items) {
-						item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`
-					}
-				}
-				this.groupsList = items;
-			}
-		})
-	}
-
-
-	getChurchsList() {
-		this.churchsList = [];
-		let options = {
-			select: 'id,name,type',
-			filter: "type eq 'giao_xu' or type eq 'giao_diem' or type eq 'giao_ho'"
-		}
-		this.service.getOrganizations(options).pipe(take(1)).subscribe({
-			next: (res: any) => {
-				let items = []
-				if (res && res.value && res.value.length > 0) {
-					for (let item of res.value) {
-						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
-					}
-					items.push(...res.value);
-				}
-				this.churchsList = items;
-			}
-		})
-	}
-
-
 
 	getClergy() {
 		this.service.getClergy(this.ID).pipe(take(1)).subscribe({

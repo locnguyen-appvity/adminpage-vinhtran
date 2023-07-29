@@ -1,0 +1,68 @@
+<div class="organization-view" fxLayoutAlign="center start">
+    <div class="organization-view-container" fxLayout="row" fxLayoutAlign="center start">
+        <div class="organization-view-container-l" fxLayout="column" fxLayoutAlign="center center" fxFlex.gt-xs="35"
+            fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+            <div class="avatar-img">
+                <img [src]="localItem?.pictureUrl" />
+            </div>
+            <div class="content mrt-24" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="6">
+                <span class="display-name">{{localItem?.displayName}}</span>
+                <!-- <span class="name">{{localItem?.name}}</span> -->
+                <div class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
+                    <span>Tước hiệu: <strong>{{localItem?.anniversary}}</strong></span>
+                    <span *ngIf="localItem?.entityName">Giáo xứ: <strong>{{localItem?.entityName}}</strong></span>
+                    <span>Giáo hạt: <strong>{{localItem?.groupName}}</strong></span>
+                    <span>Số điện thoại: <strong>{{localItem?.email}}</strong></span>
+                    <span>Email: <strong>{{localItem?.email}}</strong></span>
+                    <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
+                    <span>Dân số: <strong>{{localItem?.population}}</strong></span>
+                    <span>Giáo dân: <strong>{{localItem?.memberCount}}</strong></span>
+                </div>
+                <div class="masseses-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
+                    <span class="title">GIỜ LỄ</span>
+                    <ng-container *ngIf="localItem?.arrMasseses?.length > 0">
+                        <span
+                            *ngFor="let masses of localItem.arrMasseses"><strong>{{masses.name}}: </strong>{{masses.data}}
+                            <!-- <span style="padding-left: 30px;display: block;">+ {{masses.data}}</span> -->
+                        </span>
+                    </ng-container>
+                    <ng-container *ngIf="localItem?.arrMasseses?.length == 0">
+                        Chưa cập nhật
+                    </ng-container>
+                </div>
+                <div class="anniversaries-container mrt-24" fxLayout="column" fxLayoutAlign="start start">
+                    <span class="title">SỰ KIÊN</span>
+                    <ng-container *ngIf="arrAnniversaries?.length > 0">
+                        <div class="full-width" fxLayout="column" fxLayoutAlign="start start">
+                            <ng-template ngFor let-data let-last="last" [ngForOf]="arrAnniversaries">
+                                <div [ngClass]="{'mrb-12': !last}" class="full-width" fxLayout="column"
+                                    fxLayoutAlign="start start">
+                                    <span
+                                        style="font-size: 20px;font-weight: 500;color: rgb(0, 170, 170);"><strong>{{data?.name}}</strong></span>
+                                    <span>ngày <strong>{{data?.dateView}}</strong></span>
+                                    <!-- <span>tại <strong>{{data?.locationName}}</strong></span> -->
+                                    <span>{{data?.descriptionView}}</span>
+                                    <mat-divider class="full-width"></mat-divider>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="arrAnniversaries?.length == 0">
+                        <span class="mrb-24">Chưa cập nhật</span>
+                    </ng-container>
+                </div>
+                <div class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
+                    <span class="title">DANH SÁCH LINH MỤC</span>
+                    <se-list-appointments-organization [entityType]="entityType"
+                        [entityID]="ID"></se-list-appointments-organization>
+                </div>
+            </div>
+        </div>
+        <div class="organization-view-container-r" fxFlex.gt-xs="75" fxFlex="100">
+            <div class="content">
+                <p [innerHTML]="localItem?.content">
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -45,6 +45,9 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 		}
 	}
 
+	onViewOrg(item: any) {
+		window.open(`/#/page/${item.type}/${item.id}`, '_blank');
+	}
 	// getGroups() {
 	// 	let options = {
 	// 		filter: "type eq 'giao_hat'"

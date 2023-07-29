@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs';
+import { PageService } from 'src/app/page/page.service';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
@@ -26,7 +26,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 	constructor(public sharedService: SharedPropertyService,
 		public linq: LinqService,
 		private sanitizer: DomSanitizer,
-		public service: SharedService) {
+		public service: PageService) {
 		super(sharedService);
 
 	}
@@ -45,25 +45,31 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 	}
 
 	getClergies() {
-		let restrictions = [{
-			"key": "status",
-			"value": "duong_nhiem"
-		}];
+		let restrictions = [
+			// 	{
+			// 	"key": "status",
+			// 	"value": "duong_nhiem"
+			// }
+		];
 		if (this.data) {
 			// if (this.data.groupID && this.data.groupID != 'all') {
 			restrictions.push({
-				"key": "GroupID",
+				"key": "GroupId",
 				"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
 			})
 			// }
 			// if (this.data.position && this.data.position != 'all') {
 			restrictions.push({
-				"key": "position",
+				"key": "Position",
 				"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
 			})
 			// }
 		}
 		let options = {
+			"pageOption": {
+				"page": 1,
+				"pageSize": 100
+			},
 			"restrictions": restrictions,
 			"sorts": [
 				{
@@ -75,11 +81,11 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		this.loading = true;
 		this.dataLists = [];
 		// this.cacheDataLists = [];
-		this.service.getClergies(options).pipe(take(1)).subscribe({
+		this.service.searchClergies(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				if (res && res.value && res.value.length > 0) {
+				if (res && res.results && res.results.length > 0) {
 					// this.cacheDataLists = res.data;
-					this.dataLists = res.value//this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
+					this.dataLists = res.results//this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
 					for (let item of this.dataLists) {
 						item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
 						if (item.photo) {
@@ -93,7 +99,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 							item._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(item.dateOfBirth);
 							item.dateOfBirthView = this.sharedService.formatDate(item._dateOfBirth);
 						}
-						item.clergyID = item.id;
+						// item.clergyID = item.id;
 						// this.getAppointments(item);
 						item.appointment = {
 							position: "Chưa cập nhật",

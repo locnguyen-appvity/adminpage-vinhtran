@@ -18,6 +18,18 @@ const routes: Routes = [
 				path: 'suy-niem/:id',
 				loadChildren: () => import('../post-detail/post-detail.module').then(m => m.PostDetailModule)
 			},
+			{
+				path: 'giao_xu/:id',
+				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
+			},
+			{
+				path: 'giao_diem/:id',
+				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
+			},
+			{
+				path: 'giao_hat/:id',
+				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
+			},
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
 		]
 	}

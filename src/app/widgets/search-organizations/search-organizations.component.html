@@ -16,7 +16,7 @@
                                 <img [src]="item.pictureUrl" />
                             </div>
                             <div class="info" fxFlex.gt-xs="50" fxFlex="100">
-                                <h2>{{item.name}}</h2>
+                                <h2 class="link" (click)="onViewOrg(item)">{{item.name}}</h2>
                                 <h4>Địa chỉ: {{item.address}}</h4>
                                 <h4>Email: {{item.email}}</h4>
                             </div>
@@ -28,7 +28,8 @@
                             <div class="times" fxLayout="column" fxLayoutAlign="start start">
                                 <h3 class="title mtr-32">Giờ lễ</h3>
                                 <ng-container *ngIf="item?.arrMasseses?.length > 0">
-                                    <h4 *ngFor="let masses of item.arrMasseses"><strong>{{masses.name}}: </strong>{{masses.data}}
+                                    <h4 *ngFor="let masses of item.arrMasseses"><strong>{{masses.name}}:
+                                        </strong>{{masses.data}}
                                         <!-- <span style="padding-left: 30px;display: block;">+ {{masses.data}}</span> -->
                                     </h4>
                                 </ng-container>

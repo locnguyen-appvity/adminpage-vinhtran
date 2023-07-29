@@ -1,0 +1,65 @@
+.organization-view {
+    width: 100%;
+    .organization-view-container {
+        width: 80%;
+        padding: 1rem;
+        .organization-view-container-l {
+            background-color: rgba(66, 65, 65, 0.0588235294) !important;
+            border-radius: 24px;
+            padding: 1rem !important;
+            margin-top: 1rem !important;
+            .avatar-img {
+                width: 350px;
+                padding: auto;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+            .content {
+                .display-name {
+                    font-size: 23px;
+                    font-weight: 600;
+                    text-transform: uppercase !important;
+                    color: rgb(0, 0, 128);
+                }
+                .name {
+                    font-weight: 600;
+                    font-size: 25px;
+                }
+                .anniversaries-container {
+                    width: 100%;
+                    .title {
+                        font-weight: 600;
+                        font-size: 18px;
+                        color: rgb(0, 73, 95);
+                    }
+                }
+                .masseses-container {
+                    width: 100%;
+                    .title {
+                        font-weight: 600;
+                        font-size: 18px;
+                        color: rgb(0, 73, 95);
+                    }
+                }
+                .appointments-container {
+                    width: 100%;
+                    .title {
+                        font-weight: 600;
+                        font-size: 18px;
+                        color: rgb(0, 73, 95);
+                    }
+                }
+            }
+        }
+        .organization-view-container-r {
+            padding: 1rem !important;
+            margin-top: 1rem !important;
+            .content {
+                text-align: justify;
+            }
+        }
+    }
+}

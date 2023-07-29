@@ -2,7 +2,7 @@ import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { debounceTime, take, takeUntil } from 'rxjs';
+import { Observable, debounceTime, forkJoin, of, take, takeUntil } from 'rxjs';
 import { ANNIVERSARIES } from 'src/app/shared/data-manage';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
 import { GlobalSettings } from 'src/app/shared/global.settings';
@@ -34,7 +34,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public entityType: string = "";
 	public eventType: string = "ngay_ky_niem";
 	public localItem: any;
-	public arrLocations: any[] = [];
+	public arrLocations$: Observable<any>;
 	public arrSaints: any[] = [];
 	public typeEvents: any[] = [];
 
@@ -76,12 +76,30 @@ export class EventInfoComponent extends SimpleBaseComponent {
 				}
 			}
 		})
-		this.getOrganizations();
+		forkJoin({ organization: this.getOrganizations(), group: this.getGroups() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = [];
+				if (res && res.organization && res.organization.length > 0) {
+					items.push(...res.organization);
+				}
+				if (res && res.group && res.group.length > 0) {
+					items.push(...res.group);
+				}
+				this.arrLocations$ = of(items);
+			}
+		})
 		this.getSaints();
 		this.typeEvents = ANNIVERSARIES.filter(it => !it.hasAuto);
 	}
 
 	initialEventGroup(item: any): FormGroup {
+		let _locationID = "";
+		if (item && item.locationType && item.locationID) {
+			_locationID = `${item.locationType}_${item.locationID}`;
+		}
+		else if (this.entityType != 'clergy' && this.entityType && this.entityID) {
+			_locationID = `${this.entityType}_${this.entityID}`
+		}
 		return this.fb.group({
 			id: item ? item.id : '',
 			name: [item ? item.name : '', Validators.required],
@@ -91,9 +109,10 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			type: [item ? item.type : this.eventType, Validators.required],
 			description: item ? item.description : '',
 			content: item ? item.content : '',
-			locationID: item ? item.locationID : (this.entityType == 'organization' ? this.entityID : ''),
-			locationType: item ? item.locationType : (this.entityType == 'organization' ? 'organization' : ''),
-			locationName: item ? item.locationName : (this.entityType == 'organization' ? this.entityName : ''),
+			locationID: item ? item.locationID : (this.entityType != 'clergy' ? this.entityID : ''),
+			_locationID: _locationID,
+			locationType: item ? item.locationType : (this.entityType != 'clergy' ? 'clergy' : ''),
+			locationName: item ? item.locationName : (this.entityType != 'clergy' ? this.entityName : ''),
 		});
 	}
 
@@ -115,21 +134,49 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	}
 
 	getOrganizations() {
-		this.service.getOrganizations().pipe(take(1)).subscribe((res: any) => {
-			let items = [];
-			if (res && res.value && res.value.length > 0) {
-				items = res.value;
-				for (let item of items) {
-					item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
-				}
+		return new Observable(obs => {
+			let options = {
+				filter: "status ne 'inactive' and type ne 'ban_chuyen_mon' and type ne 'ban_muc_vu'"
 			}
-			this.arrLocations = items;
+			this.service.getOrganizations(options).pipe(take(1)).subscribe((res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+					for (let item of items) {
+						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+						item._id = `${item.type}_${item.id}`;
+						item.groupName = this.sharedService.updateTypeOrg(item.type);
+					}
+				}
+				obs.next(items);
+				obs.complete();
+			})
+		})
+	}
 
+	getGroups() {
+		return new Observable(obs => {
+			let options = {
+				filter: "status ne 'inactive'"
+			}
+			this.service.getGroups(options).pipe(take(1)).subscribe((res: any) => {
+				let items = [];
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+					for (let item of items) {
+						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+						item._id = `${item.type}_${item.id}`;
+						item.groupName = this.sharedService.updateTypeOrg(item.type);
+					}
+				}
+				obs.next(items);
+				obs.complete();
+			})
 		})
 	}
 
 	onChangeValue(event: any, target: string) {
-		if (target == "locationName") {
+		if (target == "_locationID") {
 			if (!this.isNullOrEmpty(this.dataItemGroup.get("locationID").value)) {
 				this.dataItemGroup.get("locationID").setValue("");
 				this.dataItemGroup.get("locationType").setValue("");
@@ -141,7 +188,8 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	}
 
 	valueChangeSelect(item: any, target: string) {
-		if (target == "locationName") {
+		if (target == "_locationID") {
+			this.dataItemGroup.get("locationName").setValue(item.name);
 			this.dataItemGroup.get("locationID").setValue(item.id);
 			this.dataItemGroup.get("locationType").setValue(item.type);
 		}
