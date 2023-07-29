@@ -14,6 +14,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ClergyInfoComponent } from '../clergy-info/clergy-info.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GlobalSettings } from 'src/app/shared/global.settings';
+import { CommonUtility } from 'src/app/shared/common.utility';
 
 @Component({
 	selector: 'app-clergys-list-grid',
@@ -45,11 +46,29 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		super(sharedService, linq, store, service, snackbar);
 		this.pageSize = 10;
 		this.pageSizeOptions = [10, 25, 50];
+		this.getPositions();
 		this.getDataGridAndCounterApplications();
 	}
 
 	getDataGridAndCounterApplications() {
 		this.getDataGridApplications();
+	}
+
+	getPositions() {
+		// let options = {
+		// 	filter: "type eq 'giao_xu'"
+		// }
+		this.positionList = [];
+		this.service.getPositions().pipe(take(1)).subscribe({
+			next: (res: any) => {
+				let items = []
+				if (res && res.value && res.value.length > 0) {
+					items = res.value;
+				}
+				this.positionList = items;
+				this.getDataGridAndCounterApplications();
+			}
+		})
 	}
 
 	getDataGridApplications() {
@@ -214,16 +233,22 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			return;
 		}
 		if (!this.isNullOrEmpty(item.id)) {
-			let options = {
+			let optionsAnniversaries = {
 				filter: `entityID eq ${item.id} and entityType eq 'clergy'`,
-				sort: 'date desc'
+				sort: 'date asc'
+			}
+			let optionsAppointments = {
+				filter: `clergyID  eq ${item.id} and status eq 'duong_nhiem'`,
+				sort: 'effectiveDate desc'
 			}
 			item.stateLoadExpand = 'loading'
-			this.service.getAnniversaries(options).pipe(take(1)).subscribe({
+			forkJoin({ anniversaries: this.service.getAnniversaries(optionsAnniversaries), appointments: this.service.getAppointments(optionsAppointments) }).pipe(take(1)).subscribe({
 				next: (res: any) => {
 					// this.handleDataItem(res);
-					if(res && res.value){
-						for(let it of res.value){
+					let anniversaries = [];
+					if (res && res.anniversaries.value) {
+						anniversaries = res.anniversaries.value;
+						for (let it of anniversaries) {
 							it.dateView = "Chưa cập nhật"
 							if (it.date) {
 								it._date = this.sharedService.convertDateStringToMoment(it.date, this.offset);
@@ -231,9 +256,26 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 							}
 						}
 					}
-					item.stateLoadExpand = 'loaded'
-					item.expandData.anniversaries = res.value;
+					item.expandData.anniversaries = anniversaries;
+					let appointments = [];
+					if (res && res.appointments.value) {
+						appointments = res.appointments.value;
+						for (let it of appointments) {
+							it.positionView = this.updatePosition(it.position)
+						}
+						let data = CommonUtility.getCurrentPositionClergy(appointments);
+						if (data) {
+							item.appointment = {
+								positionView: data.positionView,
+								entityName: data.entityName
+
+							}
+							appointments = appointments.filter(it => it.id != data.id);
+						}
+					}
+					item.expandData.appointments = appointments;
 					item._expand_detail = !item._expand_detail;
+					item.stateLoadExpand = 'loaded'
 
 				}
 			})
@@ -242,6 +284,16 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			item.stateLoadExpand = 'loaded'
 			item._expand_detail = !item._expand_detail;
 		}
+	}
+
+	updatePosition(position: string) {
+		if (!this.isNullOrEmpty(position)) {
+			let poss = this.sharedService.getValueAutocomplete(position, this.positionList, 'code');
+			if (poss && poss.name) {
+				return poss.name;
+			}
+		}
+		return 'Chưa xác định'
 	}
 
 

@@ -2,6 +2,7 @@ import { Directive, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { take } from 'rxjs';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SharedPropertyService } from '../shared-property.service';
+import { CommonUtility } from '../common.utility';
 
 @Directive({
 	selector: '[updatePositionClergy]'
@@ -45,7 +46,7 @@ export class UpdatePositionClergyDirective implements OnChanges {
 		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
 			item.stateGetAppointments = 'loaded';
 			if (res && res.value && res.value.length > 0) {
-				let data = this.getPosition(res.value);
+				let data = CommonUtility.getCurrentPositionClergy(res.value);
 				if (data) {
 					// for (let data of res.value) {
 					// data.order = this.sharedService.getOrderPositionClergy(data.position);
@@ -59,22 +60,4 @@ export class UpdatePositionClergyDirective implements OnChanges {
 			}
 		})
 	}
-
-	getPosition(items: any) {
-		if (items && items.length > 0) {
-			for (let item of items) {
-				if (item.position == 'chanh_xu') {
-					return item;
-				}
-			}
-			for (let item of items) {
-				if (item.position == 'pho_xu') {
-					return item;
-				}
-			}
-			return items[0];
-		}
-		return null;
-	}
-
 }

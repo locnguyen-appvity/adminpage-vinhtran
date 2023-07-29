@@ -89,7 +89,7 @@
 
                             <!-- Photo/Avatar Column -->
                             <ng-container matColumnDef="photo">
-                                <th mat-header-cell *matHeaderCellDef > Photo </th>
+                                <th mat-header-cell *matHeaderCellDef> Photo </th>
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
@@ -196,7 +196,8 @@
                                     <button mat-icon-button matTooltip="Sửa" (click)="onChangeData(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                                     </button>
-                                    <button mat-icon-button matTooltip="Xem" (click)="$event.stopPropagation();onViewDetail(element)">
+                                    <button mat-icon-button matTooltip="Xem"
+                                        (click)="$event.stopPropagation();onViewDetail(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_visibility_48dp"></mat-icon>
                                     </button>
                                     <button mat-icon-button matTooltip="Bổ nhiệm" (click)="$event.stopPropagation();">
@@ -254,47 +255,50 @@
                                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayColumns.length">
                                     <div [@detailExpand]="element?._expand_detail ? 'expanded' : 'collapsed'">
                                         <div *ngIf="element?._expand_detail" fxLayout="row"
-                                            fxLayoutAlign="space-between center" style="padding-left: 60px;padding-top: 24px;padding-bottom: 24px;" fxLayoutGap="50">
-                                            <ng-container *ngIf="element?.expandData; else nonDataExpand">
-                                                <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="50">
-                                                    <div fxLayout="column">
-                                                        <ng-template ngFor let-anniversary let-i="index" [ngForOf]="element?.expandData?.anniversaries">
-                                                                <h6 class="mrt-12" *ngIf="i < (element?.expandData?.anniversaries.length/2)">{{anniversary.name}}: <strong><span *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong> </h6>
+                                            fxLayoutAlign="space-between center"
+                                            style="padding-left: 60px;padding-top: 24px;padding-bottom: 24px;">
+                                            <ng-container
+                                                *ngIf="element?.expandData?.anniversaries.length > 0 || element?.expandData?.appointments.length > 0; else nonDataExpand">
+                                                <!-- <div fxLayout="row" fxLayoutAlign="center start"> -->
+                                                    <div fxLayout="column" fxLayoutAlign="start start" fxFlex.gt-xs="33.33" fxFlex="100">
+                                                        <ng-template ngFor let-anniversary let-i="index"
+                                                            [ngForOf]="element?.expandData?.anniversaries">
+                                                            <h6 class="mrt-12"
+                                                                *ngIf="i < (element?.expandData?.anniversaries.length/2)">
+                                                                {{anniversary.name}}: <strong><span
+                                                                        *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span
+                                                                        *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong>
+                                                            </h6>
                                                         </ng-template>
                                                     </div>
-                                                    <div fxLayout="column">
-                                                        <ng-template ngFor let-anniversary let-i="index" [ngForOf]="element?.expandData?.anniversaries">
-                                                                <h6 class="mrt-12" *ngIf="i >= (element?.expandData?.anniversaries.length/2)">{{anniversary.name}}: <strong><span *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong> </h6>
+                                                    <div fxLayout="column" fxLayoutAlign="start start" fxFlex.gt-xs="33.33" fxFlex="100">
+                                                        <ng-template ngFor let-anniversary let-i="index"
+                                                            [ngForOf]="element?.expandData?.anniversaries">
+                                                            <h6 class="mrt-12"
+                                                                *ngIf="i >= (element?.expandData?.anniversaries.length/2)">
+                                                                {{anniversary.name}}: <strong><span
+                                                                        *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span
+                                                                        *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong>
+                                                            </h6>
                                                         </ng-template>
                                                     </div>
-                                                </div>
-                                                <div fxLayout="column">
-                                                   
-                                                </div>
+                                                    <div fxLayout="column" fxLayoutAlign="start start" fxFlex.gt-xs="33.33" fxFlex="100">
+                                                        <h6 class="mrt-12" *ngIf="element?.appointment?.positionView">
+                                                            Chức vụ: <strong>{{element?.appointment?.positionView}}</strong> </h6>
+                                                        <h6 class="mrt-12" *ngIf="element?.appointment?.entityName">
+                                                            Nơi phục vụ: <strong>{{element?.appointment?.entityName}}</strong> </h6>
+                                                        <h6 class="mrt-12" *ngIf="element?.expandData?.appointments?.length > 0">Các chức vụ khác</h6>
+                                                        <ng-template ngFor let-appointment let-i="index"
+                                                            [ngForOf]="element?.expandData?.appointments">
+                                                            <h6 class="mrt-12">
+                                                                {{appointment.positionView}}: <strong>{{appointment.entityName}}</strong> </h6>
+                                                        </ng-template>
+                                                    </div>
+                                                <!-- </div> -->
                                             </ng-container>
                                             <ng-template #nonDataExpand>
-                                                <div fxLayout="column" fxLayoutAlign="center center">
-                                                    <h6> <span *ngIf="element?.status != 'man_nhiem'">Đang </span>
-                                                        <span *ngIf="element?.status == 'man_nhiem'">Đã </span>
-                                                        <span
-                                                            *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
-                                                            phục vụ </span>
-                                                        <span
-                                                            *ngIf="element?.position == 'huu' || element?.position == 'nghi_duong'">
-                                                            <strong>{{element?.positionView}}</strong> </span>
-                                                        tại <strong>{{element?.entityName}}</strong>
-                                                    </h6>
-                                                    <h6>
-                                                        từ ngày
-                                                        <strong>{{element?.fromDateView}}</strong><span
-                                                            *ngIf="element?.toDateView?.length > 0"> đến ngày
-                                                            <strong>{{element?.toDateView}}</strong></span>
-                                                    </h6>
-                                                    <h6
-                                                        *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
-                                                        với chức vụ <strong>{{element?.positionView}}</strong></h6>
-                                                    <h6>do {{element?.appointerName}} bổ nhiệm ngày
-                                                        {{element?.effectiveDateView}}</h6>
+                                                <div fxLayout="row" fxLayoutAlign="center center" class="full-width">
+                                                    <strong>Chưa có dữ liệu</strong>
                                                 </div>
                                             </ng-template>
                                         </div>
