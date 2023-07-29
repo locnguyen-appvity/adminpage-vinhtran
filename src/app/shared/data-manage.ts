@@ -528,7 +528,7 @@ export const ANNIVERSARIES = [
         name: "Bổn Mạng",
         type: "saint",
         hasAuto: true,
-        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
+        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "all",
     },
@@ -544,7 +544,7 @@ export const ANNIVERSARIES = [
         name: "Ngày Thành Lập",
         type: "createdDate",
         hasAuto: true,
-        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
+        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "",
         typeOrg: "all",
     },
@@ -592,7 +592,7 @@ export const ANNIVERSARIES = [
         name: "Kỷ Niệm",
         type: "anniversary",
         hasAuto: false,
-        includes: ['clergy','giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'giao_hat'],
+        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "",
     },
@@ -736,6 +736,11 @@ export const LTYPE_ORG = [
         group: 'group'
     },
     {
+        name: 'Cơ Sở Giáo Phận',
+        code: 'co_so_ngoai_giao_phan',
+        group: 'group'
+    },
+    {
         name: 'Ban Mục Vụ',
         code: 'ban_muc_vu',
         group: 'group'
@@ -748,20 +753,20 @@ export const LTYPE_ORG = [
 ]
 
 const parableDaily = {
-    name:"",
-    code:"",
+    name: "",
+    code: "",
     quotation: "",
-    parableID:"",
+    parableID: "",
     date: ""
 }
 
 const scheduleEvents = {
-    name:"",
-    code:"",
+    name: "",
+    code: "",
     quotation: "",
     startDate: "",
     endDate: "",
-    entityID:"",
+    entityID: "",
     entityType: ""
 }
 // export const POSITION = [
@@ -814,6 +819,10 @@ export const TYPE_ORG = [
     {
         name: 'Cơ Sở Giáo Phận',
         code: 'co_so_giao_phan'
+    },
+    {
+        name: 'Cơ Sở Giáo Phận',
+        code: 'co_so_ngoai_giao_phan'
     },
     {
         name: 'Dòng Tu',

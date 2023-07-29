@@ -381,6 +381,7 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 				positionList = this.positionListCache.filter(it => (it.level.includes('giao_xu') || it.level.includes('khac')));
 				break;
 			case 'co_so_giao_phan':
+			case 'co_so_ngoai_giao_phan':
 			case 'ban_muc_vu':
 			case 'ban_chuyen_mon':
 				positionList = this.positionListCache.filter(it => (it.level.includes('giao_phan') || it.level.includes('khac')));

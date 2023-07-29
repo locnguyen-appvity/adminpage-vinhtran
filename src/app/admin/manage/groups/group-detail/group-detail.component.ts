@@ -36,6 +36,9 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		else if (this.router.url.includes("co_so_giao_phan")) {
 			this.target = 'co_so_giao_phan';
 		}
+		else if (this.router.url.includes("co_so_ngoai_giao_phan")) {
+			this.target = 'co_so_ngoai_giao_phan';
+		}
 		else if (this.router.url.includes("ban_muc_vu")) {
 			this.target = 'ban_muc_vu';
 		}

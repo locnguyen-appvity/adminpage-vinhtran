@@ -8,7 +8,7 @@ const myRoutes: Routes = [
 		children: [
 			{
 				path: 'clergys-list',
-				loadChildren: () => import('./clergys-list/clergys-list.module').then(m => m.ClergysListModule)
+				loadChildren: () => import('./clergys-list-grid/clergys-list-grid.module').then(m => m.ClergiesListModule)
 			},
 			{
 				path: 'clergy',

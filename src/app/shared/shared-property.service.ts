@@ -190,6 +190,8 @@ export class SharedPropertyService {
                 return 'Dòng'
             case 'co_so_giao_phan':
                 return 'Cơ Sở Giáo Phận';
+            case 'co_so_ngoai_giao_phan':
+                return 'Cơ Sở Ngoài Giáo Phận';
             case 'ban_muc_vu':
                 return 'Ban Mục Vụ';
             case 'ban_chuyen_mon':

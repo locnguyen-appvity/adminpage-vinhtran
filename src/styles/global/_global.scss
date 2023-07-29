@@ -850,6 +850,20 @@ table {
 					height: calc(100vh - 325px);
 				}
 
+				&--clergys {
+					height: calc(100vh - 200px);
+					tr.mat-footer-row,
+					tr.tsa-data-table-rows {
+						height: 70px !important;
+						img {
+							height: 60px;
+							width: 60px;
+							object-fit: cover;
+							object-position: top;
+						}
+					}
+				}
+
 				.expand-detail-row {
 					.mat-column-expandedDetail {
 						border-bottom: none;
