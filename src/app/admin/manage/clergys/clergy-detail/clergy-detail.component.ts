@@ -256,7 +256,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		this.groupsList = [];
 		let options = {
 			select: 'id,name,type',
-			filter: "type eq 'dong_tu'"
+			filter: "type eq 'dong_tu' or type eq 'cong_doan'"
 		}
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {

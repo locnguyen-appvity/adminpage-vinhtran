@@ -221,7 +221,7 @@
 					<!-- <mat-error *ngIf="item.get('effectiveDate').hasError('matDatepickerParse')">
 					Nhập Ngày Theo Mẫu DD/MM/YYYY(05/12/1991)</mat-error> -->
 				</mat-form-field>
-				<mat-form-field *ngIf="dataItemGroup?.value?.status == 'duong_nhiem'" appearance="outline"
+				<mat-form-field *ngIf="dataItemGroup?.value?.status == 'duong_nhiem' || dataItemGroup?.value?.status == 'cho_xac_nhan'" appearance="outline"
 					class="full-width">
 					<mat-label>Ngày Bắt Đầu</mat-label>
 					<input matInput [matDatepicker]="fromDate" placeholder="DD/MM/YYYY" autocomplete="off"
@@ -230,7 +230,7 @@
 					</mat-datepicker-toggle>
 					<mat-datepicker #fromDate></mat-datepicker>
 				</mat-form-field>
-				<div *ngIf="dataItemGroup?.value?.status !== 'duong_nhiem'" fxLayout="row wrap">
+				<div *ngIf="dataItemGroup?.value?.status !== 'duong_nhiem' && dataItemGroup?.value?.status != 'cho_xac_nhan'" fxLayout="row wrap">
 					<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 						<mat-form-field appearance="outline" class="full-width">
 							<mat-label>Ngày Bắt Đầu</mat-label>

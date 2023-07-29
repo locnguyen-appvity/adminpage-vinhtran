@@ -42,7 +42,7 @@ export class PositionsComponent extends ListItemBaseComponent {
 	getDataItems() {
 		let options = {
 			filter: this.getFilter(),
-			sort: 'name asc'
+			sort: 'status asc, name asc'
 		}
 		this.spinerLoading = true;
 		this.service.getPositions(options).pipe(take(1)).subscribe((res: any) => {

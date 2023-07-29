@@ -314,6 +314,9 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 						case 'dong_tu':
 							item.title = `Dòng ${item.name}`;
 							break;
+						case 'cong_doan':
+							item.title = `Cộng Đoàn ${item.name}`;
+							break;
 						default:
 							item.title = item.name;
 							break;

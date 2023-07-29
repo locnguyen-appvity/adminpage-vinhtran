@@ -13,6 +13,7 @@ import { LTYPE_ORG, STATUS_CLERGY } from 'src/app/shared/data-manage';
 import { AppointmentsInfoComponent } from '../appointment-info/appointment-info.component';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { FormControl } from '@angular/forms';
+import { AppointmentAcceptComponent } from '../appointment-accept/appointment-accept.component';
 
 @Component({
 	selector: 'app-appointments-list',
@@ -51,6 +52,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
+		this.pageSize = 25;
 		this.entityTypeList.unshift({
 			code: 'all',
 			name: 'Tất Cả Loại Nơi Bổ Nhiệm'
@@ -187,11 +189,11 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	getPositions() {
-		// let options = {
-		// 	filter: "type eq 'giao_xu'"
-		// }
+		let options = {
+			sort: "status asc"
+		}
 		this.positionList = [];
-		this.service.getPositions().pipe(take(1)).subscribe({
+		this.service.getPositions(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
@@ -441,7 +443,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	getRowSelected(item: any, action: string) {
 		if (action == 'auto') {
 			let requets: any = {};
-			
+
 			if (!this.isNullOrEmpty(item.clergyID)) {
 				let optionsClergy = {
 					select: 'name,level,stName'
@@ -517,6 +519,35 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				});
 			}
 		}
+	}
+
+	onAccept(item: any) {
+		let config: any = {
+			data: {
+				target: 'edit',
+				item: item,
+				clergyID: item.clergyID,
+				clergyName: item.clergyName
+			}
+		};
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-l';
+		config.maxWidth = '80vw';
+		config.autoFocus = false;
+		let dialogRef = this.dialog.open(AppointmentAcceptComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				let snackbarData: any = {
+					key: ''
+				};
+				if (res === 'OK') {
+					snackbarData.key = 'new-item';
+					snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					this.getDataGridApplications();
+				}
+			}
+		});
 	}
 
 	onDelete(item: any) {

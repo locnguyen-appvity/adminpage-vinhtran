@@ -33,7 +33,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
-	public organizationList: any[] = [];
+	// public organizationList: any[] = [];
 	public levelList: any[] = [];
 	public typeOrgList: any[] = [];
 	public saintList$: Observable<any>;
@@ -41,6 +41,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public localItem: any;
 	public anniversarys: any[] = [];
 	public dataDefault: any[] = ANNIVERSARIES;
+	public groupsList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -97,34 +98,54 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	getAllData() {
 		this.levelList = LEVEL_CLERGY;
 		this.typeOrgList = TYPE_ORG;
-		this.getOrganizations();
-		// this.getListClergyType();
+		// this.getOrganizations();
+		this.getGroups();
 		this.getSaints();
 	}
 
-	getOrganizations() {
-		this.organizationList = [];
+	getGroups() {
+		this.groupsList = [];
 		let options = {
 			select: 'id,name,type',
-			filter: "type eq 'dong_tu'"
+			filter: "type eq 'dong_tu' or type eq 'cong_doan'"
 		}
-		this.service.getOrganizations(options).pipe(take(1)).subscribe({
+		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				let items = [{
-					id: '-1',
-					name: 'Giáo Phận Phú Cường',
-					type: 'giao_phan'
-				}]
+				let items = []
 				if (res && res.value && res.value.length > 0) {
-					for (let item of res.value) {
-						item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
-					}
 					items.push(...res.value);
+					for (let item of items) {
+						item.name = `${this.sharedService.updateTypeOrg(item.type)} ${item.name}`
+					}
 				}
-				this.organizationList = items;
+				this.groupsList = items;
 			}
 		})
 	}
+
+	// getOrganizations() {
+	// 	this.organizationList = [];
+	// 	let options = {
+	// 		select: 'id,name,type',
+	// 		filter: "type eq 'dong_tu'"
+	// 	}
+	// 	this.service.getOrganizations(options).pipe(take(1)).subscribe({
+	// 		next: (res: any) => {
+	// 			let items = [{
+	// 				id: '-1',
+	// 				name: 'Giáo Phận Phú Cường',
+	// 				type: 'giao_phan'
+	// 			}]
+	// 			if (res && res.value && res.value.length > 0) {
+	// 				for (let item of res.value) {
+	// 					item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+	// 				}
+	// 				items.push(...res.value);
+	// 			}
+	// 			this.organizationList = items;
+	// 		}
+	// 	})
+	// }
 
 	getSaints() {
 		this.saintList$ = of([]);

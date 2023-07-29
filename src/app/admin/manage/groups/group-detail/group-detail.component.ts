@@ -48,6 +48,9 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		else if (this.router.url.includes("dong_tu")) {
 			this.target = 'dong_tu';
 		}
+		else if (this.router.url.includes("cong_doan")) {
+			this.target = 'cong_doan';
+		}
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getGroup();
 		}

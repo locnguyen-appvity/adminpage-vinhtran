@@ -1,0 +1,93 @@
+<h2 mat-dialog-title>{{title}}
+	<span *ngIf="mode == 'edit'">
+		Bổ Nhiệm Của <strong>{{localItem.clergyName}}</strong>
+	</span>
+</h2>
+<mat-dialog-content>
+	<div class="content-dialog content-dialog--minHeight">
+		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
+			<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID">
+				<h2>THUYỂN CHUYỂN</h2>
+				<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
+					<h6>
+						<strong>{{dataItemGroup?.value?.clergyName}}</strong>
+						từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
+					</h6>
+					<h6>Chuyển từ
+						<strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
+					</h6>
+					<h6>với chức vụ <strong>{{dataItemGroup?.value?.fromPositionView}}</strong></h6>
+					<h6>từ ngày <strong>{{dataItemGroup?.value?.fromFromDateView}}</strong>
+						<!-- <span> đến
+							<strong>{{dataItemGroup?.value?.fromToDateView}}</strong>
+						</span> -->
+					</h6>
+					<h6>do <strong>{{dataItemGroup?.value?.fromAppointerName}}</strong> bổ nhiệm vào ngày
+						<strong>{{dataItemGroup?.value?.fromEffectiveDateView}}</strong>
+					</h6>
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Ngày Kết Thúc</mat-label>
+						<input matInput [matDatepicker]="toDate" placeholder="DD/MM/YYYY" autocomplete="off"
+							formControlName="fromToDate">
+						<mat-datepicker-toggle matSuffix [for]="toDate">
+						</mat-datepicker-toggle>
+						<mat-datepicker #toDate></mat-datepicker>
+					</mat-form-field>
+				</div>
+			</ng-container>
+
+			<h2>NƠI CHUYỂN ĐẾN</h2>
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Nơi Đến</mat-label>
+				<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="false"
+					[placeHolder]="'Tìm theo tên...'" [keyTitle]="'name'" [keyValueEmit]="'id'" [keyValue]="'_id'"
+					[autocomplete]="true" [items]="entityList" (onChangeValue)="onValueChanges($event,'entityName')"
+					[optgroup]="true" (onSelectItem)="valueChangeAutocomplete($event,'entityName')">
+				</se-autocomplete-simple>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Chức Vụ</mat-label>
+				<mat-select formControlName="position" required>
+					<mat-option *ngFor="let item of positionList" [value]="item.code">
+						{{item.name}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Ngày Quyết Định</mat-label>
+				<input matInput [matDatepicker]="effectiveDate" placeholder="DD/MM/YYYY" autocomplete="off"
+					formControlName="effectiveDate">
+				<mat-datepicker-toggle matSuffix [for]="effectiveDate">
+				</mat-datepicker-toggle>
+				<mat-datepicker #effectiveDate></mat-datepicker>
+			</mat-form-field>
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Ngày Bắt Đầu</mat-label>
+				<input matInput [matDatepicker]="fromDate" placeholder="DD/MM/YYYY" autocomplete="off"
+					formControlName="fromDate">
+				<mat-datepicker-toggle matSuffix [for]="fromDate">
+				</mat-datepicker-toggle>
+				<mat-datepicker #fromDate></mat-datepicker>
+			</mat-form-field>
+			<mat-form-field appearance="outline" class="full-width">
+				<mat-label>Người Bổ Nhiệm</mat-label>
+				<se-autocomplete-simple [required]="false" [formControlName]="'appointerID'" [optgroup]="false"
+					[placeHolder]="'Chọn người bổ nhiệm...'" [keyTitle]="'name'" [keyValueEmit]="'name'"
+					[keyValue]="'id'" [autocomplete]="false" [items]="appointerList"
+					(onSelectItem)="onSelectItem($event,'appointerID')">
+				</se-autocomplete-simple>
+			</mat-form-field>
+		</form>
+	</div>
+	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+		<span fxFlex></span>
+		<a mat-button (click)="closeDialog()" color="default">Hủy</a>
+		<div class="btn-save-process">
+			<button mat-flat-button color="primary" [disabled]="dataProcessing || dataItemGroup.invalid"
+				aria-label="Save" (click)="onSaveItem()">Xác Nhận</button>
+			<mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
+		</div>
+	</div>
+</mat-dialog-content>

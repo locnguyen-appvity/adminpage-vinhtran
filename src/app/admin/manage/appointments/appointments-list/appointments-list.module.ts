@@ -14,6 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { AppointmentInfoModule } from '../appointment-info/appointment-info.module';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AppointmentAcceptModule } from '../appointment-accept/appointment-accept.module';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTooltipModule,
     MatFormFieldModule,
     AutocompleteSimpleModule,
-    AppointmentInfoModule
+    AppointmentInfoModule,
+    AppointmentAcceptModule
   ],
   exports: [AppointmentsListComponent]
 })

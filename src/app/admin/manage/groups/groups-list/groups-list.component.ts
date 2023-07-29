@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 export class GroupsListComponent extends ListItemBaseComponent {
 
 	public type: string = "giao_hat";
+	public title: string = "Giáo Hạt";
 
 	constructor(public override sharedService: SharedPropertyService,
 		public snackbar: MatSnackBar,
@@ -25,21 +26,31 @@ export class GroupsListComponent extends ListItemBaseComponent {
 		super(sharedService, snackbar);
 		if (this.router.url.includes("hoi_doan")) {
 			this.type = 'hoi_doan';
+			this.title = 'Hội Đoàn';
 		}
 		else if (this.router.url.includes("co_so_giao_phan")) {
 			this.type = 'co_so_giao_phan';
+			this.title = 'Cơ Sở Giáo Phận';
 		}
 		else if (this.router.url.includes("co_so_ngoai_giao_phan")) {
 			this.type = 'co_so_ngoai_giao_phan';
+			this.title = 'Cơ Sở Ngoài Giáo Phận';
 		}
 		else if (this.router.url.includes("ban_muc_vu")) {
 			this.type = 'ban_muc_vu';
+			this.title = 'Ban Mục Vụ';
 		}
 		else if (this.router.url.includes("ban_chuyen_mon")) {
 			this.type = 'ban_chuyen_mon';
+			this.title = 'Ban Chuyên Môn';
 		}
 		else if (this.router.url.includes("dong_tu")) {
 			this.type = 'dong_tu';
+			this.title = 'Dòng Tu';
+		}
+		else if (this.router.url.includes("cong_doan")) {
+			this.type = 'cong_doan';
+			this.title = 'Cộng Đoàn';
 		}
 		this.getDataItems();
 	}

@@ -29,5 +29,6 @@ export class AppointmentsModule {
     this.mdIconRegistry.addSvgIcon('ic_shortcut_48dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_shortcut_48dp.svg'));
     this.mdIconRegistry.addSvgIcon('ic_stop_48dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_stop_48dp.svg'));
     this.mdIconRegistry.addSvgIcon('ic_add_business_48dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_add_business_48dp.svg'));
+    this.mdIconRegistry.addSvgIcon('ic_done_all_48px', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_done_all_48px.svg'));
   }
  }

@@ -528,7 +528,7 @@ export const ANNIVERSARIES = [
         name: "Bổn Mạng",
         type: "saint",
         hasAuto: true,
-        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "all",
     },
@@ -544,7 +544,7 @@ export const ANNIVERSARIES = [
         name: "Ngày Thành Lập",
         type: "createdDate",
         hasAuto: true,
-        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "",
         typeOrg: "all",
     },
@@ -592,7 +592,7 @@ export const ANNIVERSARIES = [
         name: "Kỷ Niệm",
         type: "anniversary",
         hasAuto: false,
-        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "",
     },
@@ -699,6 +699,10 @@ export const LEVEL_POSITION = [
         code: 'dong_tu'
     },
     {
+        name: 'Cộng Đoàn',
+        code: 'cong_doan'
+    },
+    {
         name: 'Khác',
         code: 'khac'
     }
@@ -728,6 +732,11 @@ export const LTYPE_ORG = [
     {
         name: 'Dòng Tu',
         code: 'dong_tu',
+        group: 'group'
+    },
+    {
+        name: 'Cộng Đoàn',
+        code: 'cong_doan',
         group: 'group'
     },
     {

@@ -6,6 +6,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LinqService } from 'src/app/shared/linq.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-search-organizations',
@@ -26,6 +27,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	constructor(public sharedService: SharedPropertyService,
 		public dialog: MatDialog,
 		public linq: LinqService,
+		private sanitizer: DomSanitizer,
 		public service: SharedService) {
 		super(sharedService);
 		// this.getGroups();
@@ -99,7 +101,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
 						else {
-							item.pictureUrl = "../../assets/icons/ic_church_24dp.svg"
+							item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
 						}
 					}
 				}

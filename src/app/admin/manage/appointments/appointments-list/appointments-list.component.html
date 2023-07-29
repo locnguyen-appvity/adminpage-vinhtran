@@ -255,6 +255,11 @@
                                             <mat-icon class="material-icons" svgIcon="ic_sync_24px"></mat-icon>
                                             <span>Cập Nhật Lại Dữ Liệu</span>
                                         </button>
+                                        <button *ngIf="element?.status == 'cho_xac_nhan'" mat-menu-item
+                                            [disabled]="dataProcessing" (click)="onAccept(element)">
+                                            <mat-icon class="assign-to-me" svgIcon="ic_done_all_48px"></mat-icon>
+                                            <span>Xác Nhận Bổ Nhiệm</span>
+                                        </button>
                                         <button
                                             *ngIf="element?.status == 'duong_nhiem' || element?.status == 'cho_thuyen_chuyen'"
                                             mat-menu-item [disabled]="dataProcessing" (click)="addItem(element)">
@@ -268,9 +273,8 @@
                                             <mat-icon class="approve-button" svgIcon="ic_shortcut_48dp"></mat-icon>
                                             <span>Thuyên Chuyển</span>
                                         </button>
-                                        <button
-                                            *ngIf="element?.status != 'man_nhiem' && element?.status != 'cho_thuyen_chuyen'"
-                                            mat-menu-item [disabled]="dataProcessing" class="reject-button"
+                                        <button *ngIf="element?.status == 'duong_nhiem'" mat-menu-item
+                                            [disabled]="dataProcessing" class="reject-button"
                                             (click)="getRowSelected(element,'ket_thuc')">
                                             <mat-icon class="reject-button" svgIcon="ic_stop_48dp"></mat-icon>
                                             <span>Kết Thúc Sức Vụ</span>
@@ -321,7 +325,7 @@
                                                             để <strong> {{element?.expandData?.positionView}}
                                                             </strong></span>
                                                         <span
-                                                            *ngIf="element?.expandData?.position != 'huu' && element?.expandData?.position != 'nghi_duong'">
+                                                            *ngIf="element?.expandData?.fromDateView && element?.expandData?.position != 'huu' && element?.expandData?.position != 'nghi_duong'">
                                                             Đã phục vụ </span>
                                                         từ ngày
                                                         <strong>{{element?.expandData?.fromDateView}}</strong><span
@@ -345,13 +349,15 @@
                                                             *ngIf="element?.position == 'huu' || element?.position == 'nghi_duong'">
                                                             để <strong> {{element?.positionView}}
                                                             </strong></span>
+                                                        <span *ngIf="element?.status == 'cho_xac_nhan'">Dự định </span>
                                                         <span
-                                                            *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
-                                                            <span *ngIf="element?.status != 'man_nhiem'">Đang</span>
-                                                            <span *ngIf="element?.status == 'man_nhiem'">Đã</span> phục
-                                                            vụ </span>
-                                                        từ ngày
-                                                        <strong>{{element?.fromDateView}}</strong><span
+                                                            *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong' && element?.status != 'cho_xac_nhan'">
+                                                            <span *ngIf="element?.status == 'duong_nhiem'">Đang </span>
+                                                            <span
+                                                                *ngIf="element?.status == 'man_nhiem' || element?.status == 'cho_thuyen_chuyen'">Đã
+                                                            </span>
+                                                            phục vụ </span>
+                                                        từ ngày <strong>{{element?.fromDateView}}</strong><span
                                                             *ngIf="element?.toDateView?.length > 0"> đến ngày
                                                             <strong>{{element?.toDateView}}</strong></span>
                                                     </h6>
@@ -364,8 +370,12 @@
                                             </ng-container>
                                             <ng-template #nonDataExpand>
                                                 <div fxLayout="column" fxLayoutAlign="center center">
-                                                    <h6> <span *ngIf="element?.status != 'man_nhiem'">Đang </span>
-                                                        <span *ngIf="element?.status == 'man_nhiem'">Đã </span>
+                                                    <h6>
+                                                        <span *ngIf="element?.status == 'cho_xac_nhan'">Dự định </span>
+                                                        <span *ngIf="element?.status == 'duong_nhiem'">Đang </span>
+                                                        <span
+                                                            *ngIf="element?.status == 'man_nhiem' || element?.status == 'cho_thuyen_chuyen'">Đã
+                                                        </span>
                                                         <span
                                                             *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
                                                             phục vụ </span>
@@ -374,7 +384,7 @@
                                                             <strong>{{element?.positionView}}</strong> </span>
                                                         tại <strong>{{element?.entityName}}</strong>
                                                     </h6>
-                                                    <h6>
+                                                    <h6 *ngIf="element?.status != 'cho_xac_nhan'">
                                                         từ ngày
                                                         <strong>{{element?.fromDateView}}</strong><span
                                                             *ngIf="element?.toDateView?.length > 0"> đến ngày
