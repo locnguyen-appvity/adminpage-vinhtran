@@ -17,12 +17,12 @@
                             <div class="thumb thumb--clergys">
                                 <img [src]="item.pictureUrl" />
                             </div>
-                            <div class="info mrl-24" fxFlex="50" fxLayoutGap="12" fxLayout="column">
+                            <div class="info mrl-24" fxFlex.gt-xs="50" fxFlex="100" fxLayoutGap="12" fxLayout="column">
                                 <h2 class="name">{{item.name}}</h2>
                                 <h4>Năm Sinh: {{item.dateOfBirthView}}</h4>
                                 <h4 *ngFor="let anniversarie of item?.anniversaries">{{anniversarie?.name}}: {{anniversarie?.dateView}}</h4>
                             </div>
-                            <div class="times" fxFlex="50">
+                            <div class="times" fxFlex.gt-xs="50" fxFlex="100">
                                 <h4 class="mrt-32">Chức vụ: {{item?.appointment?.position}}</h4>
                                 <h4>Nơi phục vụ: {{item?.appointment?.entityName}}</h4>
                                 <!-- <h2 class="title mrb-12">HOẠT ĐỘNG SỨC VỤ</h2>

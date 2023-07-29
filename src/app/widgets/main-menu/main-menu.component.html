@@ -14,11 +14,11 @@
                                 <div class="dropdown-menu bg-light rounded-0 rounded-bottom m-0">
                                     <div fxLayout="row wrap" fxLayoutGap="24px grid">
                                         <ng-container *ngIf="item.dataPosts; else notPosts">
-                                            <div fxFlex="50">
+                                            <div fxFlex.gt-xs="50" fxFlex="100">
                                                 <ng-container
                                                     *ngTemplateOutlet="subMenuTemplate; context: item"></ng-container>
                                             </div>
-                                            <div fxFlex="50">
+                                            <div fxFlex.gt-xs="50" fxFlex="100">
                                                 <ng-container
                                                     *ngTemplateOutlet="postInMenu; context: item"></ng-container>
                                             </div>

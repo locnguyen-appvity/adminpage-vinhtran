@@ -193,15 +193,17 @@
                                 <th mat-header-cell *matHeaderCellDef></th>
                                 <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()"
                                     [ngStyle]="lastChildBorderStyles()">
-                                    <!-- <button mat-icon-button (click)="$event.stopPropagation();getRowSelected(element)"
-                                        matTooltip="Sửa">
+                                    <button mat-icon-button matTooltip="Sửa" (click)="onChangeData(element)">
                                         <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Xem" (click)="$event.stopPropagation();onViewDetail(element)">
+                                        <mat-icon class="material-icons" svgIcon="ic_visibility_48dp"></mat-icon>
                                     </button>
                                     <button mat-icon-button (click)="$event.stopPropagation();onDelete(element)"
                                         matTooltip="Xóa">
-                                        <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
-                                    </button> -->
-                                    <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
+                                        <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                                    </button>
+                                    <!-- <button mat-icon-button [matMenuTriggerFor]="actionsMenu"
                                         matTooltip="Thao Tác Khác">
                                         <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
                                     </button>
@@ -240,19 +242,7 @@
                                             <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                                             <span>Xoá</span>
                                         </button>
-                                        <!-- <button mat-menu-item *ngIf="element.status !== 'inactive'"
-                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
-                                            <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
-                                            <span>Tạm Ẩn</span>
-                                        </button>
-
-                                        <button mat-menu-item *ngIf="element.status == 'inactive'"
-                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'active')">
-                                            <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
-                                            <span>Mở Lại</span>
-                                        </button> -->
-
-                                    </mat-menu>
+                                    </mat-menu> -->
                                 </td>
                             </ng-container>
 
@@ -261,56 +251,22 @@
                                 <td mat-cell *matCellDef="let element" [attr.colspan]="displayColumns.length">
                                     <div [@detailExpand]="element?._expand_detail ? 'expanded' : 'collapsed'">
                                         <div *ngIf="element?._expand_detail" fxLayout="row"
-                                            fxLayoutAlign="center center" style="padding: 24px;">
+                                            fxLayoutAlign="space-between center" style="padding-left: 60px;padding-top: 24px;padding-bottom: 24px;" fxLayoutGap="50">
                                             <ng-container *ngIf="element?.expandData; else nonDataExpand">
-                                                <div fxLayout="column">
-                                                    <h6>Chuyển Từ: <strong>{{element?.expandData?.entityName}}</strong>
-                                                    </h6>
-                                                    <h6>
-                                                        <span
-                                                            *ngIf="element?.expandData?.position == 'huu' || element?.expandData?.position == 'nghi_duong'">
-                                                            để <strong> {{element?.expandData?.positionView}}
-                                                            </strong></span>
-                                                        <span
-                                                            *ngIf="element?.expandData?.position != 'huu' && element?.expandData?.position != 'nghi_duong'">
-                                                            Đã phục vụ </span>
-                                                        từ ngày
-                                                        <strong>{{element?.expandData?.fromDateView}}</strong><span
-                                                            *ngIf="element?.expandData?.toDateView?.length > 0"> đến
-                                                            ngày
-                                                            <strong>{{element?.expandData?.toDateView}}</strong></span>
-                                                    </h6>
-                                                    <h6
-                                                        *ngIf="element?.expandData?.position != 'huu' && element?.expandData?.position != 'nghi_duong'">
-                                                        với chức vụ
-                                                        <strong>{{element?.expandData?.positionView}}</strong>
-                                                    </h6>
-                                                    <h6>do {{element?.expandData?.appointerName}} bổ nhiệm ngày
-                                                        {{element?.expandData?.effectiveDateView}}</h6>
+                                                <div fxLayout="row" fxLayoutAlign="space-between start" fxFlex="50">
+                                                    <div fxLayout="column">
+                                                        <ng-template ngFor let-anniversary let-i="index" [ngForOf]="element?.expandData?.anniversaries">
+                                                                <h6 class="mrt-12" *ngIf="i < (element?.expandData?.anniversaries.length/2)">{{anniversary.name}}: <strong><span *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong> </h6>
+                                                        </ng-template>
+                                                    </div>
+                                                    <div fxLayout="column">
+                                                        <ng-template ngFor let-anniversary let-i="index" [ngForOf]="element?.expandData?.anniversaries">
+                                                                <h6 class="mrt-12" *ngIf="i >= (element?.expandData?.anniversaries.length/2)">{{anniversary.name}}: <strong><span *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong> </h6>
+                                                        </ng-template>
+                                                    </div>
                                                 </div>
-                                                <mat-icon svgIcon="ic_arrow_forward" class="mrl-24 mrr-24"></mat-icon>
                                                 <div fxLayout="column">
-                                                    <h6>Đến: <strong>{{element?.entityName}}</strong></h6>
-                                                    <h6>
-                                                        <span
-                                                            *ngIf="element?.position == 'huu' || element?.position == 'nghi_duong'">
-                                                            để <strong> {{element?.positionView}}
-                                                            </strong></span>
-                                                        <span
-                                                            *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
-                                                            <span *ngIf="element?.status != 'man_nhiem'">Đang</span>
-                                                            <span *ngIf="element?.status == 'man_nhiem'">Đã</span> phục
-                                                            vụ </span>
-                                                        từ ngày
-                                                        <strong>{{element?.fromDateView}}</strong><span
-                                                            *ngIf="element?.toDateView?.length > 0"> đến ngày
-                                                            <strong>{{element?.toDateView}}</strong></span>
-                                                    </h6>
-                                                    <h6
-                                                        *ngIf="element?.position != 'huu' && element?.position != 'nghi_duong'">
-                                                        với chức vụ <strong>{{element?.positionView}}</strong></h6>
-                                                    <h6>do {{element?.appointerName}} bổ nhiệm ngày
-                                                        {{element?.effectiveDateView}}</h6>
+                                                   
                                                 </div>
                                             </ng-container>
                                             <ng-template #nonDataExpand>

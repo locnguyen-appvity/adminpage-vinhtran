@@ -70,10 +70,19 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			if (res && res.value && res.value.length > 0) {
 				let items = res.value;
 				for (let item of items) {
+					item.expandData = {
+						anniversaries: [],
+						appointments: []
+					}
+					item.disabledItem = false;
 					item.fullName = `${this.sharedService.getClergyLevel(item)} ${item.stName}  ${item.name}`
 					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg')
 					if (item.photo) {
 						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+					}
+					if (item.created) {
+						item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
+						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 					}
 				}
 				this.gridDataChanges.data = items;
@@ -130,35 +139,56 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		})
 	}
 
-	addItem(item?: any) {
-		let config: any = {
-			data: {
-				target: 'new',
-				clergyID: item ? item.clergyID : ''
-			}
+	addItem() {
+		let config: any = {};
+		config.data = {
+			target: 'add'
 		};
+		this.openFormDialog(config, 'add');
+	}
+
+	onChangeData(item: any) {
+		this.router.navigate([`/admin/manage/clergys/clergy/${item.id}`]);
+	}
+
+	onViewDetail(item: any) {
+		this.router.navigate([`/admin/clergy-view/${item.id}`]);
+	}
+
+	openFormDialog(config: any, target: string) {
 		config.disableClose = true;
-		config.panelClass = 'dialog-form-l';
+		config.panelClass = 'dialog-form-m';
 		config.maxWidth = '80vw';
-		config.autoFocus = false;
+		config.height = 'auto';
+		config.autoFocus = true;
 		let dialogRef = this.dialog.open(ClergyInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
 					key: ''
 				};
-				if (res === 'OK') {
-					snackbarData.key = 'new-item';
-					snackbarData.message = 'Thêm Giáo Xứ Thành Công';
+				if (res && res.action == 'save') {
+					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					this.getDataGridApplications();
+					this.getDataGridAndCounterApplications();
+				}
+				else if (res && res.action == 'save-open-detail') {
+					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					if (res.data && res.data.id) {
+						this.onChangeData(res.data);
+					}
+					else {
+						this.getDataGridAndCounterApplications();
+					}
+				}
+				else if (res && res.delete == 'delete') {
+					this.getDataGridAndCounterApplications();
 				}
 			}
 		});
-	}
-
-	getRowSelected(item: any, action: string) {
-
 	}
 
 	onDelete(item: any) {
@@ -170,7 +200,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
-			this.getDataGridApplications();
+			this.getDataGridAndCounterApplications();
 		})
 	}
 
@@ -179,23 +209,37 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 	}
 
 	toggleExpandElements(item: any) {
-		if (item.readyLoadExpand) {
+		if (item.stateLoadExpand == 'loading' || item.stateLoadExpand == 'loaded') {
 			item._expand_detail = !item._expand_detail;
 			return;
 		}
-		if (!this.isNullOrEmpty(item.fromClergyID)) {
-			this.service.getClergy(item.fromClergyID).pipe(take(1)).subscribe({
+		if (!this.isNullOrEmpty(item.id)) {
+			let options = {
+				filter: `entityID eq ${item.id} and entityType eq 'clergy'`,
+				sort: 'date desc'
+			}
+			item.stateLoadExpand = 'loading'
+			this.service.getAnniversaries(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
 					// this.handleDataItem(res);
-					item.readyLoadExpand = true;
-					item.expandData = res;
+					if(res && res.value){
+						for(let it of res.value){
+							it.dateView = "Chưa cập nhật"
+							if (it.date) {
+								it._date = this.sharedService.convertDateStringToMoment(it.date, this.offset);
+								it.dateView = this.sharedService.formatDate(it._date);
+							}
+						}
+					}
+					item.stateLoadExpand = 'loaded'
+					item.expandData.anniversaries = res.value;
 					item._expand_detail = !item._expand_detail;
 
 				}
 			})
 		}
 		else {
-			item.readyLoadExpand = true;
+			item.stateLoadExpand = 'loaded'
 			item._expand_detail = !item._expand_detail;
 		}
 	}
