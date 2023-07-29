@@ -41,4 +41,4 @@ import { AuthorInfoModule } from '../author-info/author-info.module';
     AuthorInfoModule
   ]
 })
-export class CategoriesListModule { }
+export class AuthorsListModule { }

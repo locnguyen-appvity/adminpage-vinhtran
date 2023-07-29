@@ -82,6 +82,11 @@
                         <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
                         Hình Ảnh
                     </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/categories-list/post']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon> -->
+                        Danh Mục
+                    </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
@@ -113,6 +118,11 @@
                         <!-- <mat-icon class="app-icon" svgIcon="maps_home_work_48dp"></mat-icon> -->
                         Media Files
                     </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/categories-list/media']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        <!-- <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon> -->
+                        Danh Mục Book
+                    </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>
@@ -124,11 +134,6 @@
             </mat-expansion-panel-header>
             <mat-panel-description>
                 <mat-nav-list>
-                    <mat-list-item [routerLink]="['/admin/categories-list']" [routerLinkActive]="['active']"
-                        [routerLinkActiveOptions]="{exact: true}">
-                        <!-- <mat-icon class="app-icon" svgIcon="ic_subscriptions_48dp"></mat-icon> -->
-                        Danh Mục
-                    </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/tags/tags-list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
                         <!-- <mat-icon class="app-icon" svgIcon="ic_sell_48dp"></mat-icon> -->
@@ -165,24 +170,24 @@
                         [routerLinkActiveOptions]="{exact: true}">
                         Giáo Hạt
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/giao_xu/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-                        Giáo Xứ 
+                    <mat-list-item [routerLink]="['/admin/manage/giao_xu/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Giáo Xứ
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/giao_ho/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-                        Giáo Họ 
+                    <mat-list-item [routerLink]="['/admin/manage/giao_ho/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Giáo Họ
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/giao_diem/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-                        Giáo Điểm 
+                    <mat-list-item [routerLink]="['/admin/manage/giao_diem/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Giáo Điểm
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/dong_tu/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-                       Dòng Tu
+                    <mat-list-item [routerLink]="['/admin/manage/dong_tu/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Dòng Tu
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/co_so_giao_phan/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <mat-list-item [routerLink]="['/admin/manage/co_so_giao_phan/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
                         Cơ Sở Giáo Phận
                     </mat-list-item>
                     <!-- <mat-list-item [routerLink]="['/admin/manage/hoi_doan/list']" [routerLinkActive]="['active']"
@@ -191,7 +196,7 @@
                     </mat-list-item> -->
                     <mat-list-item [routerLink]="['/admin/manage/ban_muc_vu/list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
-                       Ban Mục Vụ
+                        Ban Mục Vụ
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/manage/ban_chuyen_mon/list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">

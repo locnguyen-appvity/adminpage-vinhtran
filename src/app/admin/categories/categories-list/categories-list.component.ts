@@ -10,6 +10,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * File node data with nested structure.
@@ -54,10 +55,12 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 	expandTimeout: any;
 	expandDelay = 1000;
 	validateDrop = true;
+	public type: string = "post"
 
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
 		public snackbar: MatSnackBar,
+		public activeRoute: ActivatedRoute,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
 		this.noData = false;
@@ -67,6 +70,7 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 			this._isExpandable, this._getChildren);
 		this.treeControl = new FlatTreeControl<FileFlatNode>(this._getLevel, this._isExpandable);
 		this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+		this.type = this.activeRoute.parent.snapshot.paramMap.get("type");
 		// this.rebuildTreeForData(TREE_DATA);
 		// database.dataChange.subscribe(data => this.rebuildTreeForData(data));
 	}
@@ -125,9 +129,29 @@ export class CategoriesListComponent extends ListItemBaseComponent {
 		});
 	}
 
-	// drop(event: CdkDragDrop<unknown>) {
-	// 	moveItemInArray(this.arrData, event.previousIndex, event.currentIndex);
-	// }
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.type)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `type eq '${this.type}'`;
+			}
+			else {
+				filter = `${filter} and (type eq '${this.type}')`;
+			}
+		}
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(${this.searchKey}), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = `${filter} and (${quickSearch})`;
+			}
+		}
+		return filter;
+	}
 
 	getDataItems() {
 		this.arrData = [];

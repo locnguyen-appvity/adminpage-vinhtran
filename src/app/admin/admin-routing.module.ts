@@ -8,7 +8,7 @@ const routes: Routes = [
 		path: '', component: AdminComponent,
 		children: [
 			{
-			  path: 'categories-list',
+			  path: 'categories-list/:type',
 			  loadChildren: () => import('./categories/categories-list/categories-list.module').then(m => m.CategoriesListModule)
 			},
 			{
@@ -71,7 +71,7 @@ const routes: Routes = [
 				path: 'manage',
 				loadChildren: () => import('./manage/manage.module').then(m => m.ManageModule)
 			},
-			{ path: '', redirectTo: 'categories-list', pathMatch: 'full' },
+			{ path: '', redirectTo: 'posts', pathMatch: 'full' },
 		]
 	}
 	// { path: '', component: AdminNavbarComponent, outlet: "sidebar" }

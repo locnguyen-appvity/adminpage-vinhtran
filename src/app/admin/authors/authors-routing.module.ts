@@ -8,7 +8,7 @@ const routes: Routes = [
     children: [
 			{
 				path: 'authors-list',
-				loadChildren: () => import('./authors-list/authors-list.module').then(m => m.CategoriesListModule)
+				loadChildren: () => import('./authors-list/authors-list.module').then(m => m.AuthorsListModule)
 			},
 			{ path: '', redirectTo: 'authors-list', pathMatch: 'full' },
 		],
