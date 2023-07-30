@@ -2,11 +2,11 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Simpl
 import { take } from 'rxjs';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LinqService } from 'src/app/shared/linq.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PageService } from 'src/app/page/page.service';
 
 @Component({
 	selector: 'app-search-organizations',
@@ -28,7 +28,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 		public dialog: MatDialog,
 		public linq: LinqService,
 		private sanitizer: DomSanitizer,
-		public service: SharedService) {
+		public service: PageService) {
 		super(sharedService);
 		// this.getGroups();
 	}
@@ -88,6 +88,72 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	getOrganizations() {
+		// let restrictions = [
+		// 	// 	{
+		// 	// 	"key": "status",
+		// 	// 	"value": "duong_nhiem"
+		// 	// }
+		// ];
+		// if (this.data) {
+		// 	// if (this.data.groupID && this.data.groupID != 'all') {
+		// 	restrictions.push({
+		// 		"key": "GroupId",
+		// 		"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
+		// 	})
+		// 	// }
+		// 	// if (this.data.position && this.data.position != 'all') {
+		// 	restrictions.push({
+		// 		"key": "Position",
+		// 		"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
+		// 	})
+		// 	// }
+		// }
+		// let options = {
+		// 	"page": 1,
+		// 	"pageSize": 100,
+		// 	"restrictions": restrictions,
+		// 	"sorts": [
+		// 		{
+		// 			"key": "name",
+		// 			"sortType": "asc"
+		// 		}
+		// 	]
+		// }
+		// this.loading = true;
+		// this.dataLists = [];
+		// // this.cacheDataLists = [];
+		// this.service.searchOrganizations(options).pipe(take(1)).subscribe({
+		// 	next: (res: any) => {
+		// 		let items = [];
+		// 		if (res && res.results && res.results.length > 0) {
+		// 			for (let item of res.results) {
+		// 				item.time = item.massTime;
+		// 				// this.updateMassesesToOrg(item);
+		// 				if (item.photo) {
+		// 					item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+		// 				}
+		// 				else {
+		// 					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
+		// 				}
+		// 			}
+		// 			items = this.linq.Enumerable().From(res.results).GroupBy("$.name", null, (key: any, data: any) => {
+		// 				let _key = this.isNullOrEmpty(key) ? 'empty' : key;
+		// 				let item = data.source[0];
+		// 				let items = data.source ?  this.handleMasseses(data.source.filter(it=>!this.isNullOrEmpty(it.time))) : [];
+		// 				return {
+		// 					name: _key,
+		// 					address: item ? item.address: "Chưa cập nhật",
+		// 					phoneNumber: item ? item.phoneNumber: "Chưa cập nhật",
+		// 					memberCount: item ? item.memberCount: "Chưa cập nhật",
+		// 					population: item ? item.population: "Chưa cập nhật",
+		// 					_arrMasseses: this.handleMasses(items),
+		// 				}
+		// 			}).ToArray();
+		// 		}
+		// 		this.dataLists = items;
+		// 		this.loading = false;
+		// 	}
+		// })
 		let options = {
 			filter: this.getFilter()
 		}
@@ -115,6 +181,9 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	updateMassesesToOrg(item: any) {
+		if (this.isNullOrEmpty(item.id)) {
+			return;
+		}
 		let options = {
 			filter: `entityId eq ${item.id} and entityType eq 'organization'`
 		}
@@ -123,21 +192,25 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
-					items = res.value;
-					for (let masse of items) {
-						let _time = masse.time ? masse.time.split(":")[0] : 0;
-						masse._time = _time ? Number(_time) : 0;
-					}
-					items = this.linq.Enumerable().From(items).OrderBy("$._time").ToArray();
+					items = this.handleMasseses(res.value);
 				}
-				item._arrMasseses = items;
-				this.handleMasseses(item);
+				item.arrMasseses = this.handleMasses(items);
 			}
 		})
 	}
 
-	handleMasseses(item: any) {
-		let masses = item._arrMasseses;
+	handleMasseses(items: any) {
+		if (items && items.length > 0) {
+			for (let masse of items) {
+				let _time = masse.time ? masse.time.split(":")[0] : 0;
+				masse._time = _time ? Number(_time) : 0;
+			}
+			items = this.linq.Enumerable().From(items).OrderBy("$._time").ToArray();
+		}
+		return items;
+	}
+
+	handleMasses(masses: any) {
 		if (masses && masses.length > 0) {
 			let itemValue = {
 				ngay_thuong: [],
@@ -157,12 +230,9 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 						data: dataItems.map(it => it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : "").join(", ")
 					})
 				}
-				// else if(itemValue[key].length > 0) {
-
-				// }
-				console.log("value..........", value);
 			}
-			item.arrMasseses = value;
+			return value;
 		}
+		return [];
 	}
 }

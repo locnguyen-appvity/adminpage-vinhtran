@@ -30,6 +30,16 @@ export class PageService {
 	}
 
 	searchClergies(options: any): Observable<any> {
+		const baseUrl = this.rootAPI + `/clergies/search`;
+		return this.getDataItems(baseUrl, options).pipe(catchError(error => this.handleError('searchClergies', error)));
+	}
+
+	searchOrganizations(options: any): Observable<any> {
+		const baseUrl = this.rootAPI + `/organizations/search`;
+		return this.getDataItems(baseUrl, options).pipe(catchError(error => this.handleError('searchOrganizations', error)));
+	}
+
+	getDataItems(baseUrl, options: any): Observable<any> {
 		let pageOption: any = {}
 		let restrictions = [];
 		let sorts = [];
@@ -52,8 +62,7 @@ export class PageService {
 			"restrictions": restrictions,
 			"sorts": sorts
 		}
-		const baseUrl = this.rootAPI + `/clergies/search`;
-		return this.service.postRequestBaseUrl(baseUrl, null, params).pipe(catchError(error => this.handleError('searchClergies', error)));
+		return this.service.postRequestBaseUrl(baseUrl, null, params).pipe(catchError(error => this.handleError('getDataItems', error)));
 	}
 
 	getPositions(options?: any): Observable<any> {
@@ -69,6 +78,18 @@ export class PageService {
 	getAppointments(options?: any): Observable<any> {
 		let baseUrl = this.rootAPIAdmin + '/appointments';
 		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAppointments', error)));
+	}
+
+	// Masses
+	getMasseses(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/masses';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getMasseses', error)));
+	}
+
+	// Organizations
+	getOrganizations(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/organizations';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getOrganizations', error)));
 	}
 
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {

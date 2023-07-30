@@ -12,6 +12,7 @@ import { PostsBannerModule } from '../widgets/posts-banner/posts-banner.module';
 import { PostsListBannerModule } from '../widgets/posts-list-banner/posts-list-banner.module';
 import { SearchControlModule } from '../widgets/search-control/search-control.module';
 import { SearchOrganizationsModule } from '../widgets/search-organizations/search-organizations.module';
+import { EventsDailyModule } from '../widgets/events-daily/events-daily.module';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { SearchOrganizationsModule } from '../widgets/search-organizations/searc
 		PostsBannerModule,
 		PostsListBannerModule,
 		SearchControlModule,
-		SearchOrganizationsModule
+		SearchOrganizationsModule,
+		EventsDailyModule
 	]
 })
 export class HomeModule {

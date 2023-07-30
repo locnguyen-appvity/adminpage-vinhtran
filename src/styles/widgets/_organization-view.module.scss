@@ -17,13 +17,15 @@
                     object-fit: cover;
                 }
             }
+            .display-name {
+                margin-top: 12px;
+                font-size: 23px;
+                font-weight: 600;
+                text-transform: uppercase !important;
+                color: rgb(0, 0, 128);
+            }
             .content {
-                .display-name {
-                    font-size: 23px;
-                    font-weight: 600;
-                    text-transform: uppercase !important;
-                    color: rgb(0, 0, 128);
-                }
+                width: 100%;
                 .name {
                     font-weight: 600;
                     font-size: 25px;

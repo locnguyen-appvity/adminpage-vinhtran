@@ -34,7 +34,7 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 	public configEditor: any = {
 		toolbarSticky: false,
 		buttons: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"bold", "italic", "underline", "|", "fontsize", "font", "brush", "|",
 			"align", "indent", "indent", "outdent", "|",
 			"link", "table", "|",
 			"strikethrough", "eraser", "|",
@@ -212,9 +212,9 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			next: (res: any) => {
 				// console.log("DialogSelectedImgsComponent..........",res);êww
 				// return;
-				if(res && res.data && res.data.length > 0){
+				if (res && res.data && res.data.length > 0) {
 					let imgs = []
-					for(let file of res.data){
+					for (let file of res.data) {
 						imgs.push(`<p style="text-align: center;"><img src="${file.imageUrl}" width="400" style="max-width: 80%;"></p>`)
 					}
 					this.onInsertHTML(imgs.join('<br>'));

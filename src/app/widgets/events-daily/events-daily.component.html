@@ -1,0 +1,24 @@
+<div class="container-fluid events-daily-container">
+    <div class="container-xl">
+        <div class="events-daily-wrap">
+            <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
+                <ng-container *ngFor="let item of dataItems">
+                    <ng-template carouselSlide [id]="item.id">
+                        <figure class="item-review figure">
+                            <div class="figure-header">
+                                <h2 class="title">{{item.dayTilte}}</h2>
+                                <h3 class="date">{{item.dateView}}</h3>
+                            </div>
+                            <figcaption class="figure-caption">
+                                <!-- <mat-icon class="icon-quote" svgIcon="icon_quote"></mat-icon> -->
+                                <p class="metaDescription">{{item.metaDescription}}</p>
+                                <a class="more">Xem chi tiết</a>
+                                <span class="quotation" >{{item.quotation}}</span>
+                            </figcaption>
+                        </figure>
+                    </ng-template>
+                </ng-container>
+            </owl-carousel-o>
+        </div>
+    </div>
+</div>

@@ -66,10 +66,8 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 			// }
 		}
 		let options = {
-			"pageOption": {
-				"page": 1,
-				"pageSize": 100
-			},
+			"page": 1,
+			"pageSize": 100,
 			"restrictions": restrictions,
 			"sorts": [
 				{
