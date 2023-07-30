@@ -18,32 +18,76 @@
                 font-size: 15px;
                 font-weight: 400;
             }
+            .quotation {
+                font-size: 14px;
+                font-weight: 600;
+            }
+        }
+        .figure-content {
+            text-align: start;
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            .title {
+                margin-bottom: 6px;
+                font-size: 16px;
+                font-weight: 600;
+                color: #9e0533;
+                &.rip{
+                    color: #590161;
+                }
+            }
+            .sub {
+                margin-bottom: 6px;
+                font-size: 15px;
+                font-weight: 400;
+                margin-left: 12px;
+            }
         }
         .figure-caption {
             width: 100%;
             position: relative;
             padding: 0 24px;
+            margin-top: 12px;
+            // padding: 0 40px;
+
+            .description {
+                // position: relative;
+                .metaDescription {
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: rgb(12, 25, 141);
+                }
+                // .quotation {
+                //     position: absolute;
+                //     font-size: 14px;
+                //     font-weight: 600;
+                //     top: 90%;
+                //     right: 0;
+                // }
+            }
             .more {
                 cursor: pointer;
                 font-size: 14px;
                 font-weight: 600;
                 color: rgb(0, 68, 255);
-            }
-            .metaDescription {
-                font-size: 14px;
-                font-weight: 400;
-                color: rgb(12, 25, 141);
-            }
-            .quotation {
                 position: absolute;
                 top: 90%;
-                right: 0;
+                right: 24px;
+            }
+            .icon-quote {
+                position: absolute;
+                top: -6px;
+                left: 0;
+                width: 24px;
+                height: 24px;
+                // transform: scaleX(-1);
             }
         }
     }
     .item-review {
         .figure-header {
-            margin: 0 0 16px;
+            margin: 0;
             h2 {
                 font-size: 24px;
                 font-weight: 400;
