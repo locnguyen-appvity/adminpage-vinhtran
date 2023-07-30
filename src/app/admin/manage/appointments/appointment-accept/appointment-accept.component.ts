@@ -183,7 +183,7 @@ export class AppointmentAcceptComponent extends SimpleBaseComponent {
 		else if (target == 'entityName') {
 			if (event && event.id) {
 				this.dataItemGroup.get('entityID').setValue(event.id);
-				this.dataItemGroup.get('entityType').setValue(event.type);
+				this.dataItemGroup.get('entityType').setValue(event._type);
 				this.dataItemGroup.get('entityName').setValue(event.name);
 				this.handlePositionList(event.type, 'entityName');
 			}
@@ -197,7 +197,7 @@ export class AppointmentAcceptComponent extends SimpleBaseComponent {
 		else if (target == 'fromEntityName') {
 			if (event && event.id) {
 				this.dataItemGroup.get('fromEntityID').setValue(event.id);
-				this.dataItemGroup.get('fromEntityType').setValue(event.type);
+				this.dataItemGroup.get('fromEntityType').setValue(event._type);
 				this.dataItemGroup.get('fromEntityName').setValue(event.name);
 				this.handlePositionList(event.type, 'fromEntityName');
 			}
@@ -399,7 +399,8 @@ export class AppointmentAcceptComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item._id = `${item.type}_${item.id}`;
+							item._type = 'organization';
+							item._id = `organization_${item.id}`;
 							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}
@@ -425,7 +426,8 @@ export class AppointmentAcceptComponent extends SimpleBaseComponent {
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item._id = `${item.type}_${item.id}`;
+							item._type = 'group';
+							item._id = `group_${item.id}`;
 							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}

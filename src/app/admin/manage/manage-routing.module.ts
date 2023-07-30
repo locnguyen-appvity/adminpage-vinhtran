@@ -11,6 +11,10 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},
 			{
+				path: 'group',
+				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
+			},
+			{
 				path: 'giao_hat',
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
@@ -44,6 +48,10 @@ const myRoutes: Routes = [
 			},
 			{
 				path: 'giao_xu',
+				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
+			},
+			{
+				path: 'organization',
 				loadChildren: () => import('./organizations/organizations.module').then(m => m.OrganizationsModule)
 			},
 			{

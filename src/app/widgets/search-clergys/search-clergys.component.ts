@@ -52,18 +52,24 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 			// }
 		];
 		if (this.data) {
-			// if (this.data.groupID && this.data.groupID != 'all') {
-			restrictions.push({
-				"key": "GroupId",
-				"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
-			})
-			// }
-			// if (this.data.position && this.data.position != 'all') {
-			restrictions.push({
-				"key": "Position",
-				"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
-			})
-			// }
+			if (this.data.groupID && this.data.groupID != 'all') {
+				restrictions.push({
+					"key": "GroupId",
+					"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
+				})
+			}
+			if (this.data.position && this.data.position != 'all') {
+				restrictions.push({
+					"key": "Position",
+					"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
+				})
+			}
+			if (this.data.name) {
+				restrictions.push({
+					"key": "name",
+					"value": this.data.name ? this.data.name : "	"
+				})
+			}
 		}
 		let options = {
 			"page": 1,
@@ -85,6 +91,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 					// this.cacheDataLists = res.data;
 					this.dataLists = res.results//this.linq.Enumerable().From(res.data).Distinct('$.clergyID').ToArray();
 					for (let item of this.dataLists) {
+						item.id = item.clergyID;
 						item.positionView = this.sharedService.getNameExistsInArray(item.position, this.positionList, "code");
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;

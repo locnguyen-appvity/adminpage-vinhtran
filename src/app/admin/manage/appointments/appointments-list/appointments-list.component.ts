@@ -148,8 +148,8 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item._id = `${item.type}_${item.id}`;
-							// item._type = 'organization';
+							item._id = `organization_${item.id}`;
+							item._type = 'organization';
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 							// item.order = this.sharedService.getOrderTypeOrg(item.type);
 							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
@@ -176,7 +176,8 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 					if (res && res.value && res.value.length > 0) {
 						items.push(...res.value);
 						for (let item of items) {
-							item._id = `${item.type}_${item.id}`;
+							item._type = 'group';
+							item._id = `group_${item.id}`;
 							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
 						}
@@ -387,10 +388,10 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	openNewTab(element: any, target: string) {
 		let link = '';
 		if (target == 'clergy') {
-			link = `./#/admin/manage/clergys/clergy/${element.clergyID}`;
+			link = `./#/admin/clergy-view/${element.clergyID}`;
 		}
 		else {
-			link = `./#/admin/manage/${element.entityType}/detail/${element.entityID}`;
+			link = `./#/page/${element.entityType}/${element.entityID}`;
 		}
 		// this.router.navigate([]).then(() => {
 		window.open(link, '_blank');
@@ -414,6 +415,28 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	addItem(item?: any) {
+		// let requets: Observable<any>[] = [];
+		// for (let app of this.gridDataChanges.data) {
+		// 	if (!this.isNullOrEmpty(app.entityType)) {
+		// 		let entityType = '';
+		// 		if (app.entityType == 'giao_xu' || app.entityType == 'giao_diem' || app.entityType == 'giao_ho' || app.entityType == 'organization') {
+		// 			entityType = 'organization';
+		// 		}
+		// 		else {
+		// 			entityType = 'group';
+		// 		}
+		// 		let options = {
+		// 			entityType: entityType
+		// 		}
+		// 		requets.push(this.service.updateAppointment(app.id,options));
+		// 	}
+		// }
+		// forkJoin(requets).pipe(take(1)).subscribe({
+		// 	next:(res:any)=>{
+		// 		console.log("update.......",res.length);
+
+		// 	}
+		// })
 		let config: any = {
 			data: {
 				target: 'new',

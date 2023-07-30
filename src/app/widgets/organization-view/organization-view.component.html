@@ -8,7 +8,14 @@
             <span class="display-name">{{localItem?.displayName}}</span>
             <div class="content mrt-24" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="6">
                 <!-- <span class="name">{{localItem?.name}}</span> -->
-                <div class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
+                <div *ngIf="entityType == 'group'" class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
+                    <span>Vị trí: <strong>{{localItem?.anniversary}}</strong></span>
+                    <span *ngIf="localItem?.type == 'giao_hat'">Tổng số giáo xứ: <strong>{{localItem?.groupName}}</strong></span>
+                    <span *ngIf="localItem?.type == 'giao_hat'">Linh mục quản hạt: <strong>{{localItem?.email}}</strong></span>
+                    <span>Email: <strong>{{localItem?.email}}</strong></span>
+                    <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
+                </div>
+                <div *ngIf="entityType == 'organization'" class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
                     <span>Tước hiệu: <strong>{{localItem?.anniversary}}</strong></span>
                     <span *ngIf="localItem?.entityName">Giáo xứ: <strong>{{localItem?.entityName}}</strong></span>
                     <span>Giáo hạt: <strong>{{localItem?.groupName}}</strong></span>
@@ -18,7 +25,7 @@
                     <span>Dân số: <strong>{{localItem?.population}}</strong></span>
                     <span>Giáo dân: <strong>{{localItem?.memberCount}}</strong></span>
                 </div>
-                <div class="masseses-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
+                <div *ngIf="entityType == 'organization'" class="masseses-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
                     <span class="title">GIỜ LỄ</span>
                     <ng-container *ngIf="localItem?.arrMasseses?.length > 0">
                         <span
@@ -30,7 +37,7 @@
                         Chưa cập nhật
                     </ng-container>
                 </div>
-                <div class="anniversaries-container mrt-24" fxLayout="column" fxLayoutAlign="start start">
+                <div *ngIf="entityType == 'organization'" class="anniversaries-container mrt-24" fxLayout="column" fxLayoutAlign="start start">
                     <span class="title">SỰ KIÊN</span>
                     <ng-container *ngIf="arrAnniversaries?.length > 0">
                         <div class="full-width" fxLayout="column" fxLayoutAlign="start start">
@@ -51,9 +58,9 @@
                         <span class="mrb-24">Chưa cập nhật</span>
                     </ng-container>
                 </div>
-                <div class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
+                <div *ngIf="entityType == 'organization'" class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
                     <span class="title">DANH SÁCH LINH MỤC</span>
-                    <se-list-appointments-organization [entityType]="entityType"
+                    <se-list-appointments-organization [entityType]="'organization'"
                         [entityID]="ID"></se-list-appointments-organization>
                 </div>
             </div>

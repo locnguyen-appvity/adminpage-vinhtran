@@ -19,15 +19,11 @@ const routes: Routes = [
 				loadChildren: () => import('../post-detail/post-detail.module').then(m => m.PostDetailModule)
 			},
 			{
-				path: 'giao_xu/:id',
+				path: 'organization/:id',
 				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
 			},
 			{
-				path: 'giao_diem/:id',
-				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
-			},
-			{
-				path: 'giao_hat/:id',
+				path: 'group/:id',
 				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
 			},
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },

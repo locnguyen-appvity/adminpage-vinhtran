@@ -286,6 +286,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
+					this.target = this.localItem.type;
 					this.localItem._metaKeyword = [];
 					if (this.localItem.metaKeyword) {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');

@@ -46,7 +46,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	onViewOrg(item: any) {
-		window.open(`/#/page/${item.type}/${item.id}`, '_blank');
+		window.open(`/#/page/organization/${item.id}`, '_blank');
 	}
 	// getGroups() {
 	// 	let options = {
@@ -107,7 +107,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 					"value": this.data.position && this.data.position != 'all' ? this.data.position : ""
 				})
 			}
-			if (this.data.position && this.data.position != 'all') {
+			if (this.data.masses) {
 				restrictions.push({
 					"key": "masses",
 					"value": this.data.masses ? this.data.masses : null

@@ -35,18 +35,23 @@ export class OrganizationViewComponent extends SimpleBaseComponent implements On
 	) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
-		if (this.router.url.includes("giao_xu")) {
-			this.entityType = 'giao_xu';
+		if (this.router.url.includes("organization")) {
+			this.entityType = 'organization';
 		}
-		else if (this.router.url.includes("giao_diem")) {
-			this.entityType = 'giao_diem';
+		else if (this.router.url.includes("group")) {
+			this.entityType = 'group';
 		}
-		else if (this.router.url.includes("giao_ho")) {
-			this.entityType = 'giao_ho';
-		}
+		// else if (this.router.url.includes("giao_ho")) {
+		// 	this.entityType = 'giao_ho';
+		// }
 		if (!this.isNullOrEmpty(this.ID)) {
-			this.getOrganization();
-			this.getAnniversaries(this.ID, this.entityType);
+			if(this.entityType == 'organization'){
+				this.getOrganization();
+				this.getAnniversaries(this.ID, this.entityType);
+			}
+			else {
+				this.getGroup();
+			}
 		}
 	}
 
@@ -84,6 +89,23 @@ export class OrganizationViewComponent extends SimpleBaseComponent implements On
 				if (res) {
 					this.localItem = res;
 					this.updateMassesesToOrg(this.localItem);
+					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
+					if (this.localItem.photo) {
+						this.localItem.pictureUrl = `${GlobalSettings.Settings.Server}/${this.localItem.photo}`;
+					}
+					else {
+						this.localItem.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
+					}
+				}
+			}
+		})
+	}
+
+	getGroup() {
+		this.service.getGroup(this.ID).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res) {
+					this.localItem = res;
 					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
 					if (this.localItem.photo) {
 						this.localItem.pictureUrl = `${GlobalSettings.Settings.Server}/${this.localItem.photo}`;
