@@ -88,84 +88,55 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	getOrganizations() {
-		// let restrictions = [
-		// 	// 	{
-		// 	// 	"key": "status",
-		// 	// 	"value": "duong_nhiem"
-		// 	// }
-		// ];
-		// if (this.data) {
-		// 	// if (this.data.groupID && this.data.groupID != 'all') {
-		// 	restrictions.push({
-		// 		"key": "GroupId",
-		// 		"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
-		// 	})
-		// 	// }
-		// 	// if (this.data.position && this.data.position != 'all') {
-		// 	restrictions.push({
-		// 		"key": "Position",
-		// 		"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
-		// 	})
-		// 	// }
-		// }
-		// let options = {
-		// 	"page": 1,
-		// 	"pageSize": 100,
-		// 	"restrictions": restrictions,
-		// 	"sorts": [
-		// 		{
-		// 			"key": "name",
-		// 			"sortType": "asc"
-		// 		}
-		// 	]
-		// }
-		// this.loading = true;
-		// this.dataLists = [];
-		// // this.cacheDataLists = [];
-		// this.service.searchOrganizations(options).pipe(take(1)).subscribe({
-		// 	next: (res: any) => {
-		// 		let items = [];
-		// 		if (res && res.results && res.results.length > 0) {
-		// 			for (let item of res.results) {
-		// 				item.time = item.massTime;
-		// 				// this.updateMassesesToOrg(item);
-		// 				if (item.photo) {
-		// 					item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
-		// 				}
-		// 				else {
-		// 					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
-		// 				}
-		// 			}
-		// 			items = this.linq.Enumerable().From(res.results).GroupBy("$.name", null, (key: any, data: any) => {
-		// 				let _key = this.isNullOrEmpty(key) ? 'empty' : key;
-		// 				let item = data.source[0];
-		// 				let items = data.source ?  this.handleMasseses(data.source.filter(it=>!this.isNullOrEmpty(it.time))) : [];
-		// 				return {
-		// 					name: _key,
-		// 					address: item ? item.address: "Chưa cập nhật",
-		// 					phoneNumber: item ? item.phoneNumber: "Chưa cập nhật",
-		// 					memberCount: item ? item.memberCount: "Chưa cập nhật",
-		// 					population: item ? item.population: "Chưa cập nhật",
-		// 					_arrMasseses: this.handleMasses(items),
-		// 				}
-		// 			}).ToArray();
-		// 		}
-		// 		this.dataLists = items;
-		// 		this.loading = false;
-		// 	}
-		// })
-		let options = {
-			filter: this.getFilter()
+		let restrictions = [
+			// 	{
+			// 	"key": "status",
+			// 	"value": "duong_nhiem"
+			// }
+		];
+		if (this.data) {
+			if (this.data.groupID && this.data.groupID != 'all') {
+				restrictions.push({
+					"key": "GroupId",
+					"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
+				})
+			}
+			if (this.data.position && this.data.position != 'all') {
+				restrictions.push({
+					"key": "name",
+					"value": this.data.position && this.data.position != 'all' ? this.data.position : ""
+				})
+			}
+			if (this.data.position && this.data.position != 'all') {
+				restrictions.push({
+					"key": "masses",
+					"value": this.data.masses ? this.data.masses : null
+				})
+			}
 		}
-		this.dataLists = [];
+		let options = {
+			"page": 1,
+			"pageSize": 100,
+			"restrictions": restrictions,
+			"sorts": [
+				{
+					"key": "name",
+					"sortType": "asc"
+				}
+			]
+		}
 		this.loading = true;
-		this.service.getOrganizations(options).pipe(take(1)).subscribe({
+		this.dataLists = [];
+		// this.cacheDataLists = [];
+		this.service.searchOrganizations(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				let items = []
-				if (res && res.value && res.value.length > 0) {
-					items = res.value;
-					for (let item of items) {
-						this.updateMassesesToOrg(item);
+				let items = [];
+				if (res && res.results && res.results.length > 0) {
+					for (let item of res.results) {
+						item.time = item.massTime;
+						item.code = item.massCode;
+						item.id = item.orgID;
+						// this.updateMassesesToOrg(item);
 						if (item.photo) {
 							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
 						}
@@ -173,11 +144,50 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 							item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
 						}
 					}
+					items = this.linq.Enumerable().From(res.results).GroupBy("$.name", null, (key: any, data: any) => {
+						let _key = this.isNullOrEmpty(key) ? 'empty' : key;
+						let item = data.source[0];
+						let items = data.source ? this.handleMasseses(data.source.filter(it => !this.isNullOrEmpty(it.time))) : [];
+						return {
+							id: item.orgID,
+							pictureUrl: item.pictureUrl,
+							name: _key,
+							address: item ? item.address : "Chưa cập nhật",
+							phoneNumber: item ? item.phoneNumber : "Chưa cập nhật",
+							memberCount: item ? item.memberCount : "Chưa cập nhật",
+							population: item ? item.population : "Chưa cập nhật",
+							arrMasseses: this.handleMasses(items),
+						}
+					}).ToArray();
 				}
 				this.dataLists = items;
 				this.loading = false;
 			}
 		})
+		// let options = {
+		// 	filter: this.getFilter()
+		// }
+		// this.dataLists = [];
+		// this.loading = true;
+		// this.service.getOrganizations(options).pipe(take(1)).subscribe({
+		// 	next: (res: any) => {
+		// 		let items = []
+		// 		if (res && res.value && res.value.length > 0) {
+		// 			items = res.value;
+		// 			for (let item of items) {
+		// 				this.updateMassesesToOrg(item);
+		// 				if (item.photo) {
+		// 					item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+		// 				}
+		// 				else {
+		// 					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
+		// 				}
+		// 			}
+		// 		}
+		// 		this.dataLists = items;
+		// 		this.loading = false;
+		// 	}
+		// })
 	}
 
 	updateMassesesToOrg(item: any) {
@@ -226,7 +236,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 				if (itemValue[key].length > 0) {
 					let dataItems = this.linq.Enumerable().From(itemValue[key]).OrderBy("$.order").ToArray();
 					value.push({
-						name: itemValue[key][0].name,
+						name: itemValue[key][0].code,
 						data: dataItems.map(it => it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : "").join(", ")
 					})
 				}
