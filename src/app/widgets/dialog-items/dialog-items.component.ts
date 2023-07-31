@@ -47,11 +47,11 @@ export class DialogItemsComponent extends SimpleBaseComponent {
 	}
 
 	getPositions() {
-		// let options = {
-		// 	filter: "type eq 'giao_xu'"
-		// }
+		let options = {
+			filter: "contains(level, 'giao_xu')"
+		}
 		this.positionList = [];
-		this.service.getPositions().pipe(take(1)).subscribe({
+		this.service.getPositions(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let items = []
 				if (res && res.value && res.value.length > 0) {
