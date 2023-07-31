@@ -65,6 +65,10 @@ export class PageService {
 		return this.service.postRequestBaseUrl(baseUrl, null, params).pipe(catchError(error => this.handleError('getDataItems', error)));
 	}
 
+	getSaints(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/saints';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getSaints', error)));
+	}
 	
 	getParablesDaily(options?: any): Observable<any> {
 		let baseUrl = this.rootAPIAdmin + '/daily-parables';

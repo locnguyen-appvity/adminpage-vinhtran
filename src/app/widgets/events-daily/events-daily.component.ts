@@ -3,13 +3,11 @@ import { FormControl } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { Moment } from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Observable, debounceTime, take, takeUntil, timer } from 'rxjs';
+import { Observable, take, takeUntil } from 'rxjs';
 import { PageService } from 'src/app/page/page.service';
 import { CommonUtility } from 'src/app/shared/common.utility';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
-import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({

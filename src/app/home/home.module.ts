@@ -13,6 +13,7 @@ import { PostsListBannerModule } from '../widgets/posts-list-banner/posts-list-b
 import { SearchControlModule } from '../widgets/search-control/search-control.module';
 import { SearchOrganizationsModule } from '../widgets/search-organizations/search-organizations.module';
 import { EventsDailyModule } from '../widgets/events-daily/events-daily.module';
+import { SaintsDailyModule } from '../widgets/saints-daily/saints-daily.module';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { EventsDailyModule } from '../widgets/events-daily/events-daily.module';
 		PostsListBannerModule,
 		SearchControlModule,
 		SearchOrganizationsModule,
-		EventsDailyModule
+		EventsDailyModule,
+		SaintsDailyModule
 	]
 })
 export class HomeModule {

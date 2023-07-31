@@ -1,0 +1,17 @@
+.notifications-list-container {
+    h2 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.4;
+        color: #333;
+        margin: 0 0 8px;
+    }
+    .mg-list-item {
+        .list-item-title {
+            color: #00bb27;
+        }
+    }
+    .mat-divider {
+        border-top-color: #333;
+    }
+}
