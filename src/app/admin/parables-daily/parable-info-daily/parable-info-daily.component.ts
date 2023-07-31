@@ -143,7 +143,7 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
             "quotation": valueForm.quotation,
             "parableID": valueForm.parableID,
             "date": valueForm.date,
-            "status": valueForm.status,
+            "status": valueForm.status ? 'active' : 'inactive',
         }
 
         if (this.target == 'edit') {
@@ -163,11 +163,11 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
     }
 
     onSelectItem(event: any, target: string) {
-		if (target == "parableID") {
-			this.dataItemGroup.get("code").setValue(event ? event.quotation : "");
-			this.dataItemGroup.get("parableID").setValue(event ? event.id : "");
-		}
-	}
+        if (target == "parableID") {
+            this.dataItemGroup.get("code").setValue(event ? event.quotation : "");
+            this.dataItemGroup.get("parableID").setValue(event ? event.id : "");
+        }
+    }
 
     getParables() {
         return new Observable(obs => {
