@@ -1,7 +1,7 @@
 <div class="container-xl">
     <div class="result-list-container-search">
         <ng-container *ngIf="loading; else temfData">
-            <div fxLayout="row" fxLayoutAlign="center center" class="full-height">
+            <div fxLayout="row" fxLayoutAlign="center center" class="list-viewport">
                 <mat-spinner [diameter]="40"></mat-spinner>
             </div>
         </ng-container>
@@ -9,8 +9,7 @@
             <div *ngIf="dataLists?.length == 0" fxLayout="row" fxLayoutAlign="center center">
                 <p>Không có dữ liệu.</p>
             </div>
-            <cdk-virtual-scroll-viewport itemSize="248" minBufferPx="0" maxBufferPx="0" class="list-viewport"
-                [ngClass]="{'list-viewport-no-data': dataLists?.length == 0 ? true : false}">
+            <cdk-virtual-scroll-viewport itemSize="248" minBufferPx="0" maxBufferPx="0" class="list-viewport">
                 <ng-container *cdkVirtualFor="let item of dataLists; let i=index;">
                     <div class="item-result" [ngClass]="{'last-item': i==dataLists?.length -1}" [positionList]="positionList" updateAnniversariesClergy [itemAnniversaries]="item" updatePositionClergy [itemPosition]="item">
                         <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="12">

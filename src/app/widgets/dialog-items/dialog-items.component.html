@@ -1,4 +1,10 @@
-<h2 mat-dialog-title>{{title}}</h2>
+<div style="padding-left: 24px;padding-right: 24px;" fxLayout="row">
+	<h2>{{title}}</h2>
+	<span fxFlex></span>
+	<button mat-icon-button (click)="closeDialog()" color="warn" matTooltip="Đóng">
+		<mat-icon svgIcon="ic_close_48px"></mat-icon>
+	</button>
+</div>
 <mat-dialog-content>
 	<div class="search-list-container container-fluid mrl-12 mrr-12">
 		<div class="container-xl">
@@ -21,8 +27,8 @@
 	</div>
 	<app-search-organizations [title]="''" [data]="data" *ngIf="target == 'organizations'"></app-search-organizations>
 	<app-search-clergys [title]="''" [target]="'clergys'" [data]="data" *ngIf="target == 'clergys'"></app-search-clergys>
-	<div class="btn-dialog-actions mrt-12" fxLayout="row" fxLayoutAlign="start center">
+	<!-- <div class="btn-dialog-actions mrt-12" fxLayout="row" fxLayoutAlign="start center">
 		<span fxFlex></span>
 		<button mat-flat-button (click)="closeDialog()" color="primary">Đóng</button>
-	</div>
+	</div> -->
 </mat-dialog-content>
