@@ -1,19 +1,24 @@
 <div class="container-fluid events-daily-container">
     <div class="container-xl">
         <div class="events-daily-wrap">
-            <owl-carousel-o [options]="customOptions" (changed)="getData($event)">
+            <ng-container *ngIf="spinnerLoading">
+                <div class="item-review item-review--spinner">
+                    <mat-spinner [diameter]="40"></mat-spinner>
+                </div>
+            </ng-container>
+            <owl-carousel-o #carouselSlide [options]="customOptions">
                 <ng-container *ngFor="let item of dataItems">
                     <ng-template carouselSlide [id]="item.id">
-                        <figure class="item-review figure">
+                        <figure *ngIf="!spinnerLoading" class="item-review figure">
                             <div class="figure-header">
-                                <h2 class="title">{{item.dayTilte}}</h2>
-                                <h3 class="date">{{item.dateView}}</h3>
-                                <span class="quotation">{{item.quotation}}</span>
+                                <h2 class="title">{{dateView[currentIndex]?.dayTilte}}</h2>
+                                <h3 class="date">{{dateView[currentIndex].dateView}}</h3>
+                                <span class="quotation">{{parablesView[currentIndex].code}}</span>
                             </div>
                             <figcaption class="figure-caption">
                                 <mat-icon class="icon-quote" svgIcon="icon_quote"></mat-icon>
                                 <div class="description">
-                                    <p class="metaDescription">{{item.metaDescription}}</p>
+                                    <p class="metaDescription">{{parablesView[currentIndex].quotation}}</p>
                                 </div>
                                 <a class="more">Xem chi tiết</a>
                             </figcaption>
@@ -33,5 +38,17 @@
                 </ng-container>
             </owl-carousel-o>
         </div>
+    </div>
+    <div class="button-actions">
+        <button [disabled]="spinnerLoading" (click)="carouselSlide.prev();onPrev()" mat-icon-button>
+            <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+        </button>
+        <input (click)="picker.open()" [matDatepicker]="picker" readonly [formControl]="dateControl" class="input-date"
+            type="text" placeholder="Nhập tên">
+        <!-- <input (click)="picker.open()" [matDatepicker]="picker" placeholder="DD/MM/YYYY" autocomplete="off" [formControl]="dateControl"> -->
+        <mat-datepicker #picker></mat-datepicker>
+        <button [disabled]="spinnerLoading" (click)="carouselSlide.next();onNext()" mat-icon-button>
+            <mat-icon style="transform: rotate(180deg);" svgIcon="ic_arrow_back_48dp"></mat-icon>
+        </button>
     </div>
 </div>

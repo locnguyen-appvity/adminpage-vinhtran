@@ -79,7 +79,7 @@ export class PostInfoComponent extends SimpleBaseComponent implements OnInit {
 			slideId: "",
 			catalogueId: "",
 			categoryIds: [],
-			eventDate: "",
+			eventDate: this.sharedService.moment(),
 			eventTime: "",
 			locationId: '',
 			locationType: '',

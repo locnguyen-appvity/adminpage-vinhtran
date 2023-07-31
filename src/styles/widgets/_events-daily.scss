@@ -33,7 +33,7 @@
                 font-size: 16px;
                 font-weight: 600;
                 color: #9e0533;
-                &.rip{
+                &.rip {
                     color: #590161;
                 }
             }
@@ -72,7 +72,7 @@
                 font-weight: 600;
                 color: rgb(0, 68, 255);
                 position: absolute;
-                top: 90%;
+                top: 100%;
                 right: 24px;
             }
             .icon-quote {
@@ -86,7 +86,9 @@
         }
     }
     .item-review {
+        min-height: 400px;
         .figure-header {
+            width: 100%;
             margin: 0;
             h2 {
                 font-size: 24px;
@@ -112,6 +114,30 @@
                 line-height: 1.4;
                 margin: 0;
             }
+        }
+        &--spinner {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .button-actions {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+        padding-left: 16px;
+        padding-right: 16px;
+        .input-date {
+            border: none !important;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 12px;
         }
     }
 }

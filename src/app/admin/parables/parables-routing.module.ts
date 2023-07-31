@@ -7,15 +7,15 @@ const myAccountRoutes: Routes = [
 		path: '', component: ParablesComponent,
 		children: [
 			{
-				path: 'parables-list',
+				path: 'list',
 				loadChildren: () => import('./parables-list/parables-list.module').then(m => m.ParableListModule)
 			},
 			{
-				path: 'parable-info',
+				path: 'info',
 				loadChildren: () => import('./parable-info/parable-info.module').then(m => m.ParableInfoModule)
 			},
 			{
-				path: 'parable-info/:id',
+				path: 'info/:id',
 				loadChildren: () => import('./parable-info/parable-info.module').then(m => m.ParableInfoModule)
 			},
 			// {

@@ -15,4 +15,26 @@ export module CommonUtility {
         }
         return null;
     }
+
+    export function convertDayEngToVi(day: string) {
+		let key = day ? day.toLocaleLowerCase() : "";
+		switch (key) {
+			case 'monday':
+				return "Thứ hai"
+			case 'tuesday':
+				return "Thứ ba"
+			case 'wednesday':
+				return "Thứ tư"
+			case 'thursday':
+				return "Thứ năm"
+			case 'friday':
+				return "Thứ sáu"
+			case 'saturday':
+				return "Thứ bảy"
+			case 'sunday':
+				return "Chúa Nhật"
+			default:
+				return day;
+		}
+	}
 }

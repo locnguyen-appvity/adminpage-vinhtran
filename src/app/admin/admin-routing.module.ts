@@ -28,8 +28,16 @@ const routes: Routes = [
 			  loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule)
 			},
 			{
-			  path: 'parables',
+			  path: 'tu_ngu_kinh_thanh',
 			  loadChildren: () => import('./parables/parables.module').then(m => m.ParablesModule)
+			},
+			{
+			  path: 'loi_chua',
+			  loadChildren: () => import('./parables/parables.module').then(m => m.ParablesModule)
+			},
+			{
+			  path: 'parables-daily',
+			  loadChildren: () => import('./parables-daily/parables-daily.module').then(m => m.ParablesDailyModule)
 			},
 			{
 			  path: 'contemplations',

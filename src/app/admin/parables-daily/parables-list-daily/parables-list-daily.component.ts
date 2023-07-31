@@ -10,17 +10,16 @@ import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
+import { ParableInfoDailyComponent } from '../parable-info-daily/parable-info-daily.component';
 
 @Component({
-	selector: 'app-parables-list',
-	templateUrl: './parables-list.component.html',
-	styleUrls: ['./parables-list.component.scss']
+	selector: 'app-parables-list-daily',
+	templateUrl: './parables-list-daily.component.html',
+	styleUrls: ['./parables-list-daily.component.scss']
 })
-export class ParableListComponent extends TemplateGridApplicationComponent {
+export class ParableListDailyComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
-	public type: string = "loi_chua";
-
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -33,14 +32,11 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
-		if (this.router.url.includes("tu_ngu_kinh_thanh")) {
-			this.type = "tu_ngu_kinh_thanh";
-		}
 		this.getDataGridAndCounterApplications();
 	}
 
 	getFilter() {
-		let filter = `type eq '${this.type}'`;
+		let filter = '';
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -72,7 +68,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getParables(options).pipe(take(1)).subscribe({
+		this.service.getParablesDaily(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
 				if (res && res.value) {
@@ -80,10 +76,13 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
 						this.updateStatus(item);
-						this.updateType(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+						}
+						if (item.date) {
+							item._date = this.sharedService.convertDateStringToMoment(item.date, this.offset);
+							item.dateView = item._date.format('DD/MM/YYYY hh:mm A');
 						}
 					}
 				}
@@ -93,17 +92,6 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 				this.dataProcessing = false;
 			}
 		})
-	}
-
-	updateType(item: any) {
-		switch (item.type) {
-			case 'tu_ngu_kinh_thanh':
-				item.typeView = "Từ Ngữ Kinh Thánh";
-				break;
-			default:
-				item.typeView = "Lời Chúa"
-				break;
-		}
 	}
 
 	updateStatus(item: any) {
@@ -145,9 +133,9 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	//thiếu status
 	// }
 
-	getRowSelected(item: any) {
-		this.router.navigate([`/admin/${item.type}/info/${item.id}`]);
-	}
+	// getRowSelected(item: any) {
+	// 	this.router.navigate([`/admin/parables-daily/info/${item.id}`]);
+	// }
 
 	getAvatar(dataItem: any) {
 		if (this.isNullOrEmpty(dataItem.id)) {
@@ -164,7 +152,52 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	}
 
 	addItem() {
-		this.router.navigate([`/admin/${this.type}/info`]);
+		let config: any = {};
+		config.data = {
+			target: 'add'
+		};
+		this.openFormDialog(config, 'add');
+	}
+
+	deleteItem(item: any) {
+
+	}
+
+	getRowSelected(item: any) {
+		let config: any = {};
+		config.data = {
+			target: 'edit',
+			item: item
+		};
+		this.openFormDialog(config, 'edit');
+	}
+
+	openFormDialog(config: any, target: string) {
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-l';
+		config.maxWidth = '80vw';
+		config.autoFocus = true;
+		let dialogRef = this.dialog.open(ParableInfoDailyComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				let snackbarData: any = {
+					key: ''
+				};
+				if (res === 'OK') {
+					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = target === 'edit' ? 'Sửa Tag Thành Công' : 'Thêm Tag Thành Công';
+					this.showInfoSnackbar(snackbarData);
+					if (target == 'edit') {
+					}
+					else {
+					}
+					this.getDataGridAndCounterApplications();
+				}
+				else if (res === 'Deleted') {
+					this.getDataGridAndCounterApplications();
+				}
+			}
+		});
 	}
 
 	onUpdateStatus(item: any, status: string) {
@@ -172,7 +205,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 			status: status
 		}
 		this.dataProcessing = true;
-		this.service.updateParable(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.service.updateParableDaily(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				let snackbarData: any = {
 					key: 'saved-item',
@@ -188,7 +221,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 
 	onDelete(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteParable(item.id).pipe(take(1)).subscribe({
+		this.service.deleteParableDaily(item.id).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -203,7 +236,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'type', 'created', 'visit', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'name', 'code', 'quotation', 'date', 'created', 'moreActions'];
 	}
 
 }

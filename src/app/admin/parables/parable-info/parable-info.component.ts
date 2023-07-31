@@ -39,6 +39,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 	}
 	public arrAuthors$: Observable<any>;
 	private fileSelected: any;
+	public type: string = "loi_chua";
 
 	constructor(
 		private service: SharedService,
@@ -51,12 +52,15 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 	) {
 		super(sharedService);
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
+		if (this.router.url.includes("tu_ngu_kinh_thanh")) {
+			this.type = "tu_ngu_kinh_thanh";
+		}
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getParable();
 		}
 		this.parableFormGroup = this.fb.group({
 			title: "",
-			type: "loi_chua",
+			type: this.type,
 			link: "",
 			metaDescription: "",
 			quotation: "",
@@ -96,7 +100,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 	}
 
 	routeToBack() {
-		this.router.navigate(['/admin/parables/parables-list']);
+		this.router.navigate([`/admin/${this.type}/list`]);
 	}
 
 	getAllData() {
@@ -187,7 +191,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 
 
 	onCancel() {
-		this.router.navigate(['/admin/parables/parables-list']);
+		this.router.navigate([`/admin/${this.type}/list`]);
 	}
 
 	onSave(status: string) {
@@ -219,7 +223,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 					message: 'Lưu Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.router.navigate(['/admin/parables/parables-list']);
+				this.router.navigate([`/admin/${this.type}/list`]);
 			}
 		})
 	}
