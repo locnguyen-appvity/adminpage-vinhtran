@@ -111,7 +111,7 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive'
 		}
 		this.saveAction = 'save';
-		if (this.target == 'edit') {
+		if (!this.isNullOrEmpty(this.ID)) {
 			this.dataProcessing = true;
 			this.service.updateSaint(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
 				this.dataProcessing = false;

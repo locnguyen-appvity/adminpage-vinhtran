@@ -21,7 +21,7 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
-                            <input placeholder="Tìm Thánh theo tên" type="text" [readonly]="spinerLoading"
+                            <input placeholder="Tìm Thánh theo tên hoặc ngày mừng lễ" type="text" [readonly]="spinerLoading"
                                 [formControl]="txtSearch">
                         </div>
                     </div>
@@ -65,7 +65,8 @@
                                 <mat-icon mat-list-icon
                                     [ngClass]="{'active': data.status === 'active', 'inactive': data.status === 'inactive'}"
                                     [matTooltip]="data.statusTooltip" [svgIcon]="data.statusIcon"></mat-icon>
-                                <h4 mat-line>{{data.name}}</h4>
+                                <h4 mat-line>Thánh {{data.name}}</h4>
+                                <p mat-line>Ngày lễ: {{data.anniversary}}</p>
                                 <span fxFlex></span>
                                 <!-- <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon> -->
                                 <button mat-icon-button matTooltip="Sửa" (click)="onChangeData(data)">

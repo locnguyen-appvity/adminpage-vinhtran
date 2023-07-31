@@ -9,9 +9,9 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-    selector: 'app-parable-info-daily',
-    templateUrl: './parable-info-daily.component.html',
-    styleUrls: ['./parable-info-daily.component.scss'],
+    selector: 'app-schedule-events-info',
+    templateUrl: './schedule-events-info.component.html',
+    styleUrls: ['./schedule-events-info.component.scss'],
     providers: [
         {
             provide: DateAdapter,
@@ -23,7 +23,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
         }
     ]
 })
-export class ParableInfoDailyComponent extends SimpleBaseComponent {
+export class ScheduleEventInfoComponent extends SimpleBaseComponent {
 
     public title: string = 'Thêm';
     public textSave: string = 'Thêm';
@@ -40,7 +40,7 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
         private service: SharedService,
-        public dialogRef: MatDialogRef<ParableInfoDailyComponent>,
+        public dialogRef: MatDialogRef<ScheduleEventInfoComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
         super(sharedService);
 
@@ -67,9 +67,9 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
                 this.hasChangedGroup = true;
             // }
         })
-        // this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
-        //     this.dataItemGroup.get('noMark').setValue(this.sharedService.getLinkOfName(name));
-        // })
+        this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
+            this.dataItemGroup.get('noMark').setValue(this.sharedService.getLinkOfName(name));
+        })
         this.getAllData()
     }
 
@@ -131,7 +131,7 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
 
     deleteItem() {
         this.dataProcessing = true;
-        this.service.deleteParableDaily(this.ID).pipe(take(1)).subscribe(() => {
+        this.service.deleteScheduleEvent(this.ID).pipe(take(1)).subscribe(() => {
             this.dataProcessing = false;
             this.dialogRef.close('Deleted');
         })
@@ -151,14 +151,14 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
 
         if (this.target == 'edit') {
             this.dataProcessing = true;
-            this.service.updateParableDaily(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
+            this.service.updateScheduleEvent(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
                 this.dataProcessing = false;
                 this.dialogRef.close('OK');
             })
         }
         else {
             this.dataProcessing = true;
-            this.service.createParableDaily(dataJSON).pipe(take(1)).subscribe(() => {
+            this.service.createScheduleEvent(dataJSON).pipe(take(1)).subscribe(() => {
                 this.dataProcessing = false;
                 this.dialogRef.close('OK');
             })

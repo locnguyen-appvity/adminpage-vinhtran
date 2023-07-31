@@ -68,7 +68,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 
 	onSelectItem(event: any, target: string) {
 		if (target == "entityID") {
-			this.dataItemGroup.get("entityType").setValue(event ? event.type : "");
+			this.dataItemGroup.get("entityType").setValue(event ? event._type : "");
 		}
 	}
 
@@ -81,6 +81,9 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
+					for(let item of res.value){
+						item._type = "group";
+					}
 					this.groupsList = res.value;
 				}
 			}

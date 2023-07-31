@@ -10,14 +10,14 @@ import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
-import { ParableInfoDailyComponent } from '../parable-info-daily/parable-info-daily.component';
+import { ScheduleEventInfoComponent } from '../schedule-events-info/schedule-events-info.component';
 
 @Component({
-	selector: 'app-parables-list-daily',
-	templateUrl: './parables-list-daily.component.html',
-	styleUrls: ['./parables-list-daily.component.scss']
+	selector: 'app-schedule-events-list',
+	templateUrl: './schedule-events-list.component.html',
+	styleUrls: ['./schedule-events-list.component.scss']
 })
-export class ParableListDailyComponent extends TemplateGridApplicationComponent {
+export class ScheduleEventsListComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
 	constructor(
@@ -61,14 +61,14 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
-			sort: 'date desc',
+			// sort: 'date desc',
 			// page: this.currentPageIndex + 1,
 			// pageSize: this.pageSize,
 			filter: filter
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getParablesDaily(options).pipe(take(1)).subscribe({
+		this.service.getScheduleEvents(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
 				if (res && res.value) {
@@ -177,7 +177,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(ParableInfoDailyComponent, config);
+		let dialogRef = this.dialog.open(ScheduleEventInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -205,7 +205,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 			status: status
 		}
 		this.dataProcessing = true;
-		this.service.updateParableDaily(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.service.updateScheduleEvent(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				let snackbarData: any = {
 					key: 'saved-item',
@@ -221,7 +221,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 
 	onDelete(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteParableDaily(item.id).pipe(take(1)).subscribe({
+		this.service.deleteScheduleEvent(item.id).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {

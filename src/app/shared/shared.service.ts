@@ -405,6 +405,32 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteParableDaily', error)));
 	}
 
+	//ScheduleEvents
+	getScheduleEvents(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/schedule-events';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getScheduleEvents', error)));
+	}
+
+	getScheduleEvent(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/schedule-events';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getScheduleEvent', error)));
+	}
+
+	createScheduleEvent(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/schedule-events`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createScheduleEvent', error)));
+	}
+
+	updateScheduleEvent(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/schedule-events`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateScheduleEvent', error)));
+	}
+
+	deleteScheduleEvent(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/schedule-events`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteParableDaily', error)));
+	}
+
 	//contemplations
 	getContemplations(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/contemplations';

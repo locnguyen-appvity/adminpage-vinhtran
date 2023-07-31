@@ -22,12 +22,28 @@ export class SaintsComponent extends ListItemBaseComponent {
 		this.getDataItems();
 	}
 
+	getFilter() {
+		let filter = '';
+		if (!this.isNullOrEmpty(this.searchValue)) {
+			let quick = this.searchValue.replace("'", "`");
+			quick = this.sharedService.handleODataSpecialCharacters(quick);
+			let quickSearch = `contains(tolower(${this.searchKey}), tolower('${quick}')) or contains(tolower(anniversary), tolower('${quick}'))`;
+			if (this.isNullOrEmpty(filter)) {
+				filter = quickSearch;
+			}
+			else {
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		return filter;
+	}
+
 	getDataItems() {
 		this.spinerLoading = true;
 		let options = {
 			filter: this.getFilter(),
 			sort: 'name asc',
-			select: 'abbreviation,code,anniversary,description,name,subtitle,status,content'
+			// select: 'id,abbreviation,code,anniversary,description,name,subtitle,status,content'
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe((res: any) => {
 			this.arrData = [];

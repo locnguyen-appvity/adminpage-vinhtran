@@ -18,8 +18,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button mat-icon-button matTooltip="Thêm" aria-label="Thêm"
-                            [disabled]="dataProcessing" (click)="addItem()">
+                        <button mat-icon-button matTooltip="Thêm" aria-label="Thêm" [disabled]="dataProcessing"
+                            (click)="addItem()">
                             <mat-icon class="material-icons" svgIcon="ic_create_48px"></mat-icon>
                         </button>
                         <button mat-icon-button matTooltip="Lọc" (click)="filter.toggle()" aria-label="Lọc">
@@ -82,7 +82,7 @@
 
                             <!-- Photo/Avatar Column -->
                             <ng-container matColumnDef="photo">
-                                <th mat-header-cell *matHeaderCellDef > Photo </th>
+                                <th mat-header-cell *matHeaderCellDef> Photo </th>
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
@@ -92,7 +92,7 @@
                                                     matTooltip="User Select" class="se-avatar" />
                                             </ng-container>
                                             <ng-template #defaultAvatar>
-                                                <span class="avatar-name avatar-name--36">{{element?.title |
+                                                <span class="avatar-name avatar-name--36">{{element?.name |
                                                     initialsName}}</span>
                                             </ng-template>
                                         </div>
@@ -100,9 +100,9 @@
                                 </td>
                             </ng-container>
 
-                             <!-- Status Column -->
-                             <ng-container matColumnDef="status">
-                                <th mat-header-cell *matHeaderCellDef > Trạng Thái </th>
+                            <!-- Status Column -->
+                            <ng-container matColumnDef="status">
+                                <th mat-header-cell *matHeaderCellDef> Trạng Thái </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     <div style="height: 100%;" fxLayout="row" fxLayoutAlign="center center">
                                         <div [ngClass]="dataItem.statusClass">
@@ -115,33 +115,41 @@
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="title">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tiêu Đề </th>
-                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.title" [matTooltipDisabled]="!(dataItem?.title?.length > 85)">
-                                    {{dataItem.title | truncate: 85}}
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu Đề </th>
+                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.name"
+                                    [matTooltipDisabled]="!(dataItem?.name?.length > 85)">
+                                    {{dataItem.name | truncate: 85}}
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="code">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mã </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.code}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="quotation">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Mã </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Mô tả </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.quotation}}
                                 </td>
                             </ng-container>
 
+                            <ng-container matColumnDef="date">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày </th>
+                                <td mat-cell *matCellDef="let dataItem">
+                                    {{dataItem.dateView}}
+                                </td>
+                            </ng-container>
+
                             <ng-container matColumnDef="created">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Ngày Tạo </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày Tạo </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.createdView}}
                                 </td>
                             </ng-container>
-
-                            <!-- <ng-container matColumnDef="visit">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Lượt Xem </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.visit}}
-                                </td>
-                            </ng-container> -->
 
                             <!-- Status Column -->
                             <!-- <ng-container matColumnDef="status">
@@ -177,14 +185,14 @@
                                         <mat-icon class="material-icons" svgIcon="ic_more_vert_48px"></mat-icon>
                                     </button>
                                     <mat-menu #actionsMenu="matMenu" [overlapTrigger]="overlapTrigger">
-                                        <button mat-menu-item *ngIf="element.status !== 'inactive'" [disabled]="dataProcessing"
-                                            (click)="onUpdateStatus(element,'inactive')">
+                                        <button mat-menu-item *ngIf="element.status !== 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'inactive')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_off"></mat-icon>
                                             <span>Tạm Ẩn</span>
                                         </button>
 
-                                        <button mat-menu-item *ngIf="element.status == 'inactive'" [disabled]="dataProcessing"
-                                            (click)="onUpdateStatus(element,'active')">
+                                        <button mat-menu-item *ngIf="element.status == 'inactive'"
+                                            [disabled]="dataProcessing" (click)="onUpdateStatus(element,'active')">
                                             <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                                             <span>Mở Lại</span>
                                         </button>

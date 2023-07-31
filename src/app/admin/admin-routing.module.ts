@@ -40,6 +40,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./parables-daily/parables-daily.module').then(m => m.ParablesDailyModule)
 			},
 			{
+			  path: 'schedule-events',
+			  loadChildren: () => import('./schedule-events/schedule-events.module').then(m => m.ScheduleEventsModule)
+			},
+			{
 			  path: 'contemplations',
 			  loadChildren: () => import('./contemplations/contemplations.module').then(m => m.ContemplationsModule)
 			},

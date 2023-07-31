@@ -203,7 +203,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'title', 'type', 'created', 'visit', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'status', 'quotation', 'title', 'created', 'moreActions'];
 	}
 
 }
