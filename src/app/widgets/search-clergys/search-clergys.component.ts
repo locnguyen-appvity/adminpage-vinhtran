@@ -54,19 +54,19 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		if (this.data) {
 			if (this.data.groupID && this.data.groupID != 'all') {
 				restrictions.push({
-					"key": "GroupId",
+					"key": "groupID",
 					"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
 				})
 			}
 			if (this.data.position && this.data.position != 'all') {
 				restrictions.push({
-					"key": "Position",
+					"key": "position",
 					"value": this.data.position && this.data.position != 'all' ? this.data.position : "	"
 				})
 			}
 			if (this.data.name) {
 				restrictions.push({
-					"key": "name",
+					"key": "clergyName",
 					"value": this.data.name ? this.data.name : "	"
 				})
 			}

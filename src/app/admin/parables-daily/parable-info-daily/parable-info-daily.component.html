@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}} Tag</h2>
+<h2 mat-dialog-title>{{title}} Lời Chúa Hằng Ngày</h2>
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
@@ -11,7 +11,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Lời Chúa</mat-label>
                     <se-autocomplete-simple [required]="false" [formControlName]="'_parableID'" [optgroup]="false"
-                        [placeHolder]="'Nhập Tag'" [keyTitle]="'quotation'" [keyValue]="'id'" [autocomplete]="true"
+                        [placeHolder]="'Nhập Lời Chúa'" [keyTitle]="'quotation'" [keyValue]="'id'" [autocomplete]="true"
                         [items]="arrListParable" (onSelectItem)="onSelectItem($event,'parableID')">
                     </se-autocomplete-simple>
                 </mat-form-field>

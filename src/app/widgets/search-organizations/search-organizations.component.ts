@@ -97,19 +97,19 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 		if (this.data) {
 			if (this.data.groupID && this.data.groupID != 'all') {
 				restrictions.push({
-					"key": "GroupId",
+					"key": "GroupID",
 					"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
 				})
 			}
 			if (this.data.position && this.data.position != 'all') {
 				restrictions.push({
-					"key": "name",
+					"key": "Name",
 					"value": this.data.position && this.data.position != 'all' ? this.data.position : ""
 				})
 			}
 			if (this.data.masses) {
 				restrictions.push({
-					"key": "masses",
+					"key": "MassTime",
 					"value": this.data.masses ? this.data.masses : null
 				})
 			}
@@ -236,7 +236,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 				if (itemValue[key].length > 0) {
 					let dataItems = this.linq.Enumerable().From(itemValue[key]).OrderBy("$.order").ToArray();
 					value.push({
-						name: itemValue[key][0].code,
+						name: itemValue[key][0].massName,
 						data: dataItems.map(it => it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : "").join(", ")
 					})
 				}

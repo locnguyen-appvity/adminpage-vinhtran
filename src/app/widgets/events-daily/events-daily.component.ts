@@ -113,6 +113,7 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 	};
 
 	public spinnerLoading: boolean = false;
+	public noParables: boolean = true;
 
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -162,7 +163,8 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 	getParablesDaily() {
 		return new Observable(obs => {
 			let options = {
-				top: 1
+				top: 1,
+				filter: `date eq ${this.currentDate.format("YYYY-MM-DD")}`
 			};
 			this.service.getParablesDaily(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
@@ -239,10 +241,20 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 	}
 
 	updateParablesTitle(index: number, data: any) {
-		this.parablesView[index].quotation = data.quotation;
-		this.parablesView[index].code = data.code;
-		this.parablesView[index].name = data.name;
-		this.parablesView[index].parableID = data.parableID;
+		if (!this.isNullOrEmpty(data)) {
+			this.parablesView[index].quotation = data.quotation;
+			this.parablesView[index].code = data.code;
+			this.parablesView[index].name = data.name;
+			this.parablesView[index].parableID = data.parableID;
+			this.noParables = false;
+		}
+		else {
+			this.parablesView[index].quotation = "";
+			this.parablesView[index].code = "";
+			this.parablesView[index].name = "";
+			this.parablesView[index].parableID = "";
+			this.noParables = true;
+		}
 	}
 
 }

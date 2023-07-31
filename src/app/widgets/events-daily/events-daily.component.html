@@ -13,14 +13,20 @@
                             <div class="figure-header">
                                 <h2 class="title">{{dateView[currentIndex]?.dayTilte}}</h2>
                                 <h3 class="date">{{dateView[currentIndex].dateView}}</h3>
-                                <span class="quotation">{{parablesView[currentIndex].code}}</span>
+                                <h3 *ngIf="!noParables" class="date">{{parablesView[currentIndex].name}} (<span *ngIf="!noParables" class="quotation">{{parablesView[currentIndex].code}}</span>)</h3>
+                                
                             </div>
-                            <figcaption class="figure-caption">
+                            <figcaption *ngIf="!noParables" class="figure-caption">
                                 <mat-icon class="icon-quote" svgIcon="icon_quote"></mat-icon>
                                 <div class="description">
-                                    <p class="metaDescription">{{parablesView[currentIndex].quotation}}</p>
+                                    <p *ngIf="!noParables" class="metaDescription">{{parablesView[currentIndex].quotation}}</p>
                                 </div>
                                 <a class="more">Xem chi tiết</a>
+                            </figcaption>
+                            <figcaption *ngIf="noParables" class="figure-caption">
+                                <div class="description">
+                                    <p class="metaDescription">Chưa có dữ liệu Lời Chúa</p>
+                                </div>
                             </figcaption>
                             <div class="figure-content">
                                 <span class="title rip">Lễ giỗ</span>
