@@ -60,12 +60,12 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
         }
         this.dataItemGroup = this.buildFormGroup();
         this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-            if (this.target === 'edit') {
-                this.hasChangedGroup = this.isChangedForm(valueForm);
-            }
-            else {
+            // if (this.target === 'edit') {
+            //     this.hasChangedGroup = this.isChangedForm(valueForm);
+            // }
+            // else {
                 this.hasChangedGroup = true;
-            }
+            // }
         })
         this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
             this.dataItemGroup.get('noMark').setValue(this.sharedService.getLinkOfName(name));
@@ -98,7 +98,10 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
     buildFormGroup() {
         let status = true;
         if (this.localItem) {
-            status = this.localItem.status == 'inactive' ? true : false;
+            status = this.localItem.status == 'inactive' ? false : true;
+        }
+        if (this.localItem && this.localItem.date) {
+            this.localItem._date = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.date)
         }
         return this.fb.group({
             name: [this.localItem ? this.localItem.name : "", [Validators.required]],
@@ -106,21 +109,21 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
             quotation: this.localItem ? this.localItem.quotation : "",
             parableID: this.localItem ? this.localItem.parableID : "",
             _parableID: this.localItem ? this.localItem.parableID : "",
-            date: this.localItem ? this.localItem.date : this.sharedService.moment(),
+            date: this.localItem ? this.localItem._date : this.sharedService.moment(),
             status: status,
         })
     }
 
-    isChangedForm(valueForm: any) {
-        if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-            return true;
-        }
-        let status = this.dialogData.item.status == 1 ? true : false;
-        if (this.sharedService.isChangedValue(valueForm.status, status)) {
-            return true;
-        }
-        return false;
-    }
+    // isChangedForm(valueForm: any) {
+    //     if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
+    //         return true;
+    //     }
+    //     let status = this.dialogData.item.status == 1 ? true : false;
+    //     if (this.sharedService.isChangedValue(valueForm.status, status)) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     closeDialog() {
         this.dialogRef.close(null)
@@ -142,7 +145,7 @@ export class ParableInfoDailyComponent extends SimpleBaseComponent {
             "code": valueForm.code,
             "quotation": valueForm.quotation,
             "parableID": valueForm.parableID,
-            "date": valueForm.date,
+            "date": this.sharedService.ISOStartDay(valueForm.date),
             "status": valueForm.status ? 'active' : 'inactive',
         }
 

@@ -13,7 +13,7 @@
                             <div class="figure-header">
                                 <h2 class="title">{{dateView[currentIndex]?.dayTilte}}</h2>
                                 <h3 class="date">{{dateView[currentIndex].dateView}}</h3>
-                                <h3 *ngIf="!noParables" class="date">{{parablesView[currentIndex].name}} (<span *ngIf="!noParables" class="quotation">{{parablesView[currentIndex].code}}</span>)</h3>
+                                <h3 *ngIf="!noParables" class="quotation">{{parablesView[currentIndex].name}} ({{parablesView[currentIndex].code}})</h3>
                                 
                             </div>
                             <figcaption *ngIf="!noParables" class="figure-caption">

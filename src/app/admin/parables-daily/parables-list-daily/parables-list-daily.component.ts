@@ -61,7 +61,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
-			sort: 'created desc',
+			sort: 'date desc',
 			// page: this.currentPageIndex + 1,
 			// pageSize: this.pageSize,
 			filter: filter
