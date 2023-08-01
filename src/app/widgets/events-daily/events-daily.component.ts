@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { Moment } from 'moment';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { Observable, take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 import { PageService } from 'src/app/page/page.service';
 import { CommonUtility } from 'src/app/shared/common.utility';
 import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.customadapter';
@@ -112,6 +112,7 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 
 	public spinnerLoading: boolean = false;
 	public noParables: boolean = true;
+	public anniversaries: any[] = [];
 
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -123,13 +124,13 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 			this.unsubscribe['change-date'].unsubscribe();
 		}
 		this.spinnerLoading = true;
-		this.unsubscribe['change-date'] = this.getParablesDaily().pipe(take(1)).subscribe({
-			next: (item: any) => {
+		this.unsubscribe['change-date'] = forkJoin({ getParablesDaily: this.getParablesDaily(), getAnniversaries: this.getAnniversaries() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
 				if (this.unsubscribe['change-date']) {
 					this.unsubscribe['change-date'].unsubscribe();
 				}
 				this.updateDateTitle(this.currentDate, this.currentIndex);
-				this.updateParablesTitle(this.currentIndex, item);
+				this.updateParablesTitle(this.currentIndex, res.getParablesDaily);
 				this.spinnerLoading = false;
 			}
 		})
@@ -143,13 +144,13 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 						this.unsubscribe['change-date'].unsubscribe();
 					}
 					this.spinnerLoading = true;
-					this.unsubscribe['change-date'] = this.getParablesDaily().pipe(take(1)).subscribe({
-						next: (item: any) => {
+					this.unsubscribe['change-date'] = forkJoin({ getParablesDaily: this.getParablesDaily(), getAnniversaries: this.getAnniversaries() }).pipe(take(1)).subscribe({
+						next: (res: any) => {
 							if (this.unsubscribe['change-date']) {
 								this.unsubscribe['change-date'].unsubscribe();
 							}
 							this.updateDateTitle(this.currentDate, this.currentIndex);
-							this.updateParablesTitle(this.currentIndex, item);
+							this.updateParablesTitle(this.currentIndex, res.getParablesDaily);
 							this.spinnerLoading = false;
 						}
 					})
@@ -168,11 +169,15 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 				next: (res: any) => {
 					let item;
 					if (res && res.value && res.value[0]) {
+						this.noParables = false;
 						item = res.value[0];
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 						}
+					}
+					else {
+						this.noParables = true;
 					}
 					obs.next(item);
 					obs.complete();
@@ -189,8 +194,8 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 		}
 		this.dateControl.setValue(this.currentDate);
 		this.spinnerLoading = true;
-		this.unsubscribe['change-date'] = this.getParablesDaily().pipe(take(1)).subscribe({
-			next: (item: any) => {
+		this.unsubscribe['change-date'] = forkJoin({ getParablesDaily: this.getParablesDaily(), getAnniversaries: this.getAnniversaries() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
 				if (this.unsubscribe['change-date']) {
 					this.unsubscribe['change-date'].unsubscribe();
 				}
@@ -201,7 +206,7 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 					this.currentIndex--;
 				}
 				this.updateDateTitle(this.currentDate, this.currentIndex);
-				this.updateParablesTitle(this.currentIndex, item);
+				this.updateParablesTitle(this.currentIndex, res.getParablesDaily);
 				this.spinnerLoading = false;
 			}
 		})
@@ -215,8 +220,8 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 		}
 		this.spinnerLoading = true;
 		this.dateControl.setValue(this.currentDate);
-		this.unsubscribe['change-date'] = this.getParablesDaily().pipe(take(1)).subscribe({
-			next: (item: any) => {
+		this.unsubscribe['change-date'] = forkJoin({ getParablesDaily: this.getParablesDaily(), getAnniversaries: this.getAnniversaries() }).pipe(take(1)).subscribe({
+			next: (res: any) => {
 				if (this.unsubscribe['change-date']) {
 					this.unsubscribe['change-date'].unsubscribe();
 				}
@@ -227,7 +232,7 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 					this.currentIndex++;
 				}
 				this.updateDateTitle(this.currentDate, this.currentIndex);
-				this.updateParablesTitle(this.currentIndex, item);
+				this.updateParablesTitle(this.currentIndex, res.getParablesDaily);
 				this.spinnerLoading = false;
 			}
 		})
@@ -253,6 +258,87 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 			this.parablesView[index].parableID = "";
 			this.noParables = true;
 		}
+	}
+
+	getAnniversaries() {
+		return new Observable(obs => {
+			let options = {
+				filter: `day eq '${this.currentDate.format("DD/MM")}' and entityType eq 'clergy' and (type eq 'birth' or type eq 'pho_te' or type eq 'linh_muc' or type eq 'rip' or type eq 'saint')`
+			}
+			this.dataProcessing = true;
+			this.anniversaries = [];
+			this.service.getAnniversaries(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					if (res && res.value && res.value.length > 0) {
+						let requests: Observable<any>[] = [];
+						for (let item of res.value) {
+							item._days = 0;
+							if (item.date) {
+								item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
+								item.dayView = item._date.format('DD/MM/YYYY');
+								let dur = this.sharedService.moment().diff(item._date, 'years');
+								if (dur > 0) {
+									item._days = dur;
+								}
+							}
+							requests.push(this.updateEntityName(item));
+						}
+						forkJoin(requests).pipe(take(1)).subscribe({
+							next: (items: any) => {
+								this.anniversaries = items;
+							}
+						})
+					}
+					this.dataProcessing = false;
+					obs.next();
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	updateEntityName(item: any) {
+		return new Observable(obs => {
+			if (item.entityType == 'clergy' && item.entityID) {
+				this.getClergy(item.entityID).pipe(take(1)).subscribe({
+					next: (entityName: any) => {
+						if ((item.type == 'pho_te' || item.type == 'linh_muc')) {
+							item.title = `Kỷ niệm ${item._days > 0 ? item._days + ' năm' : ""} ${item.name} của ${entityName}`;
+						}
+						else if (item.type == 'saint') {
+							item.title = `Mừng bổn mạng của ${entityName}`;
+						}
+						else if (item.type == 'rip') {
+							item.title = `Lễ giỗ ${item._days > 0 ? item._days + ' năm' : ""} của ${entityName}`;
+						}
+						else if (item.type == 'birth') {
+							item.title = `Mừng sinh nhật của ${entityName}`;
+						}
+						obs.next(item);
+						obs.complete();
+					}
+				})
+			}
+			else {
+				obs.next(item);
+				obs.complete();
+			}
+		})
+	}
+
+	getClergy(id: string) {
+		return new Observable(obs => {
+			this.service.getClergy(id).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let name = ""
+					if (res && res.name) {
+						name = `${this.sharedService.getClergyLevel(res)} ${res.stName} ${res.name}`;
+					}
+					obs.next(name);
+					obs.complete();
+				}
+			})
+		})
 	}
 
 }

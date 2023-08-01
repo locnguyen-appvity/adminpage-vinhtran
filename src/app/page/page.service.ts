@@ -90,6 +90,16 @@ export class PageService {
 		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAppointments', error)));
 	}
 
+	getClergy(id: string, options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/clergies';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getClergy', error)));
+	}
+
+	getOrganization(id: string, options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/organizations';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getOrganization', error)));
+	}
+
 	// Masses
 	getMasseses(options?: any): Observable<any> {
 		let baseUrl = this.rootAPIAdmin + '/masses';
