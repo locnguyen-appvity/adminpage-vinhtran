@@ -79,12 +79,13 @@
                                     </mat-form-field>
                                 </div>
                                 <div fxFlex.gt-xs="33.33" fxFlex="100">
-                                    <mat-form-field appearance="outline"
-                                        class="full-width">
+                                    <mat-form-field appearance="outline" class="full-width">
                                         <mat-label>Giáo Xứ</mat-label>
                                         <se-autocomplete-simple [required]="false" [formControlName]="'orgName'"
                                             [mode]="'emit-change'" [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'"
-                                            [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'" (onChangeValue)="onChangeValue($event,'orgName')" (valueChangeSelect)="valueChangeSelect($event,'orgName')"
+                                            [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
+                                            (onChangeValue)="onChangeValue($event,'orgName')"
+                                            (valueChangeSelect)="valueChangeSelect($event,'orgName')"
                                             [autocomplete]="true" [items]="churchsList">
                                         </se-autocomplete-simple>
                                     </mat-form-field>
@@ -149,6 +150,14 @@
                                     </mat-form-field>
                                 </div>
                             </div>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel expanded>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <strong>QUẢN LÝ HỒ SƠ</strong>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <app-itinerary-files [title]="'Files dữ liệu'" [entityID]="ID" [entityType]="'clergy'"></app-itinerary-files>
                         </mat-expansion-panel>
                     </mat-accordion>
 

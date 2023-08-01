@@ -22,6 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { EventsListModule } from '../../events/events-list/events-list.module';
 import { AppointmentsListModule } from '../../../../controls/appointments-list-control/appointments-list-control.module';
+import { ItineraryFilesModule } from 'src/app/controls/itinerary-files/itinerary-files.module';
 @NgModule({
   declarations: [
     ClergyDetailComponent
@@ -50,7 +51,8 @@ import { AppointmentsListModule } from '../../../../controls/appointments-list-c
     UploadAvatarModule,
     MatExpansionModule,
     EventsListModule,
-    AppointmentsListModule
+    AppointmentsListModule,
+    ItineraryFilesModule
   ]
 })
 export class ClergyDetailModule { }
