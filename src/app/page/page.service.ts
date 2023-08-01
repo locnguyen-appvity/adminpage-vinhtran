@@ -112,6 +112,16 @@ export class PageService {
 		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getOrganizations', error)));
 	}
 
+	getPosts(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/posts';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getPosts', error)));
+	}
+
+	getContemplations(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/contemplations';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getContemplations', error)));
+	}
+
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {
 		let errorResponse: any = {
 			status: 0,

@@ -41,7 +41,9 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['data']) {
-			this.getOrganizations();
+			if(!this.isNullOrEmpty(this.data)){
+				this.getOrganizations();
+			}
 		}
 	}
 
@@ -101,13 +103,13 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 					"value": this.data.groupID && this.data.groupID != 'all' ? this.data.groupID : ""
 				})
 			}
-			if (this.data.position && this.data.position != 'all') {
+			if (!this.isNullOrEmpty(this.data.name)) {
 				restrictions.push({
 					"key": "Name",
-					"value": this.data.position && this.data.position != 'all' ? this.data.position : ""
+					"value": this.data.name
 				})
 			}
-			if (this.data.masses) {
+			if (!this.isNullOrEmpty(this.data.masses)) {
 				restrictions.push({
 					"key": "MassTime",
 					"value": this.data.masses ? this.data.masses : null

@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { take } from 'rxjs';
+import { PageService } from 'src/app/page/page.service';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
@@ -11,10 +11,10 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 	templateUrl: './post-new.component.html',
 	styleUrls: ['./post-new.component.scss']
 })
-export class PostNewComponent extends SimpleBaseComponent {
+export class PostNewComponent extends SimpleBaseComponent implements OnChanges {
 
 	@Input() target: string = 'latest';
-	@Input() type: string = 'post';
+	@Input() type: string;
 	@Input() entityID: string;
 	@Input() entityType: string;
 
@@ -46,10 +46,18 @@ export class PostNewComponent extends SimpleBaseComponent {
 	}
 	public dataItems: any[] = [];
 	constructor(public sharedService: SharedPropertyService,
-		public service: SharedService
+		public service: PageService
 	) {
 		super(sharedService);
 		
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['type']) {
+			if(!this.isNullOrEmpty(this.type)){
+				this.getDataItems();
+			}
+		}
 	}
 
 	getDataItems(){

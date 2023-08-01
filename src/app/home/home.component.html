@@ -1,5 +1,5 @@
 <app-main-banner></app-main-banner>
-<se-post-new></se-post-new>
+<se-post-new [type]="'post'"></se-post-new>
 <app-search-control [title]="'Linh Mục Giáo Phận'" [target]="'clergys'"></app-search-control>
 <section class="group-container">
     <div class="container-xl">
@@ -31,7 +31,7 @@
         </div>
     </div>
 </section>
-<app-posts-list-banner></app-posts-list-banner>
+<!-- <app-posts-list-banner></app-posts-list-banner> -->
 <app-guest-review></app-guest-review>
-<app-search-control [title]="'Giáo Phận'" [target]="'organizations'"></app-search-control>
+<app-search-control [title]="'Danh Sách Giáo Xứ'" [target]="'organizations'"></app-search-control>
 <app-search-organizations [loadDefeault]="true"></app-search-organizations>
