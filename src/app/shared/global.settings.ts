@@ -1,7 +1,7 @@
 export class GlobalSettings {
     static Settings = {
-        Server: 'https://admin.dev.giaophanphucuong.com',
-        ServerClient: 'https://client.dev.giaophanphucuong.com',
+        Server: 'http://admin.dev.giaophanphucuong.com',
+        ServerClient: 'http://client.dev.giaophanphucuong.com',
         Grid: {
             pageSize: 10,
             listPageSize: 20,

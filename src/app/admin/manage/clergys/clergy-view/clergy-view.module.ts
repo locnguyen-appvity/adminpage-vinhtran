@@ -7,6 +7,7 @@ import { ListAppointmentsClergyModule } from '../list-appointments-clergy/list-a
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ItineraryFilesModule } from 'src/app/controls/itinerary-files/itinerary-files.module';
 // import { JoditAngularModule } from 'jodit-angular';
 // import { DialogSelectedImgsModule } from 'src/app/controls/dialog-selected-imgs/dialog-selected-imgs.module';
 @NgModule({
@@ -18,7 +19,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     ClergyViewRoutingModule,
     MatDividerModule,
     ListAppointmentsClergyModule,
-    MatButtonModule
+    MatButtonModule,
+    ItineraryFilesModule
   ]
 })
 export class ClergyViewModule { 

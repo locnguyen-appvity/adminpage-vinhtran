@@ -131,12 +131,12 @@ export class GroupsListComponent extends ListItemBaseComponent {
 							case 'active':
 								item.statusTooltip = 'Hiện';
 								item.statusIcon = 'ic_toggle_on';
-								item.class = 'active-status';
+								item.class = 'active';
 								break;
 							case 'inactive':
 								item.statusTooltip = 'Ẩn';
 								item.statusIcon = 'ic_toggle_off';
-								item.class = 'inactive-status';
+								item.class = 'inactive';
 								break;
 						}
 					}

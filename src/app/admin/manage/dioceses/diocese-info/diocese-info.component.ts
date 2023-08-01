@@ -29,58 +29,27 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 		public dialogRef: MatDialogRef<DioceseInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
-		let name = '';
-		let status = true;
 		this.target = this.dialogData.target;
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
 			this.canDelete = false;
-			name = this.dialogData.item.name;
+			this.localItem = this.dialogData.item;
 			this.ID = this.dialogData.item.id;
-			status = this.dialogData.item.deActive == 0 ? true : false;
 		}
 		this.dataItemGroup = this.fb.group({
-			name: [name, [Validators.required]],
-			status: status
+			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
+			description: this.localItem ? this.localItem.description : "",
+			content: this.localItem ? this.localItem.content : "",
+			entityID: this.localItem ? this.localItem.entityID : '',
+			entityType: this.localItem ? this.localItem.entityType : '',
+			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-			// if (this.target === 'edit') {
-			// 	this.hasChangedGroup = this.isChangedForm(valueForm);
-			// }
-			// else {
 			this.hasChangedGroup = true;
-			// }
 		})
 	}
 
-	buildFormGroup() {
-		let status = (this.localItem && this.localItem.status == 'inactive') ? false : true;
-		this.dataItemGroup = this.fb.group({
-			// items: this.fb.array([]),
-			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
-			stName: [this.localItem ? this.localItem.stName : '', [Validators.required]],
-			belongOrgId: (this.localItem && this.localItem.belongOrgId) ? this.localItem.belongOrgId : '-1',
-			type: [this.localItem ? this.localItem.type : 'tu_trieu', [Validators.required]],
-			level: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
-			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
-			email: this.localItem ? this.localItem.email : '',
-			status: status,
-			// anniversarySaint: this.localItem ? this.localItem.anniversarySaint : '',
-			// anniversary: anniversary
-		})
-	}
-
-	// isChangedForm(valueForm: any) {
-	// 	if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-	// 		return true;
-	// 	}
-	// 	let status = this.dialogData.item.deActive == 0 ? true : false;
-	// 	if (this.sharedService.isChangedValue(valueForm.status, status)) {
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 
 	closeDialog() {
 		this.dialogRef.close(null)
@@ -98,7 +67,12 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 		let valueForm = this.dataItemGroup.value;
 		let dataJSON = {
 			name: valueForm.name,
-			deActive: valueForm.status ? 0 : 1
+			description: valueForm.description,
+			content: valueForm.content,
+			status: valueForm.status ? 'active' : 'inactive',
+			type: 'diocese',
+			entityID: "",
+			entityType: "",
 		}
 		if (this.target == 'edit') {
 			this.dataProcessing = true;

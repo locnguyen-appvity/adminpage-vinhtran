@@ -46,7 +46,7 @@ import { HashLocationStrategy, LocationStrategy, provideImgixLoader } from '@ang
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthenIntercept, multi: true },
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-    provideImgixLoader('http://admin.gppc.tuhoinusongthanhthe.org/')
+    provideImgixLoader('http://admin.dev.giaophanphucuong.com/')
   ],
   bootstrap: [AppComponent]
 })

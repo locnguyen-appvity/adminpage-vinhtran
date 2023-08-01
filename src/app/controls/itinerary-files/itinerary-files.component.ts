@@ -214,7 +214,8 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 	}
 
 	b64toBlob(b64Data, contentType: string, sliceSize = 512) {
-		const byteCharacters = atob(b64Data);
+		const b64Datas = b64Data.split(',');
+		const byteCharacters = atob(b64Datas[1]);
 		const byteArrays = [];
 
 		for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {

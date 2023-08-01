@@ -4,7 +4,22 @@ import { DiocesesComponent } from './dioceses.component';
 
 const myRoutes: Routes = [
 	{
-		path: '', component: DiocesesComponent
+		path: '', component: DiocesesComponent,
+		children: [
+			{
+				path: 'list',
+				loadChildren: () => import('./dioceses-list/dioceses-list.module').then(m => m.DiocesesListModule)
+			},
+			// {
+			// 	path: 'detail',
+			// 	loadChildren: () => import('./group-detail/group-detail.module').then(m => m.GroupDetailModule)
+			// },
+			// {
+			// 	path: 'detail/:id',
+			// 	loadChildren: () => import('./group-detail/group-detail.module').then(m => m.GroupDetailModule)
+			// },
+			{ path: '', redirectTo: 'list', pathMatch: 'full' },
+		]
 	},
 ];
 
