@@ -11,35 +11,35 @@ export class CategoriesComponent implements OnInit {
 	constructor() {
 		this.dataItems = [
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'HẠNH CÁC THÁNH',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'ƠN GỌI',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'PHỤNG VỤ',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'TÀI LIỆU',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'HẠNH CÁC THÁNH',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'ƠN GỌI',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'PHỤNG VỤ',
 			},
 			{
-				thumb: '../../assets/images/banner.jpg',
+				thumb: 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg',
 				name: 'TÀI LIỆU',
 			},
 		]

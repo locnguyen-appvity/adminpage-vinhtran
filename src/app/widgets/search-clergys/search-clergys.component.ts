@@ -125,7 +125,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 		return this.linq.Enumerable().From(items).GroupBy("$.name", null, (key: any, data: any) => {
 			let _key = this.isNullOrEmpty(key) ? 'empty' : key;
 			let dateOfBirthView = "";
-			let pictureUrl = "../../assets/images/banner.jpg"
+			let pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg');
 			if (data.source[0] && data.source[0].dateOfBirth) {
 				let _dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(data.source[0].dateOfBirth);
 				dateOfBirthView = this.sharedService.formatDate(_dateOfBirth);

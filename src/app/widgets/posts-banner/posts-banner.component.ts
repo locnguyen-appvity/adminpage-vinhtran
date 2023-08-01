@@ -13,7 +13,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 export class PostsBannerComponent extends SimpleBaseComponent {
 	public logoRightUrl = './assets/images/logo-right.png';
 	public dataItems: any = []
-	public bgImage = './assets/images/banner.jpg';
+	public bgImage = 'http://admin.dev.giaophanphucuong.com/public/storage/images/71a7fb23-4d52-463d-be42-d8f2c44e077c.jpeg';
 	constructor(public sharedService: SharedPropertyService,
 		public service: SharedService
 	) {
