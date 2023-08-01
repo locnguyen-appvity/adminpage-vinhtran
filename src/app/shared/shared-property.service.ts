@@ -188,6 +188,8 @@ export class SharedPropertyService {
                 return 'Giáo điểm'
             case 'dong_tu':
                 return 'Dòng'
+            case 'cong_doan':
+                return 'Cộng Đoàn'
             case 'co_so_giao_phan':
                 return 'Cơ Sở Giáo Phận';
             case 'co_so_ngoai_giao_phan':
@@ -211,6 +213,8 @@ export class SharedPropertyService {
                 return 'Giáo điểm'
             case 'dong_tu':
                 return 'Dòng'
+            case 'cong_doan':
+                return 'Cộng Đoàn'
             // case 'co_so_giao_phan':
             //     return 'Cơ Sở Giáo Phận';
             // case 'ban_muc_vu':

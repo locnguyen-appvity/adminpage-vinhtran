@@ -17,53 +17,53 @@ export class DiocesesComponent extends ListItemBaseComponent {
 		private service: SharedService,
 		public snackbar: MatSnackBar,
 		public dialog: MatDialog) {
-		super(sharedService,snackbar);
+		super(sharedService, snackbar);
 		this.getDataItems();
 	}
 
 	getDataItems() {
-		this.spinerLoading = true;
-		// this.service.getDioceses(options).pipe(take(1)).subscribe((res: any) => {
-		// 	this.spinerLoading = false;
-		// 	this.arrData = [];
-		// 	if (res && res.value && res.value.length > 0) {
-		// 		let items = res.value;
-		// 		for (let item of items) {
-		// 			item.id = item.id;
-		// 			switch (item.deActive) {
-		// 				case -1:
-		// 					item.status = 'Draft';
-		// 					item.statusIcon = 'ic_post_add';
-		// 					item.class = 'draft';
-		// 					break;
-		// 				case 0:
-		// 					item.status = 'Active';
-		// 					item.statusIcon = 'ic_toggle_on';
-		// 					item.class = 'active-status';
-		// 					break;
-		// 				case 1:
-		// 					item.status = 'Inactive';
-		// 					item.statusIcon = 'ic_toggle_off';
-		// 					item.class = 'inactive-status';
-		// 					break;
-		// 			}
-		// 		}
-		// 		this.arrData = items;
-		// 		this.noData = false;
-		// 		this.noDataSearch = false;
-		// 	}
-		// 	else {
-		// 		if (this.txtSearch.value.length > 0) {
-		// 			this.noData = false;
-		// 			this.noDataSearch = true;
-		// 		}
-		// 		else {
-		// 			this.noData = true;
-		// 			this.noDataSearch = false;
-		// 		}
-		// 	}
+		let options = {
 
-		// })
+		}
+		this.spinerLoading = true;
+		this.service.getDioceses(options).pipe(take(1)).subscribe((res: any) => {
+			this.spinerLoading = false;
+			this.arrData = [];
+			if (res && res.value && res.value.length > 0) {
+				let items = res.value;
+				for (let item of items) {
+					item.id = item.id;
+					switch (item.deActive) {
+						case -1:
+							item.status = 'Draft';
+							item.statusIcon = 'ic_post_add';
+							item.class = 'draft';
+							break;
+						case 0:
+							item.status = 'Active';
+							item.statusIcon = 'ic_toggle_on';
+							item.class = 'active-status';
+							break;
+						case 1:
+							item.status = 'Inactive';
+							item.statusIcon = 'ic_toggle_off';
+							item.class = 'inactive-status';
+							break;
+					}
+				}
+				this.arrData = items;
+				this.noData = false;
+			}
+			else {
+				if (this.txtSearch.value.length > 0) {
+					this.noData = false;
+				}
+				else {
+					this.noData = true;
+				}
+			}
+
+		})
 	}
 
 	onAddItem() {

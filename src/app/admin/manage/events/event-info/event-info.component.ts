@@ -110,7 +110,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			description: item ? item.description : '',
 			content: item ? item.content : '',
 			locationID: item ? item.locationID : (this.entityType != 'clergy' ? this.entityID : ''),
-			_locationID: _locationID,
+			_locationID: _locationID ? (item ? item.locationName : (this.entityType != 'clergy' ? this.entityName : '')) : "",
 			locationType: item ? item.locationType : (this.entityType != 'clergy' ? 'clergy' : ''),
 			locationName: item ? item.locationName : (this.entityType != 'clergy' ? this.entityName : ''),
 		});
@@ -224,8 +224,12 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			}
 			this.service.updateAnniversary(this.localItem.id, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: () => {
-					this.dataProcessing = false;
-					this.dialogRef.close("OK")
+					this.updateClergy(valueForm).pipe(takeUntil(this.unsubscribe)).subscribe({
+						next: () => {
+							this.dataProcessing = false;
+							this.dialogRef.close("OK")
+						}
+					})
 				}
 			})
 		}
@@ -234,10 +238,120 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			this.dataProcessing = true;
 			this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: () => {
-					this.dataProcessing = false;
-					this.dialogRef.close("OK")
+					this.updateClergy(valueForm).pipe(takeUntil(this.unsubscribe)).subscribe({
+						next: () => {
+							this.dataProcessing = false;
+							this.dialogRef.close("OK")
+						}
+					})
 				}
 			})
 		}
 	}
+
+	updateClergy(valueForm: any) {
+		return new Observable(obs => {
+			if (!this.isNullOrEmpty(this.entityID) && this.entityType == 'clergy') {
+				let date = this.sharedService.ISOStartDay(valueForm.date);
+				let locationName = valueForm.locationName;
+				let dataJSON: any = {
+				}
+				switch (valueForm.type) {
+					case 'baptize':
+						dataJSON.baptizeDate = date;
+						dataJSON.baptizePlace = locationName;
+						break;
+					case 'confirmation':
+						dataJSON.confirmationDate = date;
+						dataJSON.confirmationPlace = locationName;
+						break;
+					case 'smallSeminary':
+						dataJSON.smallSeminaryDate = date;
+						dataJSON.smallSeminary = locationName;
+						break;
+					case 'bigSeminary':
+						dataJSON.bigSeminaryDate = date;
+						dataJSON.bigSeminary = locationName;
+						break;
+					case 'vow':
+						dataJSON.vowDate = date;
+						break;
+					case 'rip':
+						dataJSON.ripDate = date;
+						dataJSON.ripOrgName = locationName;
+						dataJSON.ripOrgId = valueForm.locationID;
+						dataJSON.ripNote = valueForm.content;
+						break;
+					default:
+						break;
+				}
+				if (Object.keys(dataJSON).length > 0) {
+					this.service.updateClergy(this.entityID, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+						next: () => {
+							obs.next();
+							obs.complete();
+						}
+					})
+				}
+				else {
+					obs.next();
+					obs.complete();
+				}
+			}
+			else {
+				obs.next();
+				obs.complete();
+			}
+		})
+	}
+
+	// {
+	// 	"stName": "Giuse",
+	// 	"name": "Vũ Khắc Anh Tâm",
+	// 	"firstName": "Tâm",
+	// 	"lastName": "Vũ Khắc Anh",
+	// 	"unsignedName": "vu khac anh tam",
+	// 	"type": "tu_trieu",
+	// 	"organizationID": "30787a7f-15e3-4788-8510-36fd67155d46",
+	// 	"phoneNumber": "0917 175420",
+	// 	"email": "vkatam02@gmail.com",
+	// 	"status": "active",
+	// 	"photo": "public/storage/images/fd7ebc24-c88f-4734-905e-d4879a2a3c52.jpeg",
+	// 	"content": null,
+	// 	"dateOfBirth": "1975-03-08T00:00:00Z",
+	// 	"placeOfBirth": "Hiệp Thành, Bình Dương",
+	// 	"fatherName": "Tôma Vũ Khắc Yêu",
+	// 	"motherName": "Maria Đặng Thị Hợi",
+	// 	"baptizeDate": null,
+	// 	"confirmationDate": null,
+	// 	"baptizePlace": null,
+	// 	"confirmationPlace": null,
+	// 	"bigSeminary": null,
+	// 	"smallSeminary": null,
+	// 	"bigSeminaryDate": null,
+	// 	"smallSeminaryDate": null,
+	// 	"identityCardNumber": null,
+	// 	"identityCardType": "can_cuoc",
+	// 	"identityCardIssueDate": null,
+	// 	"identityCardIssuePlace": null,
+	// 	"code": "vu khac anh tam",
+	// 	"manageOrgId": null,
+	// 	"belongOrgId": null,
+	// 	"manageOrgPosition": null,
+	// 	"level": "linh_muc",
+	// 	"vowDate": null,
+	// 	"ripDate": null,
+	// 	"ripOrgId": null,
+	// 	"ripNote": null,
+	// 	"note": null,
+	// 	"parable": null,
+	// 	"birthOrgName": null,
+	// 	"ripOrgName": null,
+	// 	"orgName": "Giáo xứ Chánh Toà Phú Cường",
+	// 	"created": "2023-07-27T08:33:21.735165Z",
+	// 	"modified": "2023-07-31T14:54:48.692113Z",
+	// 	"createdBy": "474742ab-bf6c-47b7-b19b-e7a9f7156815",
+	// 	"modifiedBy": "474742ab-bf6c-47b7-b19b-e7a9f7156815",
+	// 	"id": "ba9890fe-2d97-45e2-8d35-c5272fe27e4e"
+	// }
 }

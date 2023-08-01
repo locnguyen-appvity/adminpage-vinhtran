@@ -523,6 +523,171 @@ export const SAINTS_DATA = [
     }
 ];
 
+export const DIOCESES_DATA = [
+    {
+        name: 'Phú Cường',
+        code:'',
+        deActive: 0,
+        order: 1
+    },
+    {
+        name: 'Hà Nội',
+        code:'',
+        deActive: 0,
+        order: 2
+    },
+    {
+        name: 'Bắc Ninh',
+        code:'',
+        deActive: 0,
+        order: 3
+    },
+    {
+        name: 'Bùi Chu',
+        code:'',
+        deActive: 0,
+        order: 4
+    },
+    {
+        name: 'Hà Tĩnh',
+        code:'',
+        deActive: 0,
+        order: 5
+    },
+    {
+        name: 'Hải Phòng',
+        code:'',
+        deActive: 0,
+        order: 6
+    },
+    {
+        name: 'Hưng Hóa',
+        code:'',
+        deActive: 0,
+        order: 7
+    },
+    {
+        name: 'Lạng Sơn và Cao Bằng',
+        code:'',
+        deActive: 0,
+        order: 8
+    },
+    {
+        name: 'Phát Diệm',
+        code:'',
+        deActive: 0,
+        order: 9
+    },
+    {
+        name: 'Thái Bình',
+        code:'',
+        deActive: 0,
+        order: 10
+    },
+    {
+        name: 'Thanh Hóa',
+        code:'',
+        deActive: 0,
+        order: 11
+    },
+    {
+        name: 'Vinh',
+        code:'',
+        deActive: 0,
+        order: 12
+    },
+    {
+        name: 'Huế',
+        code:'',
+        deActive: 0,
+        order: 13
+    },
+    {
+        name: 'Ban Mê Thuột',
+        code:'',
+        deActive: 0,
+        order: 14
+    },
+    {
+        name: 'Đà Nẵng',
+        code:'',
+        deActive: 0,
+        order: 15
+    },
+    {
+        name: 'Kon Tum',
+        code:'',
+        deActive: 0,
+        order: 16
+    },
+    {
+        name: 'Nha Trang',
+        code:'',
+        deActive: 0,
+        order: 17
+    },
+    {
+        name: 'Qui Nhơn',
+        code:'',
+        deActive: 0,
+        order: 18
+    },
+    {
+        name: 'Sài Gòn(TP.HCM)',
+        code:'',
+        deActive: 0,
+        order: 19
+    },
+    {
+        name: 'Bà Rịa',
+        code:'',
+        deActive: 0,
+        order: 20
+    },
+    {
+        name: 'Cần Thơ',
+        code:'',
+        deActive: 0,
+        order: 21
+    },
+    {
+        name: 'Đà Lạt',
+        code:'',
+        deActive: 0,
+        order: 22
+    },
+    {
+        name: 'Long Xuyên',
+        code:'',
+        deActive: 0,
+        order: 23
+    },
+    {
+        name: 'Mỹ Tho',
+        code:'',
+        deActive: 0,
+        order: 24
+    },
+    {
+        name: 'Phan Thiết',
+        code:'',
+        deActive: 0,
+        order: 25
+    },
+    {
+        name: 'Vĩnh Long',
+        code:'',
+        deActive: 0,
+        order: 26
+    },
+    {
+        name: 'Xuân Lộc',
+        code:'',
+        deActive: 0,
+        order: 27
+    }
+];
+
 export const ANNIVERSARIES = [
     {
         name: "Bổn Mạng",

@@ -7,6 +7,10 @@ const myRoutes: Routes = [
 		path: '', component: ManageComponent,
 		children: [
 			{
+				path: 'dioceses',
+				loadChildren: () => import('./dioceses/dioceses.module').then(m => m.DiocesesModule)
+			},
+			{
 				path: 'saints-list',
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},

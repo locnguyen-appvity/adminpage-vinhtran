@@ -124,10 +124,10 @@
                             <ng-container matColumnDef="name">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên Thánh, Họ và Tên </th>
                                 <td mat-cell *matCellDef="let element"
-                                    style="min-width: 300px; max-width: 300px; width: 300px"
-                                    [matTooltipDisabled]="!(element?.fullName?.length > 50)"
+                                    style="min-width: 350px; max-width: 350px; width: 350px"
+                                    [matTooltipDisabled]="!(element?.fullName?.length > 40)"
                                     [matTooltip]="element.fullName">
-                                    {{element.fullName | truncate: 80}}
+                                    {{element.fullName }}
                                 </td>
                             </ng-container>
 

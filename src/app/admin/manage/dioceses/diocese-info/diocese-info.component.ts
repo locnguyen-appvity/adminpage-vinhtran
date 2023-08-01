@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -20,6 +20,9 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 	public target: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
+	public localItem: any;
+
+
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
 		private service: SharedService,
@@ -42,25 +45,42 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 			status: status
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-			if (this.target === 'edit') {
-				this.hasChangedGroup = this.isChangedForm(valueForm);
-			}
-			else {
-				this.hasChangedGroup = true; 
-			}
+			// if (this.target === 'edit') {
+			// 	this.hasChangedGroup = this.isChangedForm(valueForm);
+			// }
+			// else {
+			this.hasChangedGroup = true;
+			// }
 		})
 	}
 
-	isChangedForm(valueForm: any) {
-		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-			return true;
-		}
-		let status = this.dialogData.item.deActive == 0 ? true : false;
-		if (this.sharedService.isChangedValue(valueForm.status, status)) {
-			return true;
-		}
-		return false;
+	buildFormGroup() {
+		let status = (this.localItem && this.localItem.status == 'inactive') ? false : true;
+		this.dataItemGroup = this.fb.group({
+			// items: this.fb.array([]),
+			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
+			stName: [this.localItem ? this.localItem.stName : '', [Validators.required]],
+			belongOrgId: (this.localItem && this.localItem.belongOrgId) ? this.localItem.belongOrgId : '-1',
+			type: [this.localItem ? this.localItem.type : 'tu_trieu', [Validators.required]],
+			level: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
+			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
+			email: this.localItem ? this.localItem.email : '',
+			status: status,
+			// anniversarySaint: this.localItem ? this.localItem.anniversarySaint : '',
+			// anniversary: anniversary
+		})
 	}
+
+	// isChangedForm(valueForm: any) {
+	// 	if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
+	// 		return true;
+	// 	}
+	// 	let status = this.dialogData.item.deActive == 0 ? true : false;
+	// 	if (this.sharedService.isChangedValue(valueForm.status, status)) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	closeDialog() {
 		this.dialogRef.close(null)
@@ -68,10 +88,10 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 
 	deleteItem() {
 		this.dataProcessing = true;
-		// this.service.deleteDiocese(this.ID).pipe(take(1)).subscribe(() => {
-		// 	this.dataProcessing = false;
-		// 	this.dialogRef.close('Deleted');
-		// })
+		this.service.deleteDiocese(this.ID).pipe(take(1)).subscribe(() => {
+			this.dataProcessing = false;
+			this.dialogRef.close('Deleted');
+		})
 	}
 
 	onSaveItem() {
@@ -80,20 +100,20 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 			name: valueForm.name,
 			deActive: valueForm.status ? 0 : 1
 		}
-		// if(this.target == 'edit'){
-		// 	this.dataProcessing = true;
-		// 	this.service.updateDiocese(this.ID,dataJSON).pipe(take(1)).subscribe(() => {
-		// 		this.dataProcessing = false;
-		// 		this.dialogRef.close('OK');
-		// 	})
-		// }
-		// else {
-		// 	this.dataProcessing = true;
-		// 	this.service.createDiocese(dataJSON).pipe(take(1)).subscribe(() => {
-		// 		this.dataProcessing = false;
-		// 		this.dialogRef.close('OK');
-		// 	})
-		// }
+		if (this.target == 'edit') {
+			this.dataProcessing = true;
+			this.service.updateDiocese(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
+				this.dataProcessing = false;
+				this.dialogRef.close('OK');
+			})
+		}
+		else {
+			this.dataProcessing = true;
+			this.service.createDiocese(dataJSON).pipe(take(1)).subscribe(() => {
+				this.dataProcessing = false;
+				this.dialogRef.close('OK');
+			})
+		}
 	}
 
 }

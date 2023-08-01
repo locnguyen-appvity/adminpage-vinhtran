@@ -80,8 +80,8 @@
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
                         Suy Niệm
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/schedule-events/list']"
-                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                    <mat-list-item [routerLink]="['/admin/schedule-events/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
                         Lịch Công Giáo
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/slides/slides-list']" [routerLinkActive]="['active']"
@@ -206,10 +206,7 @@
                         [routerLinkActiveOptions]="{exact: true}">
                         Cơ Sở Giáo Phận
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/co_so_ngoai_giao_phan/list']" [routerLinkActive]="['active']"
-                        [routerLinkActiveOptions]="{exact: true}">
-                        Cơ Sở Ngoài Giáo Phận
-                    </mat-list-item>
+
                     <!-- <mat-list-item [routerLink]="['/admin/manage/hoi_doan/list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
                         Hội Đoàn
@@ -238,6 +235,26 @@
                         [routerLinkActiveOptions]="{exact: true}">
                        Thuyên Chuyển
                     </mat-list-item> -->
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="openedPanel == 'manage'">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_person_48dp"></mat-icon> Quản Lý Ngoài Giáo Phận
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/manage/dioceses']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                       Danh Sách Giáo Phận
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/manage/co_so_ngoai_giao_phan/list']"
+                        [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+                        Cơ Sở Ngoài Giáo Phận
+                    </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>
         </mat-expansion-panel>

@@ -639,6 +639,32 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteOrganization', error)));
 	}
 
+	// dioceses
+	getDioceses(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/dioceses';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getDioceses', error)));
+	}
+
+	getDiocese(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/dioceses';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getDiocese', error)));
+	}
+
+	createDiocese(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/dioceses`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createDiocese', error)));
+	}
+
+	updateDiocese(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/dioceses`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateDiocese', error)));
+	}
+
+	deleteDiocese(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/dioceses`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteDiocese', error)));
+	}
+
 	// Migrations
 	getMigrations(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/clergyMigrations';

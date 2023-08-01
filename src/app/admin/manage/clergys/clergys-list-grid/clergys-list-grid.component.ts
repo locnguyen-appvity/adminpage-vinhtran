@@ -77,7 +77,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			skip: this.skip,
 			top: this.pageSize,
 			filter: this.getFilter(),
-			sort: 'name desc'
+			sort: 'firstName asc'
 		}
 		if (this.subscription['getClergies']) {
 			this.subscription['getClergies'].unsubscribe();

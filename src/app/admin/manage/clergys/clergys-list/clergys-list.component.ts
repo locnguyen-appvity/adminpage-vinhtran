@@ -73,7 +73,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(tolower(name), tolower('${quick}')) or contains(tolower(code), tolower('${quick}'))`;
+			let quickSearch = `contains(tolower(name), tolower('${quick}')) or contains(tolower(unsignedName), tolower('${quick}'))`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
@@ -88,7 +88,7 @@ export class ClergysListComponent extends ListItemBaseComponent {
 		this.spinerLoading = true;
 		let options = {
 			filter: this.getFilter(),
-			sort: 'name asc'
+			sort: 'firstName asc'
 		}
 		this.service.getClergies(options).pipe(take(1)).subscribe((res: any) => {
 			this.spinerLoading = false;
