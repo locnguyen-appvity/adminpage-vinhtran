@@ -281,6 +281,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 						dataJSON.ripOrgName = locationName;
 						dataJSON.ripOrgId = valueForm.locationID;
 						dataJSON.ripNote = valueForm.content;
+						dataJSON.status = "rip";
 						break;
 					default:
 						break;

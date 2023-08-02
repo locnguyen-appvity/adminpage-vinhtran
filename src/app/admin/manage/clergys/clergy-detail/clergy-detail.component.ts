@@ -83,6 +83,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			dateOfBirth: '',
 			placeOfBirth: '',
 			orgName: '',
+			status: '',
 			organizationID: '',
 
 		});
@@ -307,7 +308,8 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 					if (this.localItem.dateOfBirth) {
 						this.localItem._dateOfBirth = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth);
 					}
-					this.statusLabel = this.updateLabelTitle(this.localItem.status);
+					this.statusLabel.title = this.sharedService.getClergyStatus(this.localItem.status);
+					this.statusLabel.class = this.sharedService.getClergyStatusClass(this.localItem.status);
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						stName: this.localItem.stName,
@@ -328,6 +330,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 						dateOfBirth: this.localItem._dateOfBirth,
 						placeOfBirth: this.localItem.placeOfBirth,
 						orgName: this.localItem.orgName,
+						status: this.localItem.status,
 						organizationID: this.localItem.organizationID
 					});
 				}
@@ -361,6 +364,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			dateOfBirth: this.sharedService.ISOStartDay(valueForm.dateOfBirth),
 			placeOfBirth: valueForm.placeOfBirth,
 			orgName: valueForm.orgName,
+			status: valueForm.status,
 			organizationID: valueForm.organizationID
 		}
 		let requests: Observable<any>[] = [];

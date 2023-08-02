@@ -175,6 +175,14 @@
                             <input matInput formControlName="parable" autocomplete="off">
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Tình trạng</mat-label>
+                            <mat-select formControlName="status">
+                                <mat-option value="dang_phuc_vu">Dang Phục Vụ</mat-option>
+                                <mat-option value="huu">Hưu Dưỡng</mat-option>
+                                <mat-option value="rip">Đã Mất</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Cấp Bậc</mat-label>
                             <se-autocomplete-simple [required]="false" [formControlName]="'level'" [optgroup]="false"
                                 [placeHolder]="'Tìm kiếm theo tên...'" [keyTitle]="'name'" [keyValue]="'code'"

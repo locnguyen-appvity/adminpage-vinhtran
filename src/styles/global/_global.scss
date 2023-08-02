@@ -516,6 +516,20 @@ mat-dialog-container.mat-dialog-container {
 }
 
 // Status Labels
+.rip-label {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	width: 150px;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #520156;
+}
+
 .draft-label {
 	font-weight: 600;
 	font-size: 14px;

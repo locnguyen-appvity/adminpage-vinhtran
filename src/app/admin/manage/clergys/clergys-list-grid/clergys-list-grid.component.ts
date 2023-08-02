@@ -103,6 +103,8 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 						item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 					}
+					item.statusView = this.sharedService.getClergyStatus(item.status);
+					item.statusClass = this.sharedService.getClergyStatusClass(item.status);
 				}
 				this.gridDataChanges.data = items;
 				this.gridDataChanges.total = total;
