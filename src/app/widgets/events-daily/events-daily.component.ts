@@ -276,9 +276,12 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 							if (item.date) {
 								item._date = this.sharedService.convertDateStringToMomentUTC_0(item.date);
 								item.dayView = item._date.format('DD/MM/YYYY');
-								let dur = this.sharedService.moment().diff(item._date, 'years');
+								let endDate = Number(this.currentDate.format("YYYY"));
+								let stratDate = Number(item._date.format("YYYY"));
+								item.durView = "";
+								let dur = endDate - stratDate;
 								if (dur > 0) {
-									item._days = dur;
+									item.durView = `${dur} năm`;
 								}
 							}
 							requests.push(this.updateEntityName(item));
@@ -303,13 +306,13 @@ export class EventsDailyComponent extends SimpleBaseComponent {
 				this.getClergy(item.entityID).pipe(take(1)).subscribe({
 					next: (entityName: any) => {
 						if ((item.type == 'pho_te' || item.type == 'linh_muc')) {
-							item.title = `Kỷ niệm ${item._days > 0 ? item._days + ' năm' : ""} ${item.name} của ${entityName}`;
+							item.title = `Kỷ niệm ${item.durView} ${item.name} của ${entityName}`;
 						}
 						else if (item.type == 'saint') {
 							item.title = `Mừng bổn mạng của ${entityName}`;
 						}
 						else if (item.type == 'rip') {
-							item.title = `Lễ giỗ ${item._days > 0 ? item._days + ' năm' : ""} của ${entityName}`;
+							item.title = `Lễ giỗ ${item.durView} của ${entityName}`;
 						}
 						else if (item.type == 'birth') {
 							item.title = `Mừng sinh nhật của ${entityName}`;

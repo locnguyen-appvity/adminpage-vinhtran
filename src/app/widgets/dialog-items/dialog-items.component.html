@@ -20,7 +20,7 @@
 						{{item.name}}</option>
 				</select>
 				<input formControlName="name" class="form-control" type="text" placeholder="Nhập tên">
-				<input *ngIf="target == 'organizations'" formControlName="masses" class="form-control" type="text" mask="Hh:m0" placeholder="Nhập giờ lễ">
+				<input *ngIf="target == 'organizations'" formControlName="masses" class="form-control" type="text" mask="Hh" placeholder="Nhập giờ lễ định dạng 24h">
 				<button (click)="onSearch()" type="button" color="default" mat-flat-button>Tìm kiếm</button>
 			</div>
 		</div>

@@ -105,7 +105,7 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 							item.dateOfBirthView = this.sharedService.formatDate(item._dateOfBirth);
 						}
 						// item.clergyID = item.id;
-						// this.getAppointments(item);
+						this.getClergy(item);
 						item.appointment = {
 							position: "Chưa cập nhật",
 							entityName: "Chưa cập nhật"
@@ -160,6 +160,14 @@ export class SearchClergysComponent extends SimpleBaseComponent implements OnCha
 				// }
 				// this.dataLists = this.groupData(this.cacheDataLists);
 				this.getClergies();
+			}
+		})
+	}
+
+	getClergy(item: any) {
+		this.service.getClergy(item.clergyID).pipe(take(1)).subscribe((res: any) => {
+			if(res && res.parable){
+				item.parable = res.parable;
 			}
 		})
 	}
