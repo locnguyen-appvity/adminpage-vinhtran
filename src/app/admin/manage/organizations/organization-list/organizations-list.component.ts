@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Router } from '@angular/router';
@@ -19,6 +19,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 	styleUrls: ['./organizations-list.component.scss']
 })
 export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
+
+	@ViewChild('widgetScroll', { static: true })
+	public widgetScroll: ElementRef<any>;
 
 	@Input() groupID: string = '';
 	public type: string = 'giao_xu';
@@ -38,11 +41,51 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		if (this.router.url.includes("giao_diem")) {
 			this.type = 'giao_diem';
 		}
-		else if(this.router.url.includes("giao_ho")){
+		else if (this.router.url.includes("giao_ho")) {
 			this.type = 'giao_ho';
 
 		}
 		this.getDataGridAndCounterApplications();
+	}
+
+	getStatusDefault() {
+		let items = [];
+		items.push({
+			title: 'All',
+			text: 'All',
+			count: 0,
+			key: 'total',
+			code: 'total',
+			icon: 'ic_people_24px',
+			checked: true
+		});
+		items.push({
+			title: 'Workspace Admin',
+			text: 'Workspace Admin',
+			count: 0,
+			key: 'workspace_admin',
+			code: 'workspace-admin',
+			icon: 'ic_supervised_user_circle',
+			checked: false
+		});
+		items.push({
+			title: 'Logistics',
+			text: 'Logistics',
+			count: 0,
+			key: 'logistics',
+			code: 'logistics',
+			icon: 'ic_emoji_transportation',
+			checked: false
+		});
+		return items;
+	}
+
+	scrollLeft() {
+		this.widgetScroll.nativeElement.scrollLeft -= 400;
+	}
+
+	scrollRight() {
+		this.widgetScroll.nativeElement.scrollLeft += 400;
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -73,12 +116,21 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
+		if (!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value !== 'total') {
+			if (this.isNullOrEmpty(filter)) {
+				filter = `groupID eq ${this.statusFilterControl.value}`;
+			}
+			else {
+				filter = `(${filter}) and (groupID eq ${this.statusFilterControl.value})`;
+			}
+		}
 		return filter;
 	}
 
 
 	getDataGridAndCounterApplications() {
 		this.getDataGridApplications();
+		this.getGroups();
 	}
 
 	getDataGridApplications() {
@@ -198,6 +250,74 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 			};
 			this.showInfoSnackbar(snackbarData);
 			this.getDataGridApplications();
+		})
+	}
+
+	getCounterApplications(item: any) {
+		return new Observable(obs => {
+			let filter = `type eq '${this.type}'`;
+			if (!this.isNullOrEmpty(item.id)) {
+				if (this.isNullOrEmpty(filter)) {
+					filter = `groupID eq ${item.id}`;
+				}
+				else {
+					filter = `(${filter}) and (groupID eq ${item.id})`;
+				}
+			}
+			let options = {
+				filter: filter,
+				top: 1,
+				select: "id"
+			}
+			this.service.getOrganizations(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					item.count = res.total || 0
+					obs.next(item);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getGroups() {
+		let options = {
+			filter: "type eq 'giao_hat'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					let items = res.value;
+					let requests: Observable<any>[] = [];
+					for (let item of items) {
+						let data = {
+							id: item.id,
+							title: item.name,
+							text: item.name,
+							count: 0,
+							key: item.id,
+							code: item.id,
+							icon: '',
+							checked: false
+						}
+						requests.push(this.getCounterApplications(data));
+					}
+					let dataAll = {
+						title: 'All',
+						text: 'All',
+						count: 0,
+						key: 'total',
+						code: 'total',
+						icon: '',
+						checked: true
+					}
+					requests.unshift(this.getCounterApplications(dataAll));
+					forkJoin(requests).pipe(take(1)).subscribe({
+						next: (dataItems: any) => {
+							this.quickFilterStatus = dataItems;
+						}
+					})
+				}
+			}
 		})
 	}
 

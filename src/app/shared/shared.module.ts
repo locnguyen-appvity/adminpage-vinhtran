@@ -18,6 +18,7 @@ import { PureWordsMaskDirective } from './input-validate.directive';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NumberOnlyDirective } from './number.only.directive';;
 import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
+import { CustomScrollDirective } from './directives/custom-scroll.directive';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -36,7 +37,8 @@ import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
 		NumberOnlyDirective,
-		ImageUrlTransformerPipe
+		ImageUrlTransformerPipe,
+		CustomScrollDirective
 	],
 	exports: [
 		RouterModule,
@@ -55,6 +57,7 @@ import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
 		PureWordsMaskDirective,
 		MatSnackBarModule,
 		NumberOnlyDirective,
+		CustomScrollDirective,
 		ImageUrlTransformerPipe
 	],
 })

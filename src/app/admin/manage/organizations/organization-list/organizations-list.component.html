@@ -1,5 +1,32 @@
-<div class="se-apps-users">
+<div class="se-grid-list-custom">
     <div class="wrapper">
+
+        <div *ngIf="isNullOrEmpty(groupID)" class="quick-filter-widgets-wrapper">
+            <div appCustomScroll #appScrollElement="appCustomScroll" fxLayout="row wrap" #widgetScroll
+                class="quick-filter-widgets-container">
+                <button *ngIf="appScrollElement.leftBtn" (click)="scrollLeft()" mat-mini-fab class="scroll-left-button"
+                    aria-label="Left">
+                    <mat-icon svgIcon="ic_chevron_left_48px"></mat-icon>
+                </button>
+                <button *ngIf="appScrollElement.rightBtn" (click)="scrollRight()" mat-mini-fab aria-label="Right"
+                    class="scroll-right-button">
+                    <mat-icon svgIcon="ic_chevron_right_48px"></mat-icon>
+                </button>
+                <ng-template ngFor let-user [ngForOf]="quickFilterStatus" let-first="first" let-last="last">
+                    <div fxFlex="200px" (click)="toggleQuickFilterStatus(user)"
+                        [ngClass]="{'widget-first': first, 'widget-last': last}">
+                        <mat-card class="quick-filter-widget" matRipple
+                            [ngClass]="user.checked?'active-status-filter':''">
+                            <div class="widget-count">{{user.count}}</div>
+                            <div class="widget-title">{{user.text}}</div>
+                            <!-- <mat-icon class="widget-icon" [svgIcon]="user?.icon">
+                            </mat-icon> -->
+                        </mat-card>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
         <!-- Table Container -->
         <div class="se-grid-tables">
             <mat-card class="table-card">
@@ -43,8 +70,8 @@
                         matTooltip="Mở Lại">
                         <mat-icon class="material-icons" svgIcon="ic_toggle_on"></mat-icon>
                     </button>
-                    <button mat-icon-button [disabled]="dataProcessing" *ngIf="selection?.selected?.length == 1  && groupID == ''"
-                        matTooltip="Xóa">
+                    <button mat-icon-button [disabled]="dataProcessing"
+                        *ngIf="selection?.selected?.length == 1  && groupID == ''" matTooltip="Xóa">
                         <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
                     </button>
                 </mat-toolbar>
@@ -59,7 +86,7 @@
                         </div>
                     </mat-sidenav> -->
                     <div class="table-container"
-                        [ngClass]=" groupID ? 'table-container--orgingroups':'table-container--mediafiles'">
+                        [ngClass]=" groupID ? 'table-container--orgingroups':'table-container--haswidgets'">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort
                             (matSortChange)="onSortChange($event)">
 
@@ -82,7 +109,7 @@
 
                             <!-- Photo/Avatar Column -->
                             <ng-container matColumnDef="photo">
-                                <th mat-header-cell *matHeaderCellDef > Photo </th>
+                                <th mat-header-cell *matHeaderCellDef> Photo </th>
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
                                         <div class="photo-container">
@@ -101,7 +128,7 @@
 
                             <!-- Status Column -->
                             <ng-container matColumnDef="status">
-                                <th mat-header-cell *matHeaderCellDef > Trạng Thái </th>
+                                <th mat-header-cell *matHeaderCellDef> Trạng Thái </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     <div style="height: 100%;" fxLayout="row" fxLayoutAlign="center center">
                                         <div [ngClass]="dataItem.statusClass">
@@ -115,14 +142,14 @@
                             </ng-container>
 
                             <ng-container matColumnDef="type">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Loại </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Loại </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.typeView}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Tên </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tên </th>
                                 <td mat-cell *matCellDef="let element"
                                     style="min-width: 300px; max-width: 300px; width: 300px"
                                     [matTooltipDisabled]="!(element?.name?.length > 50)" [matTooltip]="element.name">
@@ -131,35 +158,35 @@
                             </ng-container>
 
                             <ng-container matColumnDef="email">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Email </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.email}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="phoneNumber">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Số Điện Thoại </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Số Điện Thoại </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.phoneNumber}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="memberCount">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Số Giáo Dân </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Số Giáo Dân </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.memberCount}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="population">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Dân Số </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Dân Số </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.population}}
                                 </td>
                             </ng-container>
 
                             <ng-container matColumnDef="created">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header > Ngày Tạo </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ngày Tạo </th>
                                 <td mat-cell *matCellDef="let dataItem">
                                     {{dataItem.createdView}}
                                 </td>
