@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnChanges, SimpleChanges } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
@@ -76,7 +76,12 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 
 	checkItemSlect() {
 		this.filesSelected = this.dataSources.filter(it => it.checked);
-		this.itemSelectedTemplate = `${this.filesSelected.length} hình được chọn`;
+		if(this.filesSelected.length > 0){
+			this.itemSelectedTemplate = `${this.filesSelected.length} hình được chọn`;
+		}
+		else {
+			this.itemSelectedTemplate = "";
+		}
 	}
 
 	clearSearch() {
@@ -491,14 +496,21 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	}
 
 	dowloadFile(file: any) {
-		if (this.isNullOrEmpty(file.urlPatch)) {
-
+		if (!this.isNullOrEmpty(file.fileUrl)) {
+			// this.dataProcessing = true;
+			// this.service.downloadFileAsBlob(file.fileUrl).pipe(map((res: any) => res.body), takeUntil(this.unsubscribe)).subscribe({
+			// 	next: (blob: any) => {
+					// const objectUrl = URL.createObjectURL(blob);
+					this.readyToDowload(file.fileUrl, file.name);
+			// 		this.dataProcessing = false;
+			// 	}
+			// });
 		}
-		else {
-			const blob = this.b64toBlob(file.urlPatch, file.mimetype);
-			const objectUrl = URL.createObjectURL(blob);
-			this.readyToDowload(objectUrl, file);
-		}
+		// else {
+		// 	const blob = this.b64toBlob(file.urlPatch, file.mimetype);
+		// 	const objectUrl = URL.createObjectURL(blob);
+		// 	this.readyToDowload(objectUrl, file);
+		// }
 	}
 
 	b64toBlob(b64Data, contentType: string, sliceSize = 512) {
@@ -521,12 +533,12 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 		return blob;
 	}
 
-	readyToDowload(url: any, file: any) {
+	readyToDowload(url: any, name: any) {
 		let anchor = this.renderer.createElement('a');
 		this.renderer.setStyle(anchor, 'visibility', 'hidden');
 		this.renderer.setAttribute(anchor, 'href', url);
 		this.renderer.setAttribute(anchor, 'target', '_blank');
-		this.renderer.setAttribute(anchor, 'download', file.name);
+		this.renderer.setAttribute(anchor, 'download', name);
 		document.body.appendChild(anchor);
 		anchor.click();
 		document.body.removeChild(anchor);

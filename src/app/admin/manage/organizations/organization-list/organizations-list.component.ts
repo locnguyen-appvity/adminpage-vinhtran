@@ -20,8 +20,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
-	@ViewChild('widgetScroll', { static: true })
-	public widgetScroll: ElementRef<any>;
+	// @ViewChild('widgetScroll', { static: true }) public widgetScroll: ElementRef<any>;
+	public widgetScroll: any;
+	@ViewChild('widgetScroll') set alertsPanelOnHTML(alertsPanelOnHTML: ElementRef) {
+		if (!!alertsPanelOnHTML) {
+			this.widgetScroll = alertsPanelOnHTML;
+		}
+	}
 
 	@Input() groupID: string = '';
 	public type: string = 'giao_xu';
@@ -302,8 +307,8 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 						requests.push(this.getCounterApplications(data));
 					}
 					let dataAll = {
-						title: 'All',
-						text: 'All',
+						title: 'Tất Cả',
+						text: 'Tất Cả',
 						count: 0,
 						key: 'total',
 						code: 'total',
