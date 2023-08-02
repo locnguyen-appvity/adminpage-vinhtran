@@ -47,10 +47,9 @@
                         <div fxFlex.gt-xs="20" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Phân Loại</mat-label>
-                                <se-autocomplete-simple [required]="false" [formControlName]="'type'" 
-                                    [optgroup]="false" [placeHolder]="'Nhập Loại'" [keyTitle]="'name'"
-                                    [keyValue]="'code'" [keyValueEmit]="'code'" [autocomplete]="false"
-                                    [items]="typeList">
+                                <se-autocomplete-simple [required]="false" [formControlName]="'type'" [optgroup]="false"
+                                    [placeHolder]="'Nhập Loại'" [keyTitle]="'name'" [keyValue]="'code'"
+                                    [keyValueEmit]="'code'" [autocomplete]="false" [items]="typeList">
                                 </se-autocomplete-simple>
                             </mat-form-field>
                         </div>
@@ -65,7 +64,7 @@
                         <div *ngIf="target == 'giao_xu'" fxFlex.gt-xs="30" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Giáo Hạt</mat-label>
-                                <se-autocomplete-simple [required]="true" [formControlName]="'groupID'" 
+                                <se-autocomplete-simple [required]="true" [formControlName]="'groupID'"
                                     [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
                                     [keyValueEmit]="'id'" [keyValue]="'id'" [autocomplete]="true" [items]="groupsList">
                                 </se-autocomplete-simple>
@@ -74,10 +73,26 @@
                         <div *ngIf="target != 'giao_xu'" fxFlex.gt-xs="30" fxFlex="100">
                             <mat-form-field appearance="outline" class="full-width">
                                 <mat-label>Thuộc</mat-label>
-                                <se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="true"
-                                    [placeHolder]="'Nhập tên để tìm kiếm'" [keyTitle]="'name'" [keyValue]="'_id'" [keyValueEmit]="'_id'"
-                                    [autocomplete]="true" [items]="entityList" (onSelectItem)="onSelectItem($event,'entityID')">
+                                <se-autocomplete-simple [required]="false" [formControlName]="'_entityID'"
+                                    [optgroup]="true" [placeHolder]="'Nhập tên để tìm kiếm'" [keyTitle]="'name'"
+                                    [keyValue]="'_id'" [keyValueEmit]="'_id'" [autocomplete]="true" [items]="entityList"
+                                    (onSelectItem)="onSelectItem($event,'entityID')">
                                 </se-autocomplete-simple>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" class="full-width">
+                        <div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Latitude</mat-label>
+                                <input matInput formControlName="latitude" autocomplete="off">
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex.gt-xs="50" fxFlex="100">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Longitude</mat-label>
+                                <input matInput formControlName="longitude" autocomplete="off">
+
                             </mat-form-field>
                         </div>
                     </div>
@@ -93,9 +108,9 @@
                         [filePath]="localItem?.photo"></se-upload-avatar>
                     <mat-form-field appearance="outline" class="full-width">
                         <mat-label>Tước Hiệu</mat-label>
-                        <se-autocomplete-simple [required]="true" [formControlName]="'anniversary'" 
-                            [optgroup]="false" [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'"
-                            [keyValue]="'id'" [autocomplete]="true" [items]="saintList">
+                        <se-autocomplete-simple [required]="true" [formControlName]="'anniversary'" [optgroup]="false"
+                            [placeHolder]="'Nhập tên Thánh...'" [keyTitle]="'name'" [keyValue]="'id'"
+                            [autocomplete]="true" [items]="saintList">
                         </se-autocomplete-simple>
                         <mat-hint>Nhập mới hoặc chọn trong danh sách</mat-hint>
                     </mat-form-field>
@@ -139,7 +154,8 @@
                                     SỰ KIỆN QUAN TRỌNG
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <app-events-list [entityID]="ID" [entityType]="'organization'" [entityName]="localItem?.name"></app-events-list>
+                            <app-events-list [entityID]="ID" [entityType]="'organization'"
+                                [entityName]="localItem?.name"></app-events-list>
                         </mat-expansion-panel>
 
                         <mat-expansion-panel expanded>
@@ -150,7 +166,8 @@
                             </mat-expansion-panel-header>
                             <!-- <ng-template ngFor let-data let-i="index" let-last="last"
                                     [ngForOf]="getControls(dataItemGroup, 'items')"> -->
-                            <app-appointments-list-control [entityID]="ID" [entityType]="'organization'" [mode]="'organization'">
+                            <app-appointments-list-control [entityID]="ID" [entityType]="'organization'"
+                                [mode]="'organization'">
                             </app-appointments-list-control>
                             <!-- <mat-divider class="mrb-24" *ngIf="!last"></mat-divider> -->
                             <!-- </ng-template> -->

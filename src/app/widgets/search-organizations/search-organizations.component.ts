@@ -48,7 +48,7 @@ export class SearchOrganizationsComponent extends SimpleBaseComponent implements
 	}
 
 	onViewOrg(item: any) {
-		window.open(`/#/page/organization/${item.id}`, '_blank');
+		window.open(`./#/page/organization/${item.id}`, '_blank');
 	}
 	// getGroups() {
 	// 	let options = {

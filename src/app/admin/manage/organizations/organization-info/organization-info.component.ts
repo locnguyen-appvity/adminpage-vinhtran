@@ -101,6 +101,8 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			description: this.localItem ? this.localItem.description : '',
 			content: this.localItem ? this.localItem.content : '',
 			entityID: this.localItem ? this.localItem.entityID : '',
+			longitude: this.localItem ? this.localItem.longitude : '',
+			latitude: this.localItem ? this.localItem.latitude : '',
 			_entityID: _entityID,
 			entityType: this.localItem ? this.localItem.entityType : '',
 			status: status,
@@ -219,6 +221,8 @@ export class OrganizationInfoComponent extends SimpleBaseComponent {
 			abbreviation: valueForm.abbreviation,
 			content: valueForm.content,
 			description: valueForm.description,
+			longitude: valueForm.longitude,
+			latitude: valueForm.latitude,
 			type: this.type
 		}
 		this.saveAction = 'save';

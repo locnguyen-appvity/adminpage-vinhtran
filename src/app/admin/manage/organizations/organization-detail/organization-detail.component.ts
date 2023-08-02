@@ -97,6 +97,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			email: '',
 			address: '',
 			anniversary: '',
+			longitude: '',
+			latitude: '',
 			photo: '',
 			_entityID: "",
 		});
@@ -314,6 +316,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 						photo: this.localItem.photo,
 						entityID: this.localItem.entityID,
 						entityType: this.localItem.entityType,
+						longitude: this.localItem.longitude,
+						latitude: this.localItem.latitude,
 						_entityID: _entityID,
 					});
 				}
@@ -340,6 +344,8 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			type: valueForm.type,
 			memberCount: valueForm.memberCount,
 			population: valueForm.population,
+			longitude: valueForm.longitude,
+			latitude: valueForm.latitude,
 			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 		}
 		let request: any;
