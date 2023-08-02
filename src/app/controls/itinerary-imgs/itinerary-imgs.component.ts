@@ -24,7 +24,7 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	@Input() datatItem: any;
 	@Input() type: string = "member";
 	@Input() guid: string = "member-file-upload";
-	@Input() acceptFiles: string = "*";
+	@Input() acceptFiles: string = "image/*";
 	@Input() typeShowIMG: string = 'grid';
 	@Input() originalFileName: string = '';
 	@Input() hasGetData: boolean = true;
@@ -51,9 +51,11 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	public skip: number = 0;
 	public currentPageIndex: number = 0;
 	public pageSize: number = 8;
-	public pageSizeOptions: any[] = [8, 12, 24];
+	public pageSizeOptions: any[] = [8, 12, 24, 50];
 	public txtSearch: FormControl;
 	public searchValue: string = "";
+	public itemSelectedTemplate: string = "";
+	public filesSelected: any[] = [];
 
 	constructor(public sharedService: SharedPropertyService,
 		public renderer: Renderer2,
@@ -70,6 +72,11 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 				}
 			}
 		});
+	}
+
+	checkItemSlect() {
+		this.filesSelected = this.dataSources.filter(it => it.checked);
+		this.itemSelectedTemplate = `${this.filesSelected.length} hình được chọn`;
 	}
 
 	clearSearch() {
@@ -125,13 +132,13 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 	}
 
 	getAllFiles() {
-		this.dataProcessing = true;
 		this.skip = this.currentPageIndex * this.pageSize;
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
 			filter: this.getFilter()
 		}
+		this.dataProcessing = true;
 		this.loadingFile = true;
 		this.service.getFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
@@ -421,6 +428,7 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 			this.service.deleteFile(file.id).pipe(takeUntil(this.unsubscribe)).subscribe({
 				next: () => {
 					this.dataProcessing = false;
+					this.files = [];
 					this.getFiles();
 				}, error: error => {
 					this.getFiles();
@@ -437,6 +445,48 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 			if (this.files.length === 0) {
 				this.noFilesUploads = true;
 			}
+		}
+	}
+
+	removeFiles(items: any) {
+		if (items && items.length > 0) {
+			this.dataProcessing = true;
+			let sub = new BehaviorSubject(0);
+			sub.subscribe({
+				next: (index: number) => {
+					if (index < items.length) {
+						if (items[index]) {
+							let valueForm = items[index];
+							this.service.deleteFile(valueForm.id).pipe(takeUntil(this.unsubscribe)).subscribe({
+								next: () => {
+									index++;
+									sub.next(index);
+								},
+								error: error => {
+									console.log(error);
+									index++;
+									sub.next(index);
+								}
+							});
+
+						}
+						else {
+							index++;
+							sub.next(index);
+						}
+					}
+					else {
+						this.dataProcessing = false;
+						this.getFiles();
+						this.files = [];
+						this.filesSelected = [];
+						this.itemSelectedTemplate = "";
+						sub.complete();
+						sub.unsubscribe();
+					}
+
+				}
+			});
 		}
 	}
 
@@ -489,6 +539,7 @@ export class ItineraryIMGsComponent extends SimpleBaseComponent implements OnCha
 		dataItem.checked = !dataItem.checked;
 		this.valueChanges.emit({ action: 'value-change', data: this.dataSources.filter(it => it.checked) });
 		// this.checkSingleItem(dataItem);
+		this.checkItemSlect();
 	}
 
 	unCheckAll() {

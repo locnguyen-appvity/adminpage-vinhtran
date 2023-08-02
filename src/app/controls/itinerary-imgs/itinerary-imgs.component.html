@@ -1,7 +1,7 @@
 <!-- If there are attached files -->
 <mat-card class="upload-files-card">
     <mat-card-header class="mrb-24" fxLayout="column" fxLayoutAlign="start center">
-        <div class="top-menu-toolbar" fxLayout="row" fxLayoutAlign="start center">
+        <div *ngIf="filesSelected?.length == 0" class="top-menu-toolbar" fxLayout="row" fxLayoutAlign="start center">
             <div fxFlex="75">
                 <div fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon class="ic_search material-icons" svgIcon="ic_search_48px"></mat-icon>
@@ -9,6 +9,7 @@
                 </div>
             </div>
             <div fxFlex="25">
+                <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
                 <span fxFlex></span>
                 <button mat-icon-button *ngIf="txtSearch?.value?.length > 0" (click)="clearSearch()" aria-label="Close"
                     matTooltip="Xoá" class="mat-icon-button-search-close">
@@ -19,6 +20,13 @@
                     <mat-icon svgIcon="ic_add_48px"></mat-icon>
                 </button>
             </div>
+        </div>
+        <div *ngIf="filesSelected?.length > 0" class="top-menu-toolbar" fxLayout="row" fxLayoutAlign="start center">
+            <h5 class="search-selected-text">{{itemSelectedTemplate}}</h5>
+            <span fxFlex></span>
+            <button mat-icon-button [disabled]="dataProcessing" (click)="removeFiles(filesSelected)" aria-label="Close" matTooltip="Xoá">
+                <mat-icon class="material-icons" svgIcon="ic_delete_48px"></mat-icon>
+            </button>
         </div>
         <mat-progress-bar *ngIf="uploadingFile" mode="indeterminate"></mat-progress-bar>
         <mat-divider class="full-width"></mat-divider>
