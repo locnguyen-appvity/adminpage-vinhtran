@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { forkJoin, take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Router } from '@angular/router';
@@ -50,8 +50,104 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		this.getDataGridAndCounterApplications();
 	}
 
+	getStatusDefault() {
+		return [];
+	}
+
+	getCounterApplications(item: any) {
+		return new Observable(obs => {
+			if (item.id && item.id == 'all') {
+				let options = {
+					top: 1,
+					filter: this.getFilter(),
+					select: 'id'
+				}
+				this.service.getClergies(options).pipe(take(1)).subscribe({
+					next: (res: any) => {
+						item.count = res.total || 0;
+						obs.next(item);
+						obs.complete();
+					}
+				})
+				return;
+			}
+			let restrictions = [
+				{
+					"key": "groupID",
+					"value": item.id && item.id != 'all' ? item.id : ""
+				}
+			];
+			let options = {
+				"page": 1,
+				"pageSize": 200,
+				"restrictions": restrictions,
+				"sorts": [
+					{
+						"key": "name",
+						"sortType": "asc"
+					}
+				]
+			}
+			this.service.searchClergies(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let dataLists = [];
+					if (res && res.results && res.results.length > 0) {
+						dataLists = this.linq.Enumerable().From(res.results).Distinct('$.clergyID').ToArray();
+					}
+					item.count = dataLists.length;
+					obs.next(item);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getGroups() {
+		let options = {
+			filter: "type eq 'giao_hat'"
+		}
+		this.service.getGroups(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res && res.value && res.value.length > 0) {
+					let items = res.value;
+					let requests: Observable<any>[] = [];
+					for (let item of items) {
+						let data = {
+							id: item.id,
+							title: item.name,
+							text: item.name,
+							count: 0,
+							key: item.id,
+							code: item.id,
+							icon: '',
+							checked: false
+						}
+						requests.push(this.getCounterApplications(data));
+					}
+					let dataAll = {
+						id: 'all',
+						title: 'Tất Cả',
+						text: 'Tất Cả',
+						count: 0,
+						key: 'total',
+						code: 'total',
+						icon: '',
+						checked: true
+					}
+					requests.unshift(this.getCounterApplications(dataAll));
+					forkJoin(requests).pipe(take(1)).subscribe({
+						next: (dataItems: any) => {
+							this.quickFilterStatus = dataItems;
+						}
+					})
+				}
+			}
+		})
+	}
+
 	getDataGridAndCounterApplications() {
 		this.getDataGridApplications();
+		this.getGroups();
 	}
 
 	getPositions() {
@@ -83,32 +179,35 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			this.subscription['getClergies'].unsubscribe();
 		}
 		this.dataProcessing = true;
-		this.service.getClergies(options).pipe(take(1)).subscribe((res: any) => {
-			this.dataProcessing = false;
-			let total = res.total || 0;
-			if (res && res.value && res.value.length > 0) {
-				let items = res.value;
-				for (let item of items) {
-					item.expandData = {
-						anniversaries: [],
-						appointments: []
+		this.service.getClergies(options).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				this.dataProcessing = false;
+				let total = res.total || 0;
+				if (res && res.value && res.value.length > 0) {
+					let items = res.value;
+					for (let item of items) {
+						item.expandData = {
+							anniversaries: [],
+							appointments: []
+						}
+						item.disabledItem = false;
+						item.fullName = `${this.sharedService.getClergyLevel(item)} ${item.stName}  ${item.name}`
+						item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg')
+						if (item.photo) {
+							item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+						}
+						if (item.created) {
+							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
+							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
+						}
+						item.statusView = this.sharedService.getClergyStatus(item.status);
+						item.statusClass = this.sharedService.getClergyStatusClass(item.status);
 					}
-					item.disabledItem = false;
-					item.fullName = `${this.sharedService.getClergyLevel(item)} ${item.stName}  ${item.name}`
-					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg')
-					if (item.photo) {
-						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
-					}
-					if (item.created) {
-						item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
-						item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
-					}
-					item.statusView = this.sharedService.getClergyStatus(item.status);
-					item.statusClass = this.sharedService.getClergyStatusClass(item.status);
+					this.gridDataChanges.data = items;
+					this.gridDataChanges.total = total;
 				}
-				this.gridDataChanges.data = items;
-				this.gridDataChanges.total = total;
 			}
+
 		})
 	}
 

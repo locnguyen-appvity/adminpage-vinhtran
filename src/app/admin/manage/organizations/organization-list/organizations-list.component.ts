@@ -21,13 +21,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class OrganizationsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
 
 	// @ViewChild('widgetScroll', { static: true }) public widgetScroll: ElementRef<any>;
-	public widgetScroll: any;
-	@ViewChild('widgetScroll') set alertsPanelOnHTML(alertsPanelOnHTML: ElementRef) {
-		if (!!alertsPanelOnHTML) {
-			this.widgetScroll = alertsPanelOnHTML;
-		}
-	}
-
 	@Input() groupID: string = '';
 	public type: string = 'giao_xu';
 	constructor(
@@ -54,43 +47,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	getStatusDefault() {
-		let items = [];
-		items.push({
-			title: 'All',
-			text: 'All',
-			count: 0,
-			key: 'total',
-			code: 'total',
-			icon: 'ic_people_24px',
-			checked: true
-		});
-		items.push({
-			title: 'Workspace Admin',
-			text: 'Workspace Admin',
-			count: 0,
-			key: 'workspace_admin',
-			code: 'workspace-admin',
-			icon: 'ic_supervised_user_circle',
-			checked: false
-		});
-		items.push({
-			title: 'Logistics',
-			text: 'Logistics',
-			count: 0,
-			key: 'logistics',
-			code: 'logistics',
-			icon: 'ic_emoji_transportation',
-			checked: false
-		});
-		return items;
-	}
-
-	scrollLeft() {
-		this.widgetScroll.nativeElement.scrollLeft -= 400;
-	}
-
-	scrollRight() {
-		this.widgetScroll.nativeElement.scrollLeft += 400;
+		return [];
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
@@ -261,7 +218,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	getCounterApplications(item: any) {
 		return new Observable(obs => {
 			let filter = `type eq '${this.type}'`;
-			if (!this.isNullOrEmpty(item.id)) {
+			if (!this.isNullOrEmpty(item.id) && item.id != 'all') {
 				if (this.isNullOrEmpty(filter)) {
 					filter = `groupID eq ${item.id}`;
 				}
@@ -307,6 +264,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 						requests.push(this.getCounterApplications(data));
 					}
 					let dataAll = {
+						id: 'all',
 						title: 'Tất Cả',
 						text: 'Tất Cả',
 						count: 0,

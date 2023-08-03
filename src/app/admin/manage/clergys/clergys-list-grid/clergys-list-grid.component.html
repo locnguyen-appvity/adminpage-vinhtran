@@ -1,5 +1,32 @@
-<div class="se-apps-users">
+<div class="se-grid-list-custom">
     <div class="wrapper">
+
+        <div class="quick-filter-widgets-wrapper">
+            <div appCustomScroll #appScrollElement="appCustomScroll" fxLayout="row wrap" #widgetScroll
+                class="quick-filter-widgets-container">
+                <button *ngIf="appScrollElement.leftBtn" (click)="scrollLeft()" mat-mini-fab class="scroll-left-button"
+                    aria-label="Left">
+                    <mat-icon svgIcon="ic_chevron_left_48px"></mat-icon>
+                </button>
+                <button *ngIf="appScrollElement.rightBtn" (click)="scrollRight()" mat-mini-fab aria-label="Right"
+                    class="scroll-right-button">
+                    <mat-icon svgIcon="ic_chevron_right_48px"></mat-icon>
+                </button>
+                <ng-template ngFor let-item [ngForOf]="quickFilterStatus" let-first="first" let-last="last">
+                    <div fxFlex="200px" (click)="toggleQuickFilterStatus(item)"
+                        [ngClass]="{'widget-first': first, 'widget-last': last}">
+                        <mat-card class="quick-filter-widget" matRipple
+                            [ngClass]="item.checked?'active-status-filter':''">
+                            <div class="widget-count">{{item.count}}</div>
+                            <div class="widget-title">{{item.text}}</div>
+                            <!-- <mat-icon class="widget-icon" [svgIcon]="user?.icon">
+                            </mat-icon> -->
+                        </mat-card>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
         <!-- Table Container -->
         <div class="se-grid-tables">
             <mat-card class="table-card">
@@ -66,7 +93,7 @@
                             </div>
                         </div>
                     </mat-sidenav>
-                    <div class="table-container table-container--clergys">
+                    <div class="table-container table-container--haswidgets">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort multiTemplateDataRows
                             (matSortChange)="onSortChange($event)">
 

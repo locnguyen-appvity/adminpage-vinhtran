@@ -1,4 +1,4 @@
-import { ViewChildren, OnDestroy, ViewChild, AfterViewInit, Component } from '@angular/core';
+import { ViewChildren, OnDestroy, ViewChild, AfterViewInit, Component, ElementRef } from '@angular/core';
 import { takeUntil, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { fromEvent, timer } from 'rxjs';
@@ -21,6 +21,14 @@ declare let window: any;
 	template: ''
 })
 export class TemplateGridApplicationComponent extends SimpleBaseComponent implements AfterViewInit, OnDestroy {
+	
+	public widgetScroll: any;
+	@ViewChild('widgetScroll') set alertsPanelOnHTML(alertsPanelOnHTML: ElementRef) {
+		if (!!alertsPanelOnHTML) {
+			this.widgetScroll = alertsPanelOnHTML;
+		}
+	}
+
 	@ViewChild(MatPaginator) paginator: MatPaginator;
 	@ViewChild(MatMenuTrigger) showHideColumn: any;
 	@ViewChildren(MatMenuTrigger) trigger: any;
@@ -82,6 +90,14 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		this.searchControl = new FormControl('');
 		this.initialControls();
 		window._export_grid = '';
+	}
+
+	scrollLeft() {
+		this.widgetScroll.nativeElement.scrollLeft -= 400;
+	}
+
+	scrollRight() {
+		this.widgetScroll.nativeElement.scrollLeft += 400;
 	}
 
 	public getUserPermissions() {
