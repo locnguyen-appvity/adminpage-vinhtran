@@ -41,6 +41,8 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public levelList: any[] = LEVEL_CLERGY;
 	public saintList: any[] = [];
 	public groupsList: any[] = [];
+	public giaoHatGroupsList: any[] = [];
+	public beLongGroupsList: any[] = [];
 	public arrMasses: any[] = [];
 	public churchsList: any[] = [];
 
@@ -84,6 +86,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			placeOfBirth: '',
 			orgName: '',
 			status: '',
+			groupID: '',
 			organizationID: '',
 
 		});
@@ -243,7 +246,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					for (let item of res.value) {
-						if(!this.isNullOrEmpty(item.abbreviation)){
+						if (!this.isNullOrEmpty(item.abbreviation)) {
 							item.name = item.abbreviation;
 						}
 					}
@@ -257,7 +260,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		this.groupsList = [];
 		let options = {
 			select: 'id,name,type',
-			filter: "type eq 'dong_tu' or type eq 'cong_doan'"
+			filter: "type eq 'dong_tu' or type eq 'cong_doan' or type eq 'giao_hat'"
 		}
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -269,6 +272,8 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 					}
 				}
 				this.groupsList = items;
+				this.beLongGroupsList = items.filter(it => (it.type == 'dong_tu' || it.type == 'cong_doan'));
+				this.giaoHatGroupsList = items.filter(it => (it.type == 'giao_hat'));
 			}
 		})
 	}
@@ -331,6 +336,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 						placeOfBirth: this.localItem.placeOfBirth,
 						orgName: this.localItem.orgName,
 						status: this.localItem.status,
+						groupID: this.localItem.groupID,
 						organizationID: this.localItem.organizationID
 					});
 				}
@@ -365,6 +371,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 			placeOfBirth: valueForm.placeOfBirth,
 			orgName: valueForm.orgName,
 			status: valueForm.status,
+			groupID: valueForm.groupID,
 			organizationID: valueForm.organizationID
 		}
 		let requests: Observable<any>[] = [];

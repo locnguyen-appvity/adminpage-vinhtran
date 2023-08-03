@@ -157,7 +157,8 @@
                                     <strong>QUẢN LÝ HỒ SƠ</strong>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <app-itinerary-files [title]="'Files dữ liệu'" [entityID]="ID" [entityType]="'clergy'"></app-itinerary-files>
+                            <app-itinerary-files [title]="'Files dữ liệu'" [entityID]="ID"
+                                [entityType]="'clergy'"></app-itinerary-files>
                         </mat-expansion-panel>
                     </mat-accordion>
 
@@ -183,6 +184,13 @@
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Giáo Hạt</mat-label>
+                            <se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+                                [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'"
+                                [keyValueEmit]="'id'" [autocomplete]="false" [items]="giaoHatGroupsList">
+                            </se-autocomplete-simple>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Cấp Bậc</mat-label>
                             <se-autocomplete-simple [required]="false" [formControlName]="'level'" [optgroup]="false"
                                 [placeHolder]="'Tìm kiếm theo tên...'" [keyTitle]="'name'" [keyValue]="'code'"
@@ -201,7 +209,8 @@
                             <mat-label>Thuộc</mat-label>
                             <se-autocomplete-simple [required]="false" [formControlName]="'belongOrgId'"
                                 [optgroup]="false" [placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'"
-                                [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="false" [items]="groupsList">
+                                [keyValue]="'id'" [keyValueEmit]="'id'" [autocomplete]="false"
+                                [items]="beLongGroupsList">
                             </se-autocomplete-simple>
                         </mat-form-field>
                         <mat-accordion multi="true" class="full-width">

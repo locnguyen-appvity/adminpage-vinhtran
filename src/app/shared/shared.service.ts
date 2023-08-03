@@ -831,12 +831,6 @@ export class SharedService {
 
 
 	//Public
-	private rootAPI: string = GlobalSettings.Settings.ServerClient + "/api/v1";
-	searchClergies(options: any): Observable<any> {
-		const baseUrl = this.rootAPI + `/clergies/search`;
-		return this.getDataItems(baseUrl, options).pipe(catchError(error => this.handleError('searchClergies', error)));
-	}
-
 	getDataItems(baseUrl, options: any): Observable<any> {
 		let pageOption: any = {}
 		let restrictions = [];

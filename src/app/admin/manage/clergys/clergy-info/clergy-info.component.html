@@ -31,6 +31,15 @@
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
+				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Giáo Hạt</mat-label>
+						<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
+							[placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'"
+							[keyValueEmit]="'id'" [autocomplete]="false" [items]="giaoHatGroupsList">
+						</se-autocomplete-simple>
+					</mat-form-field>
+				</div>
 				<div fxFlex.gt-xs="50" fxFlex="100">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Phân Loại</mat-label>

@@ -127,6 +127,7 @@ export class SharedPropertyService {
                 return '3';
             case 'huu':
             case 'nghi_duong':
+            case 'huu_duong':
                 return '9';
             default:
                 return "5";

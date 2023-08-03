@@ -44,6 +44,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 		}
 		this.getDataGridAndCounterApplications();
+		this.getGroups(false);
 	}
 
 	getStatusDefault() {
@@ -57,7 +58,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		}
 	}
 
-	getFilter() {
+	getFilter(groupID: string = "") {
 		let filter = `type eq '${this.type}'`;
 		if (!this.isNullOrEmpty(this.groupID)) {
 			if (this.isNullOrEmpty(filter)) {
@@ -78,12 +79,24 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
-		if (!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value !== 'total') {
-			if (this.isNullOrEmpty(filter)) {
-				filter = `groupID eq ${this.statusFilterControl.value}`;
+		if (!this.isNullOrEmpty(groupID)) {
+			if (!this.isNullOrEmpty(groupID) && groupID !== 'total') {
+				if (this.isNullOrEmpty(filter)) {
+					filter = `groupID eq ${groupID}`;
+				}
+				else {
+					filter = `(${filter}) and (groupID eq ${groupID})`;
+				}
 			}
-			else {
-				filter = `(${filter}) and (groupID eq ${this.statusFilterControl.value})`;
+		}
+		else {
+			if (!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value !== 'total') {
+				if (this.isNullOrEmpty(filter)) {
+					filter = `groupID eq ${this.statusFilterControl.value}`;
+				}
+				else {
+					filter = `(${filter}) and (groupID eq ${this.statusFilterControl.value})`;
+				}
 			}
 		}
 		return filter;
@@ -217,17 +230,8 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 	getCounterApplications(item: any) {
 		return new Observable(obs => {
-			let filter = `type eq '${this.type}'`;
-			if (!this.isNullOrEmpty(item.id) && item.id != 'all') {
-				if (this.isNullOrEmpty(filter)) {
-					filter = `groupID eq ${item.id}`;
-				}
-				else {
-					filter = `(${filter}) and (groupID eq ${item.id})`;
-				}
-			}
 			let options = {
-				filter: filter,
+				filter: this.getFilter(item.key),
 				top: 1,
 				select: "id"
 			}
@@ -241,7 +245,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		})
 	}
 
-	getGroups() {
+	getGroups(isUpdateValue: boolean = true) {
 		let options = {
 			filter: "type eq 'giao_hat'"
 		}
@@ -249,6 +253,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					let items = res.value;
+					let quickFilterStatus = [];
 					let requests: Observable<any>[] = [];
 					for (let item of items) {
 						let data = {
@@ -261,7 +266,12 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 							icon: '',
 							checked: false
 						}
-						requests.push(this.getCounterApplications(data));
+						if (isUpdateValue) {
+							requests.push(this.getCounterApplications(data));
+						}
+						else {
+							quickFilterStatus.push(data);
+						}
 					}
 					let dataAll = {
 						id: 'all',
@@ -273,12 +283,23 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 						icon: '',
 						checked: true
 					}
-					requests.unshift(this.getCounterApplications(dataAll));
-					forkJoin(requests).pipe(take(1)).subscribe({
-						next: (dataItems: any) => {
-							this.quickFilterStatus = dataItems;
-						}
-					})
+					if (isUpdateValue) {
+						requests.unshift(this.getCounterApplications(dataAll));
+						forkJoin(requests).pipe(take(1)).subscribe({
+							next: (dataItems: any) => {
+								if (isUpdateValue) {
+									for (let item of this.quickFilterStatus) {
+										let data = this.sharedService.getItemExistsInArray(item.id, dataItems, 'id');
+										item.count = data.count;
+									}
+								}
+							}
+						})
+					}
+					else {
+						quickFilterStatus.unshift(dataAll);
+						this.quickFilterStatus = quickFilterStatus;
+					}
 				}
 			}
 		})

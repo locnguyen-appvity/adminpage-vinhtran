@@ -42,6 +42,8 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public anniversarys: any[] = [];
 	public dataDefault: any[] = ANNIVERSARIES;
 	public groupsList: any[] = [];
+	public giaoHatGroupsList: any[] = [];
+	public beLongGroupsList: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -89,6 +91,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			level: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
+			groupID: this.localItem ? this.localItem.groupID : '',
 			status: status,
 			// anniversarySaint: this.localItem ? this.localItem.anniversarySaint : '',
 			// anniversary: anniversary
@@ -107,7 +110,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		this.groupsList = [];
 		let options = {
 			select: 'id,name,type',
-			filter: "type eq 'dong_tu' or type eq 'cong_doan'"
+			filter: "type eq 'dong_tu' or type eq 'cong_doan' or type eq 'giao_hat'"
 		}
 		this.service.getGroups(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
@@ -119,6 +122,8 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 					}
 				}
 				this.groupsList = items;
+				this.beLongGroupsList = items.filter(it => (it.type == 'dong_tu' || it.type == 'cong_doan'));
+				this.giaoHatGroupsList = items.filter(it => (it.type == 'giao_hat'));
 			}
 		})
 	}
@@ -190,6 +195,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			status: valueForm.status ? 'active' : 'inactive',
 			email: valueForm.email,
 			phoneNumber: valueForm.phoneNumber,
+			groupID: valueForm.groupID,
 			code: this.sharedService.getLinkOfName(valueForm.name, ' '),
 			belongOrgId: valueForm.level == 'tu_dong' ? valueForm.belongOrgId : null,
 			type: valueForm.type,

@@ -93,7 +93,7 @@
                             </div>
                         </div>
                     </mat-sidenav>
-                    <div class="table-container table-container--haswidgets  table-container--clergys">
+                    <div class="table-container table-container--haswidgets  table-container--haswidgets--clergys">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort multiTemplateDataRows
                             (matSortChange)="onSortChange($event)">
 
@@ -292,9 +292,9 @@
                                                             [ngForOf]="element?.expandData?.anniversaries">
                                                             <h6 class="mrt-12"
                                                                 *ngIf="i < (element?.expandData?.anniversaries.length/2)">
-                                                                {{anniversary.name}}: <strong><span
-                                                                        *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span
-                                                                        *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong>
+                                                                {{anniversary.name}}: <strong><span>{{anniversary.dateView}}</span>
+                                                                    <!-- <span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span> -->
+                                                                    </strong>
                                                             </h6>
                                                         </ng-template>
                                                     </div>
@@ -303,9 +303,9 @@
                                                             [ngForOf]="element?.expandData?.anniversaries">
                                                             <h6 class="mrt-12"
                                                                 *ngIf="i >= (element?.expandData?.anniversaries.length/2)">
-                                                                {{anniversary.name}}: <strong><span
-                                                                        *ngIf="anniversary.type != 'bon_mang'">{{anniversary.dateView}}</span><span
-                                                                        *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span></strong>
+                                                                {{anniversary.name}}: <strong><span>{{anniversary.dateView}}</span>
+                                                                    <!-- <span *ngIf="anniversary.type == 'bon_mang'">{{anniversary.description}}</span> -->
+                                                                    </strong>
                                                             </h6>
                                                         </ng-template>
                                                     </div>

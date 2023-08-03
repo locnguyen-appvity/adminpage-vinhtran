@@ -48,6 +48,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		this.pageSizeOptions = [10, 25, 50];
 		this.getPositions();
 		this.getDataGridAndCounterApplications();
+		this.getGroups(false);
 	}
 
 	getStatusDefault() {
@@ -56,45 +57,14 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 
 	getCounterApplications(item: any) {
 		return new Observable(obs => {
-			if (item.id && item.id == 'all') {
-				let options = {
-					top: 1,
-					filter: this.getFilter(),
-					select: 'id'
-				}
-				this.service.getClergies(options).pipe(take(1)).subscribe({
-					next: (res: any) => {
-						item.count = res.total || 0;
-						obs.next(item);
-						obs.complete();
-					}
-				})
-				return;
-			}
-			let restrictions = [
-				{
-					"key": "groupID",
-					"value": item.id && item.id != 'all' ? item.id : ""
-				}
-			];
 			let options = {
-				"page": 1,
-				"pageSize": 200,
-				"restrictions": restrictions,
-				"sorts": [
-					{
-						"key": "name",
-						"sortType": "asc"
-					}
-				]
+				top: 1,
+				filter: this.getFilter(item.key),
+				select: 'id'
 			}
-			this.service.searchClergies(options).pipe(take(1)).subscribe({
+			this.service.getClergies(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
-					let dataLists = [];
-					if (res && res.results && res.results.length > 0) {
-						dataLists = this.linq.Enumerable().From(res.results).Distinct('$.clergyID').ToArray();
-					}
-					item.count = dataLists.length;
+					item.count = res.total || 0;
 					obs.next(item);
 					obs.complete();
 				}
@@ -102,7 +72,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		})
 	}
 
-	getGroups() {
+	getGroups(isUpdateValue: boolean = true) {
 		let options = {
 			filter: "type eq 'giao_hat'"
 		}
@@ -110,6 +80,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					let items = res.value;
+					let quickFilterStatus = [];
 					let requests: Observable<any>[] = [];
 					for (let item of items) {
 						let data = {
@@ -122,7 +93,12 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 							icon: '',
 							checked: false
 						}
-						requests.push(this.getCounterApplications(data));
+						if (isUpdateValue) {
+							requests.push(this.getCounterApplications(data));
+						}
+						else {
+							quickFilterStatus.push(data);
+						}
 					}
 					let dataAll = {
 						id: 'all',
@@ -134,12 +110,23 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 						icon: '',
 						checked: true
 					}
-					requests.unshift(this.getCounterApplications(dataAll));
-					forkJoin(requests).pipe(take(1)).subscribe({
-						next: (dataItems: any) => {
-							this.quickFilterStatus = dataItems;
-						}
-					})
+					if (isUpdateValue) {
+						requests.unshift(this.getCounterApplications(dataAll));
+						forkJoin(requests).pipe(take(1)).subscribe({
+							next: (dataItems: any) => {
+								if (isUpdateValue) {
+									for (let item of this.quickFilterStatus) {
+										let data = this.sharedService.getItemExistsInArray(item.id, dataItems, 'id');
+										item.count = data.count;
+									}
+								}
+							}
+						})
+					}
+					else {
+						quickFilterStatus.unshift(dataAll);
+						this.quickFilterStatus = quickFilterStatus;
+					}
 				}
 			}
 		})
@@ -183,8 +170,9 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			next: (res: any) => {
 				this.dataProcessing = false;
 				let total = res.total || 0;
+				let items = [];
 				if (res && res.value && res.value.length > 0) {
-					let items = res.value;
+					items = res.value;
 					for (let item of items) {
 						item.expandData = {
 							anniversaries: [],
@@ -203,15 +191,15 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 						item.statusView = this.sharedService.getClergyStatus(item.status);
 						item.statusClass = this.sharedService.getClergyStatusClass(item.status);
 					}
-					this.gridDataChanges.data = items;
-					this.gridDataChanges.total = total;
 				}
+				this.gridDataChanges.data = items;
+				this.gridDataChanges.total = total;
 			}
 
 		})
 	}
 
-	getFilter() {
+	getFilter(groupID: string = "") {
 		let filter = '';
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
@@ -222,6 +210,26 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			}
 			else {
 				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+			}
+		}
+		if (!this.isNullOrEmpty(groupID)) {
+			if(groupID != 'total'){
+				if (this.isNullOrEmpty(filter)) {
+					filter = `groupID eq ${groupID}`;
+				}
+				else {
+					filter = `(${filter}) and (groupID eq ${groupID})`;
+				}
+			}
+		}
+		else {
+			if(!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value != 'total'){
+				if (this.isNullOrEmpty(filter)) {
+					filter = `groupID eq ${this.statusFilterControl.value}`;
+				}
+				else {
+					filter = `(${filter}) and (groupID eq ${this.statusFilterControl.value})`;
+				}
 			}
 		}
 		return filter;
@@ -351,9 +359,14 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 						anniversaries = res.anniversaries.value;
 						for (let it of anniversaries) {
 							it.dateView = "Chưa cập nhật"
-							if (it.date) {
-								it._date = this.sharedService.convertDateStringToMoment(it.date, this.offset);
-								it.dateView = this.sharedService.formatDate(it._date);
+							if (it.type == 'saint') {
+								it.dateView = `${it.description} (${it.day})`;
+							}
+							else {
+								if (it.date) {
+									it._date = this.sharedService.convertDateStringToMoment(it.date, this.offset);
+									it.dateView = this.sharedService.formatDate(it._date);
+								}
 							}
 						}
 					}

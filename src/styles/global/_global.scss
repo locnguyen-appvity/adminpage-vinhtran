@@ -880,6 +880,18 @@ table {
 
 				&--haswidgets {
 					height: calc(100vh - 322px);
+					&--clergys {
+						tr.mat-footer-row,
+						tr.tsa-data-table-rows {
+							height: 70px !important;
+							img {
+								height: 60px;
+								width: 60px;
+								object-fit: cover;
+								object-position: top;
+							}
+						}
+					}
 				}
 
 				&--clergys {
