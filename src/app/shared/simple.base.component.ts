@@ -1,6 +1,7 @@
 import { OnDestroy, Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SharedPropertyService } from './shared-property.service';
+import { CommonUtility } from './common.utility';
 
 @Component({
     selector: 'simple-base',
@@ -44,17 +45,11 @@ export class SimpleBaseComponent implements OnDestroy {
     constructor(public sharedService: SharedPropertyService) { }
 
     isNullOrEmpty(data: any) {
-        if (data === null || data === "" || data === undefined) {
-            return true;
-        }
-        return false;
+       return CommonUtility.isNullOrEmpty(data);
     }
 
     isNullOrEmptyZero(data: any) {
-        if (data === null || data === "" || data === undefined || data === 0) {
-            return true;
-        }
-        return false;
+       return CommonUtility.isNullOrEmptyZero(data);
     }
 
     trackByFn(index: number) {

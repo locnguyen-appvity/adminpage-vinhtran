@@ -10,6 +10,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { ToastSnackbarAppComponent } from '../toast-snackbar/toast-snackbar.component';
 import { FolderInfoComponent } from '../folder-info/folder-info.component';
+import { DialogConfirmComponent } from '../confirm';
 
 /**
  * File node data with nested structure.
@@ -28,6 +29,7 @@ export class FileNode {
 export class FileFlatNode {
 	constructor(
 		public expandable: boolean,
+		public hasChildren: boolean,
 		public name: string,
 		public level: number,
 		public type: any,
@@ -218,20 +220,49 @@ export class FoldersTreeComponent extends SimpleBaseComponent {
 	}
 
 	deleteItem(item: any) {
-		if (item && item.children && item.children.length > 0) {
-			return;
+		let confirmMessage = `Nếu xóa thư mục <strong>${item.name}</strong> đồng nghĩa bạn sẽ <strong>xóa những files thuộc thư mục này</strong>. Bạn có chắc chắn xóa?`
+		if (item && item.hasChildren) {
+			confirmMessage = `Nếu xóa thư mục <strong>${item.name}</strong> đồng nghĩa bạn sẽ <strong>xóa những thư mục nằm trong và những files thuộc thư mục này</strong>. Bạn có chắc chắn xóa?`
 		}
-		this.dataProcessing = true;
-		this.service.deleteFolder(item.id).pipe(take(1)).subscribe(() => {
-			this.dataProcessing = false;
-			this.getDataItems();
+		let config: any = {
+			data: {
+				submitBtn: 'Xác nhận',
+				cancelBtn: 'Hủy',
+				confirmMessage: confirmMessage
+			}
+		};
+		this.showDialogConfirm(config).pipe(take(1)).subscribe({
+			next: (resConfirm: any) => {
+				if (resConfirm && resConfirm.action == 'ok') {
+					this.dataProcessing = true;
+					this.service.deleteFolder(item.id).pipe(take(1)).subscribe(() => {
+						this.dataProcessing = false;
+						this.getDataItems();
+					})
+				}
+			}
 		})
 	}
 
+	showDialogConfirm(config: any) {
+		return new Observable(obs => {
+			config.disableClose = true;
+			config.panelClass = 'dialog-form-l';
+			config.maxWidth = '80vw';
+			config.autoFocus = false;
+			let dialogRef = this.dialog.open(DialogConfirmComponent, config);
+			dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					obs.next(res);
+					obs.complete();
+				}
+			});
+		})
+	}
 
 	//Tree
 	transformer = (node: FileNode, level: number) => {
-		return new FileFlatNode(!!node.children, node.name, level, node.type, node.id, node.link, node.parent);
+		return new FileFlatNode(!!node.children, node.children.length > 0, node.name, level, node.type, node.id, node.link, node.parent);
 	}
 	private _getLevel = (node: FileFlatNode) => node.level;
 	private _isExpandable = (node: FileFlatNode) => node.expandable;

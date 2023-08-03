@@ -1,0 +1,9 @@
+<svg id="ic-powerpoint-file" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_2939" data-name="Group 2939">
+    <rect id="Rectangle_989" data-name="Rectangle 989" width="24" height="24" fill="none"/>
+  </g>
+  <path id="Path_3400" data-name="Path 3400" d="M12,13.26h-.47V15H12c.53,0,.63-.28.63-.87S12.54,13.26,12,13.26Z" fill="#b5482a"/>
+  <path id="Path_3401" data-name="Path 3401" d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8ZM12.07,16h-.58v2.75H10.06v-6.5h2.18c1.16,0,1.7.68,1.7,1.88C13.94,15.63,13.12,16,12.07,16ZM13,9V3.5L18.5,9Z" fill="#b5482a"/>
+  <path id="Path_3402" data-name="Path 3402" d="M12.24,12.25H10.06v6.48h1.43V16h.58a1.628,1.628,0,0,0,1.87-1.85C13.94,12.93,13.4,12.25,12.24,12.25ZM12,15h-.48V13.26H12c.58,0,.64.36.64.85S12.5,15,12,15Z" fill="#fff"/>
+  <path id="Path_3403" data-name="Path 3403" d="M13,9h5.5L13,3.5Z" fill="#fff"/>
+</svg>

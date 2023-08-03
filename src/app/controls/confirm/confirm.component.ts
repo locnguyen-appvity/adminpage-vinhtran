@@ -38,6 +38,10 @@ export class DialogConfirmComponent {
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any,
 		public dialogRef: MatDialogRef<DialogConfirmComponent>
 	) {
+		if (this.dialogData.value) {
+			this.value = this.dialogData.value;
+		}
+		this.formCtrl = new FormControl(this.value);
 		if (this.dialogData.header) {
 			this.header = this.dialogData.header;
 		}
@@ -68,13 +72,9 @@ export class DialogConfirmComponent {
 		if (this.dialogData.arrFromList) {
 			this.arrFromList = this.dialogData.arrFromList;
 		}
-		if (this.dialogData.value) {
-			this.value = this.dialogData.value;
-		}
 		if (this.dialogData.requireCtrl) {
 			this.requireCtrl = this.dialogData.requireCtrl;
 		}
-		this.formCtrl = new FormControl(this.value);
 		if(this.requireCtrl){
 			this.formCtrl.setValidators(Validators.required);
 			this.formCtrl.updateValueAndValidity();

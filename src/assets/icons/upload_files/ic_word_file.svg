@@ -1,0 +1,8 @@
+<svg id="ic-word-file" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_2939" data-name="Group 2939">
+    <rect id="Rectangle_989" data-name="Rectangle 989" width="24" height="24" fill="none"/>
+  </g>
+  <path id="Path_3404" data-name="Path 3404" d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Zm-.21,16.73H12.55L12,14.82l-.52,3.91H10.21l-.78-6.48h1.21L11,16l.49-3.77h1L13,16l.39-3.75h1.2ZM13,9V3.5L18.5,9Z" fill="#2c5ab7"/>
+  <path id="Path_3405" data-name="Path 3405" d="M12.98,16l-.51-3.74h-.95l-.49,3.77-.39-3.78H9.43l.78,6.48h1.27L12,14.82l.55,3.91h1.24l.78-6.48h-1.2Z" fill="#fff"/>
+  <path id="Path_3406" data-name="Path 3406" d="M13,9h5.5L13,3.5Z" fill="#fff"/>
+</svg>

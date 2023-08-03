@@ -530,6 +530,27 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteEntityFile', error)));
 	}
 
+	//EntityFolders
+	getEntityFolders(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/entityFolders';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getEntityFolders', error)));
+	}
+
+	getEntityFolder(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/entityFolders';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getEntityFolder', error)));
+	}
+
+	createEntityFolder(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/entityFolders`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createEntityFolder', error)));
+	}
+
+	deleteEntityFolder(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/entityFolders`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteEntityFolder', error)));
+	}
+
 	//mediafiles
 	getMediaFiles(options?: any): Observable<any> {
 		let baseUrl = this.shared.RootEndPointAPI + '/mediafiles';

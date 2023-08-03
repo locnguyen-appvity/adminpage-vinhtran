@@ -19,6 +19,7 @@ import { AngularSplitModule } from 'angular-split';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { ToastSnackbarAppModule } from '../toast-snackbar/toast-snackbar.module';
 import { ItineraryIMGsModule } from '../itinerary-imgs/itinerary-imgs.module';
+import { DialogConfirmModule } from '../confirm';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { ItineraryIMGsModule } from '../itinerary-imgs/itinerary-imgs.module';
     FolderInfoModule,
     ToastSnackbarAppModule,
     AngularSplitModule,
-    ItineraryIMGsModule
+    ItineraryIMGsModule,
+    DialogConfirmModule
   ],
   exports: [FoldersTreeComponent]
 })

@@ -1,10 +1,13 @@
 import { Component, Input, Output, EventEmitter, Renderer2, OnChanges, SimpleChanges } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
+import { CommonUtility } from 'src/app/shared/common.utility';
+import { DialogConfirmComponent } from '../confirm';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-itinerary-files',
@@ -18,7 +21,8 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 	@Input() data: any[] = [];
 	@Input() entityID: any;
 	@Input() entityType: string = "";
-	public noFilesUploads: boolean = true;
+	@Input() mode: string = "";
+	public noFilesUploads: boolean = false;
 	public files: File[] = [];
 	public validComboDrag: boolean = false;
 	public dataSources: any[] = [];
@@ -27,17 +31,81 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 	public uploadingFile: boolean = false;
 	@Input() title: string = 'Itinerary Files';
 
+	public dataFiles: any[] = [];
+	public dataFolders: any[] = [];
+	public dataFoldersCache: any[] = [];
+
+	public foldersSelect: any = [];
+	public folderSelect: any;
+
 	constructor(public sharedService: SharedPropertyService,
 		public renderer: Renderer2,
 		public router: Router,
+		public dialog: MatDialog,
 		private service: SharedService) {
 		super(sharedService);
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		if (changes['entityID'] || changes['entityType']) {
-			this.getEntityFiles();
+			this.dataSources = [];
+			this.uploadingFile = true;
+			forkJoin({ files: this.getEntityFiles(), folders: this.getEntityFolders() }).pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: () => {
+					if (this.dataFiles && this.dataFiles.length > 0) {
+						this.dataSources.push(...this.dataFiles);
+					}
+					if (this.dataFolders && this.dataFolders.length > 0) {
+						this.dataSources.unshift(...this.dataFolders);
+					}
+					this.uploadingFile = false;
+				}
+			})
 		}
+	}
+
+	onSelectFolder(folder: any, index: number) {
+		if(this.isNullOrEmpty(folder)){
+
+		}
+		else {
+			if (this.folderSelect.id == folder.id) {
+				return;
+			}
+			this.folderSelect = folder;
+			this.foldersSelect = this.foldersSelect.splice(0, index + 1);
+	
+			this.dataSources = [];
+			this.uploadingFile = true;
+			this.getEntityFilesFolder(folder.id).pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: () => {
+					if (this.dataFiles && this.dataFiles.length > 0) {
+						this.dataSources.push(...this.dataFiles);
+					}
+					if (this.dataFolders && this.dataFolders.length > 0) {
+						this.dataSources.unshift(...this.dataFolders);
+					}
+				}
+			})
+		}
+	}
+
+	onOpenFolder(folder: any) {
+		this.foldersSelect.push(folder);
+		this.folderSelect = folder;
+
+		this.dataSources = [];
+		this.uploadingFile = true;
+		this.getEntityFilesFolder(folder.id).pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: () => {
+				if (this.dataFiles && this.dataFiles.length > 0) {
+					this.dataSources.push(...this.dataFiles);
+				}
+				if (this.dataFolders && this.dataFolders.length > 0) {
+					this.dataSources.unshift(...this.dataFolders);
+				}
+			}
+		})
 	}
 
 	// {
@@ -52,29 +120,144 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 	// }
 
 	getEntityFiles() {
-		let filter = '';
-		if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityID)) {
-			filter = `entityID eq ${this.entityID} and entityType eq '${this.entityType}'`;
-		}
-		let options = {
-			filter: filter,
-			select: 'id,name,ext'
-		}
-		this.uploadingFile = true;
-		this.dataSources = [];
-		this.service.getEntityFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
-			next: (res: any) => {
-				this.uploadingFile = false;
-				if (res && res.value  && res.value.length > 0) {
-					this.noFilesUploads = false;
-					this.dataSources = res.value;
+		return new Observable(obs => {
+			let filter = '';
+			if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityID)) {
+				filter = `entityID eq ${this.entityID} and entityType eq '${this.entityType}'`;
+			}
+			let options = {
+				filter: filter,
+				select: 'id,name,ext'
+			}
+			this.service.getEntityFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "file";
+							item.icon = CommonUtility.getFileIcon(item.name);
+						}
+						items = res.value;
+					}
+					this.dataFiles = items;
+					obs.next();
+					obs.complete();
 				}
-				else {
-					this.noFilesUploads = true;
+			});
+		})
+	}
+
+	getEntityFilesFolder(folderID: string) {
+		return new Observable(obs => {
+			let filter = '';
+			if (!this.isNullOrEmpty(folderID)) {
+				filter = `entityID eq ${folderID} and entityType eq 'folder'`;
+			}
+			let options = {
+				filter: filter,
+				select: 'id,name,ext'
+			}
+			this.uploadingFile = true;
+			this.service.getEntityFiles(options).pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					this.uploadingFile = false;
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "folder";
+							item.icon = CommonUtility.getFileIcon(item.name);
+						}
+						items = res.value;
+					}
+					this.dataFiles = items;
+					obs.next();
+					obs.complete();
+				}
+			});
+		})
+	}
+
+	onAddItemForNote(){
+		let config: any = {
+			data: {
+				submitBtn: 'Xác nhận',
+				cancelBtn: 'Hủy',
+				confirmMessage: '',
+				valueType:'text',
+				requireCtrl: true,
+				lableCtrl:"Tên Thư Mục"
+			}
+		};
+		config.disableClose = true;
+		config.panelClass = 'dialog-form-l';
+		config.maxWidth = '80vw';
+		config.autoFocus = false;
+		let dialogRef = this.dialog.open(DialogConfirmComponent, config);
+		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
+			next: (res: any) => {
+				console.log("res.........",res);
+				
+				if(this.isNullOrEmpty(this.folderSelect)){
+		
 				}
 			}
 		});
 	}
+
+	getEntityFolders() {
+		return new Observable(obs => {
+			let filter = '';
+			// if (!this.isNullOrEmpty(this.entityID) && !this.isNullOrEmpty(this.entityID)) {
+			// 	filter = `entityID eq ${this.entityID} and entityType eq '${this.entityType}'`;
+			// }
+			let options = {
+				filter: filter,
+				// select: 'id,name,ext'
+			}
+			this.dataFoldersCache = [];
+			this.service.getEntityFolders(options).pipe(takeUntil(this.unsubscribe)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						this.dataFoldersCache = res.value;
+						items = [{
+							id: "allfiles",
+							children: this.buildTree(res.value),
+							name: "All Files",
+							type: 'folder',
+							link: '',
+							parent: '',
+							icon: 'ic_folder'
+						}]
+					}
+					this.dataFolders = items;
+					obs.next();
+					obs.complete();
+				}
+			});
+		})
+	}
+
+
+	buildTree(items, parent = null) {
+		const tree = [];
+		items.forEach((item: any) => {
+			if (item.parent === parent) {
+				const children = this.buildTree(items, item.id);
+				tree.push({
+					id: item.id,
+					children: children,
+					name: item.name,
+					type: '',
+					link: '',
+					parent: item.parent
+				});
+			}
+		});
+
+		return tree;
+	}
+
 
 	convertFile(file: File): Observable<any> {
 		return new Observable(obs => {
@@ -168,7 +351,19 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 				next: () => {
 					this.uploadingFile = false;
 					this.files = [];
-					this.getEntityFiles();
+					this.uploadingFile = true;
+					this.dataSources = [];
+					this.getEntityFiles().pipe(takeUntil(this.unsubscribe)).subscribe({
+						next:()=>{
+							this.uploadingFile = false;
+							if (this.dataFiles && this.dataFiles.length > 0) {
+								this.dataSources.push(...this.dataFiles);
+							}
+							if (this.dataFolders && this.dataFolders.length > 0) {
+								this.dataSources.unshift(...this.dataFolders);
+							}
+						}
+					});
 				}
 			});
 		}
@@ -184,12 +379,36 @@ export class ItineraryFilesComponent extends SimpleBaseComponent implements OnCh
 				next: () => {
 					this.dataProcessing = false;
 					this.files = [];
-					this.getEntityFiles();
+					this.uploadingFile = true;
+					this.dataSources = [];
+					this.getEntityFiles().pipe(takeUntil(this.unsubscribe)).subscribe({
+						next:()=>{
+							this.uploadingFile = false;
+							if (this.dataFiles && this.dataFiles.length > 0) {
+								this.dataSources.push(...this.dataFiles);
+							}
+							if (this.dataFolders && this.dataFolders.length > 0) {
+								this.dataSources.unshift(...this.dataFolders);
+							}
+						}
+					});
 				}, error: error => {
-					this.getEntityFiles();
+					this.uploadingFile = true;
+					this.dataSources = [];
+					this.getEntityFiles().pipe(takeUntil(this.unsubscribe)).subscribe({
+						next:()=>{
+							this.uploadingFile = false;
+							if (this.dataFiles && this.dataFiles.length > 0) {
+								this.dataSources.push(...this.dataFiles);
+							}
+							if (this.dataFolders && this.dataFolders.length > 0) {
+								this.dataSources.unshift(...this.dataFolders);
+							}
+						}
+					});
 				}
 			})
-		} 
+		}
 	}
 
 	dowloadFile(file: any) {

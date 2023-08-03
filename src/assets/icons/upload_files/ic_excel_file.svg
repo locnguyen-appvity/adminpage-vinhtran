@@ -1,0 +1,8 @@
+<svg id="ic-excel-file" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g id="Group_2939" data-name="Group 2939">
+    <rect id="Rectangle_989" data-name="Rectangle 989" width="24" height="24" fill="none"/>
+  </g>
+  <path id="Path_3390" data-name="Path 3390" d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8ZM12.66,18.73l-.79-1.93-.69,1.93H10l1.26-3.49-1.2-3H11.4L12.11,14l.58-1.76h1.19l-1.14,3.37L14,18.73ZM13,9V3.5L18.5,9Z" fill="#387a47"/>
+  <path id="Path_3391" data-name="Path 3391" d="M13.88,12.25H12.69l-.58,1.76-.71-1.76H10.05l1.2,2.99L9.99,18.73h1.19l.69-1.93.79,1.93h1.35l-1.27-3.11Z" fill="#fff"/>
+  <path id="Path_3392" data-name="Path 3392" d="M13,9h5.5L13,3.5Z" fill="#fff"/>
+</svg>
