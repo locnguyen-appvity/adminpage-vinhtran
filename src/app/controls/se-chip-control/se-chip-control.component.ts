@@ -306,13 +306,13 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 		if (this.type == 'tags') {
 			request = this.getTags(filter);
 		}
-		else if(this.type == 'authors') {
+		else if (this.type == 'authors') {
 			request = this.getAuthors(filter);
 		}
-		else if(this.type == 'parables') {
+		else if (this.type == 'parables') {
 			request = this.getParables(filter);
 		}
-		else if(this.type == 'categories') {
+		else if (this.type == 'categories') {
 			request = this.getCategories(filter);
 		}
 		return request;
@@ -337,8 +337,11 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 
 	getCategories(filter: string) {
 		return new Observable(obs => {
+			let options = {
+				filter: filter
+			}
 			this.dataProcessing = true;
-			this.service.getCategories().pipe(take(1)).subscribe({
+			this.service.getCategories(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
 					let items = [];
 					if (res && res.value && res.value.length > 0) {
@@ -375,8 +378,8 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 			this.service.getParables().pipe(take(1)).subscribe({
 				next: (res: any) => {
 					let items = [];
-					if (res && res.data && res.data &&  res.data.results && res.data.results.length > 0) {
-						for(let item of res.data.results){
+					if (res && res.data && res.data && res.data.results && res.data.results.length > 0) {
+						for (let item of res.data.results) {
 							item.name = item.quotation;
 						}
 						items = res.data.results;
@@ -414,7 +417,7 @@ export class SEChipControlComponent extends SimpleBaseComponent implements MatFo
 		for (let id of ids) {
 			if (id !== null && !this.isExistItem({ id: id })) {
 				let item = this.getItemInArray(id, this.dataItems);
-				if(item){
+				if (item) {
 					this.chips.push(item);
 				}
 			}

@@ -64,7 +64,7 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
             //     this.hasChangedGroup = this.isChangedForm(valueForm);
             // }
             // else {
-                this.hasChangedGroup = true;
+            this.hasChangedGroup = true;
             // }
         })
         this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: any) => {
@@ -96,21 +96,19 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
     // }
 
     buildFormGroup() {
-        let status = true;
-        if (this.localItem) {
-            status = this.localItem.status == 'inactive' ? false : true;
+        if (this.localItem && this.localItem.startDate) {
+            this.localItem._startDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.startDate)
         }
-        if (this.localItem && this.localItem.date) {
-            this.localItem._date = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.date)
+        if (this.localItem && this.localItem.endDate) {
+            this.localItem._endDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.endDate)
         }
         return this.fb.group({
             name: [this.localItem ? this.localItem.name : "", [Validators.required]],
-            code: this.localItem ? this.localItem.code : "",
             quotation: this.localItem ? this.localItem.quotation : "",
-            parableID: this.localItem ? this.localItem.parableID : "",
-            _parableID: this.localItem ? this.localItem.parableID : "",
-            date: this.localItem ? this.localItem._date : this.sharedService.moment(),
-            status: status,
+            endDate: [this.localItem ? this.localItem._endDate : this.sharedService.moment(), [Validators.required]],
+            startDate: [this.localItem ? this.localItem._startDate : this.sharedService.moment(), [Validators.required]],
+            link: this.localItem ? this.localItem.link : "",
+            status: this.localItem ? this.localItem.status : "",
         })
     }
 
@@ -142,11 +140,11 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
         let dataJSON =
         {
             "name": valueForm.name,
-            "code": valueForm.code,
             "quotation": valueForm.quotation,
-            "parableID": valueForm.parableID,
-            "date": this.sharedService.ISOStartDay(valueForm.date),
-            "status": valueForm.status ? 'active' : 'inactive',
+            "link": valueForm.link,
+            "startDate": this.sharedService.ISOStartDay(valueForm.startDate),
+            "endDate": this.sharedService.ISOStartDay(valueForm.endDate),
+            "status": valueForm.status,
         }
 
         if (this.target == 'edit') {

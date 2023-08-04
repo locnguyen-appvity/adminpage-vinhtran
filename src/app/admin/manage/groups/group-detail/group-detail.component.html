@@ -95,8 +95,6 @@
 					<textarea matInput rows="3" formControlName="description"></textarea>
 				</mat-form-field>
 				<se-editor-control class="full-width" formControlName="content"></se-editor-control>
-				<!-- </div>
-				<div fxFlex="50"> -->
 				<mat-divider *ngIf="target == 'giao_hat'" class="full-width mrt-24"></mat-divider>
 				<mat-accordion *ngIf="target == 'giao_hat'" multi="true" class="full-width mrt-24">
 					<mat-expansion-panel expanded>
@@ -108,8 +106,6 @@
 						<app-organizations-list [groupID]="ID" class="full-width"></app-organizations-list>
 					</mat-expansion-panel>
 				</mat-accordion>
-
-				<!-- </div> -->
 			</div>
 		</form>
 	</div>

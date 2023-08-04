@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}} Lời Chúa Hằng Ngày</h2>
+<h2 mat-dialog-title>{{title}}</h2>
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
@@ -6,28 +6,31 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Tên</mat-label>
                     <input matInput required formControlName="name" autocomplete="off" se-pure-words>
-                    <!-- <mat-hint>{{dataItemGroup?.value?.link}}</mat-hint> -->
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Lời Chúa</mat-label>
-                    <se-autocomplete-simple [required]="false" [formControlName]="'_parableID'" [optgroup]="false"
-                        [placeHolder]="'Nhập Lời Chúa'" [keyTitle]="'quotation'" [keyValue]="'id'" [autocomplete]="true"
-                        [items]="arrListParable" (onSelectItem)="onSelectItem($event,'parableID')">
-                    </se-autocomplete-simple>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Mô tả</mat-label>
-                    <input matInput formControlName="quotation" autocomplete="off">
+                    <textarea matInput formControlName="quotation" autocomplete="off"></textarea>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Ngày</mat-label>
-                    <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="date"
-                        formControlName="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                    <mat-datepicker #date></mat-datepicker>
-                    <mat-error *ngIf="dataItemGroup.get('date').hasError('matDatepickerParse')">Enter dates in DD/MM/YYYY  format</mat-error>
+                    <mat-label>Ngày Bắt Đầu</mat-label>
+                    <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="startDate"
+                        formControlName="startDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                    <mat-datepicker #startDate></mat-datepicker>
+                    <mat-error *ngIf="dataItemGroup.get('startDate').hasError('matDatepickerParse')">Enter dates in DD/MM/YYYY  format</mat-error>
                 </mat-form-field>
-                <mat-slide-toggle formControlName="status">Ẩn / Hiện</mat-slide-toggle>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Ngày Kết Thúc</mat-label>
+                    <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="endDate"
+                        formControlName="endDate" required>
+                    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                    <mat-datepicker #endDate></mat-datepicker>
+                    <mat-error *ngIf="dataItemGroup.get('endDate').hasError('matDatepickerParse')">Enter dates in DD/MM/YYYY  format</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Liên Kết</mat-label>
+                    <input matInput required formControlName="link" autocomplete="off">
+                </mat-form-field>
             </div>
         </form>
     </div>

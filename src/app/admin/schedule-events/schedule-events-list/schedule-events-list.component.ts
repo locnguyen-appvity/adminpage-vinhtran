@@ -75,14 +75,18 @@ export class ScheduleEventsListComponent extends TemplateGridApplicationComponen
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
-						this.updateStatus(item);
+						// this.updateStatus(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 						}
-						if (item.date) {
-							item._date = this.sharedService.convertDateStringToMoment(item.date, this.offset);
-							item.dateView = item._date.format('DD/MM/YYYY hh:mm A');
+						if (item.startDate) {
+							item._startDate = this.sharedService.convertDateStringToMomentUTC_0(item.startDate);
+							item.startDateView = this.sharedService.formatDate(item._startDate);
+						}
+						if (item.endDate) {
+							item._endDate = this.sharedService.convertDateStringToMomentUTC_0(item.endDate);
+							item.endDateView = this.sharedService.formatDate(item._endDate);
 						}
 					}
 				}
@@ -236,7 +240,7 @@ export class ScheduleEventsListComponent extends TemplateGridApplicationComponen
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'status', 'name', 'code', 'quotation', 'date', 'created', 'moreActions'];
+		this.displayColumns = ['id', 'photo', 'name', 'quotation', 'startDate', 'endDate', 'created', 'moreActions'];
 	}
 
 }
