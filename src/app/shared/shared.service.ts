@@ -428,7 +428,33 @@ export class SharedService {
 
 	deleteScheduleEvent(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/schedule-events`;
-		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteParableDaily', error)));
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteScheduleEvent', error)));
+	}
+
+	//NotificationPosts
+	getNotificationPosts(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/notification-posts';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getNotificationPosts', error)));
+	}
+
+	getNotificationPost(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/notification-posts';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getNotificationPost', error)));
+	}
+
+	createNotificationPost(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/notification-posts`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createNotificationPost', error)));
+	}
+
+	updateNotificationPost(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/notification-posts`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateNotificationPost', error)));
+	}
+
+	deleteNotificationPost(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/notification-posts`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteNotificationPost', error)));
 	}
 
 	//contemplations
