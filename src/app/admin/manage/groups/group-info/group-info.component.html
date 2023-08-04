@@ -13,9 +13,9 @@
 				</mat-form-field>
 				<mat-form-field *ngIf="typeGroup != 'giao_hat'" appearance="outline" class="full-width">
 					<mat-label>Thuộc</mat-label>
-					<se-autocomplete-simple [required]="false" [formControlName]="'entityID'" [optgroup]="false"
-						[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
-						[autocomplete]="false" [items]="groupsList" (onSelectItem)="onSelectItem($event,'entityID')">
+					<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="true"
+						[placeHolder]="'Tìm theo tên'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
+						[autocomplete]="true" [items]="entityList" (onSelectItem)="onSelectItem($event,'entityID')">
 					</se-autocomplete-simple>
 				</mat-form-field>
 				<se-editor-control formControlName="content"></se-editor-control>

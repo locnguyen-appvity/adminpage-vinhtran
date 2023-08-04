@@ -221,6 +221,7 @@ export class SharedPropertyService {
             case 'giao_hat':
                 return 'Giáo hạt'
             case 'giao_xu':
+            case 'giao_xu_ngoai_giao_phan':
                 return 'Giáo xứ'
             case 'giao_diem':
                 return 'Giáo điểm'
@@ -228,6 +229,9 @@ export class SharedPropertyService {
                 return 'Dòng'
             case 'cong_doan':
                 return 'Cộng Đoàn'
+            case 'dioceses':
+            case 'diocese':
+                return 'Giáo Phận'
             // case 'co_so_giao_phan':
             //     return 'Cơ Sở Giáo Phận';
             // case 'ban_muc_vu':

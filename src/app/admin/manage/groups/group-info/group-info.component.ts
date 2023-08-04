@@ -1,7 +1,7 @@
 import { Component, Inject, Optional } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable, of, take, takeUntil } from 'rxjs';
+import { Observable, forkJoin, of, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -22,7 +22,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	public localItem: any;
-	public groupsList: any[] = [];
+	public entityList: any[] = [];
 	public orgTypeName: string = "Giáo hạt";
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -67,6 +67,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
 			entityID: this.localItem ? this.localItem.entityID : '',
+			_entityID: this.localItem ? this.localItem.entityID : '',
 			entityType: this.localItem ? this.localItem.entityType : '',
 			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
@@ -79,7 +80,7 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 			}
 		})
 		if (this.typeGroup != 'giao_hat') {
-			this.getGroups();
+			this.getEntityList();
 		}
 	}
 
@@ -87,24 +88,79 @@ export class GroupInfoComponent extends SimpleBaseComponent {
 	onSelectItem(event: any, target: string) {
 		if (target == "entityID") {
 			this.dataItemGroup.get("entityType").setValue(event ? event._type : "");
+			this.dataItemGroup.get("entityID").setValue(event ? event.id : "");
 		}
 	}
 
-	getGroups() {
-		this.groupsList = [];
-		let options = {
-			select: 'id,name',
-			filter: "type eq 'giao_hat'"
+	getEntityList() {
+		let requests: any = {
+			// groups: this.getGroups()
 		}
-		this.service.getGroups(options).pipe(take(1)).subscribe({
+		if (this.target == 'co_so_ngoai_giao_phan') {
+			requests.dioceses = this.getDioceses()
+		}
+		else {
+			requests.groups = this.getGroups();
+		}
+		forkJoin(requests).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				if (res && res.value && res.value.length > 0) {
-					for(let item of res.value){
-						item._type = "group";
-					}
-					this.groupsList = res.value;
+				let entityList = [];
+				if (res && res.groups && res.groups.length > 0) {
+					entityList.push(...res.groups);
 				}
+				if (res && res.dioceses && res.dioceses.length > 0) {
+					entityList.push(...res.dioceses);
+				}
+				this.entityList = entityList;
 			}
+		})
+	}
+
+	getGroups() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: "type eq 'giao_hat'"
+			}
+			this.service.getGroups(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "group";
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`
+							item.groupName = this.sharedService.updateNameTypeOrg(item.type);
+						}
+						items = res.value;
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getDioceses() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: "status ne 'inactive'"
+			}
+			this.service.getDioceses(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "dioceses";
+							item.name = `${this.sharedService.updateNameTypeOrg(item._type)} ${item.name}`;
+							item.groupName = this.sharedService.updateNameTypeOrg('dioceses');
+						}
+						items = res.value;
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
 		})
 	}
 

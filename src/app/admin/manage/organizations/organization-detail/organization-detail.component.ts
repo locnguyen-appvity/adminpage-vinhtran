@@ -65,6 +65,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		else if (this.router.url.includes("giao_ho")) {
 			this.target = 'giao_ho';
 		}
+		this.matTooltipBack = `Danh Sách ${this.sharedService.updateNameTypeOrg(this.target)}`
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getOrganization();

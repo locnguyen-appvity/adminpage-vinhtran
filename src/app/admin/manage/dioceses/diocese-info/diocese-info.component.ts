@@ -70,7 +70,7 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 			description: valueForm.description,
 			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive',
-			type: 'diocese',
+			type: 'dioceses',
 			entityID: "",
 			entityType: "",
 		}

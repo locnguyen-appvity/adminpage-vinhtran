@@ -32,10 +32,10 @@
 					</div>
 					<div fxFlex.gt-xs="30" fxFlex="100">
 						<mat-form-field appearance="outline" class="full-width">
-							<mat-label>Giáo Hạt</mat-label>
-							<se-autocomplete-simple [required]="false" [formControlName]="'entityID'" [optgroup]="false"
-								[placeHolder]="'Giáo Hạt'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
-								[autocomplete]="false" [items]="groupsList"
+							<mat-label>Thuộc</mat-label>
+							<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="true"
+								[placeHolder]="'Tìm theo tên'" [keyTitle]="'name'" [keyValue]="'_id'" [keyValueEmit]="'_id'"
+								[autocomplete]="true" [items]="entityList"
 								(onSelectItem)="onSelectItem($event,'entityID')">
 							</se-autocomplete-simple>
 						</mat-form-field>
@@ -45,6 +45,50 @@
 					<mat-label>Tên</mat-label>
 					<input matInput required formControlName="name" autocomplete="off">
 				</mat-form-field>
+
+				<div fxLayout="row wrap" class="full-width">
+					<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Số điện thoại</mat-label>
+							<input matInput formControlName="phone" autocomplete="off">
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-xs="50" fxFlex="100">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Email</mat-label>
+							<input matInput formControlName="email" autocomplete="off">
+						</mat-form-field>
+					</div>
+				</div>
+
+				<div fxLayout="row wrap" class="full-width">
+					<div fxFlex.gt-xs="60" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Đại Chỉ</mat-label>
+							<input matInput formControlName="address" autocomplete="off">
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-xs="40" fxFlex="100">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Khu Vực</mat-label>
+							<input matInput formControlName="area" autocomplete="off">
+						</mat-form-field>
+					</div>
+				</div>
+				<div fxLayout="row wrap" class="full-width">
+					<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Latitude</mat-label>
+							<input matInput formControlName="latitude" autocomplete="off">
+						</mat-form-field>
+					</div>
+					<div fxFlex.gt-xs="50" fxFlex="100">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Longitude</mat-label>
+							<input matInput formControlName="longitude" autocomplete="off">
+						</mat-form-field>
+					</div>
+				</div>
 
 				<mat-form-field appearance="outline" class="full-width">
 					<mat-label>Mô Tả</mat-label>

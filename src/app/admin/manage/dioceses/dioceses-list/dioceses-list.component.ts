@@ -120,7 +120,7 @@ export class DiocesesListComponent extends ListItemBaseComponent {
 							let valueForm = dataDefault[index];
 							let dataJSON = {
 								name: valueForm.name,
-								type: "diocese",
+								type: "dioceses",
 								status: 'active'
 							}
 							this.service.createDiocese(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({

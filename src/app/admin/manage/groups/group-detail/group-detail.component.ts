@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of, take } from 'rxjs';
+import { Observable, forkJoin, of, take } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -15,13 +15,13 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 
 	public dataItemGroup: FormGroup;
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Giáo Hạt";
+	public matTooltipBack: string = "Danh Sách";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'
 	}
 	public target: string = "giao_hat";
-	public groupsList: any[] = [];
+	public entityList: any;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -51,42 +51,104 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		else if (this.router.url.includes("cong_doan")) {
 			this.target = 'cong_doan';
 		}
+		this.matTooltipBack = `Danh Sách ${this.sharedService.updateNameTypeOrg(this.target)}`
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getGroup();
 		}
 		this.dataItemGroup = this.fb.group({
 			name: ["", [Validators.required]],
 			description: "",
+			phone: "",
+			email: "",
+			address: "",
+			area: "",
+			latitude: "",
+			longitude: "",
 			content: "",
 			entityID: "",
+			_entityID: "",
 			entityType: ""
 		});
 		if (this.target != 'giao_hat') {
-			this.getGroups();
+			this.getEntityList();
 		}
 	}
 
 	onSelectItem(event: any, target: string) {
 		if (target == "entityID") {
 			this.dataItemGroup.get("entityType").setValue(event ? event._type : "");
+			this.dataItemGroup.get("entityID").setValue(event ? event.id : "");
 		}
 	}
 
-	getGroups() {
-		this.groupsList = [];
-		let options = {
-			select: 'id,name',
-			filter: "type eq 'giao_hat'"
+	getEntityList() {
+		let requests: any = {
+			groups: this.getGroups()
 		}
-		this.service.getGroups(options).pipe(take(1)).subscribe({
+		if (this.target == 'co_so_ngoai_giao_phan') {
+			requests.dioceses = this.getDioceses()
+		}
+		forkJoin(requests).pipe(take(1)).subscribe({
 			next: (res: any) => {
-				if (res && res.value && res.value.length > 0) {
-					for(let item of res.value){
-						item._type = "group";
-					}
-					this.groupsList = res.value;
+				let entityList = [];
+				if (res && res.groups && res.groups.length > 0) {
+					entityList.push(...res.groups);
 				}
+				if (res && res.dioceses && res.dioceses.length > 0) {
+					entityList.push(...res.dioceses);
+				}
+				this.entityList = entityList;
 			}
+		})
+	}
+
+	getGroups() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: "type eq 'giao_hat'"
+			}
+			this.service.getGroups(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "group";
+							item._id = `${item._type}_${item.id}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+							item.groupName = this.sharedService.updateNameTypeOrg(item.type);
+						}
+						items = res.value;
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
+		})
+	}
+
+	getDioceses() {
+		return new Observable(obs => {
+			let options = {
+				select: 'id,name,type',
+				filter: "status ne 'inactive'"
+			}
+			this.service.getDioceses(options).pipe(take(1)).subscribe({
+				next: (res: any) => {
+					let items = [];
+					if (res && res.value && res.value.length > 0) {
+						for (let item of res.value) {
+							item._type = "dioceses";
+							item._id = `${item._type}_${item.id}`;
+							item.name = `${this.sharedService.updateNameTypeOrg(item._type)} ${item.name}`;
+							item.groupName = this.sharedService.updateNameTypeOrg('dioceses');
+						}
+						items = res.value;
+					}
+					obs.next(items);
+					obs.complete();
+				}
+			})
 		})
 	}
 
@@ -96,13 +158,23 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 				if (res) {
 					this.localItem = res;
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
+					let _entityID = "";
+					if (!this.isNullOrEmpty(this.localItem.entityID) && !this.isNullOrEmpty(this.localItem.entityType)) {
+						_entityID = `${this.localItem.entityType}_${this.localItem.entityID}`
+					}
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						description: this.localItem.description,
 						content: this.localItem.content,
-						groupID: this.localItem.groupID,
 						entityID: this.localItem.entityID,
-						entityType: this.localItem.entityType
+						entityType: this.localItem.entityType,
+						_entityID: _entityID,
+						phone: this.localItem.phone,
+						email: this.localItem.email,
+						address: this.localItem.address,
+						area: this.localItem.area,
+						latitude: this.localItem.latitude,
+						longitude: this.localItem.longitude,
 					});
 				}
 			}
