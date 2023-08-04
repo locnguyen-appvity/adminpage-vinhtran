@@ -1,26 +1,33 @@
 <!-- If there are attached files -->
 <ng-container *ngIf="mode == 'folder'; else dragDropFileTemf">
-    <mat-card>
-        <mat-toolbar fxLayout="row" fxLayoutAlign="start center">
+    <mat-card class="upload-files-card">
+        <mat-toolbar class="toolbar" fxLayout="row" fxLayoutAlign="start center">
             <a class="name-folder" (click)="onSelectFolder(null,0)">{{title}}</a>
-            <a class="name-folder" *ngFor="let folder of foldersSelect; let i=index;"
-                (click)="onSelectFolder(folder,i)"> >
-                {{folder.name}}</a>
+            <ng-template ngFor let-folder let-i="index" [ngForOf]="foldersSelect">
+                <mat-icon style="transform: rotate(180deg);height: 15px;width: 15px;margin-right: 6px;margin-top: 5px;" svgIcon="ic_arrow_back_48dp"></mat-icon>
+                <a class="name-folder" (click)="onSelectFolder(folder,i)">
+                    {{folder.name}}</a>
+            </ng-template>
             <span fxFlex></span>
-            <button mat-icon-button matTooltip="Thêm" [matMenuTriggerFor]="actionsMenu" matTooltipPosition="above">
+            <button mat-icon-button color="primary" matTooltip="Thêm" [matMenuTriggerFor]="actionsMenu"
+                matTooltipPosition="above">
                 <mat-icon svgIcon="ic_add_48px"></mat-icon>
             </button>
+            <button mat-icon-button matTooltip="Tải lại" (click)="onReload()">
+                <mat-icon svgIcon="ic_sync_24px"></mat-icon>
+            </button>
             <mat-menu #actionsMenu="matMenu" [overlapTrigger]="false">
-                <button mat-menu-item [disabled]="uploadingFile" ngfSelect [(files)]="files" multiple="true" (filesChange)="uploadFiles()">
+                <button mat-menu-item [disabled]="uploadingFile" ngfSelect [(files)]="files" multiple="true"
+                    (filesChange)="uploadFiles()">
                     <span>Tải File Lên</span>
                 </button>
                 <button mat-menu-item (click)="onAddItemForNote()" [disabled]="uploadingFile">
                     <span>Tạo Thư Mục</span>
                 </button>
-
             </mat-menu>
         </mat-toolbar>
-        <mat-card-content class="upload-files-card">
+        <mat-divider></mat-divider>
+        <mat-card-content>
             <div *ngIf="noFilesUploads" fxLayout="row" fxLayoutAlign="center center"
                 style="padding-top: 50px; padding-bottom: 16px;" class="box-UploadFile">
                 <h4 class="upload-files-text">Chưa có dữ liệu.
@@ -28,7 +35,7 @@
             </div>
             <mat-list *ngIf="!noFilesUploads" class="file-upload-list">
                 <ng-template ngFor let-file [ngForOf]="dataSources" let-i="index">
-                    <mat-list-item>
+                    <mat-list-item *ngIf="file._type=='file'">
                         <mat-icon mat-list-icon [svgIcon]="file.icon"></mat-icon>
                         {{file.name}}
                         <span fxFlex></span>
@@ -39,6 +46,19 @@
                         <button [disabled]="!editableFiles || dataProcessing" mat-icon-button matTooltip="Delete"
                             (click)="removeFile(file)">
                             <mat-icon svgIcon="ic_delete_48px"></mat-icon>
+                        </button>
+                    </mat-list-item>
+                    <mat-list-item *ngIf="file._type=='folder'" class="item-folder" (click)="onOpenFolder(file)">
+                        <mat-icon mat-list-icon [svgIcon]="file.icon"></mat-icon>
+                        {{file.name}}
+                        <span fxFlex></span>
+                        <button mat-icon-button matTooltip="Sửa" (click)="onEditFolder(file);$event.stopPropagation()"
+                            [disabled]="!editableFiles || dataProcessing">
+                            <mat-icon svgIcon="ic_edit_note_24dp"></mat-icon>
+                        </button>
+                        <button [disabled]="!editableFiles || dataProcessing" mat-icon-button matTooltip="Delete"
+                            (click)="removeFolder(file);$event.stopPropagation()"> <mat-icon
+                            svgIcon="ic_delete_48px"></mat-icon>
                         </button>
                     </mat-list-item>
                 </ng-template>

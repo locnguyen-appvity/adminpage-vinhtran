@@ -546,6 +546,11 @@ export class SharedService {
 		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createEntityFolder', error)));
 	}
 
+	updateEntityFolder(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/entityFolders`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateEntityFolder', error)));
+	}
+
 	deleteEntityFolder(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/entityFolders`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteEntityFolder', error)));

@@ -75,6 +75,9 @@ export class DialogConfirmComponent {
 		if (this.dialogData.requireCtrl) {
 			this.requireCtrl = this.dialogData.requireCtrl;
 		}
+		if (this.dialogData.lableCtrl) {
+			this.lableCtrl = this.dialogData.lableCtrl;
+		}
 		if(this.requireCtrl){
 			this.formCtrl.setValidators(Validators.required);
 			this.formCtrl.updateValueAndValidity();

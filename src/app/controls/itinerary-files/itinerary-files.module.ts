@@ -54,5 +54,6 @@ export class ItineraryFilesModule {
 		this.mdIconRegistry.addSvgIcon('ic_word_file', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/upload_files/ic_word_file.svg'));
 		this.mdIconRegistry.addSvgIcon('ic_zip_file', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/upload_files/ic_zip_file.svg'));
 		this.mdIconRegistry.addSvgIcon('ic_folder', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/upload_files/ic_folder.svg'));
+    this.mdIconRegistry.addSvgIcon('ic_edit_note_24dp', this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_edit_note_24dp.svg'));
   }
 }
