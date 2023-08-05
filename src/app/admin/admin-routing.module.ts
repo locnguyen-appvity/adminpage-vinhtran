@@ -44,6 +44,10 @@ const routes: Routes = [
 			  loadChildren: () => import('./schedule-events/schedule-events.module').then(m => m.ScheduleEventsModule)
 			},
 			{
+			  path: 'notification-post',
+			  loadChildren: () => import('./notification-post/notification-post.module').then(m => m.NotificationPostsModule)
+			},
+			{
 			  path: 'contemplations',
 			  loadChildren: () => import('./contemplations/contemplations.module').then(m => m.ContemplationsModule)
 			},

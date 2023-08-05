@@ -12,20 +12,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
-import { ParableListDailyRoutingModule } from './parables-list-daily-routing.module';
-import { ParableListDailyComponent } from './parables-list-daily.component';
-import { ParableInfoDailyModule } from '../parable-info-daily/parable-info-daily.module';
-import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
+import { NotificationPostsListRoutingModule } from './notification-post-list-routing.module';
+import { NotificationPostsListComponent } from './notification-post-list.component';
+import { NotificationPostInfoModule } from '../notification-post-info/notification-post-info.module';
 
 
 
 @NgModule({
   declarations: [
-    ParableListDailyComponent
+    NotificationPostsListComponent
   ],
   imports: [
     SharedModule,
-    ParableListDailyRoutingModule,
+    NotificationPostsListRoutingModule,
     MatMenuModule,
     MatTableModule,
     MatPaginatorModule,
@@ -37,12 +36,11 @@ import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
     ReactiveFormsModule,
     MatCardModule,
     MatTooltipModule,
-    ParableInfoDailyModule,
-    DateRangeFilterModule
+    NotificationPostInfoModule
   ],
-  exports: [ParableListDailyComponent]
+  exports: [NotificationPostsListComponent]
 })
-export class ParableListDailyModule { 
+export class NotificationPostsListModule { 
   constructor(private mdIconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer) {
     this.registerIcons();

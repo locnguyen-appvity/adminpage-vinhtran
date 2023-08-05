@@ -88,7 +88,7 @@ export class AdminComponent extends SimpleBaseComponent {
 			this.title = "NGƯỜI DÙNG";
 		}
 		else if(this.router.url.includes('/admin/parables')){
-			this.title = "LỜI CHÚA";
+			this.title = "TIN MỪNG";
 		}
 		else if(this.router.url.includes('/admin/contemplations')){
 			this.title = "SUY NIỆM";

@@ -66,6 +66,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			longitude: "",
 			content: "",
 			entityID: "",
+			entityName: "",
 			_entityID: "",
 			entityType: ""
 		});
@@ -77,6 +78,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 	onSelectItem(event: any, target: string) {
 		if (target == "entityID") {
 			this.dataItemGroup.get("entityType").setValue(event ? event._type : "");
+			this.dataItemGroup.get("entityName").setValue(event ? event.name : "");
 			this.dataItemGroup.get("entityID").setValue(event ? event.id : "");
 		}
 	}
@@ -162,12 +164,16 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 					if (!this.isNullOrEmpty(this.localItem.entityID) && !this.isNullOrEmpty(this.localItem.entityType)) {
 						_entityID = `${this.localItem.entityType}_${this.localItem.entityID}`
 					}
+					else if(!this.isNullOrEmpty(this.localItem.entityName)){
+						_entityID = this.localItem.entityName;
+					}
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						description: this.localItem.description,
 						content: this.localItem.content,
 						entityID: this.localItem.entityID,
 						entityType: this.localItem.entityType,
+						entityName: this.localItem.entityName,
 						_entityID: _entityID,
 						phone: this.localItem.phone,
 						email: this.localItem.email,
@@ -212,6 +218,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			content: valueForm.content,
 			entityID: valueForm.entityID,
 			entityType: valueForm.entityType,
+			entityName: valueForm.entityName,
 			// status: valueForm.status ? 'active' : 'inactive',
 			// type: 'giao_hat'
 		}

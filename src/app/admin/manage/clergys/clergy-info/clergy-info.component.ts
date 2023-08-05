@@ -215,90 +215,89 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			this.service.createClergy(dataJSON).pipe(take(1)).subscribe(
 				{
 					next: (res: any) => {
-						if (res && res.data) {
-							this.onCreateAutoAnniversary(res.data).pipe(take(1)).subscribe({
-								next: () => {
-									this.saveAction = ''
-									this.dataProcessing = false;
-									this.dialogRef.close({ action: saveAction, data: res.data });
-								}
-							})
-						}
-
+						this.saveAction = ''
+						this.dataProcessing = false;
+						this.dialogRef.close({ action: saveAction, data: res.data });
+						// if (res && res.data) {
+						// 	this.onCreateAutoAnniversary(res.data).pipe(take(1)).subscribe({
+						// 		next: () => {
+						// 		}
+						// 	})
+						// }
 					}
 				})
 		}
 	}
 
-	onCreateAutoAnniversary(item: any) {
-		return new Observable(obs => {
-			if (this.dataDefault && this.dataDefault.length > 0) {
-				let dataDefault = this.dataDefault.filter(it => {
-					if (this.sharedService.checkValueExistsInArray("clergy", it.includes) && it.hasAuto) {
-						if (it.type == 'vow' && item.type == 'tu_dong') {
-							return true;
-						}
-						else if ((it.type == 'smallSeminary' || it.type == 'bigSeminary') && item.type == 'tu_trieu') {
-							return true;
-						}
-						else if (it.type != 'vow' && it.type != 'smallSeminary' && it.type != 'bigSeminary') {
-							return true;
-						}
-					}
-					return false;
-				}
-				)
-				if (dataDefault.length == 0) {
-					obs.next();
-					obs.complete();
-					return;
-				}
-				this.dataProcessing = true;
-				let sub = new BehaviorSubject(0);
-				sub.subscribe({
-					next: (index: number) => {
-						if (index < dataDefault.length) {
-							if (dataDefault[index]) {
-								let valueForm = dataDefault[index];
-								let dataJSON = {
-									"entityID": item.id,
-									"entityType": "clergy",
-									"name": valueForm.name,
-									"day": "",
-									"type": valueForm.type,
-									"date": "",
-									"description": "",
-									"status": 'auto'
-								}
-								this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
-									next: () => {
-										index++;
-										sub.next(index);
-									},
-									error: error => {
-										console.log(error);
-										index++;
-										sub.next(index);
-									}
-								});
+	// onCreateAutoAnniversary(item: any) {
+	// 	return new Observable(obs => {
+	// 		if (this.dataDefault && this.dataDefault.length > 0) {
+	// 			let dataDefault = this.dataDefault.filter(it => {
+	// 				if (this.sharedService.checkValueExistsInArray("clergy", it.includes) && it.hasAuto) {
+	// 					if (it.type == 'vow' && item.type == 'tu_dong') {
+	// 						return true;
+	// 					}
+	// 					else if ((it.type == 'smallSeminary' || it.type == 'bigSeminary') && item.type == 'tu_trieu') {
+	// 						return true;
+	// 					}
+	// 					else if (it.type != 'vow' && it.type != 'smallSeminary' && it.type != 'bigSeminary') {
+	// 						return true;
+	// 					}
+	// 				}
+	// 				return false;
+	// 			}
+	// 			)
+	// 			if (dataDefault.length == 0) {
+	// 				obs.next();
+	// 				obs.complete();
+	// 				return;
+	// 			}
+	// 			this.dataProcessing = true;
+	// 			let sub = new BehaviorSubject(0);
+	// 			sub.subscribe({
+	// 				next: (index: number) => {
+	// 					if (index < dataDefault.length) {
+	// 						if (dataDefault[index]) {
+	// 							let valueForm = dataDefault[index];
+	// 							let dataJSON = {
+	// 								"entityID": item.id,
+	// 								"entityType": "clergy",
+	// 								"name": valueForm.name,
+	// 								"day": "",
+	// 								"type": valueForm.type,
+	// 								"date": "",
+	// 								"description": "",
+	// 								"status": 'auto'
+	// 							}
+	// 							this.service.createAnniversary(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+	// 								next: () => {
+	// 									index++;
+	// 									sub.next(index);
+	// 								},
+	// 								error: error => {
+	// 									console.log(error);
+	// 									index++;
+	// 									sub.next(index);
+	// 								}
+	// 							});
 
-							}
-							else {
-								index++;
-								sub.next(index);
-							}
-						}
-						else {
-							obs.next();
-							obs.complete();
-							sub.complete();
-							sub.unsubscribe();
-						}
+	// 						}
+	// 						else {
+	// 							index++;
+	// 							sub.next(index);
+	// 						}
+	// 					}
+	// 					else {
+	// 						obs.next();
+	// 						obs.complete();
+	// 						sub.complete();
+	// 						sub.unsubscribe();
+	// 					}
 
-					}
-				});
-			}
-		})
-	}
+	// 				}
+	// 			});
+	// 		}
+	// 	})
+	// }
 
 }

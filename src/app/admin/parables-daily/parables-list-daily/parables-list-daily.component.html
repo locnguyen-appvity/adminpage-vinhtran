@@ -1,5 +1,6 @@
 <div class="se-apps-users">
     <div class="wrapper">
+        <se-date-range-filter [dateRangeDefault]="'week'" (onChange)="onChangeDate($event)"></se-date-range-filter>
         <!-- Table Container -->
         <div class="se-grid-tables">
             <mat-card class="table-card">
@@ -81,7 +82,7 @@
                             </ng-container>
 
                             <!-- Photo/Avatar Column -->
-                            <ng-container matColumnDef="photo">
+                            <!-- <ng-container matColumnDef="photo">
                                 <th mat-header-cell *matHeaderCellDef> Photo </th>
                                 <td mat-cell *matCellDef="let element">
                                     <div style="height: 100%;" fxLayoutAlign="center center">
@@ -98,7 +99,7 @@
                                         </div>
                                     </div>
                                 </td>
-                            </ng-container>
+                            </ng-container> -->
 
                             <!-- Status Column -->
                             <ng-container matColumnDef="status">
@@ -132,8 +133,9 @@
 
                             <ng-container matColumnDef="quotation">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Mô tả </th>
-                                <td mat-cell *matCellDef="let dataItem">
-                                    {{dataItem.quotation}}
+                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.quotation"
+                                    [matTooltipDisabled]="!(dataItem?.quotation?.length > 85)">
+                                    {{dataItem.quotation | truncate: 85}}
                                 </td>
                             </ng-container>
 

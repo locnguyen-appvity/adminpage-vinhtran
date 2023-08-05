@@ -877,24 +877,28 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 			if (this.localItem && this.localItem.id) {
 				this.service.updateAppointment(this.localItem.id, appointmentJSON).pipe(take(1)).subscribe({
 					next: () => {
-						this.saveClergy(this.localItem, fromAppointmentID).pipe(take(1)).subscribe({
-							next: () => {
-								obs.next();
-								obs.complete();
-							}
-						})
+						obs.next();
+						obs.complete();
+						// this.saveClergy(this.localItem, fromAppointmentID).pipe(take(1)).subscribe({
+						// 	next: () => {
+						// 		obs.next();
+						// 		obs.complete();
+						// 	}
+						// })
 					}
 				})
 			}
 			else {
 				this.service.createAppointment(appointmentJSON).pipe(take(1)).subscribe({
 					next: () => {
-						this.saveClergy(this.localItem, fromAppointmentID).pipe(take(1)).subscribe({
-							next: () => {
-								obs.next();
-								obs.complete();
-							}
-						})
+						obs.next();
+						obs.complete();
+						// this.saveClergy(this.localItem, fromAppointmentID).pipe(take(1)).subscribe({
+						// 	next: () => {
+						// 		obs.next();
+						// 		obs.complete();
+						// 	}
+						// })
 					}
 				})
 			}

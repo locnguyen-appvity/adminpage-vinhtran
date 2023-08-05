@@ -10,21 +10,16 @@ import { IAppState } from 'src/app/shared/redux/state';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
-import { ParableInfoDailyComponent } from '../parable-info-daily/parable-info-daily.component';
-import { CommonUtility } from 'src/app/shared/common.utility';
+import { NotificationPostInfoComponent } from '../notification-post-info/notification-post-info.component';
 
 @Component({
-	selector: 'app-parables-list-daily',
-	templateUrl: './parables-list-daily.component.html',
-	styleUrls: ['./parables-list-daily.component.scss']
+	selector: 'app-notification-post-list',
+	templateUrl: './notification-post-list.component.html',
+	styleUrls: ['./notification-post-list.component.scss']
 })
-export class ParableListDailyComponent extends TemplateGridApplicationComponent {
+export class NotificationPostsListComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
-	public dateFilter = {
-		fromDate: '',
-		toDate: ''
-	}
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -37,13 +32,6 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
-		let dateFilter = CommonUtility.getFilterDate({
-			fromDate: this.sharedService.moment(),
-			toDate: "",
-			key: 'week'
-		})
-		this.dateFilter.fromDate = dateFilter.fromDate;
-		this.dateFilter.toDate = dateFilter.toDate;
 		this.getDataGridAndCounterApplications();
 	}
 
@@ -52,30 +40,12 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(name, '${quick}')`;
+			let quickSearch = `contains(title, '${quick}')`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
 			else {
-				filter = `(${filter}) and (${quickSearch})`;
-			}
-		}
-		let filterDate = "";
-		if (!this.isNullOrEmpty(this.dateFilter.fromDate)) {
-			filterDate = `date eq ${this.dateFilter.fromDate}`;
-			if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
-				filterDate = `date ge ${this.dateFilter.fromDate} and date le ${this.dateFilter.toDate}`;
-			}
-		}
-		else if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
-			filterDate = `date eq ${this.dateFilter.toDate}`;
-		}
-		if (!this.isNullOrEmpty(filterDate)) {
-			if (this.isNullOrEmpty(filter)) {
-				filter = filterDate;
-			}
-			else {
-				filter = `(${filter}) and (${filterDate})`;
+				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
 		return filter;
@@ -91,28 +61,32 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
-			sort: 'date desc',
+			// sort: 'date desc',
 			// page: this.currentPageIndex + 1,
 			// pageSize: this.pageSize,
 			filter: filter
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;
-		this.service.getParablesDaily(options).pipe(take(1)).subscribe({
+		this.service.getNotificationPosts(options).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				let total = res.total || 0;
 				if (res && res.value) {
 					this.dataItems = res.value;
 					for (let item of this.dataItems) {
 						// this.getAvatar(item);
-						this.updateStatus(item);
+						// this.updateStatus(item);
 						if (item.created) {
 							item._created = this.sharedService.convertDateStringToMoment(item.created, this.offset);
 							item.createdView = item._created.format('DD/MM/YYYY hh:mm A');
 						}
-						if (item.date) {
-							item._date = this.sharedService.convertDateStringToMoment(item.date, this.offset);
-							item.dateView = item._date.format('DD/MM/YYYY hh:mm A');
+						if (item.startDate) {
+							item._startDate = this.sharedService.convertDateStringToMomentUTC_0(item.startDate);
+							item.startDateView = this.sharedService.formatDate(item._startDate);
+						}
+						if (item.endDate) {
+							item._endDate = this.sharedService.convertDateStringToMomentUTC_0(item.endDate);
+							item.endDateView = this.sharedService.formatDate(item._endDate);
 						}
 					}
 				}
@@ -207,7 +181,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		config.panelClass = 'dialog-form-l';
 		config.maxWidth = '80vw';
 		config.autoFocus = true;
-		let dialogRef = this.dialog.open(ParableInfoDailyComponent, config);
+		let dialogRef = this.dialog.open(NotificationPostInfoComponent, config);
 		dialogRef.afterClosed().pipe(takeUntil(this.unsubscribe)).subscribe({
 			next: (res: any) => {
 				let snackbarData: any = {
@@ -235,7 +209,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 			status: status
 		}
 		this.dataProcessing = true;
-		this.service.updateParableDaily(item.id, dataJSON).pipe(take(1)).subscribe({
+		this.service.updateNotificationPost(item.id, dataJSON).pipe(take(1)).subscribe({
 			next: () => {
 				let snackbarData: any = {
 					key: 'saved-item',
@@ -251,7 +225,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 
 	onDelete(item: any) {
 		this.dataProcessing = true;
-		this.service.deleteParableDaily(item.id).pipe(take(1)).subscribe({
+		this.service.deleteNotificationPost(item.id).pipe(take(1)).subscribe({
 			next: () => {
 				this.dataProcessing = false;
 				let snackbarData: any = {
@@ -265,19 +239,8 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 		})
 	}
 
-	onChangeDate(event: any) {
-		if (event && event.action == "date-change") {
-			console.log("res.data.........", event.data);
-			let data = event.data;
-
-			this.dateFilter.fromDate = (data && data.date) ? data.date.fromDate : "";
-			this.dateFilter.toDate = (data && data.date) ? data.date.toDate : "";
-			this.getDataGridAndCounterApplications();
-		}
-	}
-
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'status', 'name', 'code', 'quotation', 'date', 'created', 'moreActions'];
+		this.displayColumns = ['id', 'title', 'metaDescription', 'startDate', 'endDate', 'created', 'moreActions'];
 	}
 
 }

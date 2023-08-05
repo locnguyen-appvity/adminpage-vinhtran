@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>Choose Date Range</h2>
+<mat-dialog-content>
+    <div class="content-dialog">
+        <form [formGroup]="customFormGroup" autocomplete="off" class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Date</mat-label>
+                <!-- <input matInput [matDatepicker]="customDatePicker" placeholder="YYYY/MM/DD" (click)="customDatePicker.open()" required autocomplete="off"
+                        [formControl]="customDate">
+                    <mat-datepicker-toggle matSuffix [for]="customDatePicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #customDatePicker></mat-datepicker> -->
+                <mat-date-range-input [rangePicker]="customDatePicker">
+                    <input matStartDate formControlName="fromDate" placeholder="Start date" placeholder="YYYY/MM/DD"
+                        class="full-width" (click)="customDatePicker.open()" [required]="requiredField" name="Start Date">
+                    <input matEndDate formControlName="toDate" placeholder="End date" placeholder="YYYY/MM/DD"
+                        class="full-width" (click)="customDatePicker.open()" [required]="requiredField" name="End Date">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="customDatePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #customDatePicker></mat-date-range-picker>
+                <mat-error
+                    *ngIf="customFormGroup.get('fromDate').hasError('matDatepickerParse') || customFormGroup.get('toDate').hasError('matDatepickerParse')">
+                    Enter dates in YYYY/MM/DD format
+                </mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+    <div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
+        <button mat-button color="default" matDialogClose aria-label="Cancel">
+            Cancel
+        </button>
+        <span fxFlex></span>
+        <button mat-flat-button [disabled]="!hasBeenChanged || customFormGroup.invalid" color="primary" aria-label="OK"
+            (click)="saveDate()">
+            OK
+        </button>
+    </div>
+</mat-dialog-content>

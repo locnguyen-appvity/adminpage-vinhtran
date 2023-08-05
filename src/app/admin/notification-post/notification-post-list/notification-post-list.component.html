@@ -112,11 +112,11 @@
                                 </td>
                             </ng-container> -->
 
-                            <ng-container matColumnDef="name">
+                            <ng-container matColumnDef="title">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Tiêu Đề </th>
-                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.name"
-                                    [matTooltipDisabled]="!(dataItem?.name?.length > 85)">
-                                    {{dataItem.name | truncate: 85}}
+                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.title"
+                                    [matTooltipDisabled]="!(dataItem?.title?.length > 85)">
+                                    {{dataItem.title | truncate: 85}}
                                 </td>
                             </ng-container>
 
@@ -127,12 +127,12 @@
                                 </td>
                             </ng-container> -->
 
-                            <ng-container matColumnDef="quotation">
+                            <ng-container matColumnDef="metaDescription">
                                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Mô tả </th>
-                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.quotation"
-                                    [matTooltipDisabled]="!(dataItem?.quotation?.length > 85)">
-                                    {{dataItem.quotation | truncate: 85}}
-                                </td>
+                                <td mat-cell *matCellDef="let dataItem" [matTooltip]="dataItem.metaDescription"
+                                [matTooltipDisabled]="!(dataItem?.metaDescription?.length > 85)">
+                                {{dataItem.metaDescription | truncate: 85}}
+                            </td>
                             </ng-container>
 
                             <ng-container matColumnDef="startDate">

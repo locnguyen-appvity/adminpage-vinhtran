@@ -32,7 +32,7 @@ export class ParableInfoComponent extends SimpleBaseComponent {
 	public arrCategories: any[] = [];
 	public arrTags: any[] = [];
 	public localItem: any;
-	public matTooltipBack: string = "Danh Sách Lời Chúa";
+	public matTooltipBack: string = "Danh Sách  Tin Mừng";
 	public statusLabel: any = {
 		title: "Tạo Mới",
 		class: 'draft-label'

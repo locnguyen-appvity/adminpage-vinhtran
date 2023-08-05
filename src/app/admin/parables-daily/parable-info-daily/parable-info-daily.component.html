@@ -9,9 +9,9 @@
                     <!-- <mat-hint>{{dataItemGroup?.value?.link}}</mat-hint> -->
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>Lời Chúa</mat-label>
+                    <mat-label>Tin Mừng</mat-label>
                     <se-autocomplete-simple [required]="false" [formControlName]="'_parableID'" [optgroup]="false"
-                        [placeHolder]="'Nhập Lời Chúa'" [keyTitle]="'quotation'" [keyValue]="'id'" [autocomplete]="true"
+                        [placeHolder]="'Nhập Tin Mừng'" [keyTitle]="'quotation'" [keyValue]="'id'" [autocomplete]="true"
                         [items]="arrListParable" (onSelectItem)="onSelectItem($event,'parableID')">
                     </se-autocomplete-simple>
                 </mat-form-field>

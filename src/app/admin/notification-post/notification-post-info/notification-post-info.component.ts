@@ -9,9 +9,9 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
-    selector: 'app-schedule-events-info',
-    templateUrl: './schedule-events-info.component.html',
-    styleUrls: ['./schedule-events-info.component.scss'],
+    selector: 'app-notification-post-info',
+    templateUrl: './notification-post-info.component.html',
+    styleUrls: ['./notification-post-info.component.scss'],
     providers: [
         {
             provide: DateAdapter,
@@ -23,7 +23,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
         }
     ]
 })
-export class ScheduleEventInfoComponent extends SimpleBaseComponent {
+export class NotificationPostInfoComponent extends SimpleBaseComponent {
 
     public title: string = 'Thêm';
     public textSave: string = 'Thêm';
@@ -39,7 +39,7 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
     constructor(public override sharedService: SharedPropertyService,
         private fb: FormBuilder,
         private service: SharedService,
-        public dialogRef: MatDialogRef<ScheduleEventInfoComponent>,
+        public dialogRef: MatDialogRef<NotificationPostInfoComponent>,
         @Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
         super(sharedService);
 
@@ -66,6 +66,9 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
             this.hasChangedGroup = true;
             // }
         })
+        this.dataItemGroup.get('title').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((title: any) => {
+            this.dataItemGroup.get('link').setValue(this.sharedService.getLinkOfName(title));
+        })
     }
 
     // {
@@ -90,9 +93,9 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
             this.localItem._endDate = this.sharedService.convertDateStringToMomentUTC_0(this.localItem.endDate)
         }
         return this.fb.group({
-            name: [this.localItem ? this.localItem.name : "", [Validators.required]],
-            quotation: this.localItem ? this.localItem.quotation : "",
-            endDate: [this.localItem ? this.localItem._endDate : this.sharedService.moment(), [Validators.required]],
+            title: [this.localItem ? this.localItem.title : "", [Validators.required]],
+            metaDescription: this.localItem ? this.localItem.metaDescription : "",
+            endDate: this.localItem ? this.localItem._endDate : this.sharedService.moment(),
             startDate: [this.localItem ? this.localItem._startDate : this.sharedService.moment(), [Validators.required]],
             link: this.localItem ? this.localItem.link : "",
             status: this.localItem ? this.localItem.status : "",
@@ -116,7 +119,7 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
 
     deleteItem() {
         this.dataProcessing = true;
-        this.service.deleteScheduleEvent(this.ID).pipe(take(1)).subscribe(() => {
+        this.service.deleteNotificationPost(this.ID).pipe(take(1)).subscribe(() => {
             this.dataProcessing = false;
             this.dialogRef.close('Deleted');
         })
@@ -126,8 +129,8 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
         let valueForm = this.dataItemGroup.value;
         let dataJSON =
         {
-            "name": valueForm.name,
-            "quotation": valueForm.quotation,
+            "title": valueForm.title,
+            "metaDescription": valueForm.metaDescription,
             "link": valueForm.link,
             "startDate": this.sharedService.ISOStartDay(valueForm.startDate),
             "endDate": this.sharedService.ISOStartDay(valueForm.endDate),
@@ -136,14 +139,14 @@ export class ScheduleEventInfoComponent extends SimpleBaseComponent {
 
         if (this.target == 'edit') {
             this.dataProcessing = true;
-            this.service.updateScheduleEvent(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
+            this.service.updateNotificationPost(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
                 this.dataProcessing = false;
                 this.dialogRef.close('OK');
             })
         }
         else {
             this.dataProcessing = true;
-            this.service.createScheduleEvent(dataJSON).pipe(take(1)).subscribe(() => {
+            this.service.createNotificationPost(dataJSON).pipe(take(1)).subscribe(() => {
                 this.dataProcessing = false;
                 this.dialogRef.close('OK');
             })

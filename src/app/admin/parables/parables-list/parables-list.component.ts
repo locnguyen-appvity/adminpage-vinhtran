@@ -101,7 +101,7 @@ export class ParableListComponent extends TemplateGridApplicationComponent {
 				item.typeView = "Từ Ngữ Kinh Thánh";
 				break;
 			default:
-				item.typeView = "Lời Chúa"
+				item.typeView = " Tin Mừng"
 				break;
 		}
 	}

@@ -240,7 +240,7 @@ export class ScheduleEventsListComponent extends TemplateGridApplicationComponen
 	}
 
 	override registerGridColumns() {
-		this.displayColumns = ['id', 'photo', 'name', 'quotation', 'startDate', 'endDate', 'created', 'moreActions'];
+		this.displayColumns = ['id', 'name', 'quotation', 'startDate', 'endDate', 'created', 'moreActions'];
 	}
 
 }

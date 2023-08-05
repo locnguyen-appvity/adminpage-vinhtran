@@ -4,12 +4,12 @@
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
             <div fxLayout="column">
                 <mat-form-field appearance="outline">
-                    <mat-label>Tên</mat-label>
-                    <input matInput required formControlName="name" autocomplete="off" se-pure-words>
+                    <mat-label>Tiêu đề</mat-label>
+                    <input matInput required formControlName="title" autocomplete="off" se-pure-words>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Mô tả</mat-label>
-                    <textarea matInput rows="3" formControlName="quotation" autocomplete="off"></textarea>
+                    <textarea matInput rows="3" formControlName="metaDescription" autocomplete="off"></textarea>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Ngày Bắt Đầu</mat-label>
@@ -22,15 +22,15 @@
                 <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Ngày Kết Thúc</mat-label>
                     <input autocomplete="off" matInput placeholder="DD/MM/YYYY" [matDatepicker]="endDate"
-                        formControlName="endDate" required>
+                        formControlName="endDate">
                     <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
                     <mat-datepicker #endDate></mat-datepicker>
                     <mat-error *ngIf="dataItemGroup.get('endDate').hasError('matDatepickerParse')">Enter dates in DD/MM/YYYY  format</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-label>Liên Kết</mat-label>
                     <input matInput required formControlName="link" autocomplete="off">
-                </mat-form-field>
+                </mat-form-field> -->
             </div>
         </form>
     </div>
