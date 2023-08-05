@@ -1,10 +1,10 @@
-<div style="min-height: 50px;width: 100%;padding: 12px;" fxLayout="row" fxLayoutAlign="start center">
+<div class="module-toolbar" fxLayout="row" fxLayoutAlign="start center">
     <span fxFlex></span>
     <div fxLayout="row" fxLayoutAlign="center center">
         <button (click)="changeDateValue('before')" mat-icon-button [disabled]="dateOptions == 'custom'">
             <mat-icon svgIcon="ic_navigate_before"></mat-icon>
         </button>
-        <h4 style="font: 550 20px/32px Roboto,Helvetica Neue,sans-serif;letter-spacing: normal;margin-top: 10px;"><span>{{dateValueTitle?.dateTitle}} </span><span style="color: #78849e;font-weight: 400;padding-left: 2px;">{{dateValueTitle?.yearTitle}}</span></h4>
+        <h4> <span>{{dateValueTitle?.dateTitle}} </span><span class="year">{{dateValueTitle?.yearTitle}}</span></h4>
         <button (click)="changeDateValue('next')" mat-icon-button [disabled]="dateOptions == 'custom'">
             <mat-icon svgIcon="ic_navigate_next"></mat-icon>
         </button>
@@ -18,14 +18,14 @@
             <mat-button-toggle *ngIf="settingsOptions?.quarter" value="quarter">Quarter</mat-button-toggle>
             <mat-button-toggle *ngIf="settingsOptions?.year" value="year">Year</mat-button-toggle>
         </mat-button-toggle-group>
-    
+
         <ng-container
             *ngIf="settingsOptionsDateRange?.today && settingsOptionsDateRange?.dateRange; else singleButtonOption">
             <button style="height: 50px;" matTooltip="Go to..." mat-stroked-button aria-label="Go to..."
                 [matMenuTriggerFor]="calendarMenu">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
-    
+
             <mat-menu #calendarMenu="matMenu" [overlapTrigger]="overlapTrigger" xPosition="before">
                 <button *ngIf="settingsOptionsDateRange?.today" mat-menu-item (click)="goToToday()" aria-label="Today">
                     Today
@@ -38,13 +38,15 @@
         </ng-container>
         <ng-template #singleButtonOption>
             <button *ngIf="settingsOptionsDateRange?.today"
-                [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md class="custom-date-picker"
-                matTooltip="Today" mat-stroked-button aria-label="Today" (click)="goToToday()">
+                [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md
+                class="custom-date-picker" matTooltip="Today" mat-stroked-button aria-label="Today"
+                (click)="goToToday()">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
             <button *ngIf="settingsOptionsDateRange?.dateRange"
-                [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md class="custom-date-picker"
-                matTooltip="Date Range" mat-stroked-button aria-label="Date Range" (click)="openCustomDialog()">
+                [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md
+                class="custom-date-picker" matTooltip="Date Range" mat-stroked-button aria-label="Date Range"
+                (click)="openCustomDialog()">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
         </ng-template>
