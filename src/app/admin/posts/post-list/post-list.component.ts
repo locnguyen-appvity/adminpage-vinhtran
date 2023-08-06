@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
+import { CommonUtility } from 'src/app/shared/common.utility';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
@@ -20,6 +21,17 @@ import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.c
 export class PostListComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
+	public dateFilter = {
+		fromDate: '',
+		toDate: ''
+	}
+	public settingsOptions: any = {
+		day: true,
+		week: true,
+		month: true,
+		quarter: true,
+		year: true
+	};
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -31,8 +43,25 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 	) {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
-		this.dataSettingsKey = 'user-list';
+		this.dataSettingsKey = 'post-list';
+		let dateFilter = CommonUtility.getFilterDate({
+			fromDate: this.sharedService.moment(),
+			toDate: "",
+			key: 'week'
+		})
+		this.dateFilter.fromDate = dateFilter.fromDate;
+		this.dateFilter.toDate = dateFilter.toDate;
 		this.getDataGridAndCounterApplications();
+	}
+
+
+	onChangeDate(event: any) {
+		if (event && event.action == "date-change") {
+			let data = event.data;
+			this.dateFilter.fromDate = (data && data.date) ? data.date.fromDate : "";
+			this.dateFilter.toDate = (data && data.date) ? data.date.toDate : "";
+			this.getDataGridAndCounterApplications();
+		}
 	}
 
 	getFilter() {
@@ -40,14 +69,39 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
-			let quickSearch = `contains(tolower(title), tolower('${quick}'))`;
+			let quickSearch = `contains(title, '${quick}')`;
 			if (this.isNullOrEmpty(filter)) {
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `(${filter}) and (${quickSearch})`;
 			}
 		}
+		let filterDate = "";
+		if (!this.isNullOrEmpty(this.dateFilter.fromDate)) {
+			filterDate = `eventDate eq ${this.dateFilter.fromDate}`;
+			if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+				filterDate = `eventDate ge ${this.dateFilter.fromDate} and eventDate le ${this.dateFilter.toDate}`;
+			}
+		}
+		else if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+			filterDate = `eventDate eq ${this.dateFilter.toDate}`;
+		}
+		if (!this.isNullOrEmpty(filterDate)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = filterDate;
+			}
+			else {
+				filter = `(${filter}) and (${filterDate})`;
+			}
+		}
+		if (this.isNullOrEmpty(filter)) {
+			filter = `eventDate eq null`;
+		}
+		else {
+			filter = `(${filter}) or (eventDate eq null)`;
+		}
+
 		return filter;
 	}
 

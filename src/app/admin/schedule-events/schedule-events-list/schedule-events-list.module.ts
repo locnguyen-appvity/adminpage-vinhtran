@@ -15,6 +15,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { ScheduleEventsListRoutingModule } from './schedule-events-list-routing.module';
 import { ScheduleEventsListComponent } from './schedule-events-list.component';
 import { ScheduleEventInfoModule } from '../schedule-events-info/schedule-events-info.module';
+import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
 
 
 
@@ -36,7 +37,8 @@ import { ScheduleEventInfoModule } from '../schedule-events-info/schedule-events
     ReactiveFormsModule,
     MatCardModule,
     MatTooltipModule,
-    ScheduleEventInfoModule
+    ScheduleEventInfoModule,
+    DateRangeFilterModule
   ],
   exports: [ScheduleEventsListComponent]
 })

@@ -37,6 +37,37 @@ export module CommonUtility {
 				return day;
 		}
 	}
+	export function convertMonthEngToVi(day: string) {
+		let key = day ? day.toLocaleLowerCase() : "";
+		switch (key) {
+			case 'january':
+				return "Tháng Một"
+			case 'february':
+				return "Tháng Hai"
+			case 'march':
+				return "Tháng Ba"
+			case 'april':
+				return "Tháng Tư"
+			case 'may':
+				return "Tháng Năm"
+			case 'june':
+				return "Tháng Sáu"
+			case 'july':
+				return "Tháng Bảy"
+			case 'august':
+				return "Tháng Tám"
+			case 'september':
+				return "Tháng Chín"
+			case 'october':
+				return "Tháng Mười"
+			case 'november':
+				return "Tháng Mười Một"
+			case 'december':
+				return "Tháng Mười Hai"
+			default:
+				return day;
+		}
+	}
 
 	export function isNullOrEmpty(data: any) {
         if (data === null || data === "" || data === undefined) {

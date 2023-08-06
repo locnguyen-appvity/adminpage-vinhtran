@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { PostListRoutingModule } from './post-list-routing.module';
 import { PostListComponent } from './post-list.component';
+import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
 
 
 
@@ -34,7 +35,8 @@ import { PostListComponent } from './post-list.component';
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DateRangeFilterModule
   ],
   exports: [PostListComponent]
 })

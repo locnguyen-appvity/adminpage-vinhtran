@@ -4,6 +4,7 @@
     top: 0;
     left: 0;
     z-index: 999;
+    padding: 12px 24px;
 
     .mat-button-toggle-group {
         .mat-button-toggle {
@@ -52,6 +53,18 @@
         line-height: 34px;
         font-size: 14px;
         font-weight: 500;
+    }
+
+    .mat-stroked-button {
+        height: 34px;
+        line-height: 34px;
+        font-size: 14px;
+        font-weight: 500;
+        .mat-button-wrapper{
+            mat-icon{
+                margin-bottom: 12px
+            }
+        }
     }
 
     .toggle-button {

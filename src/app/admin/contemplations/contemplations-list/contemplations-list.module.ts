@@ -14,6 +14,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { ContemplationsListRoutingModule } from './contemplations-list-routing.module';
 import { ContemplationsListComponent } from './contemplations-list.component';
+import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
 
 
 
@@ -34,7 +35,8 @@ import { ContemplationsListComponent } from './contemplations-list.component';
     MatToolbarModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DateRangeFilterModule
   ],
   exports: [ContemplationsListComponent]
 })

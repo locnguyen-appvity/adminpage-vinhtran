@@ -257,34 +257,34 @@ export class DateRangeFilterComponent extends SimpleBaseComponent implements OnC
         if (dateValueMoment.fromDate) {
             switch (this.dateOptions) {
                 case 'week':
-                    this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'MMMM DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
-                    this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'MMM DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
+                    this.dateTitle = `${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM'))} ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
+                    this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')} ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     break;
                 case 'month':
-                    this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')}`;
+                    this.dateTitle = CommonUtility.convertMonthEngToVi(`${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')}`);
                     this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMM')}`;
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     break;
                 case 'day':
                     let dateNow = CommonUtility.getDateFormatString(this.sharedService.moment(), 'MM/DD/YYYY');
-                    this.dateTitle = CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM DD');
+                    this.dateTitle = `${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM'))} ${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'DD')}`;
                     this.dateTitleMobile = CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMM DD');
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     let duration = CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MM/DD/YYYY');
                     if (duration == dateNow) {
-                        this.dateTitle = 'Today';
-                        this.dateTitleMobile = 'Today';
+                        this.dateTitle = 'Hôm Nay';
+                        this.dateTitleMobile = 'Hôm Nay';
                         this.yearTitle = '';
                     }
                     break;
                 case 'quarter':
-                    this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('quarter'), 'MMMM')}`;
+                    this.dateTitle = `${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM'))} - ${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('quarter'), 'MMMM'))}`;
                     this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('quarter'), 'MMMM')}`;
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     break;
                 case 'year':
-                    this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('year'), 'MMMM')}`;
+                    this.dateTitle = `${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM'))} - ${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('year'), 'MMMM'))}`;
                     this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('year'), 'MMMM')}`;
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     break;
@@ -303,15 +303,15 @@ export class DateRangeFilterComponent extends SimpleBaseComponent implements OnC
 
     handleDateFilterCustom(dateValueMoment: any) {
         if (this.checkToday(dateValueMoment)) {
-            this.dateTitle = 'Today';
-            this.dateTitleMobile = 'Today';
+            this.dateTitle = 'Hôm Nay';
+            this.dateTitleMobile = 'Hôm Nay';
             this.yearTitle = '';
         }
         else {
             this.yearTitle = '';
             if (dateValueMoment.fromDate) {
-                this.dateTitle = `From ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMMM DD YYYY')}`;
-                this.dateTitleMobile = `From ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMM DD YY')}`;
+                this.dateTitle = `Từ ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'DD/MM/YYYY')}`;
+                this.dateTitleMobile = `Từ ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'DD/MM/YYYY')}`;
                 if (dateValueMoment.toDate) {
                     if (CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'YYYY') == CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'YYYY')) {
                         this.yearTitle = CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'YYYY');
@@ -320,19 +320,19 @@ export class DateRangeFilterComponent extends SimpleBaseComponent implements OnC
                         //     this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMM DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD')}`;
                         // }
                         // else {
-                        this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), this.isGTDashboard ? 'MMM DD' : 'MMMM DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), this.isGTDashboard ? 'MMM DD' : 'MMMM DD')}`;
-                        this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMM DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'MMM DD')}`;
+                        this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), this.isGTDashboard ? 'DD/MM' : 'DD/MM')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), this.isGTDashboard ? 'DD/MM' : 'DD/MM')}`;
+                        this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'DD/MM')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD/MM')}`;
                         // }
                     }
                     else {
-                        this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMMM DD YYYY')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'MMMM DD YYYY')}`;
-                        this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'MMM DD YY')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'MMM DD YY')}`;
+                        this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'DD/MM/YYYY')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD/MM/YYYY')}`;
+                        this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone(), 'DD/MM/YYYY')} - ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD/MM/YYYY')}`;
                     }
                 }
             }
             else if (dateValueMoment.toDate) {
-                this.dateTitle = `To ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'MMMM DD YYYY')}`;
-                this.dateTitleMobile = `To ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'MMM DD YY')}`;
+                this.dateTitle = `To ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD/MM/YYYY')}`;
+                this.dateTitleMobile = `To ${CommonUtility.getDateFormatString(dateValueMoment.toDate.clone(), 'DD/MM/YYYY')}`;
             }
         }
     }

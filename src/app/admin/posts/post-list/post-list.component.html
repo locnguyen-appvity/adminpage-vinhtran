@@ -1,5 +1,6 @@
 <div class="se-apps-users">
     <div class="wrapper">
+        <se-date-range-filter [dateRangeDefault]="'week'" [settingsOptions]="settingsOptions" (onChange)="onChangeDate($event)"></se-date-range-filter>
         <!-- Table Container -->
         <div class="se-grid-tables">
             <mat-card class="table-card">

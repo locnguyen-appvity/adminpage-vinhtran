@@ -19,6 +19,10 @@ import { ScheduleEventInfoComponent } from '../schedule-events-info/schedule-eve
 })
 export class ScheduleEventsListComponent extends TemplateGridApplicationComponent {
 
+	public dateFilter = {
+		fromDate: '',
+		toDate: ''
+	}
 	public dataItems: any[] = [];
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -31,8 +35,18 @@ export class ScheduleEventsListComponent extends TemplateGridApplicationComponen
 	) {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
-		this.dataSettingsKey = 'user-list';
+		this.dataSettingsKey = 'schedule-events-list';
+		this.dateFilter.fromDate = this.sharedService.moment().format("YYYY-MM-DD");
 		this.getDataGridAndCounterApplications();
+	}
+
+	onChangeDate(event: any) {
+		if (event && event.action == "date-change") {
+			let data = event.data;
+			this.dateFilter.fromDate = (data && data.date) ? data.date.fromDate : "";
+			this.dateFilter.toDate = (data && data.date) ? data.date.toDate : "";
+			this.getDataGridAndCounterApplications();
+		}
 	}
 
 	getFilter() {
@@ -45,7 +59,25 @@ export class ScheduleEventsListComponent extends TemplateGridApplicationComponen
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `(${filter}) and (${quickSearch})`;
+			}
+		}
+		let filterDate = "";
+		if (!this.isNullOrEmpty(this.dateFilter.fromDate)) {
+			filterDate = `startDate eq ${this.dateFilter.fromDate} or endDate eq ${this.dateFilter.fromDate}`;
+			if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+				filterDate = `(startDate ge ${this.dateFilter.fromDate} and startDate le ${this.dateFilter.toDate}) or (endDate ge ${this.dateFilter.fromDate} and endDate le ${this.dateFilter.toDate})`;
+			}
+		}
+		else if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+			filterDate = `startDate eq ${this.dateFilter.toDate} or endDate eq ${this.dateFilter.toDate}`;
+		}
+		if (!this.isNullOrEmpty(filterDate)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = filterDate;
+			}
+			else {
+				filter = `(${filter}) and (${filterDate})`;
 			}
 		}
 		return filter;

@@ -267,9 +267,7 @@ export class ParableListDailyComponent extends TemplateGridApplicationComponent 
 
 	onChangeDate(event: any) {
 		if (event && event.action == "date-change") {
-			console.log("res.data.........", event.data);
 			let data = event.data;
-
 			this.dateFilter.fromDate = (data && data.date) ? data.date.fromDate : "";
 			this.dateFilter.toDate = (data && data.date) ? data.date.toDate : "";
 			this.getDataGridAndCounterApplications();

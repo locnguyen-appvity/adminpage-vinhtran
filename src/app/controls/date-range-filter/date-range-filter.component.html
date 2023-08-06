@@ -12,40 +12,40 @@
     <span fxFlex></span>
     <div fxLayoutGap="12">
         <mat-button-toggle-group (change)="changeDateOptions($event.value)" [value]="dateOptions">
-            <mat-button-toggle *ngIf="settingsOptions?.day" value="day">Day</mat-button-toggle>
-            <mat-button-toggle *ngIf="settingsOptions?.week" value="week">Week</mat-button-toggle>
-            <mat-button-toggle *ngIf="settingsOptions?.month" value="month">Month</mat-button-toggle>
-            <mat-button-toggle *ngIf="settingsOptions?.quarter" value="quarter">Quarter</mat-button-toggle>
-            <mat-button-toggle *ngIf="settingsOptions?.year" value="year">Year</mat-button-toggle>
+            <mat-button-toggle *ngIf="settingsOptions?.day" value="day">Ngày</mat-button-toggle>
+            <mat-button-toggle *ngIf="settingsOptions?.week" value="week">Tuần</mat-button-toggle>
+            <mat-button-toggle *ngIf="settingsOptions?.month" value="month">Tháng</mat-button-toggle>
+            <mat-button-toggle *ngIf="settingsOptions?.quarter" value="quarter">Quý</mat-button-toggle>
+            <mat-button-toggle *ngIf="settingsOptions?.year" value="year">Năm</mat-button-toggle>
         </mat-button-toggle-group>
 
         <ng-container
             *ngIf="settingsOptionsDateRange?.today && settingsOptionsDateRange?.dateRange; else singleButtonOption">
-            <button style="height: 50px;" matTooltip="Go to..." mat-stroked-button aria-label="Go to..."
+            <button matTooltip="Chọn" mat-stroked-button aria-label="Chọn"
                 [matMenuTriggerFor]="calendarMenu">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
 
             <mat-menu #calendarMenu="matMenu" [overlapTrigger]="overlapTrigger" xPosition="before">
-                <button *ngIf="settingsOptionsDateRange?.today" mat-menu-item (click)="goToToday()" aria-label="Today">
-                    Today
+                <button *ngIf="settingsOptionsDateRange?.today" mat-menu-item (click)="goToToday()" aria-label="Hôm Nay">
+                    Hôm Nay
                 </button>
                 <button *ngIf="settingsOptionsDateRange?.dateRange" mat-menu-item (click)="openCustomDialog()"
-                    aria-label="Date Range">
-                    Date Range
+                    aria-label="Tùy Chọn Ngày">
+                    Tùy Chọn Ngày
                 </button>
             </mat-menu>
         </ng-container>
         <ng-template #singleButtonOption>
             <button *ngIf="settingsOptionsDateRange?.today"
                 [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md
-                class="custom-date-picker" matTooltip="Today" mat-stroked-button aria-label="Today"
+                class="custom-date-picker" matTooltip="Hôm Nay" mat-stroked-button aria-label="Hôm Nay"
                 (click)="goToToday()">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
             <button *ngIf="settingsOptionsDateRange?.dateRange"
                 [ngClass]="{'mat-button-toggle-checked':dateOptions == 'custom'}" fxHide.lt-md
-                class="custom-date-picker" matTooltip="Date Range" mat-stroked-button aria-label="Date Range"
+                class="custom-date-picker" matTooltip="Tùy Chọn Ngày" mat-stroked-button aria-label="Tùy Chọn Ngày"
                 (click)="openCustomDialog()">
                 <mat-icon svgIcon="ic_today_48px"></mat-icon>
             </button>
