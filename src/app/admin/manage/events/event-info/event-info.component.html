@@ -27,10 +27,10 @@
             <mat-form-field *ngIf="dataItemGroup?.value?.type == 'saint'" appearance="outline" class="full-width">
                 <mat-label>Thánh Bổn Mạng</mat-label>
                 <se-autocomplete-simple [required]="false" [formControlName]="'stName'"
-                (onChangeValue)="onChangeValue($event,'stName')" [mode]="'emit-change'"
-                    (onSelectItem)="valueChangeSelect($event,'stName')" [optgroup]="false"
-                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
-                    [autocomplete]="true" [items]="arrSaints">
+                    (onChangeValue)="onChangeValue($event,'stName')" [mode]="'emit-change'"
+                    (onSelectItem)="valueChangeSelect($event,'stName')" [optgroup]="false" [placeHolder]="'Nhập tên...'"
+                    [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'" [autocomplete]="true"
+                    [items]="arrSaints">
                 </se-autocomplete-simple>
             </mat-form-field>
             <div fxLayout="row wrap">
@@ -58,7 +58,10 @@
                 *ngIf="dataItemGroup?.value?.type == 'linh_muc' || dataItemGroup?.value?.type == 'pho_te' || dataItemGroup?.value?.type == 'baptize' || dataItemGroup?.value?.type == 'confirmation'"
                 appearance="outline" class="full-width">
                 <mat-label>Bởi</mat-label>
-                <input matInput formControlName="description" autocomplete="off">
+                <se-autocomplete-simple [required]="false" [formControlName]="'description'"
+                    [placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'name'"
+                    [autocomplete]="true" [items$]="arrClergies$">
+                </se-autocomplete-simple>
             </mat-form-field>
             <mat-form-field *ngIf="entityType == 'clergy' && dataItemGroup?.value?.type != 'saint'" appearance="outline"
                 class="full-width">

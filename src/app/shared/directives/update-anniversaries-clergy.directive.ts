@@ -39,7 +39,8 @@ export class UpdateAnniversariesClergyDirective implements OnChanges, AfterViewI
 			return;
 		}
 		let options = {
-			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and (type eq 'linh_muc' or type eq 'pho_te' or type eq 'giam_muc')`
+			filter: `entityID eq ${item.clergyID} and entityType eq 'clergy' and (type eq 'linh_muc' or type eq 'pho_te' or type eq 'giam_muc')`,
+			sort: 'date asc'
 		}
 		item.stateGetAnniversaries = 'loading';
 		this.service.getAnniversaries(options).pipe(take(1)).subscribe((res: any) => {

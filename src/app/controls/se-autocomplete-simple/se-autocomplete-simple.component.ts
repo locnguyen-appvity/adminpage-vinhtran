@@ -55,7 +55,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	public inputControl: FormControl;
 	public focused = false;
 	public errorState = false;
-	public controlType = 'kmi-multi-select';
+	public controlType = 'multi-select';
 	onChange = (value: any) => { };
 	onTouched = () => { };
 	public stateChanges = new Subject<void>();
@@ -276,7 +276,7 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	}
 
 	static nextId = 0;
-	@HostBinding() id = `phone-number-${AutocompleteSimpleComponent.nextId++}`;
+	@HostBinding() id = `multi-select-${AutocompleteSimpleComponent.nextId++}`;
 
 	private _placeholder: string;
 	@Input() get placeholder() {

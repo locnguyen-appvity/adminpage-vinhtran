@@ -36,6 +36,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 	public localItem: any;
 	public arrLocations$: Observable<any>;
 	public arrSaints: any[] = [];
+	public arrClergies$: Observable<any>;
 	public typeEvents: any[] = [];
 
 	constructor(public override sharedService: SharedPropertyService,
@@ -89,6 +90,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			}
 		})
 		this.getSaints();
+		this.getClergies();
 		this.typeEvents = ANNIVERSARIES.filter(it => !it.hasAuto);
 	}
 
@@ -129,6 +131,23 @@ export class EventInfoComponent extends SimpleBaseComponent {
 				}
 			}
 			this.arrSaints = items;
+
+		})
+	}
+
+	getClergies() {
+		let options = {
+			filter: "level eq 'giam_muc'"
+		}
+		this.service.getClergies(options).pipe(take(1)).subscribe((res: any) => {
+			let items = [];
+			if (res && res.value && res.value.length > 0) {
+				items = res.value;
+				for (let item of items) {
+					item.name = `${this.sharedService.getClergyLevel(item)} ${item.name}`;
+				}
+			}
+			this.arrClergies$ = of(items);
 
 		})
 	}
