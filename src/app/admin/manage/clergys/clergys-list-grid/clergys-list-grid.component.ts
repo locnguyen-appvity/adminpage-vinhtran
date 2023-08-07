@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, forkJoin, take, takeUntil } from 'rxjs';
+import { Observable, debounceTime, distinctUntilChanged, forkJoin, take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { Router } from '@angular/router';
@@ -9,12 +9,13 @@ import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.c
 import { LinqService } from 'src/app/shared/linq.service';
 import { IAppState } from 'src/app/shared/redux/state';
 import { Store } from '@ngrx/store';
-import { LEVEL_CLERGY } from 'src/app/shared/data-manage';
+import { CLERGY_STATUS, LEVEL_CLERGY } from 'src/app/shared/data-manage';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ClergyInfoComponent } from '../clergy-info/clergy-info.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { CommonUtility } from 'src/app/shared/common.utility';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-clergys-list-grid',
@@ -32,6 +33,8 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 
 	public levelList: any[] = LEVEL_CLERGY;
 	public positionList: any[] = [];
+	public statusClergies: any[] = CLERGY_STATUS;
+	public statusClergy: FormControl;
 
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -44,6 +47,10 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
+		this.statusClergy = new FormControl('all');
+		this.statusClergy.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), distinctUntilChanged(), takeUntil(this.unsubscribe)).subscribe(() => {
+			this.getDataGridAndCounterApplications();
+		});
 		this.pageSize = 10;
 		this.pageSizeOptions = [10, 25, 50];
 		this.getPositions();
@@ -212,8 +219,29 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
+		let filterStatus = "";
+		if (!this.isNullOrEmpty(this.statusClergy.value) && this.statusClergy.value != 'all') {
+			if (this.statusClergy.value == 'huu_duong') {
+				filterStatus = "status eq 'huu_duong' or status eq 'huu' or status eq 'nghi_duong'"
+			}
+			else if (this.statusClergy.value == 'khac') {
+				filterStatus = "status ne 'huu_duong' and status ne 'huu' and status ne 'nghi_duong' and status ne 'dang_phuc_vu' and status ne 'du_hoc' and status ne 'rip' and status ne 'hoi_tuc' and status ne 'chua_benh'"
+			}
+			else {
+				filterStatus = `status eq '${this.statusClergy.value}'`
+			}
+		}
+		if (!this.isNullOrEmpty(filterStatus)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = filterStatus;
+			}
+			else {
+				filter = `(${filter}) and (${filterStatus})`;
+			}
+		}
+
 		if (!this.isNullOrEmpty(groupID)) {
-			if(groupID != 'total'){
+			if (groupID != 'total') {
 				if (this.isNullOrEmpty(filter)) {
 					filter = `groupID eq ${groupID}`;
 				}
@@ -223,7 +251,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 			}
 		}
 		else {
-			if(!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value != 'total'){
+			if (!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value != 'total') {
 				if (this.isNullOrEmpty(filter)) {
 					filter = `groupID eq ${this.statusFilterControl.value}`;
 				}

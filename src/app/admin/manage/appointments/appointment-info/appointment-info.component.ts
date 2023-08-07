@@ -905,217 +905,217 @@ export class AppointmentsInfoComponent extends SimpleBaseComponent {
 		})
 	}
 
-	saveClergy(localItem: any, fromAppointmentID: string) {
-		return new Observable(obs => {
-			if (this.checkPassPosition(this.dataItemGroup.get('position').value)) {
-				this.getGrouypID().pipe(take(1)).subscribe({
-					next: (groupID: any) => {
-						this.updateClergy(groupID, true).pipe(take(1)).subscribe({
-							next: () => {
-								obs.next();
-								obs.complete();
-							}
-						})
-					}
-				})
-			}
-			else {
-				if (!this.isNullOrEmpty(fromAppointmentID)) {
-					if (localItem && localItem.id) {
-						if (this.sharedService.isChangedValue(localItem.status, this.dataItemGroup.get('status').value) && this.dataItemGroup.get('status').value == 'duong_nhiem') {
-							this.getGrouypID().pipe(take(1)).subscribe({
-								next: (groupID: any) => {
-									this.updateClergy(groupID, true).pipe(take(1)).subscribe({
-										next: () => {
-											obs.next();
-											obs.complete();
-										}
-									})
-								}
-							})
-						}
-						else {
-							obs.next();
-							obs.complete();
-						}
-					}
-					else if (this.dataItemGroup.get('status').value == 'duong_nhiem') {
-						this.getGrouypID().pipe(take(1)).subscribe({
-							next: (groupID: any) => {
-								this.updateClergy(groupID, true).pipe(take(1)).subscribe({
-									next: () => {
-										obs.next();
-										obs.complete();
-									}
-								})
-							}
-						})
-					}
-					else {
-						obs.next();
-						obs.complete();
-					}
-				}
-				else {
-					this.checkValidateSaveAppointment(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, this.dataItemGroup.get('clergyID').value, "").pipe(take(1)).subscribe({
-						next: (pass: boolean) => {
-							if (pass) {
-								if (localItem && localItem.id) {
-									if (this.sharedService.isChangedValue(localItem.status, this.dataItemGroup.get('status').value) && this.dataItemGroup.get('status').value == 'duong_nhiem') {
-										this.getGrouypID().pipe(take(1)).subscribe({
-											next: (groupID: any) => {
-												this.updateClergy(groupID, true).pipe(take(1)).subscribe({
-													next: () => {
-														obs.next();
-														obs.complete();
-													}
-												})
-											}
-										})
-									}
-									else {
-										obs.next();
-										obs.complete();
-									}
-								}
-								else if (this.dataItemGroup.get('status').value == 'duong_nhiem') {
-									this.getGrouypID().pipe(take(1)).subscribe({
-										next: (groupID: any) => {
-											this.updateClergy(groupID, true).pipe(take(1)).subscribe({
-												next: () => {
-													obs.next();
-													obs.complete();
-												}
-											})
-										}
-									})
-								}
-								else {
-									obs.next();
-									obs.complete();
-								}
-							}
-							else {
-								obs.next();
-								obs.complete();
-							}
-						}
-					})
-				}
-			}
-		})
-	}
+	// saveClergy(localItem: any, fromAppointmentID: string) {
+	// 	return new Observable(obs => {
+	// 		if (this.checkPassPosition(this.dataItemGroup.get('position').value)) {
+	// 			this.getGrouypID().pipe(take(1)).subscribe({
+	// 				next: (groupID: any) => {
+	// 					this.updateClergy(groupID, true).pipe(take(1)).subscribe({
+	// 						next: () => {
+	// 							obs.next();
+	// 							obs.complete();
+	// 						}
+	// 					})
+	// 				}
+	// 			})
+	// 		}
+	// 		else {
+	// 			if (!this.isNullOrEmpty(fromAppointmentID)) {
+	// 				if (localItem && localItem.id) {
+	// 					if (this.sharedService.isChangedValue(localItem.status, this.dataItemGroup.get('status').value) && this.dataItemGroup.get('status').value == 'duong_nhiem') {
+	// 						this.getGrouypID().pipe(take(1)).subscribe({
+	// 							next: (groupID: any) => {
+	// 								this.updateClergy(groupID, true).pipe(take(1)).subscribe({
+	// 									next: () => {
+	// 										obs.next();
+	// 										obs.complete();
+	// 									}
+	// 								})
+	// 							}
+	// 						})
+	// 					}
+	// 					else {
+	// 						obs.next();
+	// 						obs.complete();
+	// 					}
+	// 				}
+	// 				else if (this.dataItemGroup.get('status').value == 'duong_nhiem') {
+	// 					this.getGrouypID().pipe(take(1)).subscribe({
+	// 						next: (groupID: any) => {
+	// 							this.updateClergy(groupID, true).pipe(take(1)).subscribe({
+	// 								next: () => {
+	// 									obs.next();
+	// 									obs.complete();
+	// 								}
+	// 							})
+	// 						}
+	// 					})
+	// 				}
+	// 				else {
+	// 					obs.next();
+	// 					obs.complete();
+	// 				}
+	// 			}
+	// 			else {
+	// 				this.checkValidateSaveAppointment(this.dataItemGroup.get('entityID').value, this.dataItemGroup.get('entityType').value, this.dataItemGroup.get('clergyID').value, "").pipe(take(1)).subscribe({
+	// 					next: (pass: boolean) => {
+	// 						if (pass) {
+	// 							if (localItem && localItem.id) {
+	// 								if (this.sharedService.isChangedValue(localItem.status, this.dataItemGroup.get('status').value) && this.dataItemGroup.get('status').value == 'duong_nhiem') {
+	// 									this.getGrouypID().pipe(take(1)).subscribe({
+	// 										next: (groupID: any) => {
+	// 											this.updateClergy(groupID, true).pipe(take(1)).subscribe({
+	// 												next: () => {
+	// 													obs.next();
+	// 													obs.complete();
+	// 												}
+	// 											})
+	// 										}
+	// 									})
+	// 								}
+	// 								else {
+	// 									obs.next();
+	// 									obs.complete();
+	// 								}
+	// 							}
+	// 							else if (this.dataItemGroup.get('status').value == 'duong_nhiem') {
+	// 								this.getGrouypID().pipe(take(1)).subscribe({
+	// 									next: (groupID: any) => {
+	// 										this.updateClergy(groupID, true).pipe(take(1)).subscribe({
+	// 											next: () => {
+	// 												obs.next();
+	// 												obs.complete();
+	// 											}
+	// 										})
+	// 									}
+	// 								})
+	// 							}
+	// 							else {
+	// 								obs.next();
+	// 								obs.complete();
+	// 							}
+	// 						}
+	// 						else {
+	// 							obs.next();
+	// 							obs.complete();
+	// 						}
+	// 					}
+	// 				})
+	// 			}
+	// 		}
+	// 	})
+	// }
 
-	checkPassPosition(position: string) {
-		switch (position) {
-			case 'chanh_xu':
-			case 'pho_xu':
-			case 'pho_biet_cu':
-				return true;
-			case 'huu':
-			case 'nghi_duong':
-			case 'huu_duong':
-				return true;
-			default:
-				return false;
-		}
-	}
+	// checkPassPosition(position: string) {
+	// 	switch (position) {
+	// 		case 'chanh_xu':
+	// 		case 'pho_xu':
+	// 		case 'pho_biet_cu':
+	// 			return true;
+	// 		case 'huu':
+	// 		case 'nghi_duong':
+	// 		case 'huu_duong':
+	// 			return true;
+	// 		default:
+	// 			return false;
+	// 	}
+	// }
 
-	getGrouypID() {
-		return new Observable(obs => {
-			let requets: any;
-			if (!this.isNullOrEmpty(this.dataItemGroup.get('entityID').value)) {
-				if (this.dataItemGroup.get('entityType').value == 'group') {
-					requets = this.getGroup(this.dataItemGroup.get('entityID').value);
-				}
-				else if (this.dataItemGroup.get('entityType').value == 'organization') {
-					requets = this.getOrganization(this.dataItemGroup.get('entityID').value);
-				}
-			}
-			if (!this.isNullOrEmpty(requets)) {
-				requets.pipe(take(1)).subscribe({
-					next: (groupID: any) => {
-						obs.next(groupID);
-						obs.complete();
-					}
-				})
-			}
-			else {
-				obs.next("");
-				obs.complete();
-			}
-		})
-	}
+	// getGrouypID() {
+	// 	return new Observable(obs => {
+	// 		let requets: any;
+	// 		if (!this.isNullOrEmpty(this.dataItemGroup.get('entityID').value)) {
+	// 			if (this.dataItemGroup.get('entityType').value == 'group') {
+	// 				requets = this.getGroup(this.dataItemGroup.get('entityID').value);
+	// 			}
+	// 			else if (this.dataItemGroup.get('entityType').value == 'organization') {
+	// 				requets = this.getOrganization(this.dataItemGroup.get('entityID').value);
+	// 			}
+	// 		}
+	// 		if (!this.isNullOrEmpty(requets)) {
+	// 			requets.pipe(take(1)).subscribe({
+	// 				next: (groupID: any) => {
+	// 					obs.next(groupID);
+	// 					obs.complete();
+	// 				}
+	// 			})
+	// 		}
+	// 		else {
+	// 			obs.next("");
+	// 			obs.complete();
+	// 		}
+	// 	})
+	// }
 
-	updateClergy(groupID: string, isUpdateGroup: boolean) {
-		return new Observable(obs => {
-			let dataJSON: any = {}
-			if (isUpdateGroup) {
-				dataJSON.groupID = groupID;
-			}
-			switch (this.dataItemGroup.get('position').value) {
-				case 'hoi_tuc':
-				case 'rip':
-				case 'nghi_duong':
-				case 'huu_duong':
-				case 'huu':
-				case 'du_hoc':
-					dataJSON.status = this.dataItemGroup.get('position').value;
-					break;
-				default:
-					dataJSON.status = "dang_phuc_vu";
-					break;
-			}
-			if (Object.keys(dataJSON).length > 0) {
-				this.service.updateClergy(this.dataItemGroup.get('clergyID').value, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
-					next: () => {
-						obs.next();
-						obs.complete();
-					}
-				})
-			}
-			else {
-				obs.next();
-				obs.complete();
-			}
-		})
-	}
+	// updateClergy(groupID: string, isUpdateGroup: boolean) {
+	// 	return new Observable(obs => {
+	// 		let dataJSON: any = {}
+	// 		if (isUpdateGroup) {
+	// 			dataJSON.groupID = groupID;
+	// 		}
+	// 		switch (this.dataItemGroup.get('position').value) {
+	// 			case 'hoi_tuc':
+	// 			case 'rip':
+	// 			case 'nghi_duong':
+	// 			case 'huu_duong':
+	// 			case 'huu':
+	// 			case 'du_hoc':
+	// 				dataJSON.status = this.dataItemGroup.get('position').value;
+	// 				break;
+	// 			default:
+	// 				dataJSON.status = "dang_phuc_vu";
+	// 				break;
+	// 		}
+	// 		if (Object.keys(dataJSON).length > 0) {
+	// 			this.service.updateClergy(this.dataItemGroup.get('clergyID').value, dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
+	// 				next: () => {
+	// 					obs.next();
+	// 					obs.complete();
+	// 				}
+	// 			})
+	// 		}
+	// 		else {
+	// 			obs.next();
+	// 			obs.complete();
+	// 		}
+	// 	})
+	// }
 
-	getOrganization(orgID: string) {
-		return new Observable(obs => {
-			let options = {
-				select: 'id,name,type'
-			}
-			this.service.getOrganization(orgID, options).pipe(take(1)).subscribe({
-				next: (res: any) => {
-					let groupID: string;
-					if (res && res.groupID) {
-						groupID = res.groupID;
-					}
-					obs.next(groupID);
-					obs.complete();
-				}
-			})
-		})
-	}
+	// getOrganization(orgID: string) {
+	// 	return new Observable(obs => {
+	// 		let options = {
+	// 			select: 'id,name,type'
+	// 		}
+	// 		this.service.getOrganization(orgID, options).pipe(take(1)).subscribe({
+	// 			next: (res: any) => {
+	// 				let groupID: string;
+	// 				if (res && res.groupID) {
+	// 					groupID = res.groupID;
+	// 				}
+	// 				obs.next(groupID);
+	// 				obs.complete();
+	// 			}
+	// 		})
+	// 	})
+	// }
 
-	getGroup(groupID: string) {
-		return new Observable(obs => {
-			let options = {
-				select: 'id,name,type,groupID'
-			}
-			this.service.getGroup(groupID, options).pipe(take(1)).subscribe({
-				next: (res: any) => {
-					let entityID: string = "";
-					if (res && res.entityID && res.entityType == 'group') {
-						entityID = res.entityID;
-					}
-					obs.next(entityID);
-					obs.complete();
-				}
-			})
-		})
-	}
+	// getGroup(groupID: string) {
+	// 	return new Observable(obs => {
+	// 		let options = {
+	// 			select: 'id,name,type,groupID'
+	// 		}
+	// 		this.service.getGroup(groupID, options).pipe(take(1)).subscribe({
+	// 			next: (res: any) => {
+	// 				let entityID: string = "";
+	// 				if (res && res.entityID && res.entityType == 'group') {
+	// 					entityID = res.entityID;
+	// 				}
+	// 				obs.next(entityID);
+	// 				obs.complete();
+	// 			}
+	// 		})
+	// 	})
+	// }
 
 	showDialogConfirm(config: any) {
 		return new Observable(obs => {

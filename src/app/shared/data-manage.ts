@@ -827,6 +827,37 @@ export const LEVEL_CLERGY = [
     }
 ]
 
+export const CLERGY_STATUS = [
+    {
+        name: 'Đang Phục Vụ',
+        code: 'dang_phuc_vu'
+    },
+    {
+        name: 'Du Học',
+        code: 'du_hoc'
+    },
+    {
+        name: 'Hưu',
+        code: 'huu_duong'
+    },
+    {
+        name: 'Mất',
+        code: 'rip'
+    },
+    {
+        name: 'Hồi Tục',
+        code: 'hoi_tuc'
+    },
+    {
+        name: 'Chữa Bệnh',
+        code: 'chua_benh'
+    },
+    {
+        name: 'Khác',
+        code: 'khac'
+    }
+]
+
 export const STATUS_CLERGY = [
     {
         name: 'Đương Nhiệm',

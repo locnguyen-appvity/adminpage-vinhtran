@@ -12,7 +12,7 @@ import { AppCustomDateAdapter, CUSTOM_DATE_FORMATS } from 'src/app/shared/date.c
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
-import { LEVEL_CLERGY } from '../../../../shared/data-manage';
+import { CLERGY_STATUS, LEVEL_CLERGY } from '../../../../shared/data-manage';
 
 @Component({
 	selector: 'app-clergy-detail',
@@ -45,6 +45,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public beLongGroupsList: any[] = [];
 	public arrMasses: any[] = [];
 	public churchsList: any[] = [];
+	public statusClergies: any[] = CLERGY_STATUS;
 
 	constructor(
 		private service: SharedService,

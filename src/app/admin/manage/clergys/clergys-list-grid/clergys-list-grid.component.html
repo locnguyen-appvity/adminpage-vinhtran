@@ -79,8 +79,15 @@
                 <mat-sidenav-container class="grid-container">
                     <mat-sidenav #filter mode="side" position="end" class="sidenav right">
                         <div class="filter-container">
-                            <h4 class="filter-subheadings mrb-24"> Lọc Bổ Nhiệm Theo </h4>
+                            <h4 class="filter-subheadings mrb-24"> Lọc Danh Sách </h4>
                             <div fxLayout="column">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>Trạng Thái</mat-label>
+                                    <mat-select [formControl]="statusClergy">
+                                        <mat-option value="all">Tất Cả Trạng Thái</mat-option>
+                                        <mat-option *ngFor="let status of statusClergies" [value]="status.code">{{status.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
                                 <!-- <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>Chọn Linh Mục</mat-label>
                                     <se-autocomplete-simple [required]="false" [optgroup]="false"

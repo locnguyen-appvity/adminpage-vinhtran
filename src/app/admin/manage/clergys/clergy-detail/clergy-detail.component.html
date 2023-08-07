@@ -177,9 +177,9 @@
                         <mat-form-field appearance="outline" class="full-width">
                             <mat-label>Tình trạng</mat-label>
                             <mat-select formControlName="status">
-                                <mat-option value="dang_phuc_vu">Dang Phục Vụ</mat-option>
-                                <mat-option value="huu">Hưu Dưỡng</mat-option>
-                                <mat-option value="rip">Đã Mất</mat-option>
+                                <mat-option *ngFor="let status of statusClergies" [value]="status.code">{{status.name}}</mat-option>
+                                <!-- <mat-option value="huu">Hưu Dưỡng</mat-option>
+                                <mat-option value="rip">Đã Mất</mat-option> -->
                             </mat-select>
                         </mat-form-field>
                         <mat-form-field appearance="outline" class="full-width">

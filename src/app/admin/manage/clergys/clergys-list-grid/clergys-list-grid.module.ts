@@ -15,6 +15,7 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ClergyInfoModule } from '../clergy-info/clergy-info.module';
 import { ClergiesRoutingModule } from './clergys-list-grid-routing.module';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { ClergiesRoutingModule } from './clergys-list-grid-routing.module';
     MatTooltipModule,
     MatFormFieldModule,
     AutocompleteSimpleModule,
-    ClergyInfoModule
+    ClergyInfoModule,
+    MatSelectModule
   ],
   exports: [ClergiesListComponent]
 })
