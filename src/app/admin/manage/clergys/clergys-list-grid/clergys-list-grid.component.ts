@@ -35,6 +35,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 	public positionList: any[] = [];
 	public statusClergies: any[] = CLERGY_STATUS;
 	public statusClergy: FormControl;
+	public target: string = "";
 
 	constructor(
 		public sharedService: SharedPropertyService,
@@ -47,6 +48,15 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		public store: Store<IAppState>
 	) {
 		super(sharedService, linq, store, service, snackbar);
+		if (this.router.url.includes("tu_trieu")) {
+			this.target = "tu_trieu";
+		}
+		else if (this.router.url.includes("tu_dong")) {
+			this.target = "tu_dong";
+		}
+		else if (this.router.url.includes("giam_muc")) {
+			this.target = "giam_muc";
+		}
 		this.statusClergy = new FormControl('all');
 		this.statusClergy.valueChanges.pipe(debounceTime(GlobalSettings.Settings.delayTimer.valueChanges), distinctUntilChanged(), takeUntil(this.unsubscribe)).subscribe(() => {
 			this.getDataGridAndCounterApplications();
@@ -201,6 +211,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 				}
 				this.gridDataChanges.data = items;
 				this.gridDataChanges.total = total;
+				this.gridMessages = this.displayGridMessage(total);
 			}
 
 		})
@@ -208,6 +219,21 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 
 	getFilter(groupID: string = "") {
 		let filter = '';
+		if (!this.isNullOrEmpty(this.target)) {
+			let filterTarget = "";
+			if (this.target == 'giam_muc') {
+				filterTarget = "level eq 'giam_muc'";
+			}
+			else {
+				filterTarget = `type eq '${this.target}'`;
+			}
+			if (this.isNullOrEmpty(filter)) {
+				filter = filterTarget;
+			}
+			else {
+				filter = `(${filter}) and (${filterTarget})`;
+			}
+		}
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -298,20 +324,21 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 	addItem() {
 		let config: any = {};
 		config.data = {
-			target: 'add'
+			type: 'add',
+			target: this.target
 		};
 		this.openFormDialog(config, 'add');
 	}
 
 	onChangeData(item: any) {
-		this.router.navigate([`/admin/manage/clergys/clergy/${item.id}`]);
+		this.router.navigate([`/admin/manage/${this.target}/detail/${item.id}`]);
 	}
 
 	onViewDetail(item: any) {
 		this.router.navigate([`/admin/clergy-view/${item.id}`]);
 	}
 
-	openFormDialog(config: any, target: string) {
+	openFormDialog(config: any, type: string) {
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-m';
 		config.maxWidth = '80vw';
@@ -324,14 +351,14 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 					key: ''
 				};
 				if (res && res.action == 'save') {
-					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
+					snackbarData.key = type === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = type === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
 					this.getDataGridAndCounterApplications();
 				}
 				else if (res && res.action == 'save-open-detail') {
-					snackbarData.key = target === 'edit' ? 'saved-item' : 'new-item';
-					snackbarData.message = target === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
+					snackbarData.key = type === 'edit' ? 'saved-item' : 'new-item';
+					snackbarData.message = type === 'edit' ? 'Sửa Linh Mục Thành Công' : 'Thêm Linh Mục Thành Công';
 					this.showInfoSnackbar(snackbarData);
 					if (res.data && res.data.id) {
 						this.onChangeData(res.data);

@@ -73,14 +73,6 @@ export class SharedPropertyService {
         return typeof value === 'string' || value instanceof String;
     };
 
-    public displayGridMessage(totalItems: number) {
-        let message = "";
-        if (totalItems === 0) {
-            message = "Không có dữ liệu.";
-        }
-        return message;
-    }
-
     public isNullOrEmpty(data: any) {
         if (data === null || data === "" || data === undefined) {
             return true;

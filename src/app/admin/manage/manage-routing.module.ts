@@ -79,6 +79,18 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
 			},
 			{
+				path: 'tu_trieu',
+				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
+			},
+			{
+				path: 'tu_dong',
+				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
+			},
+			{
+				path: 'giam_muc',
+				loadChildren: () => import('./clergys/clergys.module').then(m => m.ClergysModule)
+			},
+			{
 				path: 'positions',
 				loadChildren: () => import('./positions/positions.module').then(m => m.PositionsModule)
 			},

@@ -30,7 +30,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public textSave: string = 'Thêm';
 	public dataItemGroup: FormGroup;
 	public hasChangedGroup: boolean = false;
-	public target: string = "";
+	public type: string = "";
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	// public organizationList: any[] = [];
@@ -44,6 +44,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 	public groupsList: any[] = [];
 	public giaoHatGroupsList: any[] = [];
 	public beLongGroupsList: any[] = [];
+	public target: string = "tu_trieu";
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -51,8 +52,11 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		public dialogRef: MatDialogRef<ClergyInfoComponent>,
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
-		this.target = this.dialogData.target;
-		if (this.target === 'edit') {
+		this.type = this.dialogData.type;
+		if(this.dialogData.target){
+			this.target = this.dialogData.target;
+		}
+		if (this.type === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
 			this.canDelete = false;
@@ -82,13 +86,23 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		// let dateOfBirth = (this.localItem && this.localItem.dateOfBirth) ? this.sharedService.convertDateStringToMomentUTC_0(this.localItem.dateOfBirth) : "";
 		// let anniversary = (this.localItem && this.localItem.anniversary) ? this.sharedService.convertDateStringToMomentUTC_0(this.localItem.anniversary) : "";
 		let status = (this.localItem && this.localItem.status == 'inactive') ? false : true;
+		let type = this.localItem ? this.localItem.type : 'tu_trieu';
+		let level = this.localItem ? this.localItem.type : 'linh_muc';
+		if(this.type != 'edit'){
+			if(this.target == 'giam_muc'){
+				level = 'giam_muc';
+			}
+			else {
+				type = this.target;
+			}
+		}
 		this.dataItemGroup = this.fb.group({
 			// items: this.fb.array([]),
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
 			stName: [this.localItem ? this.localItem.stName : '', [Validators.required]],
 			belongOrgId: (this.localItem && this.localItem.belongOrgId) ? this.localItem.belongOrgId : '-1',
-			type: [this.localItem ? this.localItem.type : 'tu_trieu', [Validators.required]],
-			level: [this.localItem ? this.localItem.type : 'linh_muc', [Validators.required]],
+			type: [type, [Validators.required]],
+			level: [level, [Validators.required]],
 			phoneNumber: this.localItem ? this.localItem.phoneNumber : '',
 			email: this.localItem ? this.localItem.email : '',
 			groupID: this.localItem ? this.localItem.groupID : '',
@@ -202,7 +216,7 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 			level: valueForm.level
 		}
 		this.saveAction = saveAction;
-		if (this.target == 'edit') {
+		if (this.type == 'edit') {
 			this.dataProcessing = true;
 			this.service.updateClergy(this.ID, dataJSON).pipe(take(1)).subscribe(() => {
 				this.saveAction = ''

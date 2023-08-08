@@ -117,7 +117,7 @@ export class MigrationsListComponent extends TemplateGridApplicationComponent im
 			}
 			this.gridDataChanges.data = dataItems;
 			this.gridDataChanges.total = total;
-			this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
+			this.gridMessages = this.displayGridMessage(total);
 			this.dataProcessing = false;
 			if (this.subscription['getMigrations']) {
 				this.subscription['getMigrations'].unsubscribe();

@@ -182,7 +182,7 @@ export class TracksFilesListComponent extends TemplateGridApplicationComponent i
 		this.dataItems = dataItems;
 		this.gridDataChanges.data = this.dataItems;
 		this.gridDataChanges.total = total;
-		this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
+		this.gridMessages = this.displayGridMessage(total);
 	}
 
 	convertDateNumberToMoment(data: number) {

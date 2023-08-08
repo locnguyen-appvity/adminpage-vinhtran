@@ -176,7 +176,7 @@ export class AppointmentsListComponent extends ListItemBaseComponent implements 
 	openNewTab(element: any, target: string) {
 		let link = '';
 		if (target == 'clergy') {
-			link = `./#/admin/manage/clergys/clergy/${element.clergyID}`;
+			link = `./#/admin/manage/clergys/detail/${element.clergyID}`;
 		}
 		else {
 			link = `./#/admin/manage/${element.entityType}/detail/${element.entityID}`;

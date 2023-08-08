@@ -195,8 +195,4 @@ export class OrganizationViewComponent extends SimpleBaseComponent implements On
 		}
 	}
 
-	onCancel() {
-		this.router.navigate(['/admin/manage/clergys/clergys-list']);
-	}
-
 }

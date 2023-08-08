@@ -144,7 +144,7 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 				}
 				this.gridDataChanges.data = this.dataItems;
 				this.gridDataChanges.total = total;
-				this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
+				this.gridMessages = this.displayGridMessage(total);
 				this.dataProcessing = false;
 			}
 		})

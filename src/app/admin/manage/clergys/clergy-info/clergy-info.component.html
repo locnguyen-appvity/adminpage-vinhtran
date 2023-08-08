@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<div fxLayout="row wrap">
-				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+				<div fxFlex.gt-xs="33.33" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Cấp Bậc</mat-label>
 						<se-autocomplete-simple [required]="false" [formControlName]="'level'" [optgroup]="false"
@@ -31,16 +31,16 @@
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
-				<div fxFlex.gt-xs="50" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
+				<div fxFlex.gt-xs="33.33" fxFlex="100" [ngStyle.gt-xs]="{'padding-right': '24px'}">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Giáo Hạt</mat-label>
 						<se-autocomplete-simple [required]="false" [formControlName]="'groupID'" [optgroup]="false"
-							[placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'"
+							[placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'"
 							[keyValueEmit]="'id'" [autocomplete]="false" [items]="giaoHatGroupsList">
 						</se-autocomplete-simple>
 					</mat-form-field>
 				</div>
-				<div fxFlex.gt-xs="50" fxFlex="100">
+				<div fxFlex.gt-xs="33.33" fxFlex="100">
 					<mat-form-field appearance="outline" class="full-width">
 						<mat-label>Phân Loại</mat-label>
 						<mat-select formControlName="type" required>
@@ -50,10 +50,10 @@
 					</mat-form-field>
 				</div>
 			</div>
-			<mat-form-field *ngIf="dataItemGroup?.value == 'tu_dong'" appearance="outline" class="full-width">
+			<mat-form-field *ngIf="dataItemGroup?.value?.type == 'tu_dong'" appearance="outline" class="full-width">
 				<mat-label>Thuộc</mat-label>
 				<se-autocomplete-simple [required]="false" [formControlName]="'belongOrgId'" [optgroup]="false"
-					[placeHolder]="'Nhập Chức Vụ...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
+					[placeHolder]="'Nhập tên...'" [keyTitle]="'name'" [keyValue]="'id'" [keyValueEmit]="'id'"
 					[autocomplete]="false" [items]="groupsList">
 				</se-autocomplete-simple>
 			</mat-form-field>
@@ -76,7 +76,7 @@
 		<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
 			<span fxFlex></span>
 			<a mat-button (click)="closeDialog()" color="default">Hủy</a>
-			<div *ngIf="target == 'edit'" class="btn-save-process">
+			<div *ngIf="type == 'edit'" class="btn-save-process">
 				<button mat-flat-button [disabled]="dataProcessing || saveAction === 'delete'"
 					aria-label="Delete" (click)="deleteItem()" color="warn">Xóa</button>
 				<mat-spinner [diameter]="24" *ngIf="saveAction === 'delete'"></mat-spinner>

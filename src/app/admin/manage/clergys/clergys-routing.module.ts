@@ -11,11 +11,15 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./clergys-list-grid/clergys-list-grid.module').then(m => m.ClergiesListModule)
 			},
 			{
-				path: 'clergy',
+				path: 'list',
+				loadChildren: () => import('./clergys-list-grid/clergys-list-grid.module').then(m => m.ClergiesListModule)
+			},
+			{
+				path: 'detail',
 				loadChildren: () => import('./clergy-detail/clergy-detail.module').then(m => m.ClergyDetailModule)
 			},
 			{
-				path: 'clergy/:id',
+				path: 'detail/:id',
 				loadChildren: () => import('./clergy-detail/clergy-detail.module').then(m => m.ClergyDetailModule)
 			},
 			{ path: '', redirectTo: 'clergys-list', pathMatch: 'full' },

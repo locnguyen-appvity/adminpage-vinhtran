@@ -319,7 +319,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			}
 			this.gridDataChanges.data = dataItems;
 			this.gridDataChanges.total = total;
-			this.gridMessages = this.sharedService.displayGridMessage(this.gridDataChanges.total);
+			this.gridMessages = this.displayGridMessage(total);
 			this.dataProcessing = false;
 			if (this.subscription['getAppointments']) {
 				this.subscription['getAppointments'].unsubscribe();

@@ -46,6 +46,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	public arrMasses: any[] = [];
 	public churchsList: any[] = [];
 	public statusClergies: any[] = CLERGY_STATUS;
+	public target: string = "tu_trieu";
 
 	constructor(
 		private service: SharedService,
@@ -57,6 +58,15 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 		public dialog: MatDialog
 	) {
 		super(sharedService);
+		if (this.router.url.includes("tu_trieu")) {
+			this.target = "tu_trieu";
+		}
+		else if (this.router.url.includes("tu_dong")) {
+			this.target = "tu_dong";
+		}
+		else if (this.router.url.includes("giam_muc")) {
+			this.target = "giam_muc";
+		}
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getClergy();
@@ -229,7 +239,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	}
 
 	routeToBack() {
-		this.router.navigate(['/admin/manage/clergys/clergys-list']);
+		this.router.navigate([`/admin/manage/${this.target}/list`]);
 	}
 
 	getAllData() {
@@ -346,7 +356,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 	}
 
 	onCancel() {
-		this.router.navigate(['/admin/manage/clergys/clergys-list']);
+		this.routeToBack();
 	}
 
 	onSave() {
@@ -414,7 +424,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 												message: 'Lưu Thành Công'
 											};
 											this.showInfoSnackbar(snackbarData);
-											this.router.navigate(['/admin/manage/clergys/clergys-list']);
+											this.routeToBack();
 										}
 									})
 								}
@@ -424,7 +434,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 										message: 'Lưu Thành Công'
 									};
 									this.showInfoSnackbar(snackbarData);
-									this.router.navigate(['/admin/manage/clergys/clergys-list']);
+									this.routeToBack();
 								}
 							}
 						})
@@ -435,7 +445,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 							message: 'Lưu Thành Công'
 						};
 						this.showInfoSnackbar(snackbarData);
-						this.router.navigate(['/admin/manage/clergys/clergys-list']);
+						this.routeToBack();
 					}
 				}
 				else {
@@ -444,7 +454,7 @@ export class ClergyDetailComponent extends SimpleBaseComponent implements OnInit
 						message: 'Lưu Thành Công'
 					};
 					this.showInfoSnackbar(snackbarData);
-					this.router.navigate(['/admin/manage/clergys/clergys-list']);
+					this.routeToBack();
 				}
 			}
 		})

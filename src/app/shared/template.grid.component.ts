@@ -100,6 +100,14 @@ export class TemplateGridApplicationComponent extends SimpleBaseComponent implem
 		this.widgetScroll.nativeElement.scrollLeft += 400;
 	}
 
+	public displayGridMessage(totalItems: number) {
+        let message = "";
+        if (totalItems === 0) {
+            message = "Không có dữ liệu.";
+        }
+        return message;
+    }
+
 	public getUserPermissions() {
 		if (this.basePermissions.ready && !this.ready) {
 			this.ready = true;
