@@ -117,7 +117,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			count: 0,
 			key: 'cho_xac_nhan',
 			icon: '',
-			cssClass: 'approved-widget',
+			cssClass: 'draft-widget',
 			checked: false
 		});
 		items.push({
