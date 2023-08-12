@@ -26,7 +26,7 @@ export class GroupViewComponent extends SimpleBaseComponent {
 	public arrAnniversaries: any[] = [];
 	public positionList: any[] = [];
 	public anniversaries: any = {};
-	public entityType: string = 'giao_xu';
+	// public entityType: string = 'giao_xu';
 	public configEditor:any = {
 		"useSearch": false,
 		"toolbar": false,
@@ -48,7 +48,7 @@ export class GroupViewComponent extends SimpleBaseComponent {
 		super(sharedService);
 		this.editorFormCtrl = new FormControl("");
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
-		this.entityType = this.activeRoute.parent.snapshot.paramMap.get("type");
+		// this.entityType = this.activeRoute.parent.snapshot.paramMap.get("type");
 		if (!this.isNullOrEmpty(this.ID)) {
 			this.getAnniversaries(this.ID, 'group');
 			this.getAppointments(this.ID, 'group');

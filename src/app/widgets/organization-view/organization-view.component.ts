@@ -7,6 +7,7 @@ import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-organization-view',
@@ -23,9 +24,10 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 	public arrAnniversaries: any[] = [];
 	public positionList: any[] = [];
 	public anniversaries: any = {};
-	public entityType: string = 'giao_xu';
+	// public entityType: string = 'giao_xu';
 	public filterAppointments: string = "status ne 'duong_nhiem'"
-
+	public editorFormCtrl: FormControl;
+	
 	constructor(
 		private service: SharedService,
 		public sharedService: SharedPropertyService,
@@ -35,20 +37,22 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 		public activeRoute: ActivatedRoute
 	) {
 		super(sharedService);
+		this.editorFormCtrl = new FormControl("");
 		this.ID = this.activeRoute.parent.snapshot.paramMap.get("id");
-		if (this.router.url.includes("giao_xu")) {
-			this.entityType = 'giao_xu';
-		}
-		else if (this.router.url.includes("giao_diem")) {
-			this.entityType = 'giao_diem';
-		}
-		else if (this.router.url.includes("giao_ho")) {
-			this.entityType = 'giao_ho';
-		}
+		// if (this.router.url.includes("giao_xu")) {
+		// 	this.entityType = 'giao_xu';
+		// }
+		// else if (this.router.url.includes("giao_diem")) {
+		// 	this.entityType = 'giao_diem';
+		// }
+		// else if (this.router.url.includes("giao_ho")) {
+		// 	this.entityType = 'giao_ho';
+		// }
 		if (!this.isNullOrEmpty(this.ID)) {
 			// if(this.entityType == 'organization'){
 			this.getOrganization();
 			this.getAnniversaries(this.ID, 'organization');
+			this.getAppointments(this.ID, 'organization');
 			// }
 			// else {
 			// 	this.getGroup();
@@ -56,11 +60,27 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 		}
 	}
 
+	getAppointments(entityID: string, entityType: string) {
+		let options = {
+			sort: 'effectiveDate asc',
+			filter: `entityID eq ${entityID} and entityType eq '${entityType}' and status eq 'duong_nhiem'`
+		}
+		this.arrAppointments = [];
+		this.dataProcessing = true;
+		this.service.getAppointments(options).pipe(take(1)).subscribe((res: any) => {
+			this.dataProcessing = false;
+			if (res && res.value && res.value.length > 0) {
+				this.arrAppointments = res.value;
+			}
+		})
+	}
+
 	getOrganization() {
 		this.service.getOrganization(this.ID).pipe(take(1)).subscribe({
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
+					this.editorFormCtrl.setValue(this.localItem.content)
 					this.updateMassesesToOrg(this.localItem);
 					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
 					if (this.localItem.photo) {

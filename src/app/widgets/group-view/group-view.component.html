@@ -9,11 +9,11 @@
             <div class="content mrt-24" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="6">
                 <!-- <span class="name">{{localItem?.name}}</span> -->
                 <div class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
-                    <span *ngIf="entityType == 'giao_hat'">Khu vực: <strong>{{localItem?.area}}</strong></span>
+                    <span *ngIf="localItem?.type == 'giao_hat'">Khu vực: <strong>{{localItem?.area}}</strong></span>
                     <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
-                    <span *ngIf="entityType != 'giao_hat'">Thuộc: <strong>{{localItem?.entityName}}</strong></span>
+                    <span *ngIf="localItem?.type != 'giao_hat'">Thuộc: <strong>{{localItem?.entityName}}</strong></span>
                     <span>Email: <strong>{{localItem?.email}}</strong></span>
-                    <ng-template [ngIf]="entityType == 'giao_hat'">
+                    <ng-template [ngIf]="localItem?.type == 'giao_hat'">
                         <span>Linh mục quản hạt: <strong>{{localItem?.email}}</strong></span>
                         <span>Tổng số linh mục: <strong>{{localItem?.totalClergy}}</strong></span>
                         <ng-template ngFor let-org let-last="last" [ngForOf]="localItem?.organizationAnalytics">
@@ -44,7 +44,7 @@
                         <span class="mrb-24">Chưa cập nhật</span>
                     </ng-container>
                 </div>
-                <div *ngIf="entityType == 'giao_hat'" class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
+                <div *ngIf="localItem?.type == 'giao_hat'" class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
                     <span class="title">DANH SÁCH LINH MỤC PHỤC VỤ ĐÃ PHỤC VỤ</span>
                     <se-list-appointments-organization [entityType]="'group'"
                         [entityID]="ID" [filter]="filterAppointments"></se-list-appointments-organization>
@@ -58,6 +58,7 @@
             </div>
         </div>
         <div class="organization-view-container-r" fxFlex.gt-xs="75" fxFlex="100">
+            <se-clergies-appointment [entityID]="ID" [entityType]="'group'"></se-clergies-appointment>
             <se-editor-control [formControl]="editorFormCtrl"
                 [config]="{readonly: true,toolbar: false}"></se-editor-control>
             <!-- <jodit-editor [config]="configEditor" [formControl]="editorFormCtrl"></jodit-editor> -->

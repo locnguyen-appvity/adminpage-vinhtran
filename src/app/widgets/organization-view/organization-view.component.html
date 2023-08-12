@@ -66,8 +66,9 @@
         </div>
         <div class="organization-view-container-r" fxFlex.gt-xs="75" fxFlex="100">
             <div class="content">
-                <div [innerHTML]="localItem?.content">
-                </div>
+                <se-clergies-appointment [entityID]="ID" [entityType]="'organization'"></se-clergies-appointment>
+                <se-editor-control [formControl]="editorFormCtrl"
+                [config]="{readonly: true,toolbar: false}"></se-editor-control>
             </div>
         </div>
     </div>

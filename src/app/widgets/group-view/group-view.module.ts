@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ListAppointmentsOrganizationModule } from '../list-appointments-organization/list-appointments-organization.module';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ClergiesAppointmentModule } from '../clergies-appointment/clergies-appointment.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatDividerModule,
     MatButtonModule,
     EditorControlModule,
-    ListAppointmentsOrganizationModule
+    ListAppointmentsOrganizationModule,
+    ClergiesAppointmentModule
   ]
 })
 export class GroupViewModule {

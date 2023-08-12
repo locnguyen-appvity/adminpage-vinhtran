@@ -23,6 +23,10 @@ const routes: Routes = [
 				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
 			},
 			{
+				path: 'organization/:id',
+				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
+			},
+			{
 				path: 'giao_ho/:id',
 				loadChildren: () => import('../widgets/organization-view/organization-view.module').then(m => m.OrganizationViewModule)
 			},
@@ -32,6 +36,10 @@ const routes: Routes = [
 			},
 			{
 				path: 'group/:type/:id',
+				loadChildren: () => import('../widgets/group-view/group-view.module').then(m => m.GroupViewModule)
+			},
+			{
+				path: 'group/:id',
 				loadChildren: () => import('../widgets/group-view/group-view.module').then(m => m.GroupViewModule)
 			},
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
