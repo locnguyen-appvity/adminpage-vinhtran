@@ -39,7 +39,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	public filterClergyID: FormControl;
 	public filterEntityID: FormControl;
 	public filterTypeEntityID: FormControl;
-	public filterStatus: FormControl;
+	public statusFilterControl: FormControl;
 	public filterEntity: string = '';
 
 	constructor(
@@ -59,7 +59,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		});
 		this.entityTypeList.push(...LTYPE_ORG);
 		this.statusClergy.unshift({
-			code: 'all',
+			code: 'total',
 			name: 'Tất Cả Trạng Thái'
 		})
 		this.statusClergy.push(...STATUS_CLERGY);
@@ -89,15 +89,65 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		this.filterEntityID.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
 			this.getDataGridAndCounterApplications();
 		})
-		this.filterStatus = new FormControl('all');
-		this.filterStatus.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
-			this.getDataGridAndCounterApplications();
-		})
+		// this.filterStatus = new FormControl('all');
+		// this.filterStatus.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+		// 	this.getDataGridAndCounterApplications();
+		// })
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
 		this.getPositions();
 		this.getClergies();
 		this.getEntityList();
+	}
+
+	getStatusDefault() {
+		let items = [];
+		items.push({
+			text: 'Tất cả',
+			name: 'Tất cả',
+			count: 0,
+			key: 'total',
+			icon: '',
+			cssClass: 'all-widget',
+			checked: true
+		});
+		items.push({
+			text: 'Chờ Xác Nhận',
+			name: 'Chờ Xác Nhận',
+			count: 0,
+			key: 'cho_xac_nhan',
+			icon: '',
+			cssClass: 'approved-widget',
+			checked: false
+		});
+		items.push({
+			text: 'Chờ Thuyên Chuyển',
+			name: 'Chờ Thuyên Chuyển',
+			count: 0,
+			key: 'cho_thuyen_chuyen',
+			icon: '',
+			cssClass: 'pending-widget',
+			checked: false
+		});
+		items.push({
+			text: 'Đương Nhiệm',
+			name: 'Đương Nhiệm',
+			count: 0,
+			key: 'duong_nhiem',
+			icon: '',
+			cssClass: 'approved-widget',
+			checked: false
+		});
+		items.push({
+			text: 'Mãn Nhiệm',
+			name: 'Mãn Nhiệm',
+			count: 0,
+			key: 'man_nhiem',
+			icon: '',
+			cssClass: 'end-widget',
+			checked: false
+		});
+		return items;
 	}
 
 	onSelectItem(event: any, target: string) {
@@ -138,7 +188,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		return new Observable(obs => {
 			let options = {
 				select: 'id,name,type',
-				filter: this.getFilter(),
+				// filter: this.getFilter(),
 				// skip: 0,
 				// top: 5
 			}
@@ -166,7 +216,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		return new Observable(obs => {
 			let options = {
 				select: 'id,name,type',
-				filter: this.getFilter(),
+				// filter: this.getFilter(),
 				// skip: 0,
 				// top: 5
 			}
@@ -233,7 +283,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		}
 	}
 
-	getFilter() {
+	getFilter(status: string) {
 		let filter = '';
 		if (!this.isNullOrEmpty(this.entityID)) {
 			if (this.isNullOrEmpty(filter)) {
@@ -251,12 +301,24 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				filter = `(${filter}) and (entityID eq ${this.filterEntity})`;
 			}
 		}
-		if (!this.isNullOrEmpty(this.filterStatus.value) && this.filterStatus.value != 'all') {
-			if (this.isNullOrEmpty(filter)) {
-				filter = `status eq '${this.filterStatus.value}'`;
+		if (!this.isNullOrEmpty(status)) {
+			if (status != 'total') {
+				if (this.isNullOrEmpty(filter)) {
+					filter = `status eq '${status}'`;
+				}
+				else {
+					filter = `(${filter}) and (status eq '${status}')`;
+				}
 			}
-			else {
-				filter = `(${filter}) and (status eq '${this.filterClergyID.value}')`;
+		}
+		else {
+			if (!this.isNullOrEmpty(this.statusFilterControl.value) && this.statusFilterControl.value != 'total') {
+				if (this.isNullOrEmpty(filter)) {
+					filter = `status eq '${this.statusFilterControl.value}'`;
+				}
+				else {
+					filter = `(${filter}) and (status eq '${this.filterClergyID.value}')`;
+				}
 			}
 		}
 		if (!this.isNullOrEmpty(this.filterClergyID.value) && this.filterClergyID.value != 'all') {
@@ -292,6 +354,38 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 
 	getDataGridAndCounterApplications() {
 		this.getDataGridApplications();
+		this.getCounterApplications();
+	}
+
+	getCounterApplications() {
+		let keys = ["total", "cho_xac_nhan", "cho_thuyen_chuyen", "duong_nhiem", "man_nhiem"];
+		let requests = {};
+		for (let key of keys) {
+			let options = {
+				top: 1,
+				filter: this.getFilter(key),
+				select: 'id'
+			}
+			requests[key] = this.service.getAppointments(options)
+		}
+		forkJoin(requests).pipe(take(1)).subscribe({
+			next: (res: any) => {
+				if (res) {
+					for (let it in res) {
+						this.updateItemCount(it, res[it].total || 0);
+					}
+				}
+			}
+		})
+	}
+
+	updateItemCount(key: string, value: number) {
+		for (let item of this.quickFilterStatus) {
+			if (item.key == key) {
+				item.count = value;
+				return;
+			}
+		}
 	}
 
 	getDataGridApplications() {
@@ -299,8 +393,8 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
-			filter: this.getFilter(),
-			sort: 'effectiveDate desc'
+			filter: this.getFilter(""),
+			sort: 'status asc, effectiveDate desc'
 		}
 		if (this.subscription['getAppointments']) {
 			this.subscription['getAppointments'].unsubscribe();

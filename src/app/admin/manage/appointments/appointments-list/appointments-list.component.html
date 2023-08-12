@@ -1,5 +1,22 @@
-<div class="se-apps-users">
+<div class="se-grid-list-custom">
     <div class="wrapper">
+        <div class="quick-filter-widgets-wrapper">
+            <div appCustomScroll #appScrollElement="appCustomScroll" fxLayout="row wrap" #widgetScroll
+                class="quick-filter-widgets-container">
+                <ng-template ngFor let-user [ngForOf]="quickFilterStatus" let-first="first" let-last="last">
+                    <div fxFlex.gt-sm="25" (click)="toggleQuickFilterStatus(user)"
+                        [ngClass]="{'widget-first': first, 'widget-last': last}">
+                        <mat-card class="quick-filter-widget" matRipple
+                            [ngClass]="user.checked?'active-status-filter':''">
+                            <div class="widget-count">{{user.count}}</div>
+                            <div [ngClass]="user.cssClass">{{user.text}}</div>
+                        </mat-card>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+
         <!-- Table Container -->
         <div class="se-grid-tables">
             <mat-card class="table-card">
@@ -82,7 +99,7 @@
                                 <mat-form-field appearance="outline" class="full-width">
                                     <mat-label>Trạng Thái</mat-label>
                                     <se-autocomplete-simple [required]="false" [optgroup]="false"
-                                        [formControl]="filterStatus" [placeHolder]="'Chọn nơi bổ nhiệm...'"
+                                        [formControl]="statusFilterControl" [placeHolder]="'Chọn nơi bổ nhiệm...'"
                                         [keyTitle]="'name'" [keyValueEmit]="'code'" [keyValue]="'code'"
                                         [autocomplete]="false" [items]="statusClergy">
                                     </se-autocomplete-simple>
@@ -91,7 +108,7 @@
                             </div>
                         </div>
                     </mat-sidenav>
-                    <div class="table-container" [ngClass]=" entityID ? '':'table-container--mediafiles'">
+                    <div class="table-container" [ngClass]=" entityID ? '':'table-container--haswidgets'">
                         <table class="full-width" mat-table [dataSource]="dataSources" matSort multiTemplateDataRows
                             (matSortChange)="onSortChange($event)">
 

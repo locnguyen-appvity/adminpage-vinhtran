@@ -225,7 +225,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 				filterTarget = "level eq 'giam_muc'";
 			}
 			else {
-				filterTarget = `type eq '${this.target}'`;
+				filterTarget = `type eq '${this.target}' and level ne 'giam_muc'`;
 			}
 			if (this.isNullOrEmpty(filter)) {
 				filter = filterTarget;

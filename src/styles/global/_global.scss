@@ -659,6 +659,102 @@ mat-dialog-container.mat-dialog-container {
 	background-color: #ff5252;
 }
 
+
+// Status widget
+.rip-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #520156;
+}
+
+.draft-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #448aff;
+}
+
+.pending-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #000000;
+	background-color: #ffc107;
+	&--appointment {
+		width: 190px !important;
+	}
+}
+
+.approved-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #4cd964;
+}
+
+.recalled-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #ffc107;
+}
+
+.rejected-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #ff5252;
+}
+
+.end-widget {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	height: 27px;
+	padding: 4px 18px 3px;
+	border-radius: 50px;
+	color: #fff;
+	background-color: #868686;
+}
+
 //Table
 table {
 	tr {
