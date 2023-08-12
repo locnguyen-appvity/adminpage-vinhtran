@@ -44,13 +44,16 @@ export class PostListComponent extends TemplateGridApplicationComponent {
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'post-list';
-		let dateFilter = CommonUtility.getFilterDate({
-			fromDate: this.sharedService.moment(),
-			toDate: "",
-			key: 'week'
-		})
-		this.dateFilter.fromDate = dateFilter.fromDate;
-		this.dateFilter.toDate = dateFilter.toDate;
+		let dateFilter = CommonUtility.getFilterDate(
+			{
+				key: 'week',
+				date: {
+					fromDate: this.sharedService.moment(),
+					toDate: "",
+				}
+			})
+		this.dateFilter.fromDate = CommonUtility.getDateFormatString(dateFilter.fromDate, "YYYY-MM-DD")
+		this.dateFilter.toDate = CommonUtility.getDateFormatString(dateFilter.toDate, "YYYY-MM-DD")
 		this.getDataGridAndCounterApplications();
 	}
 

@@ -11,6 +11,7 @@ import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
 import { NotificationPostInfoComponent } from '../notification-post-info/notification-post-info.component';
+import { CommonUtility } from 'src/app/shared/common.utility';
 
 @Component({
 	selector: 'app-notification-post-list',
@@ -20,6 +21,11 @@ import { NotificationPostInfoComponent } from '../notification-post-info/notific
 export class NotificationPostsListComponent extends TemplateGridApplicationComponent {
 
 	public dataItems: any[] = [];
+	public dateFilter = {
+		fromDate: '',
+		toDate: ''
+	}
+
 	constructor(
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
@@ -32,6 +38,17 @@ export class NotificationPostsListComponent extends TemplateGridApplicationCompo
 		super(sharedService, linq, store, service, snackbar);
 		this.defaultSort = 'created desc';
 		this.dataSettingsKey = 'user-list';
+		let dateFilter = CommonUtility.getFilterDate(
+			{
+				key: 'month',
+				date: {
+					fromDate: this.sharedService.moment(),
+					toDate: "",
+				}
+			})
+		this.dateFilter.fromDate = CommonUtility.getDateFormatString(dateFilter.fromDate, "YYYY-MM-DD")
+		this.dateFilter.toDate = CommonUtility.getDateFormatString(dateFilter.toDate, "YYYY-MM-DD")
+
 		this.getDataGridAndCounterApplications();
 	}
 
@@ -48,7 +65,35 @@ export class NotificationPostsListComponent extends TemplateGridApplicationCompo
 				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
 			}
 		}
+		let filterDate = "";
+		if (!this.isNullOrEmpty(this.dateFilter.fromDate)) {
+			filterDate = `startDate eq ${this.dateFilter.fromDate}`;
+			if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+				filterDate = `startDate ge ${this.dateFilter.fromDate} and startDate le ${this.dateFilter.toDate}`;
+			}
+		}
+		else if (!this.isNullOrEmpty(this.dateFilter.toDate)) {
+			filterDate = `startDate eq ${this.dateFilter.toDate}`;
+		}
+		if (!this.isNullOrEmpty(filterDate)) {
+			if (this.isNullOrEmpty(filter)) {
+				filter = filterDate;
+			}
+			else {
+				filter = `(${filter}) and (${filterDate})`;
+			}
+		}
+
 		return filter;
+	}
+
+	onChangeDate(event: any) {
+		if (event && event.action == "date-change") {
+			let data = event.data;
+			this.dateFilter.fromDate = (data && data.date) ? data.date.fromDate : "";
+			this.dateFilter.toDate = (data && data.date) ? data.date.toDate : "";
+			this.getDataGridAndCounterApplications();
+		}
 	}
 
 	getDataGridAndCounterApplications() {
@@ -57,14 +102,13 @@ export class NotificationPostsListComponent extends TemplateGridApplicationCompo
 
 	getDataGridApplications() {
 		this.skip = this.currentPageIndex * this.pageSize;
-		let filter = this.getFilter();
 		let options = {
 			skip: this.skip,
 			top: this.pageSize,
 			// sort: 'date desc',
 			// page: this.currentPageIndex + 1,
 			// pageSize: this.pageSize,
-			filter: filter
+			filter: this.getFilter()
 		};
 		this.dataItems = [];
 		this.dataProcessing = true;

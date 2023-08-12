@@ -15,6 +15,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { NotificationPostsListRoutingModule } from './notification-post-list-routing.module';
 import { NotificationPostsListComponent } from './notification-post-list.component';
 import { NotificationPostInfoModule } from '../notification-post-info/notification-post-info.module';
+import { DateRangeFilterModule } from 'src/app/controls/date-range-filter';
 
 
 
@@ -36,7 +37,8 @@ import { NotificationPostInfoModule } from '../notification-post-info/notificati
     ReactiveFormsModule,
     MatCardModule,
     MatTooltipModule,
-    NotificationPostInfoModule
+    NotificationPostInfoModule,
+    DateRangeFilterModule
   ],
   exports: [NotificationPostsListComponent]
 })

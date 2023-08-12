@@ -257,8 +257,8 @@ export class DateRangeFilterComponent extends SimpleBaseComponent implements OnC
         if (dateValueMoment.fromDate) {
             switch (this.dateOptions) {
                 case 'week':
-                    this.dateTitle = `${CommonUtility.convertMonthEngToVi(CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM'))} ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
-                    this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate, 'MMMM')} ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD')}`;
+                    this.dateTitle = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD//MM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD/MM')}`;
+                    this.dateTitleMobile = `${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().startOf('week'), 'DD/MM')} - ${CommonUtility.getDateFormatString(dateValueMoment.fromDate.clone().endOf('week'), 'DD/MM')}`;
                     this.yearTitle = ` ${dateValueMoment.fromDate.clone().format('YYYY')}`;
                     break;
                 case 'month':
