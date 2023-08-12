@@ -44,12 +44,12 @@
                         <span class="mrb-24">Chưa cập nhật</span>
                     </ng-container>
                 </div>
-                <div *ngIf="localItem?.type == 'giao_hat'" class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
+                <div class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
                     <span class="title">DANH SÁCH LINH MỤC PHỤC VỤ ĐÃ PHỤC VỤ</span>
                     <se-list-appointments-organization [entityType]="'group'"
                         [entityID]="ID" [filter]="filterAppointments"></se-list-appointments-organization>
                 </div>
-                <div class="appointments-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
+                <div *ngIf="localItem?.type == 'giao_hat'"  class="appointments-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
                     <h6 class="title">DANH SÁCH GIÁO XỨ, GIÁO HỌ VÀ GIÁO ĐIỂM</h6>
                     <ng-template ngFor let-org let-last="last" [ngForOf]="arrOrganizations">
                         <a [href]="org?.link" target="_blank"><strong>{{org?.name}}</strong></a>

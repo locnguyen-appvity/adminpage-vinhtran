@@ -69,7 +69,7 @@ export class ClergiesAppointmentComponent extends SimpleBaseComponent implements
 	getAppointments(entityID: string, entityType: string) {
 		let options = {
 			sort: 'effectiveDate asc',
-			filter: `entityID eq ${entityID} and entityType eq '${entityType}' and status eq 'duong_nhiem'`
+			filter: `position ne 'huu' and position ne 'nghi_duong' and position ne 'huu_duong' and entityID eq ${entityID} and entityType eq '${entityType}' and status eq 'duong_nhiem'`
 		}
 		this.arrAppointments = [];
 		this.dataProcessing = true;

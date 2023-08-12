@@ -177,11 +177,21 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 			let value = [];
 			for (let key in itemValue) {
 				if (itemValue[key].length > 0) {
-					let dataItems = this.linq.Enumerable().From(itemValue[key]).OrderBy("$.order").ToArray();
-					value.push({
-						name: itemValue[key][0].name,
-						data: dataItems.map(it => it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : "").join(", ")
-					})
+					if(key !== 'khac'){
+						let dataItems = this.linq.Enumerable().From(itemValue[key]).OrderBy("$.order").ToArray();
+						value.push({
+							name: itemValue[key][0].name,
+							data: dataItems.map(it => it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : "").join(", ")
+						})
+					}
+					else {
+						for(let it of itemValue[key]){
+							value.push({
+								name: it.name,
+								data: it.time ? it.time.replace(/\:00/, 'h').replace(/\:/, 'h') : ""
+							})
+						}
+					}
 				}
 			}
 			item.arrMasseses = value;

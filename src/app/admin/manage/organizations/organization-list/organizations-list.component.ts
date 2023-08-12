@@ -216,7 +216,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	onView(item: any){
-		this.router.navigate([`/page/${item.type}/${item.id}`]);
+		this.router.navigate([`/page/organization/${item.id}`]);
 	}
 
 	onDelete(item: any) {

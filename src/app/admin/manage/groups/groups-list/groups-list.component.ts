@@ -69,7 +69,7 @@ export class GroupsListComponent extends ListItemBaseComponent {
 	}
 
 	onViewItem(item: any) {
-		this.router.navigate([`/page/group/${item.type}/${item.id}`]);
+		this.router.navigate([`/page/group/${item.id}`]);
 	}
 
 	openFormDialog(config: any, target: string) {
