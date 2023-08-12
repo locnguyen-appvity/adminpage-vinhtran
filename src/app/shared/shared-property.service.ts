@@ -109,6 +109,19 @@ export class SharedPropertyService {
         }
     }
 
+    getOrderOrg(entityType: string) {
+        switch (entityType) {
+            case 'giao_xu':
+                return "1"
+            case 'giao_diem':
+                return "2"
+            case 'giao_ho':
+                return '3';
+            default:
+                return '4';
+        }
+    }
+
     getOrderPositionClergy(position: string) {
         switch (position) {
             case 'chanh_xu':
@@ -217,6 +230,8 @@ export class SharedPropertyService {
                 return 'Giáo xứ'
             case 'giao_diem':
                 return 'Giáo điểm'
+            case 'giao_ho':
+                return 'Giáo họ'
             case 'dong_tu':
                 return 'Dòng'
             case 'cong_doan':

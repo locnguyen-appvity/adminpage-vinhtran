@@ -39,6 +39,31 @@ export class PageService {
 		return this.getDataItems(baseUrl, options).pipe(catchError(error => this.handleError('searchOrganizations', error)));
 	}
 
+	getGroups(options?: any): Observable<any> {
+		let baseUrl = this.rootAPI + '/groups';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getGroups', error)));
+	}
+
+	getGroup(id: string, options?: any): Observable<any> {
+		let baseUrl = this.rootAPI + '/groups';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getGroup', error)));
+	}
+
+	getGroupAnalytics(id: string, options?: any): Observable<any> {
+		let baseUrl = this.rootAPI + `/groups/${id}/analytics`;
+		return this.service.getItem(baseUrl, null, options).pipe(catchError(error => this.handleError('getGroup', error)));
+	}
+
+	getOrganizations(options?: any): Observable<any> {
+		let baseUrl = this.rootAPI + '/organizations';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getOrganizations', error)));
+	}
+
+	getOrganization(id: string, options?: any): Observable<any> {
+		let baseUrl = this.rootAPI + '/organizations';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getOrganization', error)));
+	}
+
 	getDataItems(baseUrl, options: any): Observable<any> {
 		let pageOption: any = {}
 		let restrictions = [];
@@ -95,11 +120,6 @@ export class PageService {
 		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getClergy', error)));
 	}
 
-	getOrganization(id: string, options?: any): Observable<any> {
-		let baseUrl = this.rootAPIAdmin + '/organizations';
-		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getOrganization', error)));
-	}
-
 	// Masses
 	getMasseses(options?: any): Observable<any> {
 		let baseUrl = this.rootAPIAdmin + '/masses';
@@ -107,10 +127,6 @@ export class PageService {
 	}
 
 	// Organizations
-	getOrganizations(options?: any): Observable<any> {
-		let baseUrl = this.rootAPIAdmin + '/organizations';
-		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getOrganizations', error)));
-	}
 
 	getPosts(options?: any): Observable<any> {
 		let baseUrl = this.rootAPIAdmin + '/posts';

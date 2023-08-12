@@ -14,6 +14,7 @@ import { OrganizationsListModule } from '../../organizations/organization-list/o
 import { GroupDetailRoutingModule } from './group-detail-routing.module';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
+import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simpl
     EditorControlModule,
     OrganizationsListModule,
     MatExpansionModule,
-    AutocompleteSimpleModule
+    AutocompleteSimpleModule,
+    UploadAvatarModule
   ],
   exports: [GroupDetailComponent]
 })

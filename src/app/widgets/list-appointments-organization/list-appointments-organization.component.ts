@@ -16,6 +16,7 @@ export class ListAppointmentsOrganizationComponent extends SimpleBaseComponent i
 	@Output() onToggle: any = new EventEmitter();
 	@Input() entityID: string;
 	@Input() entityType: string;
+	@Input() filter: string;
 	public positionList: any[] = [];
 	public arrData:any[] = [];
 	public activity: any[] = [];
@@ -76,6 +77,14 @@ export class ListAppointmentsOrganizationComponent extends SimpleBaseComponent i
 		}
 		else {
 			return;
+		}
+		if(!this.isNullOrEmpty(this.filter)){
+			if(!this.isNullOrEmpty(filter)){
+				filter = `(${this.filter}) and (${filter})`
+			}
+			else {
+				filter = this.filter;
+			}
 		}
 		let options = {
 			filter: filter,

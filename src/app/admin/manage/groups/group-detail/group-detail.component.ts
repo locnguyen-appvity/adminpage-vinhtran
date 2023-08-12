@@ -22,6 +22,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 	}
 	public target: string = "giao_hat";
 	public entityList: any;
+	public fileSelected: any;
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -68,7 +69,8 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			entityID: "",
 			entityName: "",
 			_entityID: "",
-			entityType: ""
+			entityType: "",
+			photo: ""
 		});
 		if (this.target != 'giao_hat') {
 			this.getEntityList();
@@ -164,7 +166,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 					if (!this.isNullOrEmpty(this.localItem.entityID) && !this.isNullOrEmpty(this.localItem.entityType)) {
 						_entityID = `${this.localItem.entityType}_${this.localItem.entityID}`
 					}
-					else if(!this.isNullOrEmpty(this.localItem.entityName)){
+					else if (!this.isNullOrEmpty(this.localItem.entityName)) {
 						_entityID = this.localItem.entityName;
 					}
 					this.dataItemGroup.patchValue({
@@ -181,6 +183,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 						area: this.localItem.area,
 						latitude: this.localItem.latitude,
 						longitude: this.localItem.longitude,
+						photo: this.localItem.photo,
 					});
 				}
 			}
@@ -219,6 +222,13 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			entityID: valueForm.entityID,
 			entityType: valueForm.entityType,
 			entityName: valueForm.entityName,
+			area: valueForm.area,
+			phone: valueForm.phone,
+			email: valueForm.email,
+			address: valueForm.address,
+			latitude: valueForm.latitude,
+			longitude: valueForm.longitude,
+			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
 			// status: valueForm.status ? 'active' : 'inactive',
 			// type: 'giao_hat'
 		}
@@ -231,6 +241,11 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		})
 	}
 
+	valueChangesFile(event: any) {
+		if (event && event.action == 'value-change') {
+			this.fileSelected = event.data ? event.data : "";
+		}
+	}
 
 	routeToBack() {
 		this.router.navigate([`/admin/manage/${this.target}/list`]);

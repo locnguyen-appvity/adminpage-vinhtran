@@ -215,6 +215,10 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		}
 	}
 
+	onView(item: any){
+		this.router.navigate([`/page/${item.type}/${item.id}`]);
+	}
+
 	onDelete(item: any) {
 		this.dataProcessing = true;
 		this.service.deleteOrganization(item.id).pipe(take(1)).subscribe(() => {

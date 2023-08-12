@@ -19,6 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NumberOnlyDirective } from './number.only.directive';;
 import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
 import { CustomScrollDirective } from './directives/custom-scroll.directive';
+import { NumberFormatPipe } from './number.format.pipe';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -34,6 +35,7 @@ import { CustomScrollDirective } from './directives/custom-scroll.directive';
 		SimpleBaseComponent,
 		InitialsPipe,
 		TruncatePipe,
+		NumberFormatPipe,
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
 		NumberOnlyDirective,
@@ -51,6 +53,7 @@ import { CustomScrollDirective } from './directives/custom-scroll.directive';
 		MatButtonModule,
 		InitialsPipe,
 		TruncatePipe,
+		NumberFormatPipe,
 		MatDividerModule,
 		ToastSnackbarAppModule,
 		SafeHtmlPipe,

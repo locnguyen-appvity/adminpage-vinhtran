@@ -22,8 +22,8 @@
                             </div>
                             <div class="contact">
                                 <h4 class="mtr-32">Điện thoại: {{item.phoneNumber}}</h4>
-                                <h4>Dân số: {{item.population}}</h4>
-                                <h4>Số tín hữu: {{item.memberCount}}</h4>
+                                <h4>Dân số: {{item.population | numberFormat: "."}}</h4>
+                                <h4>Số tín hữu: {{item.memberCount | numberFormat: "."}}</h4>
                             </div>
                             <div class="times" fxLayout="column" fxLayoutAlign="start start">
                                 <h3 class="title mtr-32">Giờ lễ</h3>

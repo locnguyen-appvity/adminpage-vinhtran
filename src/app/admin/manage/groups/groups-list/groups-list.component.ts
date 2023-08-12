@@ -68,6 +68,10 @@ export class GroupsListComponent extends ListItemBaseComponent {
 		this.router.navigate([`/admin/manage/${this.type}/detail/${item.id}`]);
 	}
 
+	onViewItem(item: any) {
+		this.router.navigate([`/page/group/${item.type}/${item.id}`]);
+	}
+
 	openFormDialog(config: any, target: string) {
 		config.disableClose = true;
 		config.panelClass = 'dialog-form-xl';

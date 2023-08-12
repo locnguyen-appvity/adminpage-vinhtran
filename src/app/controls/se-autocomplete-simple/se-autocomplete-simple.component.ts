@@ -186,15 +186,20 @@ export class AutocompleteSimpleComponent implements MatFormFieldControl<string>,
 	}
 
 	_filter(value: any): any {
-		if (typeof (value) === 'string') {
-			const filterValue = value.toLowerCase();
-			if (this.isNullOrEmpty(filterValue)) {
-				return this.items;
+		if(this.items){
+			if (typeof (value) === 'string') {
+				const filterValue = value.toLowerCase();
+				if (this.isNullOrEmpty(filterValue)) {
+					return this.items;
+				}
+				return this.items.filter((item: any) => item[this.keyTitle].toLowerCase().includes(filterValue));
 			}
-			return this.items.filter((item: any) => item[this.keyTitle].toLowerCase().includes(filterValue));
+			else {
+				return [];
+			}
 		}
 		else {
-			return;
+			return [];
 		}
 	}
 

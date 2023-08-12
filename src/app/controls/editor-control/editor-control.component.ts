@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewChild, forwardRef } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild, forwardRef } from '@angular/core';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 import { DialogSelectedImgsComponent } from '../dialog-selected-imgs/dialog-selected-imgs.component';
@@ -22,7 +22,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 		'[attr.aria-describedby]': 'describedBy'
 	}
 })
-export class EditorControlComponent extends SimpleBaseComponent implements ControlValueAccessor, AfterViewInit {
+export class EditorControlComponent extends SimpleBaseComponent implements ControlValueAccessor, AfterViewInit, OnChanges {
 
 	public editorCtrl: any;
 	@ViewChild('editorCtrl') set elemOnHTML(elemOnHTML: any) {
@@ -30,9 +30,12 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			this.editorCtrl = elemOnHTML;
 		}
 	}
+	@Input() config: any;
 
 	public configEditor: any = {
 		toolbarSticky: false,
+		// readonly: true,
+		// toolbar: false,
 		buttons: [
 			"bold", "italic", "underline", "|", "fontsize", "font", "brush", "|",
 			"align", "indent", "indent", "outdent", "|",
@@ -54,11 +57,11 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "cut", "undo", "redo", "source"
 		],
 		buttonsXS: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"bold", "italic", "underline", "|", "fontsize", "font", "lineHeight", "|",
 			"align", "indent", "indent", "outdent", "|",
 			"link", "table", "|",
 			"strikethrough", "eraser", "|",
-			"ul", "paragraph", "classSpan", "lineHeight",
+			"ul", "paragraph", "classSpan",
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
@@ -74,11 +77,11 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "cut", "undo", "redo", "source"
 		],
 		buttonsSM: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"bold", "italic", "underline", "|", "fontsize", "font", "lineHeight", "|",
 			"align", "indent", "indent", "outdent", "|",
 			"link", "table", "|",
 			"strikethrough", "eraser", "|",
-			"ul", "paragraph", "classSpan", "lineHeight",
+			"ul", "paragraph", "classSpan",
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
@@ -94,11 +97,11 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 			"|", "cut", "undo", "redo", "source"
 		],
 		buttonsMD: [
-			"bold", "italic", "underline", "|", "fontsize", "font", "|",
+			"bold", "italic", "underline", "|", "fontsize", "font", "lineHeight", "|",
 			"align", "indent", "indent", "outdent", "|",
 			"link", "table", "|",
 			"strikethrough", "eraser", "|",
-			"ul", "paragraph", "classSpan", "lineHeight",
+			"ul", "paragraph", "classSpan",
 			"|", "superscript", "subscript"
 			, "|", "video",
 			{
@@ -142,6 +145,19 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 		this.stateChanges.next();
 	}
 
+	@Input() get readonly(): any {
+		return this.readonly;
+	}
+
+	set readonly(value: any) {
+		if (this.editorCtrl) {
+			this.editorCtrl.config.readonly = value;
+			if (value) {
+				this.editorCtrl.toolbar = false;
+			}
+		}
+	}
+
 	private _required = false;
 	@Input() get required() {
 		return this._required;
@@ -169,6 +185,14 @@ export class EditorControlComponent extends SimpleBaseComponent implements Contr
 	public disabled: boolean = false;
 	setDisabledState?(isDisabled: boolean): void {
 		this.disabled = isDisabled;
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['config']) {
+			if (!this.isNullOrEmpty(this.config)) {
+				this.configEditor = Object.assign(this.configEditor, this.config);
+			}
+		}
 	}
 
 	ngAfterViewInit(): void {
