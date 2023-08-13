@@ -463,22 +463,6 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 		return "Không Xác Định";
 	}
 
-	onDeactive(item: any) {
-		let dataJSON = {
-			status: 'inactive',
-		}
-		this.service.updateAppointment(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'inactivate-item',
-					message: 'Ẩn Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataGridApplications();
-			}
-		})
-	}
-
 	openNewTab(element: any, target: string) {
 		let link = '';
 		if (target == 'clergy') {
@@ -595,7 +579,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 									message: 'Cập Nhật Bổ Nhiệm Thành Công'
 								};
 								this.showInfoSnackbar(snackbarData);
-								this.getDataGridApplications();
+								this.getDataGridAndCounterApplications();
 							}
 						})
 					}
@@ -630,7 +614,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 							snackbarData.key = 'new-item';
 							snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
 							this.showInfoSnackbar(snackbarData);
-							this.getDataGridApplications();
+							this.getDataGridAndCounterApplications();
 						}
 					}
 				});
@@ -661,7 +645,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 					snackbarData.key = 'new-item';
 					snackbarData.message = 'Thêm Bổ Nhiệm Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					this.getDataGridApplications();
+					this.getDataGridAndCounterApplications();
 				}
 			}
 		});
@@ -676,7 +660,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
-			this.getDataGridApplications();
+			this.getDataGridAndCounterApplications();
 		})
 	}
 

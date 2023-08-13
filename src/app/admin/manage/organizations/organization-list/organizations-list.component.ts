@@ -149,22 +149,6 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 		})
 	}
 
-	onDeactive(item: any) {
-		let dataJSON = {
-			status: 'inactive',
-		}
-		this.service.updateOrganization(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'inactivate-item',
-					message: 'Ẩn Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataGridApplications();
-			}
-		})
-	}
-
 	onUpdateStatus(item: any, status: string) {
 		let dataJSON = {
 			status: status,
@@ -176,7 +160,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 					message: 'Hiện Thành Công'
 				};
 				this.showInfoSnackbar(snackbarData);
-				this.getDataGridApplications();
+				this.getDataGridAndCounterApplications();
 			}
 		})
 	}
@@ -203,7 +187,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 					snackbarData.key = 'new-item';
 					snackbarData.message = 'Thêm Giáo Xứ Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					this.getDataGridApplications();
+					this.getDataGridAndCounterApplications();
 				}
 			}
 		});
@@ -228,7 +212,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
-			this.getDataGridApplications();
+			this.getDataGridAndCounterApplications();
 		})
 	}
 

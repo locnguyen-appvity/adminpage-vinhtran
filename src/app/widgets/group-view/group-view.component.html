@@ -14,7 +14,7 @@
                     <span *ngIf="localItem?.type != 'giao_hat'">Thuộc: <strong>{{localItem?.entityName}}</strong></span>
                     <span>Email: <strong>{{localItem?.email}}</strong></span>
                     <ng-template [ngIf]="localItem?.type == 'giao_hat'">
-                        <span>Linh mục quản hạt: <strong>{{localItem?.email}}</strong></span>
+                        <!-- <span>Linh mục quản hạt: <strong>{{localItem?.email}}</strong></span> -->
                         <span>Tổng số linh mục: <strong>{{localItem?.totalClergy}}</strong></span>
                         <ng-template ngFor let-org let-last="last" [ngForOf]="localItem?.organizationAnalytics">
                             <span>{{org.name}}: <strong>{{org?.count}}</strong></span>

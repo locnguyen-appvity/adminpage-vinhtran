@@ -289,38 +289,6 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 		return filter;
 	}
 
-	onDeactive(item: any) {
-		let dataJSON = {
-			status: 'inactive',
-		}
-		this.service.updateClergy(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'inactivate-item',
-					message: 'Ẩn Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataGridApplications();
-			}
-		})
-	}
-
-	onUpdateStatus(item: any, status: string) {
-		let dataJSON = {
-			status: status,
-		}
-		this.service.updateClergy(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'activate-item',
-					message: 'Hiện Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataGridApplications();
-			}
-		})
-	}
-
 	addItem() {
 		let config: any = {};
 		config.data = {
