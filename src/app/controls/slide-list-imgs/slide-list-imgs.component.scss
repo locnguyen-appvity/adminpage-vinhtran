@@ -1,0 +1,31 @@
+.box-img-card {
+    border: solid 1px rgb(147, 146, 146);
+    border-radius: 2px;
+    margin-bottom: 12px;
+    width: 300px;
+    min-height: 200px;
+    padding-top: 0px !important;
+    img {
+        width: 300px;
+        height: 200px;
+        object-fit: cover;
+    }
+}
+
+.remove-photo-overlay {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: 300px;
+    height: 200px;
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+    background-color: rgba(255, 255, 255, 0.5);
+    // border-radius: 50%;
+}
+
+.box-img-card:hover,
+.remove-photo-overlay:hover {
+    opacity: 1;
+    cursor: pointer;
+}

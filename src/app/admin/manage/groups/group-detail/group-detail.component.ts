@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, forkJoin, of, take } from 'rxjs';
+import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
@@ -169,6 +170,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 					else if (!this.isNullOrEmpty(this.localItem.entityName)) {
 						_entityID = this.localItem.entityName;
 					}
+					this.localItem._name = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
 					this.dataItemGroup.patchValue({
 						name: this.localItem.name,
 						description: this.localItem.description,
@@ -188,6 +190,23 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 				}
 			}
 		})
+	}
+
+	valueChangesIMGs(event: any) {
+		if(event && event.action == "add-slide"){
+			if(event.data){
+				let dataJSON = {
+					slideId: event.data.id
+				}
+				this.dataProcessing = true;
+				this.service.updateGroup(this.ID, dataJSON).pipe(take(1)).subscribe({
+					next: () => {
+						this.dataProcessing = false;
+						this.localItem.slideId = event.data.id;
+					}
+				})
+			}
+		}
 	}
 
 	updateLabelTitle(status: string) {

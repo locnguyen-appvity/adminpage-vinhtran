@@ -1,9 +1,10 @@
 <mat-card>
     <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="start center" class="mrb-24">
+        <div fxLayout="row" fxLayoutAlign="start center" class="mrb-24" fxLayoutGap="12">
+            <button mat-flat-button color="primary" matTooltip="Thêm Hình" (click)="chooseImage()">Thêm hình</button>
             <span fxFlex></span>
-            <button mat-flat-button color="primary" matTooltip="Thêm Hình" (click)="chooseImage()">Thêm hình
-            </button>
+            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button color="warn" matTooltip="Thêm Hình" (click)="onCancel()">Hủy</button>
+            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button color="primary" matTooltip="Lưu" (click)="onSave()">Lưu</button>
         </div>
         <div *ngIf="noFilesUploads" fxLayout="row" fxLayoutAlign="center center"
             style="padding-top: 50px; padding-bottom: 16px;">
@@ -20,7 +21,7 @@
                         </div>
                         <img mat-card-image *ngIf="file?.imageUrl?.length > 0" [src]="file?.imageUrl" />
                         <mat-card-actions>
-                            <textarea [(ngModel)]="file.name" matInput rows="2"
+                            <textarea (change)="onChangeText()" [(ngModel)]="file.name" matInput rows="2"
                                 placeholder="Mô tả (không bắt buộc)"></textarea>
                         </mat-card-actions>
                     </mat-card>

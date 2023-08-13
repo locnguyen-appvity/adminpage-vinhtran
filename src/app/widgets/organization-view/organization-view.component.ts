@@ -8,6 +8,7 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 import { LinqService } from 'src/app/shared/linq.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormControl } from '@angular/forms';
+import { PageService } from 'src/app/page/page.service';
 
 @Component({
 	selector: 'app-organization-view',
@@ -29,7 +30,7 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 	public editorFormCtrl: FormControl;
 	
 	constructor(
-		private service: SharedService,
+		private service: PageService,
 		public sharedService: SharedPropertyService,
 		public linq: LinqService,
 		public router: Router,

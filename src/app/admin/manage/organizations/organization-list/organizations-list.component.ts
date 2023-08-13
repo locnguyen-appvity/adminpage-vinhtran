@@ -44,7 +44,9 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 		}
 		this.getDataGridAndCounterApplications();
-		this.getGroups(false);
+		if(this.isNullOrEmpty(this.groupID)){
+			this.getGroups(false);
+		}
 	}
 
 	getStatusDefault() {
@@ -105,7 +107,9 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 
 	getDataGridAndCounterApplications() {
 		this.getDataGridApplications();
-		this.getGroups();
+		if(this.isNullOrEmpty(this.groupID)){
+			this.getGroups();
+		}
 	}
 
 	getDataGridApplications() {

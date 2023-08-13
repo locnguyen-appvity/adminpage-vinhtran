@@ -16,70 +16,11 @@ import { GlobalSettings } from 'src/app/shared/global.settings';
 export class ListIMGsComponent extends SimpleBaseComponent implements OnChanges {
 	@Output() valueChanges: any = new EventEmitter();
 	@Input() data: any[] = [];
+	@Input() mode: string = "";
 	public title: string = 'Tải lên hình ảnh';
-	public dataSources: any[] = [
-		{
-			name: 'vvvv',
-			imageUrl: 'https://kenh14cdn.com/thumb_w/620/203336854389633024/2021/7/8/rosekylucontheground1syho-1625748904950304521404.png'
-		},
-		{
-			name: 'ccccccc',
-			imageUrl: 'https://cdn.tgdd.vn/Files/2022/06/07/1437902/cach-tai-hinh-nen-ios-16_1280x720-800-resize.jpg'
-		},
-		{
-			name: 'ffffffffff',
-			imageUrl: 'https://teky.edu.vn/blog/wp-content/uploads/2022/03/Hinh-nen-may-tinh-dep-chu-de-phong-canh.jpg'
-		},
-		{
-			name: 'vvvv',
-			imageUrl: 'https://kenh14cdn.com/thumb_w/620/203336854389633024/2021/7/8/rosekylucontheground1syho-1625748904950304521404.png'
-		},
-		{
-			name: 'ccccccc',
-			imageUrl: 'https://cdn.tgdd.vn/Files/2022/06/07/1437902/cach-tai-hinh-nen-ios-16_1280x720-800-resize.jpg'
-		},
-		{
-			name: 'ffffffffff',
-			imageUrl: 'https://teky.edu.vn/blog/wp-content/uploads/2022/03/Hinh-nen-may-tinh-dep-chu-de-phong-canh.jpg'
-		},
-		{
-			name: 'vvvv',
-			imageUrl: 'https://kenh14cdn.com/thumb_w/620/203336854389633024/2021/7/8/rosekylucontheground1syho-1625748904950304521404.png'
-		},
-		{
-			name: 'ccccccc',
-			imageUrl: 'https://cdn.tgdd.vn/Files/2022/06/07/1437902/cach-tai-hinh-nen-ios-16_1280x720-800-resize.jpg'
-		},
-		{
-			name: 'ffffffffff',
-			imageUrl: 'https://teky.edu.vn/blog/wp-content/uploads/2022/03/Hinh-nen-may-tinh-dep-chu-de-phong-canh.jpg'
-		},
-		{
-			name: 'vvvv',
-			imageUrl: 'https://kenh14cdn.com/thumb_w/620/203336854389633024/2021/7/8/rosekylucontheground1syho-1625748904950304521404.png'
-		},
-		{
-			name: 'ccccccc',
-			imageUrl: 'https://cdn.tgdd.vn/Files/2022/06/07/1437902/cach-tai-hinh-nen-ios-16_1280x720-800-resize.jpg'
-		},
-		{
-			name: 'ffffffffff',
-			imageUrl: 'https://teky.edu.vn/blog/wp-content/uploads/2022/03/Hinh-nen-may-tinh-dep-chu-de-phong-canh.jpg'
-		},
-		{
-			name: 'vvvv',
-			imageUrl: 'https://kenh14cdn.com/thumb_w/620/203336854389633024/2021/7/8/rosekylucontheground1syho-1625748904950304521404.png'
-		},
-		{
-			name: 'ccccccc',
-			imageUrl: 'https://cdn.tgdd.vn/Files/2022/06/07/1437902/cach-tai-hinh-nen-ios-16_1280x720-800-resize.jpg'
-		},
-		{
-			name: 'ffffffffff',
-			imageUrl: 'https://teky.edu.vn/blog/wp-content/uploads/2022/03/Hinh-nen-may-tinh-dep-chu-de-phong-canh.jpg'
-		}
-	];
+	public dataSources: any[] = [];
 	public noFilesUploads: boolean = false;
+	public hasChange: boolean = false;
 
 	constructor(public sharedService: SharedPropertyService,
 		public renderer: Renderer2,
@@ -94,10 +35,14 @@ export class ListIMGsComponent extends SimpleBaseComponent implements OnChanges 
 			this.noFilesUploads = true;
 			this.dataSources = [];
 			if (this.data && this.data.length > 0) {
-				this.dataSources = this.data;
+				this.dataSources = this.data.concat([]);
 				this.noFilesUploads = false;
 			}
 		}
+	}
+
+	onChangeText(){
+		this.hasChange = true;
 	}
 
 	chooseImage() {
@@ -124,6 +69,15 @@ export class ListIMGsComponent extends SimpleBaseComponent implements OnChanges 
 				}
 			}
 		})
+	}
+
+	onSave(){
+		this.valueChanges.emit({ action: 'save-data', data: this.dataSources });
+	}
+
+	onCancel(){
+		this.dataSources = this.data;
+		this.valueChanges.emit({ action: 'cancel' });
 	}
 
 	onRemoveImage(index: number) {

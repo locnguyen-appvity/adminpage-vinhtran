@@ -15,6 +15,7 @@ import { GroupDetailRoutingModule } from './group-detail-routing.module';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar.module';
+import { SideListIMGsModule } from 'src/app/controls/slide-list-imgs/slide-list-imgs.module';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { UploadAvatarModule } from 'src/app/controls/upload-avatar/upload-avatar
     OrganizationsListModule,
     MatExpansionModule,
     AutocompleteSimpleModule,
-    UploadAvatarModule
+    UploadAvatarModule,
+    SideListIMGsModule
   ],
   exports: [GroupDetailComponent]
 })

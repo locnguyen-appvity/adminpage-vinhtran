@@ -242,9 +242,11 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 				next: (res: any) => {
 					if (res && res.value && res.value.length > 0) {
 						for (let item of res.value) {
-							item._id = `${item.type}_${item.id}`;
+							item._type = "group";
+							item._id = `${item._type}_${item.id}`;
 							item.groupID = item.id;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.entityID = "";
 							item.entityType = "";
 						}
@@ -268,10 +270,12 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 				next: (res: any) => {
 					if (res && res.value && res.value.length > 0) {
 						for (let item of res.value) {
-							item._id = `${item.type}_${item.id}`;
+							item._type = "organization";
+							item._id = `${item._type}_${item.id}`;
 							item.groupName = this.sharedService.updateTypeOrg(item.type);
+							item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
 							item.entityID = item.id;
-							item.entityType = item.type;
+							item.entityType = item._type;
 							item.groupID = item.groupID;
 						}
 						this.orgList = res.value;
@@ -296,7 +300,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 					}
 					this.statusLabel = this.updateLabelTitle(this.localItem.status);
 					let groupID = this.localItem ? this.localItem.groupID : "";
-					let _entityID = groupID ? `giao_hat_${groupID}` : "";
+					let _entityID = groupID ? `group_${groupID}` : "";
 					if (this.localItem && this.localItem.entityID && this.localItem.entityType) {
 						_entityID = `${this.localItem.entityType}_${this.localItem.entityID}`;
 					}
