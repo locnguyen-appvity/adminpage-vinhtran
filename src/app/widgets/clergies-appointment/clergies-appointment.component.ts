@@ -1,9 +1,9 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { take } from 'rxjs';
+import { PageService } from 'src/app/page/page.service';
 import { GlobalSettings } from 'src/app/shared/global.settings';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
 import { SimpleBaseComponent } from 'src/app/shared/simple.base.component';
 
 @Component({
@@ -19,7 +19,7 @@ export class ClergiesAppointmentComponent extends SimpleBaseComponent implements
 	public positionList: any[] = [];
 	constructor(
 		public sharedService: SharedPropertyService,
-		private service: SharedService,
+		private service: PageService,
 		private sanitizer: DomSanitizer
 	) {
 		super(sharedService);
@@ -79,8 +79,8 @@ export class ClergiesAppointmentComponent extends SimpleBaseComponent implements
 				this.arrAppointments = res.value;
 				for(let item of this.arrAppointments){
 					item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_priest.svg')
-					if (item.photo) {
-						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
+					if (item.clergyPhoto) {
+						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.clergyPhoto}`;
 					}
 					item.positionView = this.updatePosition(item.position);
 				}

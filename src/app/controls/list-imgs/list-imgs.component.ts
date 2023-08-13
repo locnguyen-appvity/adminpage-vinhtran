@@ -71,6 +71,10 @@ export class ListIMGsComponent extends SimpleBaseComponent implements OnChanges 
 		})
 	}
 
+	onDelete(){
+		this.valueChanges.emit({ action: 'delete' });
+	}
+
 	onSave(){
 		this.valueChanges.emit({ action: 'save-data', data: this.dataSources });
 	}

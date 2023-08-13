@@ -111,7 +111,7 @@ export class PageService {
 	}
 
 	getAppointments(options?: any): Observable<any> {
-		let baseUrl = this.rootAPIAdmin + '/appointments';
+		let baseUrl = this.rootAPI + '/appointments';
 		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getAppointments', error)));
 	}
 

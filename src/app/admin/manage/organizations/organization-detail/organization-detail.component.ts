@@ -287,6 +287,27 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 		})
 	}
 
+	valueChangesIMGs(event: any) {
+		if(event){
+			if (event.action == "add-slide" || event.action == "delete") {
+				let slideId = null;
+				if (event.data) {
+					slideId = event.data.id;
+				}
+				let dataJSON = {
+					slideId: slideId
+				}
+				this.dataProcessing = true;
+				this.service.updateOrganization(this.ID, dataJSON).pipe(take(1)).subscribe({
+					next: () => {
+						this.dataProcessing = false;
+						this.localItem.slideId = slideId;
+					}
+				})
+			}
+		}
+	}
+
 
 	getOrganization() {
 		this.service.getOrganization(this.ID).pipe(take(1)).subscribe({
@@ -294,6 +315,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 				if (res) {
 					this.localItem = res;
 					this.target = this.localItem.type;
+					this.localItem._name = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
 					this.localItem._metaKeyword = [];
 					if (this.localItem.metaKeyword) {
 						this.localItem._metaKeyword = this.localItem.metaKeyword.split('~');
@@ -352,6 +374,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			longitude: valueForm.longitude,
 			latitude: valueForm.latitude,
 			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
+			// slideId: ""
 		}
 		let request: any;
 		if (!this.isNullOrEmpty(this.ID)) {

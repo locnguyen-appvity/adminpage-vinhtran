@@ -1,10 +1,11 @@
 <mat-card>
     <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="start center" class="mrb-24" fxLayoutGap="12">
-            <button mat-flat-button color="primary" matTooltip="Thêm Hình" (click)="chooseImage()">Thêm hình</button>
+            <button mat-flat-button color="primary" (click)="chooseImage()">Thêm hình</button>
             <span fxFlex></span>
-            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button color="warn" matTooltip="Thêm Hình" (click)="onCancel()">Hủy</button>
-            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button color="primary" matTooltip="Lưu" (click)="onSave()">Lưu</button>
+            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button (click)="onCancel()">Hủy</button>
+            <button *ngIf="mode == 'enableSave' && hasChange" mat-flat-button color="primary" (click)="onSave()">Lưu</button>
+            <button *ngIf="mode == 'enableSave'" mat-flat-button color="warn" (click)="onDelete()">Xóa Album</button>
         </div>
         <div *ngIf="noFilesUploads" fxLayout="row" fxLayoutAlign="center center"
             style="padding-top: 50px; padding-bottom: 16px;">

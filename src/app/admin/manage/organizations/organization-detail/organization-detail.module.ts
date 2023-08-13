@@ -23,6 +23,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MassesListModule } from '../../masses/masses-list/masses-list.module';
 import { EventsListModule } from '../../events/events-list/events-list.module';
 import { AppointmentsListModule } from '../../../../controls/appointments-list-control/appointments-list-control.module';
+import { SideListIMGsModule } from 'src/app/controls/slide-list-imgs/slide-list-imgs.module';
 @NgModule({
   declarations: [
     OrganizationDetailComponent
@@ -52,7 +53,8 @@ import { AppointmentsListModule } from '../../../../controls/appointments-list-c
     MatExpansionModule,
     AppointmentsListModule,
     MassesListModule,
-    EventsListModule
+    EventsListModule,
+    SideListIMGsModule
   ]
 })
 export class OrganizationDetailModule { }

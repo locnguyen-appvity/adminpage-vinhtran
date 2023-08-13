@@ -81,6 +81,8 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 			next: (res: any) => {
 				if (res) {
 					this.localItem = res;
+					this.localItem.groupTypeView = this.sharedService.updateNameTypeOrg(this.localItem.groupType);
+					this.localItem.parentTypeView = this.sharedService.updateNameTypeOrg(this.localItem.parentType);
 					this.editorFormCtrl.setValue(this.localItem.content)
 					this.updateMassesesToOrg(this.localItem);
 					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;

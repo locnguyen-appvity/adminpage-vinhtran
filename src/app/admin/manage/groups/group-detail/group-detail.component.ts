@@ -193,19 +193,24 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 	}
 
 	valueChangesIMGs(event: any) {
-		if(event && event.action == "add-slide"){
-			if(event.data){
+		if (event) {
+			if (event.action == "add-slide" || event.action == "delete") {
+				let slideId = null;
+				if (event.data) {
+					slideId = event.data.id;
+				}
 				let dataJSON = {
-					slideId: event.data.id
+					slideId: slideId
 				}
 				this.dataProcessing = true;
 				this.service.updateGroup(this.ID, dataJSON).pipe(take(1)).subscribe({
 					next: () => {
 						this.dataProcessing = false;
-						this.localItem.slideId = event.data.id;
+						this.localItem.slideId = slideId;
 					}
 				})
 			}
+			
 		}
 	}
 
@@ -248,6 +253,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 			latitude: valueForm.latitude,
 			longitude: valueForm.longitude,
 			photo: this.fileSelected ? this.fileSelected.filePath : valueForm.photo,
+			// slideId: null
 			// status: valueForm.status ? 'active' : 'inactive',
 			// type: 'giao_hat'
 		}

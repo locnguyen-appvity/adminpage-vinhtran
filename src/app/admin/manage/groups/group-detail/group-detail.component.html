@@ -102,7 +102,7 @@
 					<mat-label>Mô Tả</mat-label>
 					<textarea matInput rows="3" formControlName="description"></textarea>
 				</mat-form-field>
-				<se-slide-list-imgs class="full-width" [slideId]="localItem?.slideId" [entityName]="localItem?.name" (valueChanges)="valueChangesIMGs($event)"></se-slide-list-imgs>
+				<se-slide-list-imgs class="full-width" [slideId]="localItem?.slideId" [entityName]="localItem?._name" (valueChanges)="valueChangesIMGs($event)"></se-slide-list-imgs>
 				<se-editor-control class="full-width" formControlName="content"></se-editor-control>
 				<mat-divider *ngIf="target == 'giao_hat'" class="full-width mrt-24"></mat-divider>
 				<mat-accordion *ngIf="target == 'giao_hat'" multi="true" class="full-width mrt-24">

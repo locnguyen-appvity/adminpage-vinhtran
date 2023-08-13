@@ -24,27 +24,39 @@ export class SideListIMGsComponent extends SimpleBaseComponent implements OnChan
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if(changes['slideId']){
+		if (changes['slideId']) {
 			this.getSlide(this.slideId);
 		}
 	}
 
 	valueChangesFile(event: any) {
-		if(event && event.action == "save-data"){
-			let dataJSON = {
-				"photos": event.data ? event.data.map(it => it.filePath) : [],
-				"texts": event.data ? event.data.map(it => it.name) : [],
-				"avatar": (event.data && event.data[0]) ? event.data[0].filePath : "",
-			}
-			this.dataProcessing = true;
-			this.loadingIMGs = true;
-			this.service.updateSlide(this.slideId,dataJSON).pipe(take(1)).subscribe({
-				next: (res: any) => {
-					this.dataProcessing = false;
-					this.loadingIMGs = false;
-					this.getSlide(this.slideId);
+		if (event) {
+			if (event.action == "save-data") {
+				let dataJSON = {
+					"photos": event.data ? event.data.map(it => it.filePath) : [],
+					"texts": event.data ? event.data.map(it => it.name) : [],
+					"avatar": (event.data && event.data[0]) ? event.data[0].filePath : "",
 				}
-			})
+				this.dataProcessing = true;
+				this.loadingIMGs = true;
+				this.service.updateSlide(this.slideId, dataJSON).pipe(take(1)).subscribe({
+					next: (res: any) => {
+						this.dataProcessing = false;
+						this.loadingIMGs = false;
+						this.getSlide(this.slideId);
+					}
+				})
+			}
+			else if (event.action == "delete") {
+				this.loadingIMGs = true;
+				this.service.deleteSlide(this.slideId).pipe(take(1)).subscribe({
+					next: () => {
+						this.loadingIMGs = false;
+						this.valueChanges.emit({ action: "delete" });
+						// this.getSlide(this.slideId);
+					}
+				})
+			}
 		}
 	}
 

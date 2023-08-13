@@ -17,8 +17,8 @@
                 </div> -->
                 <div class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
                     <span>Tước hiệu: <strong>{{localItem?.anniversary}}</strong></span>
-                    <span *ngIf="localItem?.entityName">Giáo xứ: <strong>{{localItem?.entityName}}</strong></span>
-                    <span>Giáo hạt: <strong>{{localItem?.groupName}}</strong></span>
+                    <span *ngIf="localItem?.parentName">{{localItem?.parentTypeView}}: <strong>{{localItem?.parentName}}</strong></span>
+                    <span>{{localItem?.groupTypeView}}: <strong>{{localItem?.groupName}}</strong></span>
                     <span>Số điện thoại: <strong>{{localItem?.email}}</strong></span>
                     <span>Email: <strong>{{localItem?.email}}</strong></span>
                     <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
