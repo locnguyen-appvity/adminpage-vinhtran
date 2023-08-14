@@ -84,6 +84,9 @@ export class GroupViewComponent extends SimpleBaseComponent {
 						this.localItem.totalClergy = res.analytics.data.totalClergy;
 						this.localItem.totalMemberCount = res.analytics.data.totalMemberCount;
 						this.localItem.totalPopulation = res.analytics.data.totalPopulation;
+						if(!this.isNullOrEmpty(this.localItem.totalMemberCount) && !this.isNullOrEmpty(this.localItem.totalPopulation)){
+							this.localItem.memberCountPercent = `(~${(this.localItem.totalMemberCount/this.localItem.totalPopulation).toFixed(2)}%)`;
+						}
 						this.localItem.organizationAnalytics =  this.handleOrganizationAnalytics(res.analytics.data.organizationAnalytics);
 					}
 					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;

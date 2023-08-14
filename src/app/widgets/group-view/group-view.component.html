@@ -20,7 +20,7 @@
                             <span>{{org.name}}: <strong>{{org?.count}}</strong></span>
                         </ng-template>
                         <span>Dân số: <strong>{{localItem?.totalPopulation | numberFormat: "."}}</strong></span>
-                        <span>Tổng số giáo dân: <strong>{{localItem?.totalMemberCount | numberFormat: "."}}</strong></span>
+                        <span>Giáo dân: <strong>{{localItem?.totalMemberCount | numberFormat: "."}}</strong> {{localItem?.memberCountPercent}}</span>
                     </ng-template>
                 </div>
                 <div class="anniversaries-container mrt-24" fxLayout="column" fxLayoutAlign="start start">

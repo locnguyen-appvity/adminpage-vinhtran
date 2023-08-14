@@ -83,7 +83,10 @@ export class OrganizationViewComponent extends SimpleBaseComponent {
 					this.localItem = res;
 					this.localItem.groupTypeView = this.sharedService.updateNameTypeOrg(this.localItem.groupType);
 					this.localItem.parentTypeView = this.sharedService.updateNameTypeOrg(this.localItem.parentType);
-					this.editorFormCtrl.setValue(this.localItem.content)
+					this.editorFormCtrl.setValue(this.localItem.content);
+					if(!this.isNullOrEmpty(this.localItem.population) && !this.isNullOrEmpty(this.localItem.memberCount)){
+						this.localItem.memberCountPercent = `(~${(this.localItem.memberCount/this.localItem.population).toFixed(2)}%)`;
+					}
 					this.updateMassesesToOrg(this.localItem);
 					this.localItem.displayName = `${this.sharedService.updateNameTypeOrg(this.localItem.type)} ${this.localItem.name}`;
 					if (this.localItem.photo) {

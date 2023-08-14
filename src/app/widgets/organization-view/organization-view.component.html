@@ -23,7 +23,7 @@
                     <span>Email: <strong>{{localItem?.email}}</strong></span>
                     <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
                     <span>Dân số: <strong>{{localItem?.population | numberFormat: "."}}</strong></span>
-                    <span>Giáo dân: <strong>{{localItem?.memberCount | numberFormat: "."}}</strong></span>
+                    <span>Giáo dân: <strong>{{localItem?.memberCount | numberFormat: "."}}</strong> {{localItem?.memberCountPercent}}</span>
                 </div>
                 <div class="masseses-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
                     <span class="title">GIỜ LỄ</span>
