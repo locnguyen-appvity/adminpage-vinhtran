@@ -111,7 +111,7 @@ export class GroupDetailComponent extends SimpleBaseComponent {
 		return new Observable(obs => {
 			let options = {
 				select: 'id,name,type',
-				filter: "type eq 'giao_hat'"
+				filter: "type eq 'giao_hat' or type eq 'co_so_giao_phan'"
 			}
 			this.service.getGroups(options).pipe(take(1)).subscribe({
 				next: (res: any) => {
