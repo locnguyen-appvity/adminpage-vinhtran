@@ -116,8 +116,13 @@ export class PageService {
 	}
 
 	getClergy(id: string, options?: any): Observable<any> {
-		let baseUrl = this.rootAPIAdmin + '/clergies';
+		let baseUrl = this.rootAPI + '/clergies';
 		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getClergy', error)));
+	}
+
+	getDioceses(options?: any): Observable<any> {
+		let baseUrl = this.rootAPIAdmin + '/dioceses';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getDioceses', error)));
 	}
 
 	// Masses

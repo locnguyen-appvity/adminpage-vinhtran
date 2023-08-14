@@ -58,8 +58,14 @@
                     <div class="col-4">
                         <div class="categories">
                             <h2>NỐI KẾT</h2>
-                            <mat-list>
-                                <mat-list-item class="mg-list-item">
+                            <mat-list class="mxh-300">
+                                <ng-template ngFor let-dioceses [ngForOf]="arrDioceses" let-i="index">
+                                    <mat-list-item class="mg-list-item">
+                                        <a [href]="dioceses?.website" mat-line class="list-item-title">Giáo Phận {{dioceses.name}}</a>
+                                    </mat-list-item>
+                                    <mat-divider *ngIf="i!=arrDioceses.length-1"></mat-divider>
+                                </ng-template>
+                                <!-- <mat-list-item class="mg-list-item">
                                     <span mat-line class="list-item-title">TGP Sài Gòn</span>
                                 </mat-list-item>
                                 <mat-divider></mat-divider>
@@ -78,11 +84,7 @@
                                 <mat-list-item class="mg-list-item">
                                     <span mat-line class="list-item-title">TGP Sài Gòn</span>
                                 </mat-list-item>
-                                <mat-divider></mat-divider>
-                                <mat-list-item class="mg-list-item">
-                                    <span mat-line class="list-item-title">TGP Sài Gòn</span>
-                                </mat-list-item>
-                                <mat-divider></mat-divider>
+                                <mat-divider></mat-divider> -->
                             </mat-list>
                         </div>
                     </div>

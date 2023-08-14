@@ -108,6 +108,15 @@ body {
 	min-height: 400px !important;
 }
 
+.mxh-200 {
+	max-height: 200px;
+}
+
+.mxh-300 {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
 ///////
 button.mat-button {
 	* {

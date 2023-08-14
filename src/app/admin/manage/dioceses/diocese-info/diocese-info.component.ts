@@ -41,8 +41,7 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 			name: [this.localItem ? this.localItem.name : "", [Validators.required]],
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
-			entityID: this.localItem ? this.localItem.entityID : '',
-			entityType: this.localItem ? this.localItem.entityType : '',
+			website: this.localItem ? this.localItem.website : '',
 			status: this.localItem && this.localItem.status == 'inactive' ? false : true
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
@@ -71,8 +70,7 @@ export class DioceseInfoComponent extends SimpleBaseComponent {
 			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive',
 			type: 'dioceses',
-			entityID: "",
-			entityType: "",
+			website: valueForm.website,
 		}
 		if (this.target == 'edit') {
 			this.dataProcessing = true;

@@ -17,19 +17,22 @@
                 </div> -->
                 <div class="full-width" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="12">
                     <span>Tước hiệu: <strong>{{localItem?.anniversary}}</strong></span>
-                    <span *ngIf="localItem?.parentName">{{localItem?.parentTypeView}}: <strong>{{localItem?.parentName}}</strong></span>
-                    <span>{{localItem?.groupTypeView}}: <strong>{{localItem?.groupName}}</strong></span>
+                    <span *ngIf="localItem?.parentName">{{localItem?.parentTypeView}}:
+                        <a [href]="localItem?.entitylink" target="_blank"><strong>{{localItem?.parentName}}</strong></a></span>
+                    <span>{{localItem?.groupTypeView}}: <a [href]="localItem?.grouplink" target="_blank">
+                            <strong>{{localItem?.groupName}}</strong></a></span>
                     <span>Số điện thoại: <strong>{{localItem?.email}}</strong></span>
                     <span>Email: <strong>{{localItem?.email}}</strong></span>
                     <span>Địa chỉ: <strong>{{localItem?.address}}</strong></span>
                     <span>Dân số: <strong>{{localItem?.population | numberFormat: "."}}</strong></span>
-                    <span>Giáo dân: <strong>{{localItem?.memberCount | numberFormat: "."}}</strong> {{localItem?.memberCountPercent}}</span>
+                    <span>Giáo dân: <strong>{{localItem?.memberCount | numberFormat: "."}}</strong>
+                        {{localItem?.memberCountPercent}}</span>
                 </div>
                 <div class="masseses-container mrt-24" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="12">
                     <span class="title">GIỜ LỄ</span>
                     <ng-container *ngIf="localItem?.arrMasseses?.length > 0">
-                        <span
-                            *ngFor="let masses of localItem.arrMasseses">{{masses.name}}: <strong>{{masses.data}}</strong>
+                        <span *ngFor="let masses of localItem.arrMasseses">{{masses.name}}:
+                            <strong>{{masses.data}}</strong>
                         </span>
                     </ng-container>
                     <ng-container *ngIf="localItem?.arrMasseses?.length == 0">
@@ -59,8 +62,8 @@
                 </div>
                 <div class="appointments-container" fxLayout="column" fxLayoutAlign="start start">
                     <span class="title">DANH SÁCH LINH MỤC ĐÃ PHỤC VỤ</span>
-                    <se-list-appointments-organization [entityType]="'organization'"
-                        [entityID]="ID"  [filter]="filterAppointments"></se-list-appointments-organization>
+                    <se-list-appointments-organization [entityType]="'organization'" [entityID]="ID"
+                        [filter]="filterAppointments"></se-list-appointments-organization>
                 </div>
             </div>
         </div>
@@ -68,7 +71,7 @@
             <div class="content">
                 <se-clergies-appointment [entityID]="ID" [entityType]="'organization'"></se-clergies-appointment>
                 <se-editor-control [formControl]="editorFormCtrl"
-                [config]="{readonly: true,toolbar: false}"></se-editor-control>
+                    [config]="{readonly: true,toolbar: false}"></se-editor-control>
             </div>
         </div>
     </div>
