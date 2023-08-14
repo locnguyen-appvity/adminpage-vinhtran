@@ -25,7 +25,10 @@ export class FooterComponent extends SimpleBaseComponent {
 
 	getDioceses() {
 		this.arrDioceses = [];
-		this.service.getDioceses().pipe(take(1)).subscribe((res: any) => {
+		let options = {
+			sort:'name asc'
+		}
+		this.service.getDioceses(options).pipe(take(1)).subscribe((res: any) => {
 			if (res && res.value && res.value.length > 0) {
 				this.arrDioceses = res.value;
 			}
