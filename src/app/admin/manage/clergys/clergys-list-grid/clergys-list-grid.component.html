@@ -320,12 +320,12 @@
                                                         <h6 class="mrt-12" *ngIf="element?.appointment?.positionView">
                                                             Chức vụ: <strong>{{element?.appointment?.positionView}}</strong> </h6>
                                                         <h6 class="mrt-12" *ngIf="element?.appointment?.entityName">
-                                                            Nơi phục vụ: <strong>{{element?.appointment?.entityName}}</strong> </h6>
+                                                            Nơi phục vụ: <a [href]="element?.appointment?.entitylink" target="_blank"><strong>{{element?.appointment?.entityName}}</strong></a> </h6>
                                                         <h6 class="mrt-12" *ngIf="element?.expandData?.appointments?.length > 0">Các chức vụ khác</h6>
                                                         <ng-template ngFor let-appointment let-i="index"
                                                             [ngForOf]="element?.expandData?.appointments">
                                                             <h6 class="mrt-12">
-                                                                {{appointment.positionView}}: <strong>{{appointment.entityName}}</strong> </h6>
+                                                                {{appointment.positionView}}: <a [href]="appointment?.entitylink" target="_blank"><strong>{{appointment.entityName}}</strong></a></h6>
                                                         </ng-template>
                                                     </div>
                                                 <!-- </div> -->

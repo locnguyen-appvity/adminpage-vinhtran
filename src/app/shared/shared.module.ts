@@ -20,6 +20,7 @@ import { NumberOnlyDirective } from './number.only.directive';;
 import { ImageUrlTransformerPipe } from './image-url-transformer.pipe'
 import { CustomScrollDirective } from './directives/custom-scroll.directive';
 import { NumberFormatPipe } from './number.format.pipe';
+import { updateidtonamePipe } from './update-id-to-name.pipe copy';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -35,6 +36,7 @@ import { NumberFormatPipe } from './number.format.pipe';
 		SimpleBaseComponent,
 		InitialsPipe,
 		TruncatePipe,
+		updateidtonamePipe,
 		NumberFormatPipe,
 		SafeHtmlPipe,
 		PureWordsMaskDirective,
@@ -53,6 +55,7 @@ import { NumberFormatPipe } from './number.format.pipe';
 		MatButtonModule,
 		InitialsPipe,
 		TruncatePipe,
+		updateidtonamePipe,
 		NumberFormatPipe,
 		MatDividerModule,
 		ToastSnackbarAppModule,

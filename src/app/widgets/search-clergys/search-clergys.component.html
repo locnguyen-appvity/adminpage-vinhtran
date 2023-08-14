@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="times" fxFlex.gt-xs="50" fxFlex="100">
                                         <h4>Chức vụ: {{item?.appointment?.position}}</h4>
-                                        <h4>Nơi phục vụ: {{item?.appointment?.entityName}}</h4>
+                                        <h4>Nơi phục vụ: <a [href]="item?.appointment?.entitylink" target="_blank"><strong>{{item?.appointment?.entityName}}</strong></a></h4>
                                         <!-- <h2 class="title mrb-12">HOẠT ĐỘNG SỨC VỤ</h2>
                                         <div *ngIf="item?.arrAppointments?.length > 0" class="content" fxLayout="column"
                                             fxLayoutAlign="center start" fxLayoutGap="12">
