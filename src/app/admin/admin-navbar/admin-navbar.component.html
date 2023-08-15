@@ -52,10 +52,10 @@
         </div>
     </div>
     <mat-accordion multi>
-        <mat-expansion-panel [expanded]="openedPanel == 'website'">
+        <mat-expansion-panel [expanded]="openedPanel == 'post'">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon class="app-icon mrr-24" svgIcon="ic_article_48dp"></mat-icon> Quản Lý Website
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_article_48dp"></mat-icon> Quản Lý Bài Đăng
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-panel-description>
@@ -266,6 +266,22 @@
                     <mat-list-item [routerLink]="['/admin/manage/co_so_ngoai_giao_phan/list']"
                         [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
                         Cơ Sở Ngoài Giáo Phận
+                    </mat-list-item>
+                </mat-nav-list>
+            </mat-panel-description>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="openedPanel == 'websites'">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon class="app-icon mrr-24" svgIcon="ic_manage_accounts_48dp"></mat-icon> Quản Lý Giao Diện
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-panel-description>
+                <mat-nav-list>
+                    <mat-list-item [routerLink]="['/admin/websites/layouts/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Layouts
                     </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>

@@ -873,6 +873,59 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteAppointment', error)));
 	}
 
+	// Layouts
+	getLayouts(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/layouts';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getLayouts', error)));
+	}
+
+	getLayout(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/layouts';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getLayout', error)));
+	}
+
+	createLayout(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/layouts`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createLayout', error)));
+	}
+
+	updateLayout(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/layouts`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateLayout', error)));
+	}
+
+	deleteLayout(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/layouts`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteLayout', error)));
+	}
+
+	// Widgets
+	getWidgets(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/widgets';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getWidgets', error)));
+	}
+
+	getWidget(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/widgets';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getWidget', error)));
+	}
+
+	createWidget(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/widgets`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createWidget', error)));
+	}
+
+	updateWidget(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/widgets`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateWidget', error)));
+	}
+
+	deleteWidget(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/widgets`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteWidget', error)));
+	}
+
+
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {
 		let errorResponse: any = {
 			status: 0,

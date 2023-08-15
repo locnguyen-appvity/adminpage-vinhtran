@@ -1,0 +1,726 @@
+///// Dashboard Section Options
+.section-options {
+	padding: 8px;
+	width: 360px;
+	height: 152px;
+	background: #ffffff;
+	border-radius: 2px;
+
+	// z-index   : 9999;
+	.section-options-row {
+		width: 100%;
+		height: 72px;
+
+		.section-container {
+			background-color: #eeeeee;
+			width: 48px;
+			padding: 20px 8px;
+			margin-right: 8px;
+			border-radius: 2px;
+		}
+
+		.section-container:hover {
+			background-color: #e0e0e0;
+			cursor: pointer;
+		}
+
+		.section-container:last-child {
+			margin-right: 0;
+		}
+
+		.widget-container {
+			background-color: #bdbdbd;
+			border-radius: 2px;
+			margin-right: 8px;
+		}
+
+		.widget-container:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.section-options-row:last-child {
+		margin-top: 8px;
+	}
+}
+
+.se-dashboard-container-wrapper {
+	/////// mat-secondary
+	mat-toolbar.secondary-toolbar {
+		background: #ffffff;
+
+		&.toolbar-dashboard {
+			background-color: #ffffff !important;
+		}
+
+		&.se-dashboard-toolbar {
+			border-bottom: 1px solid rgba($color: #000000, $alpha: 0.12);
+		}
+	}
+
+	.mat-input-element.mat-form-field-autofill-control {
+		caret-color: #212121 !important;
+	}
+
+	///// Dashboard Toolbar
+	.se-dashboard-toolbar {
+		font: 500 20px/32px "Roboto", "Helvetica Neue", sans-serif;
+
+		.mat-icon-button {
+			margin-left: -8px;
+			margin-right: 8px;
+		}
+
+		@media screen and (max-width: 599px) {
+			.dashboard-name {
+				width: 100px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+
+	///// Dashboard Container
+	.se-dashboard-container {
+		height: calc(100vh - 130px);
+		padding: 16px 8px;
+
+		.add-section {
+			position: relative;
+			padding: 12px;
+			background-color: #eeeeee;
+			margin: 12px 0;
+			border-radius: 2px;
+		}
+
+		.section {
+			position: relative;
+			margin-bottom: 16px;
+
+			@media screen and (max-width: 979px) {
+				margin-bottom: 0;
+
+				.mat-card {
+					margin-bottom: 16px;
+				}
+			}
+
+			.se-cell-section {
+				position: relative !important;
+				max-width: 100%;
+			}
+
+			.WidgetContainers {
+				width: 100%;
+
+				.mat-card,
+				.mat-toolbar {
+					input.se-title {
+						width: calc(100% - 48px);
+					}
+				}
+
+				.se-camera-wrapper {
+					padding: 0;
+					margin: 0 !important;
+				}
+
+				//// Widget Camera
+				.se-livestreamdetail-dashboard {
+					.se-livestreamdetail {
+						margin: 0;
+						margin-top: 0 !important;
+						padding: 0;
+
+						.mat-toolbar-livestream {
+							font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+							font-weight: 500 !important;
+							height: 48px;
+							border-radius: 4px 4px 0 0;
+							width: 100% !important;
+							padding: 0 16px;
+							margin: 0 !important;
+							background-color: #fff;
+
+							.mat-toolbar-icon {
+								display: none;
+							}
+
+							.se-title-video {
+								font-size: 18px;
+
+								span {
+									font-size: 18px !important;
+								}
+							}
+						}
+
+						.mat-sidenav-container {
+							margin: 0;
+						}
+
+						.se-cameradetail-livestream {
+							.se-cameradetail-livestream-wrap {
+								border-radius: 0 0 4px 4px;
+
+								.se-img-container {
+									min-height: 360px !important;
+									max-height: 360px;
+
+									.se-cameradetail-img,
+									.se-cameradetail-video {
+										object-fit: contain;
+										height: 360px;
+									}
+									.se-camera-low-network {
+										height: 360px;
+									}
+								}
+							}
+						}
+					}
+				}
+
+				//// Widget Map
+				.mat-card-map-dashboad {
+					margin: 0 !important;
+
+					&.mat-sidenav-container-map,
+					&.mat-sidenav-container-map-ext {
+						box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+							0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+							0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+						border-radius: 4px;
+						height: 408px !important;
+
+						.secondary-toolbar {
+							margin-top: 0 !important;
+							font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+							font-weight: 500 !important;
+							height: 48px;
+							margin-top: -48px !important;
+							border-bottom: none;
+
+							& > span:first-child {
+								width: 100%;
+							}
+
+							&.secondary-toolbar-enabled {
+								margin-top: 0 !important;
+							}
+
+							.se-title {
+								font-size: 18px;
+							}
+						}
+
+						.se-map-container-large {
+							position: relative;
+
+							&.map-with-secondary-toolbar {
+								height: calc(100% - 48px) !important;
+							}
+						}
+
+						.mat-tab-body-content {
+							height: 359px;
+						}
+					}
+
+					&.map-fullscreen-on {
+						&.mat-sidenav-container-map,
+						&.mat-sidenav-container-map-ext {
+							height: 100% !important;
+							width: 100% !important;
+						}
+
+						.filter-sidebar-width {
+							.mat-tab-group-map,
+							.mat-tab-group {
+								max-height: calc(100vh - 16px) !important;
+
+								.mat-tab-body-content {
+									height: 100% !important;
+								}
+							}
+						}
+					}
+				}
+
+				//// Widget News
+				.news-widget {
+					margin: 0 !important;
+					margin-top: 0 !important;
+					padding: 0 !important;
+					border-radius: 4px;
+
+					.mat-card-header {
+						height: 48px;
+						padding: 16px;
+						border-radius: 4px 4px 0 0;
+
+						.mat-card-title {
+							font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+							font-weight: 500 !important;
+							font-size: 18px;
+							margin-left: 0;
+							margin-bottom: 0;
+						}
+					}
+
+					.news-widget-container {
+						height: 100%;
+						padding: 0;
+						max-height: 360px;
+						overflow: auto;
+
+						[article-image] {
+							flex-shrink: 0;
+							width: 60px !important;
+							height: 40px !important;
+							object-fit: cover;
+							border-radius: 4px !important;
+						}
+
+						[article-headline] {
+							white-space: pre-line;
+							max-height: 42px;
+						}
+
+						.mat-list-item-content {
+							padding: 0 16px;
+
+							.mat-list-text {
+								.mat-line {
+									overflow: hidden;
+									text-overflow: ellipsis;
+									display: -webkit-box;
+									-webkit-line-clamp: 2;
+									-webkit-box-orient: block-axis;
+								}
+							}
+						}
+					}
+				}
+
+				//// Map Devices
+				.se-map-devices-container {
+					box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+						0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+						0px 1px 3px 0px rgba(0, 0, 0, 0.12) !important;
+					border-radius: 4px !important;
+					height: 408px !important;
+
+					.secondary-toolbar {
+						margin-top: 0 !important;
+						font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+						font-weight: 500 !important;
+						height: 48px;
+						margin-top: -48px !important;
+						border-radius: 4px 4px 0 0;
+
+						> span {
+							width: calc(100% - 48px);
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
+
+						& > span:first-child {
+							width: calc(100% - 48px);
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+						}
+
+						&.secondary-toolbar-enabled {
+							margin-top: 0 !important;
+						}
+
+						.se-title {
+							font-size: 18px;
+							width: calc(100% - 30px);
+						}
+					}
+
+					.se-map-container-large {
+						height: calc(100% - 48px) !important;
+
+						.se-map-devices {
+							border-radius: 0 0 4px 4px;
+							width: 100%;
+
+							.leaflet-right .leaflet-control {
+								margin-right: 5px;
+							}
+						}
+					}
+				}
+
+				//// Lasted Collects
+				.se-latest-collects-dashboard {
+					.secondary-toolbar {
+						font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+						font-weight: 500 !important;
+						height: 48px;
+						border-radius: 4px 4px 0 0;
+						padding: 0 16px !important;
+						margin: 0 !important;
+
+						span {
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							width: 100%;
+						}
+
+						.mat-icon-button {
+							&.back-icon {
+								margin-left: -10px;
+							}
+						}
+
+						.se-title {
+							font: 18px "Roboto", "Helvetica Neue", sans-serif !important;
+							font-weight: 500 !important;
+							color: #454f63;
+						}
+					}
+
+					.widget-container-collect {
+						height: 360px;
+						border-radius: 0 0 6px 6px;
+
+						se-lazy-collect-view {
+							width: 100%;
+						}
+
+						.latest-collect-list {
+							.latest-collect-item {
+								img {
+									height: 360px;
+								}
+							}
+						}
+
+						.se-lazy-collect-view {
+							.gallery-container {
+								.slides-media {
+									height: 360px;
+
+									video {
+										min-height: 360px;
+									}
+								}
+
+								.se-lazy-gallery {
+									min-height: 360px;
+								}
+
+								.se-stream-unavailable {
+									top: 50%;
+									left: 50%;
+									transform: translate(-50%, -50%);
+									padding: 0 16px !important;
+									right: 0;
+									width: 80%;
+									margin: 0 auto;
+								}
+
+								img {
+									height: 360px;
+								}
+							}
+						}
+
+						.cdk-virtual-scroll-viewport {
+							height: 360px !important;
+						}
+
+						.mat-grid-list {
+							border-bottom: 1px solid #fff;
+
+							.mat-grid-tile {
+								.mat-figure {
+									background: #000;
+
+									img.se-thumbnail {
+										width: inherit !important;
+										height: inherit !important;
+									}
+								}
+
+								&.mat-grid-title-audio {
+									.mat-figure {
+										img.se-thumbnail {
+											width: 100% !important;
+										}
+									}
+								}
+							}
+						}
+
+						.se-genetec-camera-container {
+							.se-livestreamdetail.mat-card {
+								padding: 0;
+								margin: 0;
+								margin-top: 0 !important;
+
+								.se-cameradetail-img,
+								.se-cameradetail-video {
+									width: auto;
+								}
+								.se-camera-low-network {
+									width: auto;
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.add-widget {
+				margin-top: 0 !important;
+				margin: 0 8px;
+				background-color: transparent;
+				box-shadow: none;
+				padding: 0;
+
+				.btn-add-widget {
+					border: 1px solid rgba(0, 0, 0, 0.12);
+					height: 200px;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					border-radius: 4px;
+
+					.mat-icon-button {
+						height: 48px;
+						width: 48px;
+
+						.mat-icon {
+							height: 48px;
+							width: 48px;
+							line-height: 48px;
+						}
+					}
+
+					&:hover {
+						background-color: rgba(0, 0, 0, 0.04);
+						cursor: pointer;
+						outline: 0;
+					}
+				}
+
+				@media screen and (max-width: 979px) {
+					margin: 0 8px 16px;
+				}
+			}
+
+			.remove-section {
+				position: absolute;
+				display: block;
+				top: -10px;
+				right: -10px;
+				z-index: 99;
+
+				&.mat-icon-button {
+					width: 24px;
+					height: 24px;
+					line-height: 20px;
+				}
+			}
+
+			&.view_3,
+			&.view_4,
+			&.view_6 {
+				.add-widget {
+					.WidgetContainers {
+						//// Map
+						.mat-card-map-dashboad {
+							&.map-fullscreen-off {
+								.listView-sidebar-width {
+									width: 288px !important;
+								}
+							}
+						}
+
+						.device-playback-container-minimize,
+						.device-playback-container-maximize {
+							width: calc(100% - 48px);
+						}
+					}
+				}
+			}
+
+			&.view_5 {
+				.add-widget {
+					.WidgetContainers {
+						//// Map
+						.mat-card-map-dashboad {
+							&.mat-sidenav-container-map,
+							&.mat-sidenav-container-map-ext {
+								height: 248px !important;
+							}
+
+							&.map-fullscreen-off {
+								.listView-sidebar-width {
+									width: 288px !important;
+								}
+							}
+
+							&.map-fullscreen-on {
+								.mat-sidenav-container-map,
+								.mat-sidenav-container-map-ext {
+									height: 100% !important;
+								}
+							}
+						}
+
+						//// Camera
+						.se-livestreamdetail-dashboard {
+							.se-livestreamdetail {
+								.se-cameradetail-livestream {
+									.se-cameradetail-livestream-wrap {
+										.se-img-container {
+											min-height: 200px !important;
+											max-height: 200px;
+
+											.se-cameradetail-img,
+											.se-cameradetail-video {
+												height: 200px;
+											}
+											.se-camera-low-network {
+												height: 200px;
+											}
+										}
+									}
+								}
+							}
+						}
+
+						//// News
+						.news-widget {
+							.news-widget-container {
+								max-height: 200px;
+							}
+						}
+
+						.device-playback-container-minimize,
+						.device-playback-container-maximize {
+							width: calc(100% - 48px);
+						}
+
+						//// Map Devices
+						.se-map-devices-container {
+							height: 248px !important;
+						}
+
+						//// Lasted Collects
+						.se-latest-collects-dashboard {
+							.widget-container-collect {
+								height: 200px;
+
+								.latest-collect-list {
+									.latest-collect-item {
+										img {
+											height: 200px;
+										}
+									}
+								}
+
+								.se-lazy-collect-view {
+									.gallery-container {
+										.slides-media {
+											height: 200px;
+
+											video {
+												min-height: 200px;
+											}
+										}
+
+										.se-lazy-gallery {
+											min-height: 200px;
+										}
+
+										img {
+											height: 200px;
+										}
+									}
+								}
+
+								.cdk-virtual-scroll-viewport {
+									height: 200px !important;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&.se-dashboard-container-loading {
+		height: calc(100vh - 135px);
+	}
+
+	//for widget added
+	mat-card.added-widget,
+	mat-card.added-widget-half,
+	mat-card.added-widget-third,
+	mat-card.added-widget-three-quarter-quarter,
+	mat-card.added-widget-quarter,
+	mat-card.added-widget-quarter-three-quarter {
+		max-width: 100% !important;
+		padding: 0px !important;
+		text-align: left !important;
+		margin: 0 8px 16px;
+		margin-top: 0 !important;
+	}
+
+	///// Edit Mode
+	&.edit-mode {
+		.se-dashboard-container {
+			padding: 16px;
+
+			.section {
+				border: 1px solid #eeeeee;
+				border-radius: 5px;
+				padding: 12px 6px;
+			}
+
+			&--fullscreen {
+				.edit-mode-add-widget {
+					.mat-icon-button {
+						height: 48px;
+						width: 48px;
+
+						.mat-icon {
+							height: 48px;
+							width: 48px;
+							line-height: 48px;
+						}
+					}
+				}
+			}
+
+			&--fullscreen,
+			&--split-view {
+				padding: 0;
+
+				.section {
+					border: none;
+					border-radius: 0;
+					padding: 0;
+
+					&.split-view-add-widget {
+						margin-bottom: 0 !important;
+						padding: 16px 8px;
+					}
+				}
+			}
+		}
+	}
+}

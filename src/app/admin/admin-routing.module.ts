@@ -91,6 +91,10 @@ const routes: Routes = [
 				path: 'manage',
 				loadChildren: () => import('./manage/manage.module').then(m => m.ManageModule)
 			},
+			{
+				path: 'websites',
+				loadChildren: () => import('./websites/websites.module').then(m => m.WebsitesModule)
+			},
 			{ path: '', redirectTo: 'posts', pathMatch: 'full' },
 		]
 	}
