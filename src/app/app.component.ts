@@ -4,6 +4,7 @@ import { SharedPropertyService } from './shared/shared-property.service';
 import { distinctUntilChanged, share, shareReplay, takeUntil } from 'rxjs';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
@@ -21,10 +22,21 @@ export class AppComponent extends SimpleBaseComponent {
     constructor(
         public override sharedService: SharedPropertyService,
 		private titleService: Title,
+		public router: Router,
     ) {
         super(sharedService);
         this.actionsAsync();
 		this.titleService.setTitle("Giáo Phận Phú Cường");
+
+		this.router.events.pipe(shareReplay({
+			bufferSize: 1,
+			refCount: true,
+		}), takeUntil(this.unsubscribe)).subscribe((event: any) => {
+			console.log("event........",event);
+			console.log(location.origin);
+			console.log(location.href);
+			console.log(location.pathname);
+		});
     }
 
     actionsAsync() {

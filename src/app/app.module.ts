@@ -14,7 +14,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { SettingWorkspaceModule } from './setting-workspace/setting-workspace.module';
-import { HashLocationStrategy, LocationStrategy, provideImgixLoader } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -45,8 +44,7 @@ import { HashLocationStrategy, LocationStrategy, provideImgixLoader } from '@ang
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthenIntercept, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
-    provideImgixLoader('http://admin.dev.giaophanphucuong.com/')
+    // { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })
