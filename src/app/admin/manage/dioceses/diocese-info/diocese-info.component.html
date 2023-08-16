@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>{{title}} Giáo Phận</h2>
+<h2 mat-dialog-title>{{title}} {{titleName}}</h2>
 <mat-dialog-content>
     <div class="content-dialog content-dialog--minHeight">
         <form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
@@ -6,6 +6,19 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Tên</mat-label>
                     <input matInput required formControlName="name" autocomplete="off">
+                </mat-form-field>
+                <mat-form-field *ngIf="type == 'dioceses'" appearance="outline">
+                    <mat-label>Cấp</mat-label>
+                    <mat-select formControlName="level">
+                        <mat-option value="giao_phan"> Giáo Phận </mat-option>
+                        <mat-option value="tong_giao_phan"> Tổng Giáo Phận </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field *ngIf="type == 'dioceses'" appearance="outline">
+                    <mat-label>Thuộc</mat-label>
+                    <mat-select formControlName="group">
+                        <mat-option *ngFor="let item of arrGroups" [value]="item.name"> {{item.name}} </mat-option>
+                    </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Website</mat-label>

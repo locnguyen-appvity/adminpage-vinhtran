@@ -221,6 +221,20 @@ export class SharedPropertyService {
         }
     }
 
+    updateLevelDioceses(type: string) {
+        switch (type) {
+            case 'dioceses':
+            case 'giao_phan':
+                return 'Giáo phận'
+            case 'tong_giao_phan':
+                return 'Tổng giáo phận'
+            case 'ecclesiastical-province':
+                return 'Giáo tỉnh'
+            default:
+                return "";
+        }
+    }
+
     updateNameTypeOrg(type: string) {
         switch (type) {
             case 'giao_hat':

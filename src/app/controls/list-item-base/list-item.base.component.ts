@@ -57,7 +57,7 @@ export class ListItemBaseComponent extends SimpleBaseComponent {
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `(${filter}) and (${quickSearch})`;
 			}
 		}
 		return filter;

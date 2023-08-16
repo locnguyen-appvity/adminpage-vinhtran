@@ -12,6 +12,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
 import { AutocompleteSimpleModule } from 'src/app/controls/se-autocomplete-simple';
 import { DioceseInfoComponent } from './diocese-info.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DioceseInfoComponent } from './diocese-info.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatSlideToggleModule,
     EditorControlModule,
     AutocompleteSimpleModule

@@ -5,9 +5,9 @@
         <div fxFlex="100">
             <div fxLayout="row" fxLayoutAlign="center center" class="account-header" fxHide.lt-md>
                 <!-- <mat-icon class="account-header-icon" svgIcon="ic_groups_department"></mat-icon> -->
-                <h2 class="account-title">Giáo Phận</h2>
+                <h2 class="account-title">{{title}}</h2>
             </div>
-            <p class="account-subtitle">Quản lý danh sách giáo phận</p>
+            <p class="account-subtitle">Quản lý danh sách {{title}}</p>
         </div>
     </div>
 
@@ -21,7 +21,7 @@
                     <div fxFlex="75">
                         <div fxLayout="row" fxLayoutAlign="start center">
                             <mat-icon class="search-icon" svgIcon="ic_search_48px"></mat-icon>
-                            <input placeholder="Tìm giáo phận theo tên" [readonly]="spinerLoading"
+                            <input placeholder="Tìm {{title}} theo tên" [readonly]="spinerLoading"
                                 [formControl]="txtSearch">
                         </div>
                     </div>
@@ -31,9 +31,8 @@
                             aria-label="Close" matTooltip="Xoá" class="mat-icon-button-search-close">
                             <mat-icon class="material-icons" svgIcon="ic_close_48px"></mat-icon>
                         </button>
-                        <button style="border-radius: 8px;" mat-stroked-button color="primary"
-                            aria-label="Thêm Giáo Phận" (click)="onAddItem()">
-                            Thêm Giáo Phận
+                        <button style="border-radius: 8px;" mat-stroked-button color="primary" (click)="onAddItem()">
+                            Thêm {{title}}
                         </button>
                         <!-- [disabled]="noData" -->
                     </div>
@@ -49,7 +48,7 @@
                             liệu</ng-container>
                         <ng-template #noDataView>
                             <h2 *ngIf="noData" class="mat-h2">Chưa có dữ liệu</h2>
-                            <button *ngIf="noData" (click)="onAddAuto()" mat-flat-button color="primary"
+                            <button *ngIf="noData && type == 'dioceses'" (click)="onAddAuto()" mat-flat-button color="primary"
                                 aria-label="Thêm Mới">
                                 Thêm Mới Tự Động
                             </button>
@@ -62,7 +61,7 @@
                                 (click)="onChangeData(data)">
                                 <mat-icon mat-list-icon [ngClass]="data.class" [matTooltip]="data.statusTooltip"
                                     [svgIcon]="data.statusIcon"></mat-icon>
-                                <h4 mat-line>{{data.name}}</h4>
+                                <h4 mat-line>{{data.nameView}}</h4>
                                 <span fxFlex></span>
                                 <mat-icon svgIcon="ic_keyboard_arrow_right_48px"></mat-icon>
                             </mat-list-item>

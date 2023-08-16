@@ -11,6 +11,10 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./dioceses/dioceses.module').then(m => m.DiocesesModule)
 			},
 			{
+				path: 'ecclesiastical-province',
+				loadChildren: () => import('./dioceses/dioceses.module').then(m => m.DiocesesModule)
+			},
+			{
 				path: 'saints-list',
 				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
 			},
