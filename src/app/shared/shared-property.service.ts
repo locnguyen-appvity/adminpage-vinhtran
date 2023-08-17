@@ -264,6 +264,17 @@ export class SharedPropertyService {
         }
     }
 
+    updateNameTypeSaint(type: string) {
+        switch (type) {
+            case 'thanh':
+                return 'Thánh'
+            case 'le':
+                return 'Lễ'
+            default:
+                return "";
+        }
+    }
+
     parseOffsetTimezone(offset: any): number {
         if (offset) {
             if (typeof offset === "number") {

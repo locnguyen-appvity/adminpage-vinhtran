@@ -13,6 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { NgxMaskModule } from 'ngx-mask';
 import { SaintInfoComponent } from './saint-info.component';
 import { EditorControlModule } from 'src/app/controls/editor-control/editor-control.module';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -36,7 +37,8 @@ import { EditorControlModule } from 'src/app/controls/editor-control/editor-cont
     MatFormFieldModule,
     MatInputModule,
     MatSlideToggleModule,
-    EditorControlModule
+    EditorControlModule,
+    MatSelectModule
   ],
   exports: [SaintInfoComponent]
 })

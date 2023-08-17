@@ -127,7 +127,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				items = res.value;
 				for (let item of items) {
-					item.name = `${this.sharedService.updateNameTypeOrg(item.type)} ${item.name}`;
+					item.name = `${this.sharedService.updateNameTypeSaint(item.type)} ${item.name}`;
 				}
 			}
 			this.arrSaints = items;

@@ -162,13 +162,15 @@
                     </mat-list-item>
                     <mat-list-item [routerLink]="['/admin/authors/authors-list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
-                        <!-- <mat-icon class="app-icon" svgIcon="ic_account_box_48dp"></mat-icon> -->
                         Tác Giả
                     </mat-list-item>
-                    <mat-list-item [routerLink]="['/admin/manage/saints-list']" [routerLinkActive]="['active']"
+                    <mat-list-item [routerLink]="['/admin/thanh/list']" [routerLinkActive]="['active']"
                         [routerLinkActiveOptions]="{exact: true}">
-                        <!-- <mat-icon class="app-icon" svgIcon="ic_manage_accounts_48dp"></mat-icon> -->
                         Các Thánh
+                    </mat-list-item>
+                    <mat-list-item [routerLink]="['/admin/le/list']" [routerLinkActive]="['active']"
+                        [routerLinkActiveOptions]="{exact: true}">
+                        Các Ngày Lễ
                     </mat-list-item>
                 </mat-nav-list>
             </mat-panel-description>

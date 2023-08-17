@@ -4,7 +4,13 @@ import { SaintsComponent } from './saints.component';
 
 const myRoutes: Routes = [
 	{
-		path: '', component: SaintsComponent
+		path: '', component: SaintsComponent,
+		children: [
+			{
+				path: 'list',
+				loadChildren: () => import('../saints/saints.module').then(m => m.SaintsModule)
+			},
+		]
 	},
 ];
 

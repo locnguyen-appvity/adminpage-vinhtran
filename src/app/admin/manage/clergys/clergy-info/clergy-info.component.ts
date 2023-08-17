@@ -170,7 +170,8 @@ export class ClergyInfoComponent extends SimpleBaseComponent {
 		this.saintList$ = of([]);
 		this.saintList = [];
 		let options = {
-			select: 'id,name,abbreviation'
+			select: 'id,name,abbreviation',
+			filter: "type eq 'thanh'"
 		}
 		this.service.getSaints(options).pipe(take(1)).subscribe({
 			next: (res: any) => {

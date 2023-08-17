@@ -7,6 +7,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { SaintInfoComponent } from './saint-info/saint-info.component';
 import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
 import { SAINTS_DATA } from 'src/app/shared/data-manage';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'se-saints',
@@ -14,16 +15,24 @@ import { SAINTS_DATA } from 'src/app/shared/data-manage';
 	styleUrls: ['./saints.component.scss']
 })
 export class SaintsComponent extends ListItemBaseComponent {
+	public type: string = "thanh";
+	public title:string = "Các Thánh";
+
 	constructor(public override sharedService: SharedPropertyService,
 		private service: SharedService,
 		public snackbar: MatSnackBar,
+		public router: Router,
 		public dialog: MatDialog) {
 		super(sharedService, snackbar);
+		if (this.router.url.includes('/le')) {
+			this.type = "le";
+			this.title = "Ngày Lễ"
+		}
 		this.getDataItems();
 	}
 
 	getFilter() {
-		let filter = '';
+		let filter = `type eq '${this.type}'`;
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -32,7 +41,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `(${filter}) and (${quickSearch})`;
 			}
 		}
 		return filter;
@@ -51,6 +60,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				let items = res.value;
 				for (let item of items) {
+					item.name = `${this.sharedService.updateNameTypeSaint(item.type)} ${item.name}`;
 					switch (item.status) {
 						case 'active':
 							item.statusTooltip = 'Hiện';
@@ -90,7 +100,8 @@ export class SaintsComponent extends ListItemBaseComponent {
 	onAddItem() {
 		let config: any = {};
 		config.data = {
-			target: 'add'
+			target: 'add',
+			type: this.type
 		};
 		this.openFormDialog(config, 'add');
 	}
@@ -110,6 +121,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 							let dataJSON = {
 								name: valueForm.name,
 								code: valueForm.code,
+								type: "thanh",
 								status: 'active'
 							}
 							this.service.createSaint(dataJSON).pipe(takeUntil(this.unsubscribe)).subscribe({
@@ -191,7 +203,8 @@ export class SaintsComponent extends ListItemBaseComponent {
 		let config: any = {};
 		config.data = {
 			target: 'edit',
-			item: item
+			item: item,
+			type: this.type
 		};
 		this.openFormDialog(config, 'edit');
 	}

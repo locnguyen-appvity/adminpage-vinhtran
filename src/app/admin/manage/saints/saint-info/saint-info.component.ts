@@ -21,6 +21,7 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 	public canDelete: boolean = false;
 	public saveAction: string = '';
 	public localItem: any;
+	public type: string = "thanh";
 
 	constructor(public override sharedService: SharedPropertyService,
 		private fb: FormBuilder,
@@ -29,6 +30,9 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 		@Optional() @Inject(MAT_DIALOG_DATA) private dialogData: any) {
 		super(sharedService);
 		this.target = this.dialogData.target;
+		if (this.dialogData.type) {
+			this.type = this.dialogData.type;
+		}
 		if (this.target === 'edit') {
 			this.title = "Sửa";
 			this.textSave = 'Lưu';
@@ -44,46 +48,15 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			subtitle: this.localItem ? this.localItem.subtitle : "",
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
-			anniversary: this.localItem ? this.localItem.anniversary : ""
+			anniversary: this.localItem ? this.localItem.anniversary : "",
+			// type: this.localItem ? this.localItem.type : ""
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
-			if (this.target === 'edit') {
-				this.hasChangedGroup = this.isChangedForm(valueForm);
-			}
-			else {
-				this.hasChangedGroup = true;
-			}
+			this.hasChangedGroup = true;
 		})
 		this.dataItemGroup.get('name').valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((name: string) => {
 			this.dataItemGroup.get('code').setValue(this.sharedService.getLinkOfName(name));
-			// this.dataItemGroup.get('abbreviation').setValue(name);
 		})
-	}
-
-	isChangedForm(valueForm: any) {
-		if (this.sharedService.isChangedValue(valueForm.name, this.dialogData.item.name)) {
-			return true;
-		}
-		if (this.sharedService.isChangedValue(valueForm.anniversary, this.dialogData.anniversary)) {
-			return true;
-		}
-		if (this.sharedService.isChangedValue(valueForm.description, this.dialogData.description)) {
-			return true;
-		}
-		if (this.sharedService.isChangedValue(valueForm.content, this.dialogData.content)) {
-			return true;
-		}
-		if (this.sharedService.isChangedValue(valueForm.subtitle, this.dialogData.subtitle)) {
-			return true;
-		}
-		if (this.sharedService.isChangedValue(valueForm.abbreviation, this.dialogData.abbreviation)) {
-			return true;
-		}
-		let status = this.dialogData.item.status == 'inactive' ? false : true;
-		if (this.sharedService.isChangedValue(valueForm.status, status)) {
-			return true;
-		}
-		return false;
 	}
 
 	closeDialog() {
@@ -107,6 +80,7 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			subtitle: valueForm.subtitle,
 			anniversary: valueForm.anniversary,
 			description: valueForm.description,
+			type: this.type,
 			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive'
 		}

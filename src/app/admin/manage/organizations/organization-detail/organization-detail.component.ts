@@ -221,9 +221,7 @@ export class OrganizationDetailComponent extends SimpleBaseComponent implements 
 			next: (res: any) => {
 				if (res && res.value && res.value.length > 0) {
 					for (let item of res.value) {
-						if(!this.isNullOrEmpty(item.abbreviation)){
-							item.name = item.abbreviation;
-						}
+						item.name = `${this.sharedService.updateNameTypeSaint(item.type)} ${item.name}`;
 					}
 					this.saintList = res.value;
 				}

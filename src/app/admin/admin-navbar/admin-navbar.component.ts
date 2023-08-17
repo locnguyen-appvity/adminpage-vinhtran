@@ -51,6 +51,8 @@ export class AdminNavbarComponent extends SimpleBaseComponent {
 		if (
 			this.router.url.startsWith('/admin/categories-list') ||
 			this.router.url.startsWith('/admin/tags') ||
+			this.router.url.startsWith('/admin/thanh') ||
+			this.router.url.startsWith('/admin/le') ||
 			this.router.url.startsWith('/admin/catalogues-list') ||
 			this.router.url.startsWith('/admin/authors') 
 		) {

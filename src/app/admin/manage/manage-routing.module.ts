@@ -15,10 +15,6 @@ const myRoutes: Routes = [
 				loadChildren: () => import('./dioceses/dioceses.module').then(m => m.DiocesesModule)
 			},
 			{
-				path: 'saints-list',
-				loadChildren: () => import('./saints/saints.module').then(m => m.SaintsModule)
-			},
-			{
 				path: 'group',
 				loadChildren: () => import('./groups/groups.module').then(m => m.GroupsModule)
 			},
@@ -98,7 +94,7 @@ const myRoutes: Routes = [
 				path: 'positions',
 				loadChildren: () => import('./positions/positions.module').then(m => m.PositionsModule)
 			},
-			{ path: '', redirectTo: 'saints-list', pathMatch: 'full' },
+			{ path: '', redirectTo: 'giao_xu', pathMatch: 'full' },
 		],
 	},
 	// { path: '', component: UserNavbarComponent, outlet: "sidebar" }
