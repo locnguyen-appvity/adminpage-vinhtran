@@ -204,7 +204,7 @@ export class OrganizationsListComponent extends TemplateGridApplicationComponent
 	}
 
 	onView(item: any){
-		this.router.navigate([`/page/organization/${item.id}`]);
+		window.open(`${location.origin}/gppc/client/page/organization/${item.id}`, '_blank');
 	}
 
 	onDelete(item: any) {

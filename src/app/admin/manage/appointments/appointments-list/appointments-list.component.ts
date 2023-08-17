@@ -469,7 +469,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 			link = `./#/admin/clergy-view/${element.clergyID}`;
 		}
 		else {
-			link = `./#/page/${element.entityType}/${element.entityID}`;
+			link = `${location.origin}/gppc/client/page/${element.entityType}/${element.entityID}`;
 		}
 		// this.router.navigate([]).then(() => {
 		window.open(link, '_blank');

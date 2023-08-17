@@ -69,7 +69,7 @@ export class GroupsListComponent extends ListItemBaseComponent {
 	}
 
 	onViewItem(item: any) {
-		this.router.navigate([`/page/group/${item.id}`]);
+		window.open(`${location.origin}/gppc/client/page/group/${item.id}`, '_blank');
 	}
 
 	openFormDialog(config: any, target: string) {

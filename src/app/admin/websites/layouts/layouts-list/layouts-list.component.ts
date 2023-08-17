@@ -154,7 +154,7 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 	}
 
 	onView(item: any) {
-		this.router.navigate([`/page/layout/${item.id}`]);
+		
 	}
 
 	onDelete(item: any) {

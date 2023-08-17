@@ -52,7 +52,7 @@ export class UpdatePositionClergyDirective implements OnChanges {
 					// data.order = this.sharedService.getOrderPositionClergy(data.position);
 					data.positionView = this.sharedService.getNameExistsInArray(data.position, this.positionList, 'code');
 					if(!this.isNullOrEmpty(data.entityType) && !this.isNullOrEmpty(data.entityID)){
-						data.entitylink = `./#/page/${data.entityType}/${data.entityID}`;
+						data.entitylink = `${location.origin}/client/page/${data.entityType}/${data.entityID}`;
 					}
 					// }
 					item.appointment = {

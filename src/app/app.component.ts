@@ -28,15 +28,15 @@ export class AppComponent extends SimpleBaseComponent {
         this.actionsAsync();
 		this.titleService.setTitle("Giáo Phận Phú Cường");
 
-		this.router.events.pipe(shareReplay({
-			bufferSize: 1,
-			refCount: true,
-		}), takeUntil(this.unsubscribe)).subscribe((event: any) => {
-			console.log("event........",event);
-			console.log(location.origin);
-			console.log(location.href);
-			console.log(location.pathname);
-		});
+		// this.router.events.pipe(shareReplay({
+		// 	bufferSize: 1,
+		// 	refCount: true,
+		// }), takeUntil(this.unsubscribe)).subscribe((event: any) => {
+		// 	console.log("event........",event);
+		// 	console.log(location.origin);
+		// 	console.log(location.href);
+		// 	console.log(location.pathname);
+		// });
     }
 
     actionsAsync() {

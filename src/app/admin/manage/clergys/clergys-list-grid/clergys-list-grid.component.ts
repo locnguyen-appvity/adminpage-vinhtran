@@ -400,7 +400,7 @@ export class ClergiesListComponent extends TemplateGridApplicationComponent {
 						for (let it of appointments) {
 							it.positionView = this.updatePosition(it.position);
 							if(!this.isNullOrEmpty(it.entityType) && !this.isNullOrEmpty(it.entityID)){
-								it.entitylink = `./#/page/${it.entityType}/${it.entityID}`;
+								it.entitylink = `${location.origin}/gppc/client/page/${it.entityType}/${it.entityID}`;
 							}
 						}
 						let data = CommonUtility.getCurrentPositionClergy(appointments);
