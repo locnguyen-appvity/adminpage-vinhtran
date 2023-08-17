@@ -1,51 +1,38 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, forkJoin, take, takeUntil } from 'rxjs';
+import { take, takeUntil } from 'rxjs';
 import { SharedPropertyService } from 'src/app/shared/shared-property.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { Router } from '@angular/router';
 import { LayoutInfoComponent } from '../layout-info/layout-info.component';
-import { TemplateGridApplicationComponent } from 'src/app/shared/template.grid.component';
-import { LinqService } from 'src/app/shared/linq.service';
-import { IAppState } from 'src/app/shared/redux/state';
-import { Store } from '@ngrx/store';
-import { GlobalSettings } from 'src/app/shared/global.settings';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ListItemBaseComponent } from 'src/app/controls/list-item-base/list-item.base.component';
+import { SharedService } from 'src/app/shared/shared.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-layouts-list',
 	templateUrl: './layouts-list.component.html',
 	styleUrls: ['./layouts-list.component.scss']
 })
-export class LayoutsListComponent extends TemplateGridApplicationComponent implements OnChanges, AfterViewInit {
+export class LayoutsListComponent extends ListItemBaseComponent implements OnChanges {
 
-	public type: string = 'giao_xu';
+	@Input() type: string;
+
 	constructor(
 		public sharedService: SharedPropertyService,
-		public linq: LinqService,
-		public router: Router,
-		public service: SharedService,
-		public dialog: MatDialog,
 		public snackbar: MatSnackBar,
-		private sanitizer: DomSanitizer,
-		public store: Store<IAppState>
+		public dialog: MatDialog,
+		private service: SharedService
 	) {
-		super(sharedService, linq, store, service, snackbar);
-		this.defaultSort = 'created desc';
-		this.dataSettingsKey = 'layouts-list';
-		this.getDataGridAndCounterApplications();
+		super(sharedService,snackbar);
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['groupID']) {
-			this.getDataGridAndCounterApplications();
-			this.registerGridColumns();
+		if (changes['type']) {
+			this.getDataItems();
 		}
 	}
 
-	getFilter(groupID: string = "") {
-		let filter = ``;
+	getFilter() {
+		let filter = `type eq '${this.type}'`;
 		if (!this.isNullOrEmpty(this.searchValue)) {
 			let quick = this.searchValue.replace("'", "`");
 			quick = this.sharedService.handleODataSpecialCharacters(quick);
@@ -54,24 +41,16 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `${filter} and (${quickSearch})`;
 			}
 		}
 		return filter;
 	}
 
-
-	getDataGridAndCounterApplications() {
-		this.getDataGridApplications();
-	}
-
-	getDataGridApplications() {
-		this.skip = this.currentPageIndex * this.pageSize;
+	getDataItems() {
 		let options = {
 			filter: this.getFilter(),
-			sort: 'created desc',
-			skip: this.skip,
-			top: this.pageSize
+			sort: 'created desc'
 		}
 		if (this.subscription['getLayouts']) {
 			this.subscription['getLayouts'].unsubscribe();
@@ -79,25 +58,13 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 		this.dataProcessing = true;
 		this.subscription['getLayouts'] = this.service.getLayouts(options).pipe(take(1)).subscribe((res: any) => {
 			let dataItems = [];
-			let total = res.total || 0;
 			if (res && res.value && res.value.length > 0) {
 				dataItems = res.value;
+				this.noData = false;
 				for (let item of dataItems) {
-					item.disabledItem = false;
-					item.title = item.name;
-					if (item.photo) {
-						item.pictureUrl = `${GlobalSettings.Settings.Server}/${item.photo}`;
-					}
-					else {
-						item.pictureUrl = this.sanitizer.bypassSecurityTrustResourceUrl('assets/icons/ic_church_24dp.svg');
-					}
-					this.updateStatus(item);
-					item.typeView = this.sharedService.updateTypeOrg(item.type);
 				}
 			}
-			this.gridDataChanges.data = dataItems;
-			this.gridDataChanges.total = total;
-			this.gridMessages = this.displayGridMessage(total);
+			this.arrData = dataItems;
 			this.dataProcessing = false;
 			if (this.subscription['getLayouts']) {
 				this.subscription['getLayouts'].unsubscribe();
@@ -106,23 +73,7 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 		})
 	}
 
-	onUpdateStatus(item: any, status: string) {
-		let dataJSON = {
-			status: status,
-		}
-		this.service.updateLayout(item.id, dataJSON).pipe(take(1)).subscribe({
-			next: () => {
-				let snackbarData: any = {
-					key: 'activate-item',
-					message: 'Hiện Thành Công'
-				};
-				this.showInfoSnackbar(snackbarData);
-				this.getDataGridAndCounterApplications();
-			}
-		})
-	}
-
-	addItem() {
+	onAddItem() {
 		let config: any = {
 			data: {
 				target: 'new',
@@ -143,21 +94,13 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 					snackbarData.key = 'new-item';
 					snackbarData.message = 'Thêm Giáo Xứ Thành Công';
 					this.showInfoSnackbar(snackbarData);
-					this.getDataGridAndCounterApplications();
+					this.getDataItems();
 				}
 			}
 		});
 	}
 
-	getRowSelected(item: any) {
-		this.router.navigate([`/admin/manage/${item.type}/detail/${item.id}`]);
-	}
-
-	onView(item: any) {
-		
-	}
-
-	onDelete(item: any) {
+	deleteItem(item: any) {
 		this.dataProcessing = true;
 		this.service.deleteLayout(item.id).pipe(take(1)).subscribe(() => {
 			this.dataProcessing = false;
@@ -166,12 +109,8 @@ export class LayoutsListComponent extends TemplateGridApplicationComponent imple
 				message: 'Xóa Thành Công'
 			};
 			this.showInfoSnackbar(snackbarData);
-			this.getDataGridAndCounterApplications();
+			this.getDataItems();
 		})
-	}
-
-	registerGridColumns() {
-		this.displayColumns = ['id', 'status', 'type', 'name', 'created', 'moreActions'];
 	}
 
 

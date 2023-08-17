@@ -4,7 +4,6 @@ import { LayoutsComponent } from './layouts.component';
 import { LayoutsRoutingModule } from './layouts-routing.module';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { LayoutsListModule } from './layouts-list/layouts-list.module';
 
 
 @NgModule({
@@ -13,8 +12,7 @@ import { LayoutsListModule } from './layouts-list/layouts-list.module';
   ],
   imports: [
     SharedModule,
-    LayoutsRoutingModule,
-    LayoutsListModule
+    LayoutsRoutingModule
   ]
 })
 export class LayoutsModule {

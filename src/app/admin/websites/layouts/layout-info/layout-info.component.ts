@@ -54,7 +54,7 @@ export class LayoutInfoComponent extends SimpleBaseComponent {
 
 		this.dataItemGroup = this.fb.group({
 			name: [this.localItem ? this.localItem.name : '', [Validators.required]],
-			type:"",
+			type: this.type,
 			status: status,
 		})
 	}
@@ -73,18 +73,8 @@ export class LayoutInfoComponent extends SimpleBaseComponent {
 			this.dataProcessing = true;
 			this.service.updateLayout(this.ID, dataJSON).pipe(take(1)).subscribe({
 				next: () => {
-					// this.createAnniversaryToTeamMember(this.ID).pipe(takeUntil(this.unsubscribe)).subscribe({
-					// 	next: () => {
-					
 					this.dataProcessing = false;
 					this.dialogRef.close('OK');
-					// },
-					// error: error => {
-					// 	this.saveAction = '';
-					// 	this.dataProcessing = false;
-					// 	this.dialogRef.close('OK');
-					// }
-					// });
 				}
 			})
 		}
@@ -93,9 +83,7 @@ export class LayoutInfoComponent extends SimpleBaseComponent {
 			this.service.createLayout(dataJSON).pipe(take(1)).subscribe({
 				next: (res) => {
 					if (res && res.data && res.data.id) {
-						
 						this.dataProcessing = false;
-						this.router.navigate([`/admin/manage/${res.data.type}/detail/${res.data.id}`]);
 						this.dialogRef.close('OK');
 					}
 					else {

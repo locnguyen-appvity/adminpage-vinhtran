@@ -1,168 +1,179 @@
-<div class="se-dashboard-container-wrapper">
-    <div class="sticky-toolbar">
-        <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button (click)="routeToBack()">
-                    <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
-                </button>
-                <span class="truncate">Trở về {{matTooltipBack}}</span>
-            </div>
-            <div *ngIf="statusLabel?.title !== ''">
-                <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
-                <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
-                <button (click)="routeToBack()" mat-flat-button color="warn">Hủy</button>
-                <ng-template [ngIf]="localItem?.status !== 'publish'">
-                    <button mat-flat-button color="primary">Lưu Nháp</button>
-                    <button mat-flat-button class="accept">
-                        Xuất Bản <mat-icon style="margin-bottom: 15px;" svgIcon="ic_send_48dp"></mat-icon>
-                    </button>
-                </ng-template>
-            </div>
-        </mat-toolbar>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="se-dashboard-container">
-        <ng-template ngFor let-row [ngForOf]="localItem?.rows">
-            <ng-template [ngIf]="row.cells.length > 0">
-                <div @centerReveal class="section" [ngClass]="row.type" fxLayout="row wrap" fxLayoutWrap="wrap"
-                    fxLayoutAlign="center stretch" cdkDropList [cdkDropListDisabled]="!editMode"
-                    cdkDropListOrientation="horizontal">
-                    <ng-template ngFor let-cell [ngForOf]="row.cells">
-                        <div fxFlex.xs="100" [fxFlex]="cell.size" class="se-cell-section" [cdkDragData]="cell" cdkDrag
-                            cdkDragBoundary=".section"
-                            [fxFlex.sm]="row.type === 'view_5' || row.type === 'view_4' || row.type === 'view_6' ? '50' : ''">
-                            <mat-card [id]="'add-widget-' + cell.index" class="add-widget" fxLayout="column"
-                                fxLayoutAlign="center center" [ngStyle.lt-sm]="{ 'margin-right': '8px' }"
-                                [ngClass]="cell.added ? 'added-widget' : ''">
-                                <ng-template [ngIf]="!cell.added && editMode">
-                                    <div class="btn-add-widget">
-                                        <button mat-icon-button>
-                                            <mat-icon svgIcon="ic_add_48px"></mat-icon>
-                                        </button>
-                                    </div>
-                                </ng-template>
-                                <!-- Main Map Widget -->
-                                <ng-template [ngIf]="cell.type === 'widgetMap'">
-                                    <div @centerReveal fxLayout="column" class="WidgetContainers">
-                                        <ng-template [ngIf]="editMode">
-                                            <div class="dashboardDragHandle" cdkDragHandle>
-                                                <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                            </div>
-                                        </ng-template>
-                                      <p>VVVVVVVVVVVVVV</p>
-                                    </div>
-                                </ng-template>
-                                <!-- Camera Widget -->
-                                <ng-template [ngIf]="cell.type === 'widgetCamera'">
-                                    <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                        <ng-template [ngIf]="editMode">
-                                            <div class="dashboardDragHandle" cdkDragHandle>
-                                                <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                            </div>
-                                        </ng-template>
-                                        <mat-card class="se-camera-wrapper">
-                                            <p>VVVVVVVVVVVVVV</p>
-                                        </mat-card>
-                                    </div>
-                                </ng-template>
-                                <!-- Map Devices Widget -->
-                                <ng-template [ngIf]="cell.type === 'mapDeviceWidget'">
-                                    <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                        <ng-template [ngIf]="editMode">
-                                            <div class="dashboardDragHandle" cdkDragHandle>
-                                                <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                            </div>
-                                        </ng-template>
-                                        <p>VVVVVVVVVVVVVV</p>
-                                    </div>
-                                </ng-template>
-                                <!-- Map C2 Widget -->
-                                <ng-template [ngIf]="cell.type === 'c2Widget'">
-                                    <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                        <ng-template [ngIf]="editMode">
-                                            <div class="dashboardDragHandle" cdkDragHandle>
-                                                <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                            </div>
-                                        </ng-template>
-                                        <div class="project-container project-container--dashboard">
-                                            <div class="scroll-x-container">
-                                                <div class="list-item">
-                                                    <p>VVVVVVVVVVVVVV</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                                <!-- Latest Collects Widget -->
-                                <ng-template [ngIf]="cell.type === 'latestCollectsWidget'">
-                                    <div @centerReveal fxLayout="column" class="WidgetContainers">
-                                        <ng-template [ngIf]="editMode">
-                                            <div class="dashboardDragHandle" cdkDragHandle>
-                                                <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                            </div>
-                                        </ng-template>
-                                        <p>VVVVVVVVVVVVVV</p>
-                                    </div>
-                                </ng-template>
-                            </mat-card>
-                        </div>
-                    </ng-template>
-                    <ng-template [ngIf]="editMode">
-                        <button class="remove-section" mat-icon-button color="default">
-                            <mat-icon 
-                                svgIcon="ic_remove_circle_48px">
-                            </mat-icon>
+<mat-sidenav-container class="main-container rail-sidenav-container">
+    <!-- Notifications Sidenav -->
+    <mat-sidenav #layoutsList
+        [style.transform]="layoutsList.opened !== true ? 'translate3d(100%, 0, 0)' : 'none'"
+        [ngStyle.lt-md]="{'width': '100%'}" [ngStyle.gt-sm]="{'width': '372px'}" [fixedInViewport]="true"
+        [fixedTopGap]="56" [mode]="'side'" [position]="'end'" [opened]="true">
+        <app-layouts-list [type]="'home'"></app-layouts-list>
+    </mat-sidenav>
+    <div class="se-dashboard-container-wrapper">
+        <div class="sticky-toolbar">
+            <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <!-- <button mat-icon-button (click)="routeToBack()">
+                        <mat-icon svgIcon="ic_arrow_back_48dp"></mat-icon>
+                    </button> -->
+                    <span class="truncate mrl-12">{{title}}</span>
+                </div>
+                <div *ngIf="statusLabel?.title !== ''">
+                    <span class="mat-elevation-z1" [ngClass]="statusLabel.class">{{statusLabel.title}}</span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                    <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
+                    <button mat-flat-button color="warn">Chọn làm mặc định</button>
+                    <ng-template [ngIf]="localItem?.status !== 'publish'">
+                        <button mat-flat-button color="primary">Lưu</button>
+                        <button *ngIf="layoutsList.opened == true" mat-icon-button matTooltip="Đóng" (click)="layoutsList.close()">
+                            <mat-icon  svgIcon="ic_chevron_right_48px"></mat-icon>
+                        </button>
+                        <button *ngIf="layoutsList.opened != true"  mat-icon-button matTooltip="Mở" (click)="layoutsList.open()">
+                            <mat-icon svgIcon="ic_chevron_left_48px"></mat-icon>
                         </button>
                     </ng-template>
                 </div>
-            </ng-template>
-        </ng-template>
-        <div #originRef>
-            <div @centerReveal fxLayout="row" fxLayoutAlign="center center" class="add-section">
-                <div fxFlexAlign="center">
-                    <button class="mat-text-muted" mat-button #addSection (click)="openSectionOptions()"
-                        (onClickOutside)="closeSectionOptions()">
-                        <mat-icon style="margin-bottom: 15px;" svgIcon="ic_add_48px"></mat-icon>
-                        <span>ADD SECTION</span>
-                    </button>
-                </div>
-                <ng-template #templateOptions>
-                    <div @centerReveal class="section-options mat-elevation-z21">
-                        <div fxLayout="row" class="section-options-row">
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_1')">
-                                <div fxFlex="100" class="widget-container"></div>
+            </mat-toolbar>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="se-dashboard-container">
+            <ng-template ngFor let-row [ngForOf]="localItem?.rows">
+                <ng-template [ngIf]="row.cells.length > 0">
+                    <div @centerReveal class="section" [ngClass]="row.type" fxLayout="row wrap" fxLayoutWrap="wrap"
+                        fxLayoutAlign="center stretch" cdkDropList [cdkDropListDisabled]="!editMode"
+                        cdkDropListOrientation="horizontal">
+                        <ng-template ngFor let-cell [ngForOf]="row.cells">
+                            <div fxFlex.xs="100" [fxFlex]="cell.size" class="se-cell-section" [cdkDragData]="cell"
+                                cdkDrag cdkDragBoundary=".section"
+                                [fxFlex.sm]="row.type === 'view_5' || row.type === 'view_4' || row.type === 'view_6' ? '50' : ''">
+                                <mat-card [id]="'add-widget-' + cell.index" class="add-widget" fxLayout="column"
+                                    fxLayoutAlign="center center" [ngStyle.lt-sm]="{ 'margin-right': '8px' }"
+                                    [ngClass]="cell.added ? 'added-widget' : ''">
+                                    <ng-template [ngIf]="!cell.added && editMode">
+                                        <div class="btn-add-widget">
+                                            <button mat-icon-button>
+                                                <mat-icon svgIcon="ic_add_48px"></mat-icon>
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Main Map Widget -->
+                                    <ng-template [ngIf]="cell.type === 'widgetMap'">
+                                        <div @centerReveal fxLayout="column" class="WidgetContainers">
+                                            <ng-template [ngIf]="editMode">
+                                                <div class="dashboardDragHandle" cdkDragHandle>
+                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
+                                                </div>
+                                            </ng-template>
+                                            <p>VVVVVVVVVVVVVV</p>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Camera Widget -->
+                                    <ng-template [ngIf]="cell.type === 'widgetCamera'">
+                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
+                                            <ng-template [ngIf]="editMode">
+                                                <div class="dashboardDragHandle" cdkDragHandle>
+                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
+                                                </div>
+                                            </ng-template>
+                                            <mat-card class="se-camera-wrapper">
+                                                <p>VVVVVVVVVVVVVV</p>
+                                            </mat-card>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Map Devices Widget -->
+                                    <ng-template [ngIf]="cell.type === 'mapDeviceWidget'">
+                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
+                                            <ng-template [ngIf]="editMode">
+                                                <div class="dashboardDragHandle" cdkDragHandle>
+                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
+                                                </div>
+                                            </ng-template>
+                                            <p>VVVVVVVVVVVVVV</p>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Map C2 Widget -->
+                                    <ng-template [ngIf]="cell.type === 'c2Widget'">
+                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
+                                            <ng-template [ngIf]="editMode">
+                                                <div class="dashboardDragHandle" cdkDragHandle>
+                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
+                                                </div>
+                                            </ng-template>
+                                            <div class="project-container project-container--dashboard">
+                                                <div class="scroll-x-container">
+                                                    <div class="list-item">
+                                                        <p>VVVVVVVVVVVVVV</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Latest Collects Widget -->
+                                    <ng-template [ngIf]="cell.type === 'latestCollectsWidget'">
+                                        <div @centerReveal fxLayout="column" class="WidgetContainers">
+                                            <ng-template [ngIf]="editMode">
+                                                <div class="dashboardDragHandle" cdkDragHandle>
+                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
+                                                </div>
+                                            </ng-template>
+                                            <p>VVVVVVVVVVVVVV</p>
+                                        </div>
+                                    </ng-template>
+                                </mat-card>
                             </div>
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_2')">
-                                <div fxFlex="50" class="widget-container"></div>
-                                <div fxFlex="50" class="widget-container"></div>
-                            </div>
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_3')">
-                                <div fxFlex="33.33" class="widget-container"></div>
-                                <div fxFlex="33.33" class="widget-container"></div>
-                                <div fxFlex="33.33" class="widget-container"></div>
-                            </div>
-                        </div>
-                        <div fxLayout="row" class="section-options-row">
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_4')">
-                                <div fxFlex="30" class="widget-container"></div>
-                                <div fxFlex="70" class="widget-container"></div>
-                            </div>
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_5')">
-                                <div fxFlex="25" class="widget-container"></div>
-                                <div fxFlex="25" class="widget-container"></div>
-                                <div fxFlex="25" class="widget-container"></div>
-                                <div fxFlex="25" class="widget-container"></div>
-                            </div>
-                            <div fxFlex="33.33" class="section-container" (click)="addRow('view_6')">
-                                <div fxFlex="70" class="widget-container"></div>
-                                <div fxFlex="30" class="widget-container"></div>
-                            </div>
-                        </div>
+                        </ng-template>
+                        <ng-template [ngIf]="editMode">
+                            <button class="remove-section" mat-icon-button color="default">
+                                <mat-icon svgIcon="ic_remove_circle_48px">
+                                </mat-icon>
+                            </button>
+                        </ng-template>
                     </div>
                 </ng-template>
+            </ng-template>
+            <div #originRef>
+                <div @centerReveal fxLayout="row" fxLayoutAlign="center center" class="add-section">
+                    <div fxFlexAlign="center">
+                        <button class="mat-text-muted" mat-button #addSection (click)="openSectionOptions()"
+                            (onClickOutside)="closeSectionOptions()">
+                            <mat-icon style="margin-bottom: 15px;" svgIcon="ic_add_48px"></mat-icon>
+                            <span>ADD SECTION</span>
+                        </button>
+                    </div>
+                    <ng-template #templateOptions>
+                        <div @centerReveal class="section-options mat-elevation-z21">
+                            <div fxLayout="row" class="section-options-row">
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_1')">
+                                    <div fxFlex="100" class="widget-container"></div>
+                                </div>
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_2')">
+                                    <div fxFlex="50" class="widget-container"></div>
+                                    <div fxFlex="50" class="widget-container"></div>
+                                </div>
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_3')">
+                                    <div fxFlex="33.33" class="widget-container"></div>
+                                    <div fxFlex="33.33" class="widget-container"></div>
+                                    <div fxFlex="33.33" class="widget-container"></div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" class="section-options-row">
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_4')">
+                                    <div fxFlex="30" class="widget-container"></div>
+                                    <div fxFlex="70" class="widget-container"></div>
+                                </div>
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_5')">
+                                    <div fxFlex="25" class="widget-container"></div>
+                                    <div fxFlex="25" class="widget-container"></div>
+                                    <div fxFlex="25" class="widget-container"></div>
+                                    <div fxFlex="25" class="widget-container"></div>
+                                </div>
+                                <div fxFlex="33.33" class="section-container" (click)="addRow('view_6')">
+                                    <div fxFlex="70" class="widget-container"></div>
+                                    <div fxFlex="30" class="widget-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</mat-sidenav-container>

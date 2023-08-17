@@ -46,7 +46,7 @@ export class BooksListComponent extends TemplateGridApplicationComponent {
 				filter = quickSearch;
 			}
 			else {
-				filter = "(" + filter + ")" + " and (" + quickSearch + ")";
+				filter = `${filter} and (${quickSearch})`;
 			}
 		}
 		return filter;

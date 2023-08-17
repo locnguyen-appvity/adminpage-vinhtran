@@ -25,7 +25,7 @@ export class LayoutDetailComponent extends SimpleBaseComponent implements AfterV
     public localItem: any = {
         rows:[]
     };
-    public matTooltipBack: string = "Danh Sách Giáo Xứ";
+    public title: string = "Danh Sách Giáo Xứ";
     public statusLabel: any = {
         title: "Tạo Mới",
         class: 'draft-label'
