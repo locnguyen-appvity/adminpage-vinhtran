@@ -8,12 +8,7 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
   },
-  // {
-  //   path: 'page',
-  //   loadChildren: () => import('./page/page.module').then(m => m.PageModule)
-  // },
   { path: 'login', component: LoginPageComponent },
-  // { path: '', redirectTo: 'page', pathMatch: 'full' },
   { path: '**', redirectTo: 'admin', pathMatch: 'full' }
 ];
 

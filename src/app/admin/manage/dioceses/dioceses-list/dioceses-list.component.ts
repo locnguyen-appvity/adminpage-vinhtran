@@ -151,7 +151,8 @@ export class DiocesesListComponent extends ListItemBaseComponent {
 		let config: any = {};
 		config.data = {
 			target: 'edit',
-			item: item
+			item: item,
+			type: this.type
 		};
 		this.openFormDialog(config, 'edit');
 	}
