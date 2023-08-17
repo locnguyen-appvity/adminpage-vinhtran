@@ -49,7 +49,7 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			description: this.localItem ? this.localItem.description : "",
 			content: this.localItem ? this.localItem.content : "",
 			anniversary: this.localItem ? this.localItem.anniversary : "",
-			// type: this.localItem ? this.localItem.type : ""
+			type: this.localItem ? this.localItem.type : this.type
 		})
 		this.dataItemGroup.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe((valueForm: any) => {
 			this.hasChangedGroup = true;
@@ -80,7 +80,7 @@ export class SaintInfoComponent extends SimpleBaseComponent {
 			subtitle: valueForm.subtitle,
 			anniversary: valueForm.anniversary,
 			description: valueForm.description,
-			type: this.type,
+			type: valueForm.type,
 			content: valueForm.content,
 			status: valueForm.status ? 'active' : 'inactive'
 		}

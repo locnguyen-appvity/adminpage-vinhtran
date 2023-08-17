@@ -60,7 +60,7 @@ export class SaintsComponent extends ListItemBaseComponent {
 			if (res && res.value && res.value.length > 0) {
 				let items = res.value;
 				for (let item of items) {
-					item.name = `${this.sharedService.updateNameTypeSaint(item.type)} ${item.name}`;
+					item._name = `${this.sharedService.updateNameTypeSaint(item.type)} ${item.name}`;
 					switch (item.status) {
 						case 'active':
 							item.statusTooltip = 'Hiện';
