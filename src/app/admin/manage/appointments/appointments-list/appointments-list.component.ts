@@ -466,7 +466,7 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	openNewTab(element: any, target: string) {
 		let link = '';
 		if (target == 'clergy') {
-			link = `./#/admin/clergy-view/${element.clergyID}`;
+			link = `./admin/clergy-view/${element.clergyID}`;
 		}
 		else {
 			link = `${location.origin}/gppc/client/page/${element.entityType}/${element.entityID}`;

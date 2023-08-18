@@ -10,7 +10,11 @@ const myRoutes: Routes = [
 				path: 'layouts',
 				loadChildren: () => import('./layouts/layouts.module').then(m => m.LayoutsModule)
 			},
-			{ path: '', redirectTo: 'layouts', pathMatch: 'full' },
+			{
+				path: 'workspace-setting',
+				loadChildren: () => import('./workspace-detail/workspace-detail.module').then(m => m.WorkspaceDetailModule)
+			},
+			{ path: '', redirectTo: 'workspace-setting', pathMatch: 'full' },
 		],
 	},
 	// { path: '', component: UserNavbarComponent, outlet: "sidebar" }

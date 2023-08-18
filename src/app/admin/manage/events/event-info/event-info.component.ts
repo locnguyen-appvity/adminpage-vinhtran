@@ -105,7 +105,7 @@ export class EventInfoComponent extends SimpleBaseComponent {
 		return this.fb.group({
 			id: item ? item.id : '',
 			name: [item ? item.name : '', Validators.required],
-			day: [item ? item.day : '', Validators.required],
+			day: item ? item.day : '',
 			stName: item ? item.description : '',
 			date: item ? item._date : '',
 			type: [item ? item.type : this.eventType, Validators.required],

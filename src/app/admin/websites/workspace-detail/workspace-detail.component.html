@@ -1,0 +1,35 @@
+<div class="post-info">
+    <div class="sticky-toolbar">
+        <mat-toolbar fxLayout="row" fxLayoutAlign="end center">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+                <!-- <button (click)="openDialogImg()" mat-flat-button color="warn">Upload Hinh</button> -->
+                <button (click)="onCancel()" mat-flat-button color="warn">Hủy</button>
+                <button (click)="onSave()" mat-flat-button color="primary">Lưu</button>
+            </div>
+        </mat-toolbar>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="post-container"> 
+        <form class="form-horizontal" novalidate [formGroup]="workspaceGroup" autocomplete="off" fxFlex="100">
+            <div style="max-width: 200px;">
+                <se-upload-avatar (valueChanges)="valueChangesFile($event)" [filePath]="workspaceGroup?.value?.logo"
+                [placeHolder]="'Chọn hình đại diện'"></se-upload-avatar>
+            </div>
+            <div fxLayout="row wrap">
+                <ng-template ngFor let-data [ngForOf]="workspaceFields">
+                    <ng-template [ngIf]="data.editable">
+                        <div fxFlex="50" fxFlex.lt-md="100" style="padding-left: 12px;">
+                            <ng-template [ngIf]="data.type === 'text'">
+                                <mat-form-field appearance="outline" class="full-width">
+                                    <mat-label>{{data.title}}</mat-label>
+                                    <input matInput autocomplete="off" [type]="data.type" color="primary"
+                                        [formControlName]="data.code" [required]="data.required" />
+                                </mat-form-field>
+                            </ng-template>
+                        </div>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </form>
+    </div>
+</div>

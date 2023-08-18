@@ -925,6 +925,57 @@ export class SharedService {
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteWidget', error)));
 	}
 
+	// WorkspaceSettings
+	getWorkspaceSettings(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/workspace-settings';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getWorkspaceSettings', error)));
+	}
+
+	getWorkspaceSetting(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/workspace-settings';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getWorkspaceSetting', error)));
+	}
+
+	createWorkspaceSetting(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/workspace-settings`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createWorkspaceSetting', error)));
+	}
+
+	updateWorkspaceSetting(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/workspace-settings`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateWorkspaceSetting', error)));
+	}
+
+	deleteWorkspaceSetting(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/workspace-settings`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteWorkspaceSetting', error)));
+	}
+
+	// MainMenus
+	getMainMenus(options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/main-menus';
+		return this.getItems(baseUrl, options).pipe(catchError(error => this.handleError('getMainMenus', error)));
+	}
+
+	getMainMenu(id: string, options?: any): Observable<any> {
+		let baseUrl = this.shared.RootEndPointAPI + '/main-menus';
+		return this.service.getItem(baseUrl, id, options).pipe(catchError(error => this.handleError('getMainMenu', error)));
+	}
+
+	createMainMenu(data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/main-menus`;
+		return this.service.postRequestBaseUrl(baseUrl, null, data).pipe(catchError(error => this.handleError('createMainMenu', error)));
+	}
+
+	updateMainMenu(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/main-menus`;
+		return this.service.updateItem(baseUrl, id, data).pipe(catchError(error => this.handleError('updateMainMenu', error)));
+	}
+
+	deleteMainMenu(id: string): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/main-menus`;
+		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteMainMenu', error)));
+	}
 
 	handleError(methodName: string, errorData: HttpErrorResponse | any) {
 		let errorResponse: any = {

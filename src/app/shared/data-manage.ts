@@ -526,163 +526,163 @@ export const SAINTS_DATA = [
 export const DIOCESES_DATA = [
     {
         name: 'Phú Cường',
-        code:'',
+        code: '',
         deActive: 0,
         order: 1
     },
     {
         name: 'Hà Nội',
-        code:'',
+        code: '',
         deActive: 0,
         order: 2
     },
     {
         name: 'Bắc Ninh',
-        code:'',
+        code: '',
         deActive: 0,
         order: 3
     },
     {
         name: 'Bùi Chu',
-        code:'',
+        code: '',
         deActive: 0,
         order: 4
     },
     {
         name: 'Hà Tĩnh',
-        code:'',
+        code: '',
         deActive: 0,
         order: 5
     },
     {
         name: 'Hải Phòng',
-        code:'',
+        code: '',
         deActive: 0,
         order: 6
     },
     {
         name: 'Hưng Hóa',
-        code:'',
+        code: '',
         deActive: 0,
         order: 7
     },
     {
         name: 'Lạng Sơn và Cao Bằng',
-        code:'',
+        code: '',
         deActive: 0,
         order: 8
     },
     {
         name: 'Phát Diệm',
-        code:'',
+        code: '',
         deActive: 0,
         order: 9
     },
     {
         name: 'Thái Bình',
-        code:'',
+        code: '',
         deActive: 0,
         order: 10
     },
     {
         name: 'Thanh Hóa',
-        code:'',
+        code: '',
         deActive: 0,
         order: 11
     },
     {
         name: 'Vinh',
-        code:'',
+        code: '',
         deActive: 0,
         order: 12
     },
     {
         name: 'Huế',
-        code:'',
+        code: '',
         deActive: 0,
         order: 13
     },
     {
         name: 'Ban Mê Thuột',
-        code:'',
+        code: '',
         deActive: 0,
         order: 14
     },
     {
         name: 'Đà Nẵng',
-        code:'',
+        code: '',
         deActive: 0,
         order: 15
     },
     {
         name: 'Kon Tum',
-        code:'',
+        code: '',
         deActive: 0,
         order: 16
     },
     {
         name: 'Nha Trang',
-        code:'',
+        code: '',
         deActive: 0,
         order: 17
     },
     {
         name: 'Qui Nhơn',
-        code:'',
+        code: '',
         deActive: 0,
         order: 18
     },
     {
         name: 'Sài Gòn(TP.HCM)',
-        code:'',
+        code: '',
         deActive: 0,
         order: 19
     },
     {
         name: 'Bà Rịa',
-        code:'',
+        code: '',
         deActive: 0,
         order: 20
     },
     {
         name: 'Cần Thơ',
-        code:'',
+        code: '',
         deActive: 0,
         order: 21
     },
     {
         name: 'Đà Lạt',
-        code:'',
+        code: '',
         deActive: 0,
         order: 22
     },
     {
         name: 'Long Xuyên',
-        code:'',
+        code: '',
         deActive: 0,
         order: 23
     },
     {
         name: 'Mỹ Tho',
-        code:'',
+        code: '',
         deActive: 0,
         order: 24
     },
     {
         name: 'Phan Thiết',
-        code:'',
+        code: '',
         deActive: 0,
         order: 25
     },
     {
         name: 'Vĩnh Long',
-        code:'',
+        code: '',
         deActive: 0,
         order: 26
     },
     {
         name: 'Xuân Lộc',
-        code:'',
+        code: '',
         deActive: 0,
         order: 27
     }
@@ -693,7 +693,7 @@ export const ANNIVERSARIES = [
         name: "Bổn Mạng",
         type: "saint",
         hasAuto: true,
-        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['clergy', 'organization', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "all",
     },
@@ -709,7 +709,7 @@ export const ANNIVERSARIES = [
         name: "Ngày Thành Lập",
         type: "createdDate",
         hasAuto: true,
-        includes: ['giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['organization', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "",
         typeOrg: "all",
     },
@@ -757,7 +757,7 @@ export const ANNIVERSARIES = [
         name: "Kỷ Niệm",
         type: "anniversary",
         hasAuto: false,
-        includes: ['clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu','cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
+        includes: ['organization', 'clergy', 'giao_xu', 'giao_diem', 'giao_ho', 'dong_tu', 'cong_doan', 'co_so_giao_phan', 'co_so_ngoai_giao_phan', 'giao_hat'],
         typeClergy: "all",
         typeOrg: "",
     },
