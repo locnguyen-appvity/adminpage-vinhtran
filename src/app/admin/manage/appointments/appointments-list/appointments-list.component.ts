@@ -542,6 +542,9 @@ export class AppointmentsListComponent extends TemplateGridApplicationComponent 
 	}
 
 	getRowSelected(item: any, action: string) {
+		if(action == "ket_thuc"){
+			
+		}
 		if (action == 'auto') {
 			let requets: any = {};
 

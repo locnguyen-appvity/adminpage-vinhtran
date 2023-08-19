@@ -532,6 +532,19 @@
 					line-height: 20px;
 				}
 			}
+			.add-one-section {
+				position: absolute;
+				display: block;
+				top: 15px;
+				right: -10px;
+				z-index: 99;
+
+				&.mat-icon-button {
+					width: 24px;
+					height: 24px;
+					line-height: 20px;
+				}
+			}
 
 			&.view_3,
 			&.view_4,

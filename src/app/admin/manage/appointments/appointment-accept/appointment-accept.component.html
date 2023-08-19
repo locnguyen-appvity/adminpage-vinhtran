@@ -6,37 +6,50 @@
 <mat-dialog-content>
 	<div class="content-dialog content-dialog--minHeight">
 		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-			<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID">
+			<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID; else bonhiemTemf">
 				<h2>THUYỂN CHUYỂN</h2>
 				<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
 					<h6>
 						<strong>{{dataItemGroup?.value?.clergyName}}</strong>
 						từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
 					</h6>
-					<h6>Chuyển từ
-						<strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
-					</h6>
 					<h6>với chức vụ <strong>{{dataItemGroup?.value?.fromPositionView}}</strong></h6>
 					<h6>từ ngày <strong>{{dataItemGroup?.value?.fromFromDateView}}</strong>
-						<!-- <span> đến
-							<strong>{{dataItemGroup?.value?.fromToDateView}}</strong>
-						</span> -->
 					</h6>
 					<h6>do <strong>{{dataItemGroup?.value?.fromAppointerName}}</strong> bổ nhiệm vào ngày
 						<strong>{{dataItemGroup?.value?.fromEffectiveDateView}}</strong>
 					</h6>
-					<mat-form-field appearance="outline" class="full-width">
-						<mat-label>Ngày Kết Thúc</mat-label>
-						<input matInput [matDatepicker]="toDate" placeholder="DD/MM/YYYY" autocomplete="off"
-							formControlName="fromToDate">
-						<mat-datepicker-toggle matSuffix [for]="toDate">
-						</mat-datepicker-toggle>
-						<mat-datepicker #toDate></mat-datepicker>
-					</mat-form-field>
+					<h6>
+						đến <strong>{{this.localItem?.entityName}}</strong>
+					</h6>
+					<h6>Chuyển từ
+						<strong>{{this.localItem?.entityName}}</strong>
+					</h6>
+					<h6>với chức vụ <strong>{{this.localItem?.positionView}}</strong></h6>
+					<h6>từ ngày <strong>{{this.localItem?.fromDateView}}</strong>
+					</h6>
+					<h6>do <strong>{{this.localItem?.appointerName}}</strong> bổ nhiệm vào ngày
+						<strong>{{this.localItem?.effectiveDateView}}</strong>
+					</h6>
 				</div>
 			</ng-container>
+			<ng-template #bonhiemTemf>
+				<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
+					<h2>BỔ NHIỆM</h2>
+					<h6>
+						<strong>{{dataItemGroup?.value?.clergyName}}</strong>
+						đến <strong>{{this.localItem?.entityName}}</strong>
+					</h6>
+					<h6>với chức vụ <strong>{{this.localItem?.positionView}}</strong></h6>
+					<h6>từ ngày <strong>{{this.localItem?.fromDateView}}</strong>
+					</h6>
+					<h6>do <strong>{{this.localItem?.appointerName}}</strong> bổ nhiệm vào ngày
+						<strong>{{this.localItem?.effectiveDateView}}</strong>
+					</h6>
+				</div>
+			</ng-template>
 
-			<h2>NƠI CHUYỂN ĐẾN</h2>
+			<!-- <h2>NƠI CHUYỂN ĐẾN</h2>
 			<mat-form-field appearance="outline" class="full-width">
 				<mat-label>Nơi Đến</mat-label>
 				<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="false"
@@ -78,7 +91,7 @@
 					[keyValue]="'id'" [autocomplete]="false" [items]="appointerList"
 					(onSelectItem)="onSelectItem($event,'appointerID')">
 				</se-autocomplete-simple>
-			</mat-form-field>
+			</mat-form-field> -->
 		</form>
 	</div>
 	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">

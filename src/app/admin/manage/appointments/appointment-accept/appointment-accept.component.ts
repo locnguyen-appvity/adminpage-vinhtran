@@ -494,35 +494,40 @@ export class AppointmentAcceptComponent extends SimpleBaseComponent {
 	}
 
 	onSaveNew() {
-		if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
-			if (this.dataItemGroup.get('status').value != 'cho_xac_nhan') {
-				let fromAppointmentJSON = {
-					toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
-					status: this.dataItemGroup.get("fromStatus").value
-				}
-				forkJoin([
-					this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
-					this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
-						next: () => {
-							this.dialogRef.close("OK");
-						}
-					})
+		this.service.approveAppointment(this.localItem.id).pipe(take(1)).subscribe({
+			next: () => {
+				this.dialogRef.close("OK");
 			}
-			else {
-				this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
-					next: () => {
-						this.dialogRef.close("OK");
-					}
-				})
-			}
-		}
-		else {
-			this.onSaveAppointment("").pipe(take(1)).subscribe({
-				next: () => {
-					this.dialogRef.close("OK");
-				}
-			})
-		}
+		})
+		// if (!this.isNullOrEmpty(this.dataItemGroup.get("fromAppointmentID").value)) {
+		// 	if (this.dataItemGroup.get('status').value != 'cho_xac_nhan') {
+		// 		let fromAppointmentJSON = {
+		// 			toDate: this.sharedService.ISOStartDay(this.dataItemGroup.get("fromToDate").value),
+		// 			status: this.dataItemGroup.get("fromStatus").value
+		// 		}
+		// 		forkJoin([
+		// 			this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value),
+		// 			this.service.updateAppointment(this.dataItemGroup.get("fromAppointmentID").value, fromAppointmentJSON)]).pipe(take(1)).subscribe({
+		// 				next: () => {
+		// 					this.dialogRef.close("OK");
+		// 				}
+		// 			})
+		// 	}
+		// 	else {
+		// 		this.onSaveAppointment(this.dataItemGroup.get("fromAppointmentID").value).pipe(take(1)).subscribe({
+		// 			next: () => {
+		// 				this.dialogRef.close("OK");
+		// 			}
+		// 		})
+		// 	}
+		// }
+		// else {
+		// 	this.onSaveAppointment("").pipe(take(1)).subscribe({
+		// 		next: () => {
+		// 			this.dialogRef.close("OK");
+		// 		}
+		// 	})
+		// }
 	}
 
 	onSaveItem() {

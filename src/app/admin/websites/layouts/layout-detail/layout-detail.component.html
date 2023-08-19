@@ -65,64 +65,17 @@
                                             <p>VVVVVVVVVVVVVV</p>
                                         </div>
                                     </ng-template>
-                                    <!-- Camera Widget -->
-                                    <ng-template [ngIf]="cell.type === 'widgetCamera'">
-                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                            <ng-template [ngIf]="editMode">
-                                                <div class="dashboardDragHandle" cdkDragHandle>
-                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                                </div>
-                                            </ng-template>
-                                            <mat-card class="se-camera-wrapper">
-                                                <p>VVVVVVVVVVVVVV</p>
-                                            </mat-card>
-                                        </div>
-                                    </ng-template>
-                                    <!-- Map Devices Widget -->
-                                    <ng-template [ngIf]="cell.type === 'mapDeviceWidget'">
-                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                            <ng-template [ngIf]="editMode">
-                                                <div class="dashboardDragHandle" cdkDragHandle>
-                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                                </div>
-                                            </ng-template>
-                                            <p>VVVVVVVVVVVVVV</p>
-                                        </div>
-                                    </ng-template>
-                                    <!-- Map C2 Widget -->
-                                    <ng-template [ngIf]="cell.type === 'c2Widget'">
-                                        <div @centerReveal fxLayout="column" class="WidgetContainers height-100">
-                                            <ng-template [ngIf]="editMode">
-                                                <div class="dashboardDragHandle" cdkDragHandle>
-                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                                </div>
-                                            </ng-template>
-                                            <div class="project-container project-container--dashboard">
-                                                <div class="scroll-x-container">
-                                                    <div class="list-item">
-                                                        <p>VVVVVVVVVVVVVV</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </ng-template>
-                                    <!-- Latest Collects Widget -->
-                                    <ng-template [ngIf]="cell.type === 'latestCollectsWidget'">
-                                        <div @centerReveal fxLayout="column" class="WidgetContainers">
-                                            <ng-template [ngIf]="editMode">
-                                                <div class="dashboardDragHandle" cdkDragHandle>
-                                                    <mat-icon svgIcon="ic_move_handle"></mat-icon>
-                                                </div>
-                                            </ng-template>
-                                            <p>VVVVVVVVVVVVVV</p>
-                                        </div>
-                                    </ng-template>
+                                   
                                 </mat-card>
                             </div>
                         </ng-template>
                         <ng-template [ngIf]="editMode">
                             <button class="remove-section" mat-icon-button color="default">
                                 <mat-icon svgIcon="ic_remove_circle_48px">
+                                </mat-icon>
+                            </button>
+                            <button class="add-one-section" mat-icon-button color="default">
+                                <mat-icon svgIcon="ic_add_48px">
                                 </mat-icon>
                             </button>
                         </ng-template>
