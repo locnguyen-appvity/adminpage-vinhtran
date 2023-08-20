@@ -873,6 +873,11 @@ export class SharedService {
 		return this.service.updateItem(baseUrl, null, {}).pipe(catchError(error => this.handleError('updateAppointment', error)));
 	}
 
+	finishAppointment(id: string, data: any): Observable<any> {
+		const baseUrl = this.shared.RootEndPointAPI + `/appointments/${id}/finish`;
+		return this.service.updateItem(baseUrl, null, data).pipe(catchError(error => this.handleError('updateAppointment', error)));
+	}
+
 	deleteAppointment(id: string): Observable<any> {
 		const baseUrl = this.shared.RootEndPointAPI + `/appointments`;
 		return this.service.deleteItem(baseUrl, id).pipe(catchError(error => this.handleError('deleteAppointment', error)));
