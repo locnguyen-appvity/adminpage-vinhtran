@@ -838,6 +838,10 @@ export const CLERGY_STATUS = [
     },
     {
         name: 'Hưu',
+        code: 'huu'
+    },
+    {
+        name: 'Hưu Dưỡng',
         code: 'huu_duong'
     },
     {

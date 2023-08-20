@@ -152,6 +152,7 @@ export class SharedPropertyService {
             case 'dang_phuc_vu':
                 return 'Đang Phục Vụ'
             case 'huu':
+                return 'Hưu'
             case 'huu_duong':
                 return 'Hưu Dưỡng'
             case 'rip':

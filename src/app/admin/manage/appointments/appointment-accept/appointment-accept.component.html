@@ -5,51 +5,74 @@
 </h2>
 <mat-dialog-content>
 	<div class="content-dialog content-dialog--minHeight">
-		<form class="form-horizontal" novalidate [formGroup]="dataItemGroup" autocomplete="off">
-			<ng-container *ngIf="dataItemGroup?.value?.fromAppointmentID; else bonhiemTemf">
-				<h2>THUYỂN CHUYỂN</h2>
-				<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
-					<h6>
-						<strong>{{dataItemGroup?.value?.clergyName}}</strong>
-						từ <strong>{{dataItemGroup?.value?.fromEntityName}}</strong>
-					</h6>
-					<h6>với chức vụ <strong>{{dataItemGroup?.value?.fromPositionView}}</strong></h6>
-					<h6>từ ngày <strong>{{dataItemGroup?.value?.fromFromDateView}}</strong>
-					</h6>
-					<h6>do <strong>{{dataItemGroup?.value?.fromAppointerName}}</strong> bổ nhiệm vào ngày
-						<strong>{{dataItemGroup?.value?.fromEffectiveDateView}}</strong>
+		<ng-container *ngIf="localItem?.fromAppointmentID; else bonhiemTemf">
+			<div fxLayout="row" fxLayoutAlign="center center" style="padding: 24px;">
+				<div fxLayout="column">
+					<h6>Chuyển Từ: <strong>{{fromAppointmentItem?.entityName}}</strong>
 					</h6>
 					<h6>
-						đến <strong>{{this.localItem?.entityName}}</strong>
+						<span
+							*ngIf="fromAppointmentItem?.position == 'huu' || fromAppointmentItem?.position == 'nghi_duong'">
+							để <strong> {{fromAppointmentItem?.positionView}}
+							</strong></span>
+						<span
+							*ngIf="fromAppointmentItem?.fromDateView && fromAppointmentItem?.position != 'huu' && fromAppointmentItem?.position != 'nghi_duong'">
+							Phục vụ </span>
+						từ ngày
+						<strong>{{fromAppointmentItem?.fromDateView}}</strong><span
+							*ngIf="localItem.fromAppointmentToDateView?.length > 0"> đến ngày
+							<strong>{{localItem.fromAppointmentToDateView}}</strong></span>
 					</h6>
-					<h6>Chuyển từ
-						<strong>{{this.localItem?.entityName}}</strong>
+					<h6 *ngIf="fromAppointmentItem?.position != 'huu' && fromAppointmentItem?.position != 'nghi_duong'">
+						với chức vụ
+						<strong>{{fromAppointmentItem?.positionView}}</strong>
 					</h6>
-					<h6>với chức vụ <strong>{{this.localItem?.positionView}}</strong></h6>
-					<h6>từ ngày <strong>{{this.localItem?.fromDateView}}</strong>
-					</h6>
-					<h6>do <strong>{{this.localItem?.appointerName}}</strong> bổ nhiệm vào ngày
-						<strong>{{this.localItem?.effectiveDateView}}</strong>
-					</h6>
+					<h6>do {{fromAppointmentItem?.appointerName}} bổ nhiệm ngày
+						{{fromAppointmentItem?.effectiveDateView}}</h6>
 				</div>
-			</ng-container>
-			<ng-template #bonhiemTemf>
-				<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
-					<h2>BỔ NHIỆM</h2>
+				<mat-icon svgIcon="ic_arrow_forward" class="mrl-24 mrr-24"></mat-icon>
+				<div fxLayout="column">
+					<h6>Đến: <strong>{{localItem?.entityName}}</strong></h6>
 					<h6>
-						<strong>{{dataItemGroup?.value?.clergyName}}</strong>
-						đến <strong>{{this.localItem?.entityName}}</strong>
+						<span *ngIf="localItem?.position == 'huu' || localItem?.position == 'nghi_duong'">
+							để <strong> {{localItem?.positionView}}
+							</strong></span>
+						<span
+							*ngIf="localItem?.position != 'huu' && localItem?.position != 'nghi_duong' && localItem?.status != 'cho_xac_nhan'">
+							<span *ngIf="localItem?.status == 'duong_nhiem'">Đang </span>
+							<span
+								*ngIf="localItem?.status == 'man_nhiem' || localItem?.status == 'cho_thuyen_chuyen'">Đã
+							</span>
+							phục vụ </span>
+						từ ngày <strong>{{localItem?.fromDateView}}</strong><span
+							*ngIf="localItem?.toDateView?.length > 0">
+							đến ngày
+							<strong>{{localItem?.toDateView}}</strong></span>
 					</h6>
-					<h6>với chức vụ <strong>{{this.localItem?.positionView}}</strong></h6>
-					<h6>từ ngày <strong>{{this.localItem?.fromDateView}}</strong>
-					</h6>
-					<h6>do <strong>{{this.localItem?.appointerName}}</strong> bổ nhiệm vào ngày
-						<strong>{{this.localItem?.effectiveDateView}}</strong>
-					</h6>
+					<h6 *ngIf="localItem?.position != 'huu' && localItem?.position != 'nghi_duong'">
+						với chức vụ <strong>{{localItem?.positionView}}</strong></h6>
+					<h6>do {{localItem?.appointerName}} bổ nhiệm ngày
+						{{localItem?.effectiveDateView}}</h6>
 				</div>
-			</ng-template>
+			</div>
+		</ng-container>
+		<ng-template #bonhiemTemf>
+			<div fxLayout="column" class="full-width" fxLayoutAlign="start center">
+				<h2>BỔ NHIỆM</h2>
+				<h6>
+					<strong>{{localItem?.clergyName}}</strong>
+					đến <strong>{{localItem?.entityName}}</strong>
+				</h6>
+				<h6>với chức vụ <strong>{{localItem?.positionView}}</strong></h6>
+				<h6>từ ngày <strong>{{localItem?.fromDateView}}</strong>
+				</h6>
+				<h6>do <strong>{{localItem?.appointerName}}</strong> bổ nhiệm vào ngày
+					<strong>{{localItem?.effectiveDateView}}</strong>
+				</h6>
+			</div>
+		</ng-template>
 
-			<!-- <h2>NƠI CHUYỂN ĐẾN</h2>
+		<!-- <h2>NƠI CHUYỂN ĐẾN</h2>
 			<mat-form-field appearance="outline" class="full-width">
 				<mat-label>Nơi Đến</mat-label>
 				<se-autocomplete-simple [required]="false" [formControlName]="'_entityID'" [optgroup]="false"
@@ -92,14 +115,13 @@
 					(onSelectItem)="onSelectItem($event,'appointerID')">
 				</se-autocomplete-simple>
 			</mat-form-field> -->
-		</form>
 	</div>
 	<div class="btn-dialog-actions" fxLayout="row" fxLayoutAlign="start center">
 		<span fxFlex></span>
 		<a mat-button (click)="closeDialog()" color="default">Hủy</a>
 		<div class="btn-save-process">
-			<button mat-flat-button color="primary" [disabled]="dataProcessing || dataItemGroup.invalid"
-				aria-label="Save" (click)="onSaveItem()">Xác Nhận</button>
+			<button mat-flat-button color="primary" [disabled]="dataProcessing" aria-label="Save"
+				(click)="onSaveItem()">Xác Nhận</button>
 			<mat-spinner [diameter]="24" *ngIf="dataProcessing"></mat-spinner>
 		</div>
 	</div>
